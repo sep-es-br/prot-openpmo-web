@@ -10,13 +10,21 @@ import { EnvironmentListComponent } from './environment/environment-list/environ
 
 import { CardModule } from 'primeng/card';
 import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';
+import { SchemaListComponent } from './schema/schema-list/schema-list.component';
+import { SchemaEditComponent } from './schema/schema-edit/schema-edit.component';
+import { WorkpackEditComponent } from './workpack/workpack-edit/workpack-edit.component';
+import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminComponent,
     EnvironmentListComponent,
-    EnvironmentEditComponent
+    EnvironmentEditComponent,
+    SchemaListComponent,
+    SchemaEditComponent,
+    WorkpackEditComponent,
+    WorkpackListComponent
   ],
   imports: [
     BrowserModule,
