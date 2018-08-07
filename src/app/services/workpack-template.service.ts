@@ -40,7 +40,6 @@ export interface Amendment {
 
 */
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -57,11 +56,11 @@ export class WorkpackTemplateService {
  
   private baseURL = "http://localhost:8080";
   //private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
-  private basePathURL = "/workpacktemplates";
+  private basePathURL = "/workpacktemplates/155";
   //private cookieLongevityDays: number = 3;
 
   constructor(private http: HttpClient) {
-
+    this.GetAllWorkpackTemplates();
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -69,7 +68,7 @@ export class WorkpackTemplateService {
   // GET ALL WORKPACK TEMPLATES
   //
   // Query all workpack templates from database
-  WorkpackTemplates() {
+  GetAllWorkpackTemplates() {
     const pathURL = "";
     let URL = this.baseURL + this.basePathURL + pathURL;
     let allWorkpackTemplates: {}[] = [];
@@ -77,7 +76,7 @@ export class WorkpackTemplateService {
     .get<any>(URL)
     .subscribe(
       data => {
-        this.$data = data;
+        this.$workpackTemplates = data;
         console.log('data',data);
       },
       err => {
