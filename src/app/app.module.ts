@@ -36,7 +36,7 @@ import { AppRoutingModule } from './/app-routing.module';
     BrowserModule,
     HttpClientModule,
     CardModule,
-    AppRoutingModule
+    AppRoutingModule,
     BreadcrumbModule,
     CardModule,
     TooltipModule
