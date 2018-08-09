@@ -1,9 +1,59 @@
+<!-- app.component.html -->
+<div class="topo">
+    <div class="logo">
+        <i class="fa fa-tasks" aria-hidden="true"></i> OpenPMO
+    </div>
+    <div class="user">
+        <i class="fa fa-user-circle" aria-hidden="true"></i>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="config">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+    </div>
+    <div class="filter">
+        <i class="fa fa-filter" aria-hidden="true"></i>
+    </div>
+    <div class="search">
+       
+    </div>
+</div>
+
+<div class="menu-breadcrumb">
+  <p-breadcrumb [model]="items"></p-breadcrumb>
+</div>
+
+
+
+<!-- environment-list.html -->
 <div class="main-title">
   <h1>ENVIRONMENTS</h1>
 </div>
-<div class="ui-g-12 ui-md-6 ui-lg-3" *ngFor="let env of environments" >
-  <p-card>
-    <p class="teste" >{{env.name}}</p>
-    <p>{{env.managerName}}</p>
-  </p-card>
+
+<div class="cards">
+  <div class="ui-g-12 ui-md-6 ui-lg-3" *ngFor="let env of environments">
+    <p-card>
+
+      <div class="card-image">
+          <i class="fa fa-building" aria-hidden="true"></i>
+      </div>
+
+      <div class="card-title">
+        <a  href="#"><p class="title-card" >{{env.name}}</p></a>
+      </div>
+      
+      <div class="card-setting">
+        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+      </div>
+
+      <div class="card-manager">
+        <i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i>
+      </div>
+
+      
+    </p-card>
+  </div>
 </div>
+
+
