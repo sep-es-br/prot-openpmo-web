@@ -46,22 +46,43 @@ export interface Amendment {
 export class WorkpackTemplateService {
 
 
+  // Observable property for the full list of environments  
+  private $environments = new BehaviorSubject<any[]>([]);
+  environments = this.$environments.asObservable();
+
   // Observable property for the full list of workpackTemplates  
   private $workpackTemplates = new BehaviorSubject<any[]>([]);
   workpackTemplates = this.$workpackTemplates.asObservable();
 
-
-  // Property for the row data 
-  private $data: HttpReply;
- 
   private baseURL = "http://localhost:8080";
   //private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
-  private basePathURL = "/workpacktemplates/155";
-  //private cookieLongevityDays: number = 3;
-
+  
+  private basePathURL = "/api";
+    
   constructor(private http: HttpClient) {
-    this.GetAllWorkpackTemplates();
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // GET ALL ENVIRONMENTS
+  //
+  // Query all environments from database
+  GetAllEnvironments() {
+    const pathURL = "/environments";
+    let URL = this.baseURL + this.basePathURL + pathURL;
+    this.http
+    .get<any>(URL)
+    .subscribe(
+      data => {
+        this.$environments = data;
+        console.log('data',data);
+      },
+      err => {
+        console.log('myerror: ', err);
+      }
+    );
+  }
+
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -69,15 +90,13 @@ export class WorkpackTemplateService {
   //
   // Query all workpack templates from database
   GetAllWorkpackTemplates() {
-    const pathURL = "";
+    const pathURL = "/workpacktemplates";
     let URL = this.baseURL + this.basePathURL + pathURL;
-    let allWorkpackTemplates: {}[] = [];
     this.http
     .get<any>(URL)
     .subscribe(
       data => {
         this.$workpackTemplates = data;
-        console.log('data',data);
       },
       err => {
         console.log('myerror: ', err);

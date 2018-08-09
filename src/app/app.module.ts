@@ -14,6 +14,7 @@ import { SchemaListComponent } from './schema/schema-list/schema-list.component'
 import { SchemaEditComponent } from './schema/schema-edit/schema-edit.component';
 import { WorkpackEditComponent } from './workpack/workpack-edit/workpack-edit.component';
 import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.component';
+import { AppRoutingModule } from './/app-routing.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.co
   imports: [
     BrowserModule,
     HttpClientModule,
-    CardModule
+    CardModule,
+    AppRoutingModule
   ],
   providers: [
     WorkpackTemplateService,

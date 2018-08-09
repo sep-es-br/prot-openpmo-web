@@ -12,6 +12,7 @@ export class AdminComponent implements OnInit {
 
 
   constructor(private wptplService: WorkpackTemplateService) {
+    this.wptplService.GetAllWorkpackTemplates();
     this.wptplService.workpackTemplates.subscribe(wptp => this.wptplList = wptp);
   }
 
