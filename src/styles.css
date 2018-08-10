@@ -13,10 +13,11 @@ body {
     height: 150px;
 }
 
-.ui-widget-content {
-    border: 0.5px solid #D2D3D5!important;
+.ui-breadcrumb .ui-menuitem-text {
+    color: #848688;
+    font-size: 14px;
 }
 
-.ui-breadcrumb .ui-menuitem-text {
+.ui-breadcrumb ul li {
     color: #848688;
 }
