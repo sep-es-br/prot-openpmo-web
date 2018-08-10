@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import {TooltipModule} from 'primeng/tooltip';
-import {BreadcrumbModule} from 'primeng/breadcrumb';
-import {MenuItem} from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { MenuItem } from 'primeng/api';
+import { DataService } from '../../data.service';
+import { timeout } from 'q';
 
 @Component({
   selector: 'app-environment-list',
@@ -12,30 +14,19 @@ import {MenuItem} from 'primeng/api';
 })
 export class EnvironmentListComponent implements OnInit {
   
-  environments = [
-    {
-      name: "PMO-ES",
-      managerName: "Victor"
-    },
-    {
-      name: "PMO-SEGER",
-      managerName: "Marília"
-    },
-    {
-      name: "PMO-SESA",
-      managerName: "Fernanda"
-    },
-    {
-      name: "PMO-SEJUS",
-      managerName: "Maria"
-    },
-  ];
+  environments = [];
 
-  constructor() { }
+  constructor(private dataService: DataService) {
+    dataService.QueryEnvironments();
+  }
 
   private items: MenuItem[];
 
   ngOnInit() {
+    setTimeout( () => {
+      this.environments = this.dataService.environmentsData;
+    },100);
+
     this.items = [
       {label:'Categories'},
       {label:'Sports'},
@@ -45,7 +36,8 @@ export class EnvironmentListComponent implements OnInit {
       {label:'F.C. Barcelona'},
       {label:'Squad'},
       {label:'Lionel Messi', url: 'https://en.wikipedia.org/wiki/Lionel_Messi'}
-  ];
+    ];
+
   }
 
 }

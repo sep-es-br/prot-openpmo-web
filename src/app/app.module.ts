@@ -5,7 +5,7 @@ import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http'
 
 import { AppComponent } from './app.component';
 import { AdminComponent } from './admin/admin.component';
-import { WorkpackTemplateService } from './services/workpack-template.service';
+import { DataService } from './data.service';
 import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
 
 // primeng imports
@@ -42,7 +42,7 @@ import { AppRoutingModule } from './/app-routing.module';
     TooltipModule
   ],
   providers: [
-    WorkpackTemplateService,
+    DataService,
     HttpClient
   ], 
   bootstrap: [AppComponent]

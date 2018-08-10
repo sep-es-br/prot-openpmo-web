@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkpackTemplateService } from '../services/workpack-template.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,9 +11,9 @@ export class AdminComponent implements OnInit {
   private wptplList: any;
 
 
-  constructor(private wptplService: WorkpackTemplateService) {
-    this.wptplService.GetAllWorkpackTemplates();
-    this.wptplService.workpackTemplates.subscribe(wptp => this.wptplList = wptp);
+  constructor(private dataService: DataService) {
+//    this.dataService.GetAllWorkpackTemplates();
+//    this.dataService.workpackTemplates.subscribe(wptp => this.wptplList = wptp);
   }
 
   ngOnInit() {
