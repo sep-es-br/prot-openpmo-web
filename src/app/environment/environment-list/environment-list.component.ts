@@ -26,17 +26,6 @@ export class EnvironmentListComponent implements OnInit {
       this.environments = this.dataService.environmentsData;
     },100);
 
-    this.items = [
-      {label:'Categories'},
-      {label:'Sports'},
-      {label:'Football'},
-      {label:'Countries'},
-      {label:'Spain'},
-      {label:'F.C. Barcelona'},
-      {label:'Squad'},
-      {label:'Lionel Messi', url: 'https://en.wikipedia.org/wiki/Lionel_Messi'}
-    ];
-
   }
 
 }

@@ -13,6 +13,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
+import {InputTextModule} from 'primeng/inputtext';
 
 import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';
 import { SchemaListComponent } from './schema/schema-list/schema-list.component';
@@ -38,6 +39,7 @@ import { AppRoutingModule } from './/app-routing.module';
     CardModule,
     AppRoutingModule,
     BreadcrumbModule,
+    InputTextModule,
     CardModule,
     TooltipModule
   ],
