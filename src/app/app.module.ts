@@ -39,7 +39,7 @@ import { AppRoutingModule } from './/app-routing.module';
     CardModule,
     AppRoutingModule,
     BreadcrumbModule,
-    InputTextModule
+    InputTextModule,
     CardModule,
     TooltipModule
   ],

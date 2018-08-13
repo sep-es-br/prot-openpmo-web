@@ -1,0 +1,67 @@
+/* workpack-list.css */
+.main-title{
+    margin-top: 25px;
+    margin-bottom: 30px;
+    padding-left: 57px;
+    padding-right: 50px;
+    color: #606062;
+    font-size: 10px;
+}
+
+.cards{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.card-image{
+    background-color: #E6E7E8;
+    height: 50px;
+    width: 64px;
+    border-radius: 3px;
+    float: left;
+    line-height: 50px;
+    font-size: 34px;
+    color: #BDBFC1;
+    text-align: center;
+}
+
+.card-title{
+    float: left;
+    margin-left: 10px;
+}
+
+.card-title a{
+    color: #0092D6;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card-manager{
+    font-size: 22px;
+    float: right;
+    margin-top: 95px;
+    color: #CC99FF;
+    cursor: pointer;
+}
+
+.card-manager:hover{
+    color: rgb(173, 98, 248);
+}
+
+.card-setting{
+    font-size: 13px;
+    float: right;
+    color: #96989A;
+    cursor: pointer;
+}
+
+.edit-view{
+    margin-right: 20px;
+    font-size: 12px;
+    float: right;
+    margin-top: 105px;
+    cursor: pointer;
+}
+
+
+

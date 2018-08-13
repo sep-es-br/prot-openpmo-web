@@ -8,6 +8,7 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 })
 export class AppComponent {
   title = 'openpmo-web';
+  items = [];
 
   ngOnInit() {
     
