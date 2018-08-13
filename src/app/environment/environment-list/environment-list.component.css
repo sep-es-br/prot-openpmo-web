@@ -125,4 +125,14 @@
     cursor: pointer;
 }
 
+.card-details {
+    font-size: 12px;
+    float: right;
+    margin-top: 90px;
+    color: #0092D6;
+    cursor: pointer;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
 

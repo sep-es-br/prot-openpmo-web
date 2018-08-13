@@ -4,7 +4,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { DataService } from '../../data.service';
-import { timeout } from 'q';
 
 @Component({
   selector: 'app-environment-list',

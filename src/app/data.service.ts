@@ -12,15 +12,8 @@ export interface HttpReply { }
 export class DataService {
 
   environmentsData: any;
+  schemasData: any;
   
-  // // Observable property for the full list of environments  
-  // private $environments = new BehaviorSubject<any[]>([]);
-  // environments = this.$environments.asObservable();
-
-  // Observable property for the full list of workpackTemplates  
-  private $workpackTemplates = new BehaviorSubject<any[]>([]);
-  workpackTemplates = this.$workpackTemplates.asObservable();
-
   private baseURL = "http://localhost:4200";
   //private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
   
@@ -45,19 +38,19 @@ export class DataService {
       err => console.log('myerror: ', err)
     );
   }
-  
+
   ////////////////////////////////////////////////////////////////////////
   //
-  // GET ALL WORKPACK TEMPLATES
+  // Run the GET http request for the list of Schemas
   //
-  // Query all workpack templates from database
-  GetWorkpackTemplates() {
-    const pathURL = "/workpacktemplates";
+  // Query all schemas from database
+  QuerySchemas(envId: Number) {
+    const pathURL = "/schemas/" + envId;
     let URL = this.baseURL + this.basePathURL + pathURL;
     this.http
     .get<any>(URL)
     .subscribe(
-      data => this.$workpackTemplates = data,
+      data => this.schemasData = data,
       err => console.log('myerror: ', err)
     );
   }
