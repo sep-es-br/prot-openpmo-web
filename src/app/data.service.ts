@@ -11,8 +11,10 @@ export interface HttpReply { }
 
 export class DataService {
 
-  environmentsData: any;
-  schemasData: any;
+  environmentsData: any[] = [];
+  environmentData: any;
+  schemasData: any[] = [];
+  schemaData: any;
   
   private baseURL = "http://localhost:4200";
   //private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
@@ -34,10 +36,30 @@ export class DataService {
     this.http
     .get<any>(URL)
     .subscribe(
-      data => this.environmentsData = data,
+      data => {
+        this.environmentsData = data;
+      },
       err => console.log('myerror: ', err)
     );
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run the GET http request to query an Environment by id
+  //
+  // 
+  QueryEnvironmentById(envId: Number) {
+    const pathURL = "/environments/" + envId;
+    let URL = this.baseURL + this.basePathURL + pathURL;
+    this.http
+    .get<any>(URL)
+    .subscribe(
+      data => this.environmentData = data,
+      err => console.log('myerror: ', err)
+    );
+  }
+
+
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -54,4 +76,23 @@ export class DataService {
       err => console.log('myerror: ', err)
     );
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run the GET http request to query a Schema by id
+  //
+  // 
+  QuerySchemaById(schemaId: Number) {
+    const pathURL = "/schemas/" + schemaId;
+    let URL = this.baseURL + this.basePathURL + pathURL;
+    this.http
+    .get<any>(URL)
+    .subscribe(
+      data => this.environmentData = data,
+      err => console.log('myerror: ', err)
+    );
+  }
+
+
+
 }

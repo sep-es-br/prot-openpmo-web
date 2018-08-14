@@ -5,30 +5,26 @@
 
 <div class="cards">
   <div class="ui-g-12 ui-md-6 ui-lg-3" *ngFor="let env of environments">
-    <p-card>
+    <div class="card-image">
+        <i class="fa fa-building" aria-hidden="true"></i>
+    </div>
 
-      <div class="card-image">
-          <i class="fa fa-building" aria-hidden="true"></i>
-      </div>
+    <div class="card-title">
+      <a routerLink="/schemas/{{env.id}}" routerLinkActive="active">{{env.name}}</a>
+    </div>
+    
+    <div class="card-setting">
+      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+    </div>
 
-      <div class="card-title">
-        <a routerLink="/schemas/{{env.id}}" routerLinkActive="active">{{env.name}}</a>
-      </div>
-      
-      <div class="card-setting">
-        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-      </div>
+    <div class="card-manager">
+      <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
+      <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+    </div>
 
-      <div class="card-manager">
-        <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
-        <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
-      </div>
-
-      <div class="edit-view">
-        <a routerLink="/environments/{{env.id}}" routerLinkActive="active">More...</a>
-      </div>
-     
-    </p-card>
+    <div class="edit-view">
+      <a routerLink="/environment/{{env.id}}" routerLinkActive="active">More...</a>
+    </div>
   </div>
 </div>
 

@@ -2,18 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
 
-
 import { AppComponent } from './app.component';
 import { AdminComponent } from './admin/admin.component';
 import { DataService } from './data.service';
 import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
-
-// primeng imports
-import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { MenuItem } from 'primeng/api';
-import { CardModule } from 'primeng/card';
-import { TooltipModule } from 'primeng/tooltip';
-import {InputTextModule} from 'primeng/inputtext';
 
 import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';
 import { SchemaListComponent } from './schema/schema-list/schema-list.component';
@@ -36,17 +28,12 @@ import { AppRoutingModule } from './/app-routing.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    CardModule,
-    AppRoutingModule,
-    BreadcrumbModule,
-    InputTextModule,
-    CardModule,
-    TooltipModule
+    AppRoutingModule
   ],
   providers: [
     DataService,
     HttpClient
-  ], 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

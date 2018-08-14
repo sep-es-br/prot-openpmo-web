@@ -31,24 +31,16 @@ const routes: Routes = [
     path: 'schemas/:containerid',
     component: SchemaListComponent
   },
-  { // New schema
-    path: 'schema/:containerid',
-    component: SchemaEditComponent
-  },
-  { // Edit schema
-    path: 'schema/:id',
+  { // New/edit schema
+    path: 'schema/:action/:id',
     component: SchemaEditComponent
   },
   {
     path: 'workpacks/:containerid', 
     component: WorkpackListComponent
   },
-  { // New Workpack
-    path: 'workpack/:containerid', 
-    component: WorkpackEditComponent
-  },
-  { // Edit Workpack
-    path: 'workpack/:id', 
+  { // New/edit Workpack
+    path: 'workpack/:action/:id', 
     component: WorkpackEditComponent
   },
   {

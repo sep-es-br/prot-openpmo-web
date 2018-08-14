@@ -4,15 +4,15 @@
 </div>
 
 <div class="cards">
-  <div class="ui-g-12 ui-md-6 ui-lg-3" *ngFor="let env of environments">
-    <p-card>
+  <div class="ui-g-12 ui-md-6 ui-lg-3" *ngFor="let schema of schemas">
+    <div>
 
       <div class="card-image">
           <i class="fa fa-building" aria-hidden="true"></i>
       </div>
 
       <div class="card-title">
-        <a  href="#"><p class="title-card" >{{env.name}}</p></a>
+        <a routerLink="/workpacks/{{schema.id}}" routerLinkActive="active">{{schema.name}}</a>
       </div>
       
       <div class="card-setting">
@@ -25,10 +25,10 @@
       </div>
 
       <div class="edit-view">
-        <a>edit/view</a>
+          <a routerLink="/schema/edit/{{schema.id}}" routerLinkActive="active">More...</a>
       </div>
-      
-    </p-card>
+        
+    </div>
   </div>
 </div>
 
