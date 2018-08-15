@@ -2,15 +2,21 @@
 .main-title{
     margin-top: 25px;
     margin-bottom: 30px;
-    padding-left: 57px;
+    padding-left: 50px;
     padding-right: 50px;
     color: #606062;
-    font-size: 10px;
+    font-size: 24px;
 }
 
 .cards{
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 65px;
+    padding-right: 65px;
+}
+
+.card-style{
+    width: 20rem;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 
 .card-image{
@@ -28,10 +34,7 @@
 .card-title{
     float: left;
     margin-left: 10px;
-}
-
-.card-title a{
-    color: #0092D6;
+    color: rgb(0, 161, 221);
     text-decoration: none;
     font-weight: bold;
 }
@@ -39,7 +42,7 @@
 .card-manager{
     font-size: 22px;
     float: right;
-    margin-top: 95px;
+    margin-top: 65px;
     color: #CC99FF;
     cursor: pointer;
 }
@@ -56,10 +59,10 @@
 }
 
 .edit-view{
-    margin-right: 20px;
+    margin-right: 30px;
     font-size: 12px;
     float: right;
-    margin-top: 105px;
+    margin-top: 77px;
     cursor: pointer;
 }
 
