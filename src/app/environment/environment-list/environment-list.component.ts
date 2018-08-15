@@ -1,40 +1,27 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../../data.service';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-environment-list',
   templateUrl: './environment-list.component.html',
-  styleUrls: ['./environment-list.component.css']
+  styleUrls: ['./environment-list.component.css'],
+  providers: [ DataService ]
   
 })
 export class EnvironmentListComponent implements OnInit {
 
-  private baseURL = "http://localhost:4200/api";
-  //private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
-  private pathURL = "/environments";  
+  environments: any;
 
-  environments = [];
-
-  constructor(private http: HttpClient) {
-    let URL = this.baseURL + this.pathURL;
-    this.http
-    .get<any>(URL)
-    .subscribe(
-      data => {
-        this.environments = data;
-      },
-      err => console.log('myerror: ', err)
-    );
+  constructor(private route: ActivatedRoute) {
   }
 
   private items = [];
 
   ngOnInit() {
-    // setTimeout( () => {
-    //   this.environments = this.dataService.environmentsData;
-    // },500);
-
+    this.environments = this.route.snapshot.data['environments'];
   }
 
 }

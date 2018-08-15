@@ -18,30 +18,10 @@ export class SchemaEditComponent implements OnInit {
   //private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
   private pathURL = "/schemas/";  
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
-    this.subs.push(this.route.params.subscribe(params => {
-      this.schemaId = +params['id'];
-    }));
+  constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    // setTimeout( () => {
-    //   this.schema = this.dataService.schemaData;
-    // },500);
-    let URL = this.baseURL + this.pathURL + this.schemaId;
-    console.log('URL', URL);
-    this.http
-    .get<any>(URL)
-    .subscribe(
-      data => this.schema = data,
-      err => console.log('myerror: ', err)
-    );
-
-
+    this.schema = this.route.snapshot.data['schema'];
   }
-
-  ngOnDestroy() {
-    this.subs.forEach((sub) => sub.unsubscribe());
-  }
-
 }

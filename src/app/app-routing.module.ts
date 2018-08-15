@@ -8,16 +8,26 @@ import { SchemaEditComponent } from './schema/schema-edit/schema-edit.component'
 import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.component';
 import { WorkpackEditComponent } from './workpack/workpack-edit/workpack-edit.component';
 import { CommonModule } from '@angular/common';
+import { EnvironmentResolver } from './environment/EnvironmentResolver';
+import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
+import { SchemaListResolver } from './schema/SchemaListResolver';
+import { SchemaResolver } from './schema/SchemaResolver';
 
 const routes: Routes = [
   {
     path: '', //redirectTo: 'environments',
-    component: EnvironmentListComponent
+    component: EnvironmentListComponent,
+    resolve: {
+      environments: EnvironmentListResolver
+    }
   },  
 
   {
     path: 'environments',
     component: EnvironmentListComponent,
+    resolve: {
+      environments: EnvironmentListResolver
+    }
   },
   { // New environment
     path: 'environment',
@@ -25,15 +35,25 @@ const routes: Routes = [
   },
   { // Edit an environment
     path: 'environment/:id',
-    component: EnvironmentEditComponent
+    component: EnvironmentEditComponent,
+    resolve: {
+      environment: EnvironmentResolver
+    }
   },
   {
     path: 'schemas/:containerid',
-    component: SchemaListComponent
+    component: SchemaListComponent,
+    resolve: {
+      schemas: SchemaListResolver
+    }
+
   },
   { // New/edit schema
     path: 'schema/:action/:id',
-    component: SchemaEditComponent
+    component: SchemaEditComponent,
+    resolve: {
+      schema: SchemaResolver
+    }
   },
   {
     path: 'workpacks/:containerid', 

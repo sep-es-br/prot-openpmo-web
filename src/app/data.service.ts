@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Environment } from './environment/Environment';
+import { Schema } from './schema/Schema';
+
 
 /* Object type to receive the response from the http request */
 export interface HttpReply { } 
@@ -24,73 +28,49 @@ export class DataService {
   constructor(private http: HttpClient) {
   }
   
-  
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request for the list of Environments
+  // Run a GET http request for the list of Environments
   //
   // Query all environments from database
-  QueryEnvironments() {
+  GetEnvironments() {
     const pathURL = "/environments";
     let URL = this.baseURL + this.basePathURL + pathURL;
-    this.http
-    .get<any>(URL)
-    .subscribe(
-      data => {
-        this.environmentsData = data;
-      },
-      err => console.log('myerror: ', err)
-    );
+    return this.http.get(URL).pipe(map<any,Environment[]>(res => res));
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request to query an Environment by id
+  // Run a GET http request to get an Environments by its id
   //
   // 
-  QueryEnvironmentById(envId: Number) {
+  GetEnvironmentById(envId: String) {
     const pathURL = "/environments/" + envId;
     let URL = this.baseURL + this.basePathURL + pathURL;
-    this.http
-    .get<any>(URL)
-    .subscribe(
-      data => this.environmentData = data,
-      err => console.log('myerror: ', err)
-    );
+    return this.http.get(URL).pipe(map<any,Environment>(res => res));
   }
-
-
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request for the list of Schemas
+  // Run a GET http request for a list of Schemas adopted by an Environment
   //
-  // Query all schemas from database
-  QuerySchemas(envId: Number) {
-    const pathURL = "/schemas/" + envId;
+  GetSchemas(envId: String) {
+    const pathURL = "/schemas/listschemas/" + envId;
     let URL = this.baseURL + this.basePathURL + pathURL;
-    this.http
-    .get<any>(URL)
-    .subscribe(
-      data => this.schemasData = data,
-      err => console.log('myerror: ', err)
-    );
+    return this.http.get(URL).pipe(map<any,Schema[]>(res => res));
   }
+
+ 
 
   ////////////////////////////////////////////////////////////////////////
   //
   // Run the GET http request to query a Schema by id
   //
   // 
-  QuerySchemaById(schemaId: Number) {
+  GetSchemaById(schemaId: String) {
     const pathURL = "/schemas/" + schemaId;
     let URL = this.baseURL + this.basePathURL + pathURL;
-    this.http
-    .get<any>(URL)
-    .subscribe(
-      data => this.environmentData = data,
-      err => console.log('myerror: ', err)
-    );
+    return this.http.get(URL).pipe(map<any,Schema>(res => res));
   }
 
 

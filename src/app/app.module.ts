@@ -13,6 +13,11 @@ import { SchemaEditComponent } from './schema/schema-edit/schema-edit.component'
 import { WorkpackEditComponent } from './workpack/workpack-edit/workpack-edit.component';
 import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { EnvironmentResolver } from './environment/EnvironmentResolver';
+import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
+import { SchemaResolver } from './schema/SchemaResolver';
+import { SchemaListResolver } from './schema/SchemaListResolver';
 
 @NgModule({
   declarations: [
@@ -32,6 +37,10 @@ import { AppRoutingModule } from './/app-routing.module';
   ],
   providers: [
     DataService,
+    EnvironmentResolver,
+    EnvironmentListResolver,
+    SchemaResolver,
+    SchemaListResolver,
     HttpClient
   ],
   bootstrap: [AppComponent]
