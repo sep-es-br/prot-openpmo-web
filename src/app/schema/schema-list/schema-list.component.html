@@ -1,7 +1,6 @@
 <!-- schema-list.html -->
-<div class="main-title">
-  SCHEMAS
-</div>
+<div class="main-title">{{environment.name}}</div>
+
 
 <div class="container-fluid cards">
     <div class="row">
@@ -11,7 +10,7 @@
               <i class="fa fa-cubes" aria-hidden="true"></i>
           </div>
           <div class="card-title">
-            <a routerLink="/workpacks/{{schema.id}}" routerLinkActive="active">{{schema.name}}</a>
+            <a routerLink="/rootworkpacks/{{schema.id}}" routerLinkActive="active">{{schema.name}}</a>
           </div>
           <div class="card-setting">
             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>

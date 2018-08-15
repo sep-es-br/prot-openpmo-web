@@ -13,11 +13,13 @@ import { SchemaEditComponent } from './schema/schema-edit/schema-edit.component'
 import { WorkpackEditComponent } from './workpack/workpack-edit/workpack-edit.component';
 import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.component';
 import { AppRoutingModule } from './/app-routing.module';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, RouterModule } from '@angular/router';
 import { EnvironmentResolver } from './environment/EnvironmentResolver';
 import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
 import { SchemaResolver } from './schema/SchemaResolver';
 import { SchemaListResolver } from './schema/SchemaListResolver';
+import { WorkpackResolver } from './workpack/WorkpackResolver';
+import { WorkpackListResolver } from './workpack/WorkpackListResolver';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { SchemaListResolver } from './schema/SchemaListResolver';
     EnvironmentListResolver,
     SchemaResolver,
     SchemaListResolver,
+    WorkpackResolver,
+    WorkpackListResolver,
     HttpClient
   ],
   bootstrap: [AppComponent]

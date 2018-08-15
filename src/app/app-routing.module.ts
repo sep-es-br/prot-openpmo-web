@@ -12,15 +12,17 @@ import { EnvironmentResolver } from './environment/EnvironmentResolver';
 import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
 import { SchemaListResolver } from './schema/SchemaListResolver';
 import { SchemaResolver } from './schema/SchemaResolver';
+import { WorkpackListResolver } from './workpack/WorkpackListResolver';
+import { WorkpackResolver } from './workpack/WorkpackResolver';
 
 const routes: Routes = [
   {
-    path: '', //redirectTo: 'environments',
+    path: '', // redirectTo: 'environments',
     component: EnvironmentListComponent,
     resolve: {
       environments: EnvironmentListResolver
     }
-  },  
+  },
 
   {
     path: 'environments',
@@ -41,10 +43,11 @@ const routes: Routes = [
     }
   },
   {
-    path: 'schemas/:containerid',
+    path: 'schemas/:id',
     component: SchemaListComponent,
     resolve: {
-      schemas: SchemaListResolver
+      schemas: SchemaListResolver,
+      environment: EnvironmentResolver
     }
 
   },
@@ -56,12 +59,29 @@ const routes: Routes = [
     }
   },
   {
-    path: 'workpacks/:containerid', 
-    component: WorkpackListComponent
+    path: 'rootworkpacks/:id',
+    component: WorkpackListComponent,
+    resolve: {
+      schema: SchemaResolver,
+      workpacks: WorkpackListResolver
+    },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+  },
+  {
+    path: 'workpacks/:id',
+    component: WorkpackListComponent,
+    resolve: {
+      workpack: WorkpackResolver,
+      workpacks: WorkpackListResolver
+    },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   },
   { // New/edit Workpack
-    path: 'workpack/:action/:id', 
-    component: WorkpackEditComponent
+    path: 'workpack/:action/:id',
+    component: WorkpackEditComponent,
+    resolve: {
+      workpack: WorkpackResolver
+    }
   },
   {
     path: 'admin',
@@ -70,7 +90,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 

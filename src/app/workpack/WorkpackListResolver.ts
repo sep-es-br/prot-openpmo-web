@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { DataService } from '../data.service';
-import { Schema } from './Schema';
+import { Workpack } from './Workpack';
 
 @Injectable()
-export class SchemaListResolver implements Resolve<Schema[]> {
+export class WorkpackListResolver implements Resolve<Workpack[]> {
 
   constructor(private dataService: DataService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.dataService.GetSchemas(route.paramMap.get('id'));
+    return this.dataService.GetWorkpacks(route.paramMap.get('id'));
   }
 }

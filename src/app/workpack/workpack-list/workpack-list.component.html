@@ -1,18 +1,16 @@
 <!-- workpack-list.html -->
-<div class="main-title">
-  WORKPACK
-</div>
+<div class="main-title">{{parentName}}</div>
 
 <div class="container-fluid cards">
   <div class="row">
-    <div class="card card-style">
+    <div class="card card-style" *ngFor="let wp of workpacks">
       <div class="card-body">
         <div class="card-image">
           <i class="fa fa-cube" aria-hidden="true"></i>
         </div>
         <div class="card-title">
-          Projeto...
-          <!-- <a routerLink="/schemas/{{env.id}}" routerLinkActive="active">{{env.name}}</a> -->
+          <a routerLink="/workpacks/{{wp.id}}" routerLinkActive="active">{{wp.name}}</a>
+          <!--a (click)="GetWorkpackList(wp.id)">{{wp.name}}</a-->
         </div>
         <div class="card-setting">
           <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -22,7 +20,7 @@
           <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
         </div>
         <div class="edit-view">
-          <a routerLink="/workpack/edit/{{workpack.id}}" routerLinkActive="active">More...</a>
+          <a  routerLinkActive="active">More...</a>
         </div>
       </div>
     </div>
