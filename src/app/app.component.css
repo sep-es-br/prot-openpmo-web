@@ -2,7 +2,8 @@
 .topo{
     background-color: #00A1DD;
     height: 50px;
-    padding-left: 40px;
+    padding-right: 50px;
+    padding-left: 50px;
 }
 
 .logo{
@@ -19,8 +20,6 @@
     float: right;
     font-size: 28px;
     color: white;
-    height: 50px;
-    width: 70px;
     line-height: 50px;
 }
 

@@ -1,33 +1,30 @@
 <!-- workpack-list.html -->
 <div class="main-title">
-  <h1>WORKPACK</h1>
+  WORKPACK
 </div>
 
-<div class="cards">
-  <div class="ui-g-12 ui-md-6 ui-lg-3" *ngFor="let env of environments">
-    <div>
-
-      <div class="card-image">
-          <i class="fa fa-building" aria-hidden="true"></i>
+<div class="container-fluid cards">
+  <div class="row">
+    <div class="card card-style">
+      <div class="card-body">
+        <div class="card-image">
+          <i class="fa fa-cube" aria-hidden="true"></i>
+        </div>
+        <div class="card-title">
+          Projeto...
+          <!-- <a routerLink="/schemas/{{env.id}}" routerLinkActive="active">{{env.name}}</a> -->
+        </div>
+        <div class="card-setting">
+          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+        </div>
+        <div class="card-manager">
+          <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
+          <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+        </div>
+        <div class="edit-view">
+          <a routerLink="/workpack/edit/{{workpack.id}}" routerLinkActive="active">More...</a>
+        </div>
       </div>
-
-      <div class="card-title">
-        <a  href="#"><p class="title-card" >{{env.name}}</p></a>
-      </div>
-      
-      <div class="card-setting">
-        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-      </div>
-
-      <div class="card-manager">
-        <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
-        <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
-      </div>
-
-      <div class="edit-view">
-        <a>edit/view</a>
-      </div>
-      
     </div>
   </div>
 </div>
