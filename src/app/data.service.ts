@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 import { Environment } from './environment/Environment';
-import { Schema } from './schema/Schema';
-import { Workpack } from './workpack/Workpack';
+import { Schema } from './management/schema/Schema';
+import { Workpack } from './management/workpack/Workpack';
+import { SchemaTemplate } from './admin/schema-template/SchemaTemplate';
+
 
 
 /* Object type to receive the response from the http request */
@@ -41,13 +44,17 @@ export class DataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a GET http request to get an Environments by its id
+  // Run a GET http request to get an Environment by its id
   //
   //
   GetEnvironmentById(envId: String) {
+    console.log('getting environment by id...');
     const pathURL = '/environments/' + envId;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, Environment>(res => res));
+    console.log('URL: ', URL);
+    let ret = this.http.get(URL).pipe(map<any, Environment>(res => res));
+    console.log('ret: ', ret);
+    return ret;
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -93,6 +100,33 @@ export class DataService {
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, Workpack>(res => res));
   }
+
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a GET http request for a list of Schemas Templates adopted by an Environment
+  //
+  GetSchemaTemplates(envId: String) {
+    console.log('getting...');
+    const pathURL = '/schematemplates/listschematemplates/' + envId;
+
+    const URL = this.baseURL + this.basePathURL + pathURL;
+    console.log(URL);
+    return this.http.get(URL).pipe(map<any, SchemaTemplate[]>(res => res));
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run the GET http request to query a Schema Template by id
+  //
+  //
+  GetSchemaTemplateById(schemaId: String) {
+    const pathURL = '/schematemplates/' + schemaId;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+    return this.http.get(URL).pipe(map<any, SchemaTemplate>(res => res));
+  }
+
 
 
 

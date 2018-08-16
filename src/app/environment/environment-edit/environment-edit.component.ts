@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { DataService } from '../../data.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';

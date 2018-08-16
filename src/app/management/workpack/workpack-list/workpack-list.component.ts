@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Workpack } from '../Workpack';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DataService } from '../../data.service';
 import { Schema } from '../../schema/Schema';
 
 @Component({
@@ -18,7 +17,7 @@ export class WorkpackListComponent implements OnInit, OnDestroy {
   workpacks: Workpack[] = [];
   navigationSubscription: Subscription;
 
-  constructor(private dataService: DataService, private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.navigationSubscription = this.router.events.subscribe((e: any) => {
       // If it is a NavigationEnd event re-initalise the component
       if (e instanceof NavigationEnd) {

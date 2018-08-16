@@ -3,34 +3,39 @@ import { NgModule } from '@angular/core';
 import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { AdminComponent } from './admin/admin.component';
 import { DataService } from './data.service';
-import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
 
-import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';
-import { SchemaListComponent } from './schema/schema-list/schema-list.component';
-import { SchemaEditComponent } from './schema/schema-edit/schema-edit.component';
-import { WorkpackEditComponent } from './workpack/workpack-edit/workpack-edit.component';
-import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, RouterModule } from '@angular/router';
+
+import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
+import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';import { SchemaListComponent } from './management/schema/schema-list/schema-list.component';
+import { SchemaEditComponent } from './management/schema/schema-edit/schema-edit.component';
+import { WorkpackEditComponent } from './management/workpack/workpack-edit/workpack-edit.component';
+import { WorkpackListComponent } from './management/workpack/workpack-list/workpack-list.component';
+
 import { EnvironmentResolver } from './environment/EnvironmentResolver';
 import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
-import { SchemaResolver } from './schema/SchemaResolver';
-import { SchemaListResolver } from './schema/SchemaListResolver';
-import { WorkpackResolver } from './workpack/WorkpackResolver';
-import { WorkpackListResolver } from './workpack/WorkpackListResolver';
+import { SchemaResolver } from './management/schema/SchemaResolver';
+import { SchemaListResolver } from './management/schema/SchemaListResolver';
+import { WorkpackResolver } from './management/workpack/WorkpackResolver';
+import { WorkpackListResolver } from './management/workpack/WorkpackListResolver';
+import { SchemaTemplateEditComponent } from './admin/schema-template/schema-template-edit/schema-template-edit.component';
+import { SchemaTemplateListComponent } from './admin/schema-template/schema-template-list/schema-template-list.component';
+import { SchemaTemplateResolver } from './admin/schema-template/SchemaTemplateResolver';
+import { SchemaTemplateListResolver } from './admin/schema-template/SchemaTemplateListResolver';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminComponent,
     EnvironmentListComponent,
     EnvironmentEditComponent,
     SchemaListComponent,
     SchemaEditComponent,
     WorkpackEditComponent,
-    WorkpackListComponent
+    WorkpackListComponent,
+    SchemaTemplateEditComponent,
+    SchemaTemplateListComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,8 @@ import { WorkpackListResolver } from './workpack/WorkpackListResolver';
     SchemaListResolver,
     WorkpackResolver,
     WorkpackListResolver,
+    SchemaTemplateResolver,
+    SchemaTemplateListResolver,
     HttpClient
   ],
   bootstrap: [AppComponent]

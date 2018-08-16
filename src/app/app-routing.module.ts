@@ -1,19 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminComponent } from './admin/admin.component';
-import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
-import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';
-import { SchemaListComponent } from './schema/schema-list/schema-list.component';
-import { SchemaEditComponent } from './schema/schema-edit/schema-edit.component';
-import { WorkpackListComponent } from './workpack/workpack-list/workpack-list.component';
-import { WorkpackEditComponent } from './workpack/workpack-edit/workpack-edit.component';
 import { CommonModule } from '@angular/common';
-import { EnvironmentResolver } from './environment/EnvironmentResolver';
+
+import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
 import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
-import { SchemaListResolver } from './schema/SchemaListResolver';
-import { SchemaResolver } from './schema/SchemaResolver';
-import { WorkpackListResolver } from './workpack/WorkpackListResolver';
-import { WorkpackResolver } from './workpack/WorkpackResolver';
+import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';
+import { EnvironmentResolver } from './environment/EnvironmentResolver';
+
+import { SchemaListComponent } from './management/schema/schema-list/schema-list.component';
+import { SchemaListResolver } from './management/schema/SchemaListResolver';
+import { SchemaEditComponent } from './management/schema/schema-edit/schema-edit.component';
+import { SchemaResolver } from './management/schema/SchemaResolver';
+import { WorkpackListComponent } from './management/workpack/workpack-list/workpack-list.component';
+import { WorkpackListResolver } from './management/workpack/WorkpackListResolver';
+import { WorkpackResolver } from './management/workpack/WorkpackResolver';
+import { WorkpackEditComponent } from './management/workpack/workpack-edit/workpack-edit.component';
+import { SchemaTemplateListComponent } from './admin/schema-template/schema-template-list/schema-template-list.component';
+import { SchemaTemplateEditComponent } from './admin/schema-template/schema-template-edit/schema-template-edit.component';
+import { SchemaTemplateListResolver } from './admin/schema-template/SchemaTemplateListResolver';
+import { SchemaTemplateResolver } from './admin/schema-template/SchemaTemplateResolver';
 
 const routes: Routes = [
   {
@@ -84,9 +89,21 @@ const routes: Routes = [
     }
   },
   {
-    path: 'admin',
-    component: AdminComponent
-  }
+    path: 'schematemplates/:id',
+    component: SchemaTemplateListComponent,
+    resolve: {
+      schematemplates: SchemaTemplateListResolver,
+      environment: EnvironmentResolver
+    }
+  },
+  { // New/edit schema template
+    path: 'schematemplate/:action/:id',
+    component: SchemaTemplateEditComponent,
+    resolve: {
+      schematemplate: SchemaTemplateResolver
+    }
+  },
+
 ];
 
 @NgModule({

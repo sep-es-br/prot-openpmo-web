@@ -1,0 +1,28 @@
+<!-- schema-list.html -->
+<div class="main-title">{{environment.name}} Schema Templates</div>
+
+
+<div class="container-fluid cards">
+    <div class="row">
+      <div class="card card-style" *ngFor="let schemaTemplate of schemaTemplates">
+        <div class="card-body">
+          <div class="card-image">
+              <i class="fa fa-cubes" aria-hidden="true"></i>
+          </div>
+          <div class="card-title">
+            <a routerLink="/rootworkpacktemplates/{{schemaTemplate.id}}" routerLinkActive="active">{{schemaTemplate.name}}</a>
+          </div>
+          <div class="card-setting">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </div>
+          <div class="card-manager">
+            <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
+            <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+          </div>
+          <div class="edit-view">
+            <a routerLink="/schematemplate/edit/{{schemaTemplate.id}}" routerLinkActive="active">More...</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

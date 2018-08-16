@@ -10,7 +10,9 @@
           <a routerLink="/schemas/{{env.id}}" routerLinkActive="active">{{env.name}}</a>
         </div>
         <div class="card-setting">
-          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          <a routerLink="/schematemplates/{{env.id}}" routerLinkActive="active">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </a>
         </div>
         <div class="card-manager">
           <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
