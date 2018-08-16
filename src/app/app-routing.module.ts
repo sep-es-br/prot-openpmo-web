@@ -19,6 +19,10 @@ import { SchemaTemplateListComponent } from './admin/schema-template/schema-temp
 import { SchemaTemplateEditComponent } from './admin/schema-template/schema-template-edit/schema-template-edit.component';
 import { SchemaTemplateListResolver } from './admin/schema-template/SchemaTemplateListResolver';
 import { SchemaTemplateResolver } from './admin/schema-template/SchemaTemplateResolver';
+import { WorkpackTemplateListComponent } from './admin/workpack-template/workpack-template-list/workpack-template-list.component';
+import { WorkpackTemplateListResolver } from './admin/workpack-template/WorkpackTemplateListResolver';
+import { WorkpackTemplateResolver } from './admin/workpack-template/WorkpackTemplateResolver';
+import { WorkpackTemplateEditComponent } from './admin/workpack-template/workpack-template-edit/workpack-template-edit.component';
 
 const routes: Routes = [
   {
@@ -88,7 +92,7 @@ const routes: Routes = [
       workpack: WorkpackResolver
     }
   },
-  {
+  { // Schema Templates
     path: 'schematemplates/:id',
     component: SchemaTemplateListComponent,
     resolve: {
@@ -103,7 +107,31 @@ const routes: Routes = [
       schematemplate: SchemaTemplateResolver
     }
   },
-
+  { // Root Workpack Templates
+    path: 'rootworkpacktemplates/:id',
+    component: WorkpackTemplateListComponent,
+    resolve: {
+      schematemplate: SchemaTemplateResolver,
+      workpacktemplates: WorkpackTemplateListResolver
+    },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+  },
+  { // Workpack Templates
+    path: 'workpacktemplates/:id',
+    component: WorkpackTemplateListComponent,
+    resolve: {
+      workpacktemplate: WorkpackTemplateResolver,
+      workpacktemplates: WorkpackTemplateListResolver
+    },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+  },
+  { // New/edit Workpack Template
+    path: 'workpacktemplate/:action/:id',
+    component: WorkpackTemplateEditComponent,
+    resolve: {
+      workpacktemplate: WorkpackTemplateResolver
+    }
+  },
 ];
 
 @NgModule({

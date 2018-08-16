@@ -24,6 +24,10 @@ import { SchemaTemplateEditComponent } from './admin/schema-template/schema-temp
 import { SchemaTemplateListComponent } from './admin/schema-template/schema-template-list/schema-template-list.component';
 import { SchemaTemplateResolver } from './admin/schema-template/SchemaTemplateResolver';
 import { SchemaTemplateListResolver } from './admin/schema-template/SchemaTemplateListResolver';
+import { WorkpackTemplateListComponent } from './admin/workpack-template/workpack-template-list/workpack-template-list.component';
+import { WorkpackTemplateEditComponent } from './admin/workpack-template/workpack-template-edit/workpack-template-edit.component';
+import { WorkpackTemplateResolver } from './admin/workpack-template/WorkpackTemplateResolver';
+import { WorkpackTemplateListResolver } from './admin/workpack-template/WorkpackTemplateListResolver';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,9 @@ import { SchemaTemplateListResolver } from './admin/schema-template/SchemaTempla
     WorkpackEditComponent,
     WorkpackListComponent,
     SchemaTemplateEditComponent,
-    SchemaTemplateListComponent
+    SchemaTemplateListComponent,
+    WorkpackTemplateListComponent,
+    WorkpackTemplateEditComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +58,8 @@ import { SchemaTemplateListResolver } from './admin/schema-template/SchemaTempla
     WorkpackListResolver,
     SchemaTemplateResolver,
     SchemaTemplateListResolver,
+    WorkpackTemplateResolver,
+    WorkpackTemplateListResolver,
     HttpClient
   ],
   bootstrap: [AppComponent]

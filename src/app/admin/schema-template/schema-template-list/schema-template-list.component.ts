@@ -20,8 +20,6 @@ export class SchemaTemplateListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.schemaTemplates = this.route.snapshot.data['schematemplates'];
     this.environment = this.route.snapshot.data['environment'];
-    console.log('this.schemaTemplates',this.schemaTemplates);
-    console.log('this.environment', this.environment);
   }
 
   ngOnDestroy() {

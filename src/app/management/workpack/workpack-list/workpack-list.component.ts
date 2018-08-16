@@ -33,8 +33,6 @@ export class WorkpackListComponent implements OnInit, OnDestroy {
     this.workpacks = this.route.snapshot.data['workpacks'];
     this.schema = this.route.snapshot.data['schema'];
     this.parentWorkpack = this.route.snapshot.data['workpack'];
-    console.log('this.schema', this.schema);
-    console.log('this.parentWorkpack',this.parentWorkpack);
     if (this.schema !== undefined) {
       this.parentName = this.schema.name;
     }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Workpack } from '../Workpack';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-workpack-edit',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WorkpackEditComponent implements OnInit {
 
-  constructor() { }
+  workpack: Workpack;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.workpack = this.route.snapshot.data['schema'];
   }
 
 }
