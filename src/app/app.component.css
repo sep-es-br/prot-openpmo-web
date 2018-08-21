@@ -63,3 +63,15 @@
     padding-right: 50px;
     padding-left: 50px;
 }
+
+.breadcrumb{
+    height: 35px;
+    border-bottom: solid rgb(232, 234, 237) 0.5px;
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+}
+
+.breadcrumb-item+.breadcrumb-item::before{
+    content: ">"
+}

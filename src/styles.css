@@ -7,17 +7,3 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: rgb(241, 241, 241);
 }
-
-/* environment-list.css */
-.ui-card-body {
-    height: 150px;
-}
-
-.ui-breadcrumb .ui-menuitem-text {
-    color: #848688;
-    font-size: 14px;
-}
-
-.ui-breadcrumb ul li {
-    color: #848688;
-}
