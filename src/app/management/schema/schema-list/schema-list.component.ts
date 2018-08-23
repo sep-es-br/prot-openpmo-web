@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Schema } from '../Schema';
-import { Environment } from '../../../environment/Environment';
+import { Office } from '../../../office/Office';
 
 @Component({
   selector: 'app-schema-list',
@@ -11,14 +11,14 @@ import { Environment } from '../../../environment/Environment';
 export class SchemaListComponent implements OnInit {
 
   schemas: Schema[] = [];
-  environment: Environment;
+  office: Office;
 
   constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.schemas = this.route.snapshot.data['schemas'];
-    this.environment = this.route.snapshot.data['environment'];
+    this.office = this.route.snapshot.data['office'];
   }
 
 }

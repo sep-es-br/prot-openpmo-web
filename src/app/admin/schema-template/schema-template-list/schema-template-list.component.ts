@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SchemaTemplate } from '../SchemaTemplate';
-import { Environment } from '../../../environment/Environment';
+import { Office } from '../../../office/Office';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class SchemaTemplateListComponent implements OnInit, OnDestroy {
 
   schemaTemplates: SchemaTemplate[] = [];
-  environment: Environment;
+  office: Office;
 
   constructor(private route: ActivatedRoute) {
     console.log('this.route', this.route);
@@ -19,7 +19,7 @@ export class SchemaTemplateListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.schemaTemplates = this.route.snapshot.data['schematemplates'];
-    this.environment = this.route.snapshot.data['environment'];
+    this.office = this.route.snapshot.data['office'];
   }
 
   ngOnDestroy() {

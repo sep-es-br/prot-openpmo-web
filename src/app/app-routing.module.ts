@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
-import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
-import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';
-import { EnvironmentResolver } from './environment/EnvironmentResolver';
-
+import { OfficeListComponent } from './office/office-list/office-list.component';
+import { OfficeListResolver } from './office/OfficeListResolver';
+import { OfficeEditComponent } from './office/office-edit/office-edit.component';
+import { OfficeResolver } from './office/OfficeResolver';
 import { SchemaListComponent } from './management/schema/schema-list/schema-list.component';
 import { SchemaListResolver } from './management/schema/SchemaListResolver';
 import { SchemaEditComponent } from './management/schema/schema-edit/schema-edit.component';
@@ -26,29 +25,29 @@ import { WorkpackTemplateEditComponent } from './admin/workpack-template/workpac
 
 const routes: Routes = [
   {
-    path: '', // redirectTo: 'environments',
-    component: EnvironmentListComponent,
+    path: '', // redirectTo: 'offices',
+    component: OfficeListComponent,
     resolve: {
-      environments: EnvironmentListResolver
+      offices: OfficeListResolver
     }
   },
 
   {
-    path: 'environments',
-    component: EnvironmentListComponent,
+    path: 'offices',
+    component: OfficeListComponent,
     resolve: {
-      environments: EnvironmentListResolver
+      offices: OfficeListResolver
     }
   },
-  { // New environment
-    path: 'environment',
-    component: EnvironmentEditComponent
+  { // New office
+    path: 'office',
+    component: OfficeEditComponent
   },
-  { // Edit an environment
-    path: 'environment/:id',
-    component: EnvironmentEditComponent,
+  { // Edit an office
+    path: 'office/:id',
+    component: OfficeEditComponent,
     resolve: {
-      environment: EnvironmentResolver
+      office: OfficeResolver
     }
   },
   {
@@ -56,7 +55,7 @@ const routes: Routes = [
     component: SchemaListComponent,
     resolve: {
       schemas: SchemaListResolver,
-      environment: EnvironmentResolver
+      office: OfficeResolver
     }
 
   },
@@ -97,7 +96,7 @@ const routes: Routes = [
     component: SchemaTemplateListComponent,
     resolve: {
       schematemplates: SchemaTemplateListResolver,
-      environment: EnvironmentResolver
+      office: OfficeResolver
     }
   },
   { // New/edit schema template

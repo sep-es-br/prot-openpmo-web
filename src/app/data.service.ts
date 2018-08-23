@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Environment } from './environment/Environment';
+import { Office } from './office/Office';
 import { Schema } from './management/schema/Schema';
 import { Workpack } from './management/workpack/Workpack';
 import { SchemaTemplate } from './admin/schema-template/SchemaTemplate';
 import { WorkpackTemplate } from './admin/workpack-template/WorkpackTemplate';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -19,59 +20,85 @@ import { WorkpackTemplate } from './admin/workpack-template/WorkpackTemplate';
 
 export class DataService {
 
-  environmentsData: any[] = [];
-  environmentData: any;
+  OfficesData: any[] = [];
+  OfficeData: any;
   schemasData: any[] = [];
   schemaData: any;
 
-  private baseURL = 'http://localhost:4200';
+  private baseURL = environment.databaseHost;
   // private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
 
-  private basePathURL = '/api';
+  private basePathURL = environment.baseAPIPath;
 
   constructor(private http: HttpClient) {
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a GET http request for the list of Environments
+  // Run a GET http request for the list of Offices
   // 
-  // Return: Observable array of Environments
+  // Return: Observable array of Offices
   // 
-  GetEnvironments() {
-    const pathURL = '/environments';
+  GetOffices() {
+    const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, Environment[]>(res => res));
+    return this.http.get(URL).pipe(map<any, Office[]>(res => res));
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a GET http request to get an Environment by its id
+  // Run a GET http request to get an Office by its id
   //
   // Parameters: 
-  //    id: The id of the Environment to retrieve
+  //    id: The id of the Office to retrieve
   //
-  // Return: An Observable Environment
+  // Return: An Observable Office
   //
-  GetEnvironmentById(id: String) {
-    const pathURL = '/environments/' + id;
+  GetOfficeById(id: String) {
+    const pathURL = environment.officeAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    let ret = this.http.get(URL).pipe(map<any, Environment>(res => res));
+    let ret = this.http.get(URL).pipe(map<any, Office>(res => res));
     return ret;
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a GET http request for a list of Schemas adopted by an Environment
+  // Run a POST http save an Office
   //
   // Parameters: 
-  //    id: The id of the Environment that adopted the Schemas
+  //    office: The Office object to save
   //
-  // Return: An Observable array of Schemas adopted by the Environment
+  // Return: error if something went wrong
+  //
+  SaveOffice(office: Office): Observable<Office> {
+    const pathURL = environment.officeAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+    return this.http.post(
+      URL, 
+      JSON.stringify(office), 
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).pipe(map<any, Office>(res => res));
+  }
+
+  
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a GET http request for a list of Schemas adopted by an Office
+  //
+  // Parameters: 
+  //    id: The id of the Office that adopted the Schemas
+  //
+  // Return: An Observable array of Schemas adopted by the Office
   //
   GetSchemas(id: String) {
-    const pathURL = '/schemas/listschemas/' + id;
+    const pathURL = environment.schemaAPI + environment.listSchemasFunction + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    console.log('URL',URL);
     return this.http.get(URL).pipe(map<any, Schema[]>(res => res));
   }
 
@@ -86,7 +113,7 @@ export class DataService {
   // Return: The Observable Schema retrieved
   //
   GetSchemaById(id: String) {
-    const pathURL = '/schemas/' + id;
+    const pathURL = environment.schemaAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, Schema>(res => res));
   }
@@ -101,7 +128,7 @@ export class DataService {
   // Return: An Observable array of Workpacks chiltren of the parent Schema or Workpack
   //
   GetWorkpacks(id: String) {
-    const pathURL = '/workpacks/listworkpacks/' + id;
+    const pathURL =  environment.workpackAPI + environment.listWorkpacksFunction + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, Workpack[]>(res => res));
   }
@@ -117,7 +144,7 @@ export class DataService {
   // Return: The Observable Workpack retrieved
   //
    GetWorkpackById(id: String) {
-    const pathURL = '/workpacks/' + id;
+    const pathURL = environment.workpackAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, Workpack>(res => res));
   }
@@ -125,19 +152,16 @@ export class DataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a GET http request for a list of Schemas Templates adopted by an Environment
+  // Run a GET http request for a list of Schemas Templates adopted by an Office
   //
   // Parameters: 
-  //    id: The id of the Environment that adopted the Schema Templates
+  //    id: The id of the Office that adopted the Schema Templates
   //
-  // Return: An Observable array of Schema Templates adopted by the Environment
+  // Return: An Observable array of Schema Templates adopted by the Office
   //
   GetSchemaTemplates(id: String) {
-    console.log('getting...');
-    const pathURL = '/schematemplates/listschematemplates/' + id;
-
+    const pathURL = environment.schemaTemplateAPI + environment.listSchemaTemplatesFunction + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    console.log(URL);
     return this.http.get(URL).pipe(map<any, SchemaTemplate[]>(res => res));
   }
 
@@ -152,7 +176,7 @@ export class DataService {
   // Return: The Observable Schema Template retrieved
   //
   GetSchemaTemplateById(id: String) {
-    const pathURL = '/schematemplates/' + id;
+    const pathURL = environment.schemaTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, SchemaTemplate>(res => res));
   }
@@ -169,7 +193,7 @@ export class DataService {
   // Return: An Observable array of children Workpack Templates
   //
   GetWorkpackTemplates(id: String) {
-    const pathURL = '/workpacktemplates/listworkpacktemplates/' + id;
+    const pathURL = environment.workpackTemplateAPI + environment.listWorkpackTemplatesFunction + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, WorkpackTemplate[]>(res => res));
   }
@@ -184,7 +208,7 @@ export class DataService {
   // Return: An Observable Workpack Template retrieved
   //
   GetWorkpackTemplateById(id: String) {
-    const pathURL = '/workpacktemplates/' + id;
+    const pathURL = environment.workpackTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, WorkpackTemplate>(res => res));
   }

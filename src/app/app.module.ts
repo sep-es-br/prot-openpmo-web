@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -8,14 +9,14 @@ import { DataService } from './data.service';
 import { AppRoutingModule } from './/app-routing.module';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, RouterModule } from '@angular/router';
 
-import { EnvironmentListComponent } from './environment/environment-list/environment-list.component';
-import { EnvironmentEditComponent } from './environment/environment-edit/environment-edit.component';import { SchemaListComponent } from './management/schema/schema-list/schema-list.component';
+import { OfficeListComponent } from './office/office-list/office-list.component';
+import { OfficeEditComponent } from './office/office-edit/office-edit.component';import { SchemaListComponent } from './management/schema/schema-list/schema-list.component';
 import { SchemaEditComponent } from './management/schema/schema-edit/schema-edit.component';
 import { WorkpackEditComponent } from './management/workpack/workpack-edit/workpack-edit.component';
 import { WorkpackListComponent } from './management/workpack/workpack-list/workpack-list.component';
 
-import { EnvironmentResolver } from './environment/EnvironmentResolver';
-import { EnvironmentListResolver } from './environment/EnvironmentListResolver';
+import { OfficeResolver } from './office/OfficeResolver';
+import { OfficeListResolver } from './office/OfficeListResolver';
 import { SchemaResolver } from './management/schema/SchemaResolver';
 import { SchemaListResolver } from './management/schema/SchemaListResolver';
 import { WorkpackResolver } from './management/workpack/WorkpackResolver';
@@ -28,12 +29,13 @@ import { WorkpackTemplateListComponent } from './admin/workpack-template/workpac
 import { WorkpackTemplateEditComponent } from './admin/workpack-template/workpack-template-edit/workpack-template-edit.component';
 import { WorkpackTemplateResolver } from './admin/workpack-template/WorkpackTemplateResolver';
 import { WorkpackTemplateListResolver } from './admin/workpack-template/WorkpackTemplateListResolver';
+import { NgPipesModule } from 'ngx-pipes';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EnvironmentListComponent,
-    EnvironmentEditComponent,
+    OfficeListComponent,
+    OfficeEditComponent,
     SchemaListComponent,
     SchemaEditComponent,
     WorkpackEditComponent,
@@ -46,12 +48,14 @@ import { WorkpackTemplateListResolver } from './admin/workpack-template/Workpack
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    NgPipesModule
   ],
   providers: [
     DataService,
-    EnvironmentResolver,
-    EnvironmentListResolver,
+    OfficeResolver,
+    OfficeListResolver,
     SchemaResolver,
     SchemaListResolver,
     WorkpackResolver,
