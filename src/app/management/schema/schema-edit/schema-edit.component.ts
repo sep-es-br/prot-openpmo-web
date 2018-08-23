@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Schema } from '../Schema';
 
 @Component({
   selector: 'app-schema-edit',
@@ -10,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SchemaEditComponent implements OnInit {
 
-  schema: any;
+  schema: Schema;
 
   constructor(private route: ActivatedRoute) {
   }

@@ -16,5 +16,4 @@ export class WorkpackEditComponent implements OnInit {
   ngOnInit() {
     this.workpack = this.route.snapshot.data['schema'];
   }
-
 }

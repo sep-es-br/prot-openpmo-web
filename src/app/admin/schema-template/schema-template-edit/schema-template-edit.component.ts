@@ -10,12 +10,14 @@ import { SchemaTemplate } from '../SchemaTemplate';
 export class SchemaTemplateEditComponent implements OnInit {
 
   schemaTemplate: SchemaTemplate;
+  action: String;
 
   constructor(private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.schemaTemplate = this.route.snapshot.data['schematemplate'];
+    this.action = this.route.snapshot.params['action'];
   }
   
 }
