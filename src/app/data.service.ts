@@ -68,7 +68,10 @@ export class DataService {
   GetOfficeById(id: String) {
     const pathURL = environment.officeAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, Office>(res => res));
+    console.log('URL', URL);
+    let office = this.http.get(URL).pipe(map<any, Office>(res => res));
+    console.log('office', office);
+    return office;
   }
 
   ////////////////////////////////////////////////////////////////////////

@@ -47,7 +47,7 @@ const routes: Routes = [
     component: OfficeEditComponent
   },
   { // Edit an office
-    path: 'office/:id',
+    path: 'office/:action/:id',
     component: OfficeEditComponent,
     resolve: {
       office: OfficeResolver
