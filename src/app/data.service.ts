@@ -20,10 +20,19 @@ import { environment } from 'src/environments/environment';
 
 export class DataService {
 
-  OfficesData: any[] = [];
-  OfficeData: any;
-  schemasData: any[] = [];
-  schemaData: any;
+ 
+  // Observable property for the array of offices
+  private $offices = new BehaviorSubject<Office[]>([]);
+  offices = this.$offices.asObservable();
+
+  // Observable property for the array of schemas
+  private $schemas = new BehaviorSubject<Schema[]>([]);
+  schemas = this.$schemas.asObservable();
+
+  // Observable property for the array of workpacks
+  private $workpacks = new BehaviorSubject<Workpack[]>([]);
+  workpacks = this.$workpacks.asObservable();
+
 
   private baseURL = environment.databaseHost;
   // private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
@@ -39,10 +48,12 @@ export class DataService {
   // 
   // Return: Observable array of Offices
   // 
-  GetOffices() {
+  GetOffices(): Observable<Office[]> {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, Office[]>(res => res));
+    return this.http.get(URL).pipe(map<any, any>(res => {
+       this.$offices.next(res as Office[]);
+    }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -57,8 +68,10 @@ export class DataService {
   GetOfficeById(id: String) {
     const pathURL = environment.officeAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    let ret = this.http.get(URL).pipe(map<any, Office>(res => res));
-    return ret;
+    console.log('URL', URL);
+    let office = this.http.get(URL).pipe(map<any, Office>(res => res));
+    console.log('office', office);
+    return office;
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -84,6 +97,21 @@ export class DataService {
     ).pipe(map<any, Office>(res => res));
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a DELETE http to delete an Office
+  //
+  // Parameters: 
+  //    id: The id of the Office to delete
+  //
+  // Return: error if something went wrong
+  //
+  DeleteOffice(id: String): Observable<any> {
+    const pathURL = environment.officeAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL + id;
+    return this.http.delete(URL).pipe(map<any, any>(res => res));
+  }
+
   
 
   ////////////////////////////////////////////////////////////////////////
@@ -98,8 +126,9 @@ export class DataService {
   GetSchemas(id: String) {
     const pathURL = environment.schemaAPI + environment.listSchemasFunction + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    console.log('URL',URL);
-    return this.http.get(URL).pipe(map<any, Schema[]>(res => res));
+    return this.http.get(URL).pipe(map<any, any>(res => {
+      this.$schemas.next(res as Schema[]);
+    }));
   }
 
 
@@ -130,7 +159,13 @@ export class DataService {
   GetWorkpacks(id: String) {
     const pathURL =  environment.workpackAPI + environment.listWorkpacksFunction + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, Workpack[]>(res => res));
+    //return this.http.get(URL).pipe(map<any, Workpack[]>(res => res));
+
+    return this.http.get(URL).pipe(map<any, any>(res => {
+      this.$workpacks.next(res as Workpack[]);
+    }));
+
+
   }
 
 

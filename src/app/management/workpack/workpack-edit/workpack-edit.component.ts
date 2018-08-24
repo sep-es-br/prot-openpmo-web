@@ -14,6 +14,6 @@ export class WorkpackEditComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.workpack = this.route.snapshot.data['schema'];
+    this.workpack = this.route.snapshot.data['workpack'];
   }
 }

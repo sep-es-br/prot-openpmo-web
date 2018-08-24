@@ -10,6 +10,7 @@ export class OfficeResolver implements Resolve<Office> {
   constructor(private dataService: DataService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.dataService.GetOfficeById(route.paramMap.get('id'));
+    let ret = this.dataService.GetOfficeById(route.paramMap.get('id'));
+    return ret;
   }
 }

@@ -19,7 +19,10 @@
           <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
         </div>
         <div class="edit-view">
-          <a routerLink="/office/{{office.id}}" routerLinkActive="active">More...</a>
+          <a routerLink="/office/edit/{{office.id}}" routerLinkActive="active">More...</a>
+        </div>
+        <div class="edit-view">
+          <a (click)="deleteOffice(office.id)">Delete me...</a>
         </div>
       </div>
     </div>

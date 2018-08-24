@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Workpack } from '../Workpack';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Schema } from '../../schema/Schema';
+import { DataService } from '../../../data.service';
 
 @Component({
   selector: 'app-workpack-list',
@@ -13,35 +14,26 @@ export class WorkpackListComponent implements OnInit, OnDestroy {
 
   parentName: String = "";
   schema: Schema;
-  parentWorkpack: Workpack;
+  parent: any;
   workpacks: Workpack[] = [];
-  navigationSubscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router) {
-    this.navigationSubscription = this.router.events.subscribe((e: any) => {
-      // If it is a NavigationEnd event re-initalise the component
-      if (e instanceof NavigationEnd) {
-        this.InitializeWorkpacks();
-      }
-    });
+  constructor(private route: ActivatedRoute, private dataService: DataService) {
   }
 
   ngOnInit() {
-  }
-
-  InitializeWorkpacks() {
-    this.workpacks = this.route.snapshot.data['workpacks'];
-    this.schema = this.route.snapshot.data['schema'];
-    this.parentWorkpack = this.route.snapshot.data['workpack'];
-    if (this.schema !== undefined) {
-      this.parentName = this.schema.name;
-    }
-    else if (this.parentWorkpack !== undefined){
-      this.parentName = this.parentWorkpack.name;
-    }
+    this.parent = this.route.snapshot.data['workpack'] || this.route.snapshot.data['schema'];
+    this.dataService.GetWorkpacks(this.parent.id);
+    this.subscriptions.push(
+      this.dataService.workpacks.subscribe(w => {
+        this.workpacks = w;
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    this.navigationSubscription.unsubscribe();
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
   }
 }

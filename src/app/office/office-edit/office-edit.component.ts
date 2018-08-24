@@ -25,7 +25,7 @@ export class OfficeEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.route.snapshot.data['id'] !== undefined) {
+    if (this.route.snapshot.data['office'] !== undefined) {
       this.office = this.route.snapshot.data['office'];
     }
     else {
@@ -57,7 +57,6 @@ export class OfficeEditComponent implements OnInit {
       .SaveOffice(this.office)
       .subscribe(
         ret => {
-          console.log('ret', ret);
           this.router.navigate(['./']);
         },
         error => Observable.throw(error),
