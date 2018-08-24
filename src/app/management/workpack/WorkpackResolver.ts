@@ -9,6 +9,9 @@ export class WorkpackResolver implements Resolve<Workpack> {
   constructor(private dataService: DataService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.dataService.GetWorkpackById(route.paramMap.get('id'));
+    console.log('resolving wp...');
+    let ret = this.dataService.GetWorkpackById(route.paramMap.get('id'));
+    console.log('ret', ret);
+    return ret;
   }
 }

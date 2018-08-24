@@ -29,15 +29,18 @@ const routes: Routes = [
     component: OfficeListComponent,
     resolve: {
       offices: OfficeListResolver
-    }
+    },
+    runGuardsAndResolvers: "paramsOrQueryParamsChange"
   },
 
   {
-    path: 'offices',
+    path: 'offices/:id',
     component: OfficeListComponent,
     resolve: {
       offices: OfficeListResolver
-    }
+    },
+    runGuardsAndResolvers: "paramsOrQueryParamsChange"
+
   },
   { // New office
     path: 'office',

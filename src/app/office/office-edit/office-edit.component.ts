@@ -57,7 +57,6 @@ export class OfficeEditComponent implements OnInit {
       .SaveOffice(this.office)
       .subscribe(
         ret => {
-          console.log('ret', ret);
           this.router.navigate(['./']);
         },
         error => Observable.throw(error),

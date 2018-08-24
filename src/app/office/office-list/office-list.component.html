@@ -21,6 +21,9 @@
         <div class="edit-view">
           <a routerLink="/office/{{office.id}}" routerLinkActive="active">More...</a>
         </div>
+        <div class="edit-view">
+          <a (click)="deleteOffice(office.id)">Delete me...</a>
+        </div>
       </div>
     </div>
   </div>
