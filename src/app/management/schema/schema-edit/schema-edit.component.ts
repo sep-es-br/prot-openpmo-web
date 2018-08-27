@@ -47,7 +47,7 @@ export class SchemaEditComponent implements OnInit {
     this.schema.shortName = this.schema.name
       .trim()
       .toLowerCase()
-      .replace('/[^a-z0-9]+/ig', "_");
+      .replace(/[^a-z0-9]+/ig, "_");
   }
 
   onSubmit(){
@@ -55,7 +55,7 @@ export class SchemaEditComponent implements OnInit {
     this.schema.shortName = this.schema.shortName
       .trim()
       .toLowerCase()
-      .replace('/[^a-z0-9]+/ig', "_");
+      .replace(/[^a-z0-9]+/ig, "_");
 
     this.parentOffice.schemas.push(this.schema);
     this.dataService
