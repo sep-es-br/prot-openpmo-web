@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import { Office } from '../Office';
 import { DataService } from '../../data.service';
-import { TrimPipe } from 'ngx-pipes';
 
 @Component({
   selector: 'app-office-edit',
@@ -19,9 +16,9 @@ export class OfficeEditComponent implements OnInit {
   office: Office;
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute, 
-    private dataService: DataService) {
+    private dataService: DataService,
+    private router: Router) {
   }
 
   ngOnInit() {

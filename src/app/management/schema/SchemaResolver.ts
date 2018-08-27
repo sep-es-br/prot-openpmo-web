@@ -9,6 +9,8 @@ export class SchemaResolver implements Resolve<Schema> {
   constructor(private dataService: DataService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.dataService.GetSchemaById(route.paramMap.get('id'));
+    if (route.paramMap.get('action') == 'edit') {
+      return this.dataService.GetSchemaById(route.paramMap.get('id'));
+    }
   }
 }

@@ -22,7 +22,11 @@
           <div class="edit-view">
             <a routerLink="/schema/edit/{{schema.id}}" routerLinkActive="active">More...</a>
           </div>
+          <div class="edit-view">
+            <a (click)="deleteSchema(schema.id)">Delete me...</a>
+          </div>
         </div>
       </div>
     </div>
+    <a routerLink="/schema/new/{{office.id}}" routerLinkActive="active">New...</a>
   </div>
