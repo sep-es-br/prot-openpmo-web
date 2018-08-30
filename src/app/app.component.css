@@ -1,4 +1,8 @@
 /* app.component.css */
+.background-page{
+    background-color: rgb(241, 241, 241);
+}
+
 .topo{
     background-color: #00A1DD;
     height: 50px;
@@ -66,7 +70,7 @@
 
 .breadcrumb{
     height: 35px;
-    border-bottom: solid rgb(232, 234, 237) 0.5px;
+    border-bottom: solid rgb(220, 220, 220) 0.5px;
     border-radius: 0;
     background-color: rgba(255, 255, 255, 0);
     padding: 0;
