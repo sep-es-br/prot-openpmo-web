@@ -9,41 +9,29 @@ import { DataService } from './data.service';
 import { AppRoutingModule } from './/app-routing.module';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, RouterModule } from '@angular/router';
 
-import { OfficeListComponent } from './office/office-list/office-list.component';
-import { OfficeEditComponent } from './office/office-edit/office-edit.component';import { SchemaListComponent } from './management/schema/schema-list/schema-list.component';
-import { SchemaEditComponent } from './management/schema/schema-edit/schema-edit.component';
-import { WorkpackEditComponent } from './management/workpack/workpack-edit/workpack-edit.component';
-import { WorkpackListComponent } from './management/workpack/workpack-list/workpack-list.component';
-
-import { OfficeResolver } from './office/OfficeResolver';
-import { OfficeListResolver } from './office/OfficeListResolver';
-import { SchemaResolver } from './management/schema/SchemaResolver';
-import { SchemaListResolver } from './management/schema/SchemaListResolver';
-import { WorkpackResolver } from './management/workpack/WorkpackResolver';
-import { WorkpackListResolver } from './management/workpack/WorkpackListResolver';
-import { SchemaTemplateEditComponent } from './admin/schema-template/schema-template-edit/schema-template-edit.component';
-import { SchemaTemplateListComponent } from './admin/schema-template/schema-template-list/schema-template-list.component';
-import { SchemaTemplateResolver } from './admin/schema-template/SchemaTemplateResolver';
-import { SchemaTemplateListResolver } from './admin/schema-template/SchemaTemplateListResolver';
-import { WorkpackTemplateListComponent } from './admin/workpack-template/workpack-template-list/workpack-template-list.component';
-import { WorkpackTemplateEditComponent } from './admin/workpack-template/workpack-template-edit/workpack-template-edit.component';
-import { WorkpackTemplateResolver } from './admin/workpack-template/WorkpackTemplateResolver';
-import { WorkpackTemplateListResolver } from './admin/workpack-template/WorkpackTemplateListResolver';
+import { WorkpackResolver } from './workpack/workpack.resolver';
+import { WorkpackTemplateResolver } from './workpack-template/workpack-template.resolver';
+import { PanelResolver } from './panel.resolver';
 import { NgPipesModule } from 'ngx-pipes';
+import { HomeComponent } from './home/home.component';
+import { OfficeComponent } from './office/office.component';
+import { SchemaComponent } from './schema/schema.component';
+import { WorkpackComponent } from './workpack/workpack.component';
+import { SchemaTemplateComponent } from './schema-template/schema-template.component';
+import { OfficeAdminComponent } from './office-admin/office-admin.component';
+import { WorkpackTemplateComponent } from './workpack-template/workpack-template.component';
+import { Useful } from './useful';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OfficeListComponent,
-    OfficeEditComponent,
-    SchemaListComponent,
-    SchemaEditComponent,
-    WorkpackEditComponent,
-    WorkpackListComponent,
-    SchemaTemplateEditComponent,
-    SchemaTemplateListComponent,
-    WorkpackTemplateListComponent,
-    WorkpackTemplateEditComponent
+    HomeComponent,
+    OfficeComponent,
+    SchemaComponent,
+    WorkpackComponent,
+    SchemaTemplateComponent,
+    OfficeAdminComponent,
+    WorkpackTemplateComponent
   ],
   imports: [
     BrowserModule,
@@ -54,17 +42,11 @@ import { NgPipesModule } from 'ngx-pipes';
   ],
   providers: [
     DataService,
-    OfficeResolver,
-    OfficeListResolver,
-    SchemaResolver,
-    SchemaListResolver,
     WorkpackResolver,
-    WorkpackListResolver,
-    SchemaTemplateResolver,
-    SchemaTemplateListResolver,
     WorkpackTemplateResolver,
-    WorkpackTemplateListResolver,
-    HttpClient
+    PanelResolver,
+    HttpClient,
+    Useful
   ],
   bootstrap: [AppComponent]
 })

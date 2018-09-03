@@ -1,0 +1,78 @@
+<div class="workpack-edit" 
+  *ngIf="(panel.showForm)">
+  <div class="main-title">
+    <div >{{panel.title}}</div>
+  </div>
+  <form name="workpackForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+    <div class="form-group">
+      <label for="workpackname">Name</label>
+      <input type="text" class="form-control" 
+          name="workpackname"
+          #workpackName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && workpackName.invalid }"
+          required
+          type="text" size="30" 
+          [ngModel]="workpack.name | trim"
+          (ngModelChange)="SetTrimmedNameAndShortName($event)" /> 
+      <div *ngIf="f.submitted && workpackName.invalid" class="invalid-feedback">
+        <div *ngIf="workpackName.errors.required">Name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="workpackshortname">Short Name</label>
+      <input  class="form-control" 
+              name="workpackshortname"
+              #workpackShortName="ngModel" 
+              [ngClass]="{ 'is-invalid': f.submitted && workpackShortName.invalid }"
+              required 
+              pattern="[a-z0-9_]*"
+              type="text" 
+              size="30" 
+              [(ngModel)]="workpack.shortName"/> 
+      <div *ngIf="f.submitted && workpackShortName.invalid" class="invalid-feedback">
+        <div *ngIf="workpackShortName.errors.required">Name is required</div>
+        <div *ngIf="workpackShortName.errors.pattern">The short name can have only lowercase letters, digits and underscore (_)</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary">Save</button>
+    </div>
+  </form>
+</div>
+
+<!-- schema-list.html -->
+<div *ngIf="(panel.showChildren)">
+  <div class="main-title">
+    <div >{{workpack.name}}</div>
+  </div>
+  
+  <div class="container-fluid cards">
+      <div class="row">
+        <div class="card card-style" *ngFor="let component of workpack.components">
+          <div class="card-body">
+            <div class="card-image">
+                <i class="fa fa-cubes" aria-hidden="true"></i>
+            </div>
+            <div class="card-title">
+              <a routerLink="/workpack/children/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
+            </div>
+            <div class="card-setting">
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </div>
+            <div class="card-manager">
+              <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
+              <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+            </div>
+            <div class="edit-view">
+              <a routerLink="/workpack/edit/{{component.id}}" routerLinkActive="active">More...</a>
+            </div>
+            <div class="edit-view">
+              <a (click)="deleteWorkpack(component.id)">Delete me...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a  (click)="NewWorkpack()"
+          routerLink="/workpack/new2workpack/{{workpack.id}}" 
+          routerLinkActive="active">New...</a>
+    </div>
+  </div>
