@@ -1,0 +1,33 @@
+<!-- schema-list.html -->
+<div class="main-title">
+    <a routerLink="/" routerLinkActive="active">{{office.name}}</a>
+  </div>
+  
+  <div class="container-fluid cards">
+      <div class="row">
+        <div class="card card-style" *ngFor="let schemaTemplate of office.schemaTemplates">
+          <div class="card-body">
+            <div class="card-image">
+                <i class="fa fa-cubes" aria-hidden="true"></i>
+            </div>
+            <div class="card-title">
+              <a routerLink="/schematemplate/children/{{schemaTemplate.id}}" routerLinkActive="active">{{schemaTemplate.name}}</a>
+            </div>
+            <div class="card-setting">
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </div>
+            <div class="card-manager">
+              <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="env.managerName" tooltipPosition="top"></i-->
+              <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+            </div>
+            <div class="edit-view">
+              <a routerLink="/schematemplate/edit/{{schemaTemplate.id}}" routerLinkActive="active">More...</a>
+            </div>
+            <div class="edit-view">
+              <a (click)="DeleteSchemaTemplate(schemaTemplate.id)">Delete me...</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a routerLink="/schematemplate/new/{{office.id}}" routerLinkActive="active">New...</a>
+    </div>
