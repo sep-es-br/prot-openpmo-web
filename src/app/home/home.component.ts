@@ -11,7 +11,7 @@ import { DataService } from '../data.service';
 })
 export class HomeComponent implements OnInit {
 
-  private offices: Office[] = [];
+  offices: Office[] = [];
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -28,19 +28,18 @@ export class HomeComponent implements OnInit {
         this.offices = o;
         console.log('this.offices', this.offices);
       })
-    );    
+    );
     this.dataService.QueryOffices();
   }
 
   deleteOffice(id: string) {
-    let officeToDelete = this.offices.find(o => o.id == id);
+
+    let officeToDelete = this.offices.find(o => o.id === id);
     if (officeToDelete.schemas.length > 0) {
-      alert("Sorry, you can not delete this office because it is has schemas.")
-    }
-    else if (officeToDelete.schemaTemplates.length > 0) {
-      alert("Sorry, you can not delete this office because it is has schema templates.")
-    }
-    else if(confirm("Are you sure to delete the office " + officeToDelete.name + "?")) {
+      alert('Sorry, you can not delete this office because it is has schemas.')
+    } else if (officeToDelete.schemaTemplates.length > 0) {
+      alert('Sorry, you can not delete this office because it is has schema templates.')
+    } else if(confirm('Are you sure to delete the office ' + officeToDelete.name + '?')) {
       this.dataService.DeleteOffice(id).subscribe(
         () => {
           this.dataService.QueryOffices();
