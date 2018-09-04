@@ -1,7 +1,7 @@
 <!-- office-list.html -->
 <div class="container-fluid cards">
   <div class="row">
-    <div class="card card-style" *ngFor="let office of offices">
+    <div class="card card-style" *ngFor="let office of offices"> 
       <div class="card-body">
         <div class="card-image">
           <i class="fa fa-building" aria-hidden="true"></i>
@@ -9,23 +9,30 @@
         <div class="card-title">
           <a routerLink="/schemas/{{office.id}}" routerLinkActive="active">{{office.name}}</a>
         </div>
-        <div class="card-setting">
-          <a routerLink="/schematemplates/{{office.id}}" routerLinkActive="active">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-          </a>
-        </div>
+
+        <div class="dropleft">
+            <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" routerLink="/schematemplates/{{office.id}}" routerLinkActive="active" href="#">Edit</a>
+              <a class="dropdown-item" routerLink="/office/edit/{{office.id}}" routerLinkActive="active" href="#">More</a>
+              <a class="dropdown-item" (click)="deleteOffice(office.id)" href="#">Delete me</a>
+            </div>
+          </div>
+
         <div class="card-manager">
-          <!--i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="office.managerName" tooltipPosition="top"></i-->
+          <!-- <i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="office.managerName" tooltipPosition="top"></i> -->
           <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
-        </div>
-        <div class="edit-view">
-          <a routerLink="/office/edit/{{office.id}}" routerLinkActive="active">More...</a>
-        </div>
-        <div class="edit-view">
-          <a (click)="deleteOffice(office.id)">Delete me...</a>
         </div>
       </div>
     </div>
+
+    <div class="card new-card" routerLink="/office" routerLinkActive="active">
+      <div class="card-body">
+        <div class="card-image-new">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+
   </div>
-  <a routerLink="/office" routerLinkActive="active">New...</a>
 </div>

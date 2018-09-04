@@ -68,9 +68,7 @@ export class DataService {
   GetOfficeById(id: String) {
     const pathURL = environment.officeAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    console.log('URL', URL);
     let office = this.http.get(URL).pipe(map<any, Office>(res => res));
-    console.log('office', office);
     return office;
   }
 
@@ -87,6 +85,30 @@ export class DataService {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.post(
+      URL, 
+      JSON.stringify(office), 
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).pipe(map<any, Office>(res => res));
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a PUT http to update an Office
+  //
+  // Parameters: 
+  //    office: The Office object to update
+  //
+  // Return: error if something went wrong
+  //
+  UpdateOffice(office: Office): Observable<Office> {
+    const pathURL = environment.officeAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL + office.id;
+
+    return this.http.put(
       URL, 
       JSON.stringify(office), 
       {
@@ -146,6 +168,48 @@ export class DataService {
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL).pipe(map<any, Schema>(res => res));
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a POST http save a Schema
+  //
+  // Parameters: 
+  //    schema: The Schema object to save
+  //
+  // Return: error if something went wrong
+  //
+  SaveSchema(schema: Schema, parentOffice: Office): Observable<Schema> {
+    const pathURL = environment.schemaAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL + parentOffice;
+    return this.http.post(
+      URL, 
+      JSON.stringify(schema), 
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    ).pipe(map<any, Schema>(res => res));
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a DELETE http to delete a Schema
+  //
+  // Parameters: 
+  //    id: The id of the Schema to delete
+  //
+  // Return: error if something went wrong
+  //
+  DeleteSchema(id: String): Observable<any> {
+    const pathURL = environment.schemaAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL + id;
+    return this.http.delete(URL).pipe(map<any, any>(res => res));
+  }
+
+
+
+
 
   ////////////////////////////////////////////////////////////////////////
   //

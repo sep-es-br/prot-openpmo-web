@@ -59,7 +59,8 @@ const routes: Routes = [
     resolve: {
       schemas: SchemaListResolver,
       office: OfficeResolver
-    }
+    },
+    runGuardsAndResolvers: "always"
 
   },
   { // New/edit schema
