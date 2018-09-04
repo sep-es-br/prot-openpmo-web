@@ -1,0 +1,70 @@
+/* office-list.css */
+.main-title{
+    margin-top: 25px;
+    margin-bottom: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+    color: #606062;
+    font-size: 24px;
+}
+
+.cards{
+    padding-left: 65px;
+    padding-right: 65px;
+}
+
+.card-style{
+    width: 20rem;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.card-image{
+    background-color: #E6E7E8;
+    height: 50px;
+    width: 64px;
+    border-radius: 3px;
+    float: left;
+    line-height: 50px;
+    font-size: 34px;
+    color: #BDBFC1;
+    text-align: center;
+}
+
+.card-title{
+    float: left;
+    margin-left: 10px;
+    color: rgb(0, 161, 221);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card-manager{
+    font-size: 22px;
+    float: right;
+    margin-top: 65px;
+    color: #CC99FF;
+    cursor: pointer;
+}
+
+.card-manager:hover{
+    color: rgb(173, 98, 248);
+}
+
+.card-setting{
+    font-size: 13px;
+    float: right;
+    color: #96989A;
+    cursor: pointer;
+}
+
+.edit-view{
+    margin-right: 30px;
+    font-size: 12px;
+    float: right;
+    margin-top: 77px;
+    cursor: pointer;
+}
+
+
+
