@@ -105,6 +105,7 @@ export class OfficeComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.dataService.CleanOffice();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
