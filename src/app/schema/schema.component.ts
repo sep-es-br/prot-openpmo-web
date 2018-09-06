@@ -17,11 +17,11 @@ export class SchemaComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private useful: Useful,
-    private router: Router ) { }
+    private router: Router ) {}
 
   subscriptions: Subscription[] = [];
-  office: Office;
-  schema: Schema;
+  office: Office = new Office();
+  schema: Schema = new Schema();
   schemaId: String;
   action: String;
   title: String;
@@ -32,21 +32,13 @@ export class SchemaComponent implements OnInit {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     this.schemaId = this.route.snapshot.paramMap.get('id');
 
-    if (this.action == 'new') {
-      this.schema = new Schema();
-      this.title = 'New Schema';
-    }
-    else
-    {
-      this.title = 'Edit Schema';
-      this.dataService.QuerySchemaById(this.schemaId);
-      this.subscriptions.push(
-        this.dataService.schema.subscribe(s =>{
-          this.schema = s;
-          console.log('s',s);
-        })
-      );
-    }
+    this.title = 'Edit Schema';
+    this.subscriptions.push(
+      this.dataService.schema.subscribe(s =>{
+        this.schema = s;
+      })
+    );
+
     this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
         this.office = o;
@@ -125,6 +117,7 @@ export class SchemaComponent implements OnInit {
 
 
   ngOnDestroy() {
+    this.dataService.CleanSchema();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });

@@ -21,6 +21,10 @@ import { SchemaTemplateComponent } from './schema-template/schema-template.compo
 import { OfficeAdminComponent } from './office-admin/office-admin.component';
 import { WorkpackTemplateComponent } from './workpack-template/workpack-template.component';
 import { Useful } from './useful';
+import { BreadcrumbService } from './breadcrumb.service';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import { SchemaResolver } from './schema/schema.resolver';
+import { OfficeResolver } from './office/office.resolver';
 
 @NgModule({
   declarations: [
@@ -31,7 +35,8 @@ import { Useful } from './useful';
     WorkpackComponent,
     SchemaTemplateComponent,
     OfficeAdminComponent,
-    WorkpackTemplateComponent
+    WorkpackTemplateComponent,
+    BreadcrumbComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,10 @@ import { Useful } from './useful';
   ],
   providers: [
     DataService,
+    BreadcrumbService,
     WorkpackResolver,
+    SchemaResolver,
+    OfficeResolver,
     WorkpackTemplateResolver,
     PanelResolver,
     HttpClient,
