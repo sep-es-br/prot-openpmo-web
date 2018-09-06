@@ -11,6 +11,11 @@ body {
 /****************************************/
 
 /* office-list.css */
+.page-container{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
 .main-title{
     margin-top: 25px;
     margin-bottom: 30px;
@@ -104,21 +109,21 @@ body {
 }
 
 /**OFFICE EDIT***************************************/
-.name  {
+.container-form  {
     padding-left: 50px;
     padding-right: 50px;
     margin-top: 50px;
 }
 
 .shortName{
-    padding-left: 50px;
-    padding-right: 50px;
     margin-top: 30px;
 }
 
 .button{
-    padding-left: 50px;
-    padding-right: 50px;
     margin-top: 30px;
+}
+
+.temp{
+    height: 200px;
 }
 
