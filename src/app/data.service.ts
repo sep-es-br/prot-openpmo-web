@@ -115,6 +115,30 @@ export class DataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
+  // Run a GET http request to query an Office by its id
+  //
+  // Parameters: 
+  //    id: The id of the Office to retrieve
+  //
+  // Return: Observable to the office found
+  //
+  GetOfficeById(id: String) {
+    const pathURL = environment.officeAPI + id;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+    if (id == '') {
+      this.$office.next(new Office);
+      return this.office;
+    }
+    else {
+      this.http.get(URL).subscribe(res => {
+        this.$office.next(res as Office);
+        return this.office;
+      });
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
   // Run a POST http save an Office
   //
   // Parameters: 
@@ -225,8 +249,19 @@ export class DataService {
   GetSchemaById(id: String): Observable<Schema> {
     const pathURL = environment.schemaAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, Schema>(res => res as Schema));
+    if (id == '') {
+      this.$schema.next(new Schema);
+      return this.schema;
+    }
+    else {
+      this.http.get(URL).subscribe(res => {
+        this.$schema.next(res as Schema);
+        return this.schema;
+      });
+    }
   }
+
+
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -345,8 +380,54 @@ export class DataService {
   GetWorkpackById(id: String): Observable<Workpack> {
     const pathURL = environment.workpackAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, Workpack>(res => res as Workpack));
+    if (id == '') {
+      this.$workpack.next(new Workpack);
+    }
+    else {
+      this.http.get(URL).subscribe(res => {
+        this.$workpack.next(res as Workpack);
+      });
+    }
+    return this.workpack;
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Workpack Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanWorkpack() {
+    this.$workpack.next(new Workpack);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Schema Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanSchema() {
+    this.$schema.next(new Schema);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Office Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanOffice() {
+    this.$office.next(new Office);
+  }
+
+  
 
 
   ////////////////////////////////////////////////////////////////////////

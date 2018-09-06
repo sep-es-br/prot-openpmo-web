@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Office } from '../model/office';
 import { DataService } from '../data.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { Useful } from '../useful';
+import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
 
 @Component({
   selector: 'app-office',
@@ -15,30 +16,51 @@ export class OfficeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
+    private breadcrumbService: BreadcrumbService,
     private useful: Useful,
-    private router: Router ) { }
+    private router: Router) { }
 
   subscriptions: Subscription[] = [];
   office: Office;
   officeId: String;
   action: String;
+  breadcrumbTrail: Breadcrumb[] = [];
 
 
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.officeId = this.route.snapshot.paramMap.get('id');
-    if (this.action == 'new') {
-      this.office = new Office();
-    }
-    else
-    {
-      this.dataService.QueryOfficeById(this.officeId);
-      this.subscriptions.push(
-        this.dataService.office.subscribe(o =>{
-          console.log('o',o);
-          this.office = o;
+
+    this.dataService.QueryOfficeById(this.officeId);
+    this.subscriptions.push(
+      this.dataService.office.subscribe(o =>{
+        this.office = o;
+        this.UpdateBreadcrumb(this.office);          
+      })
+    );
+    this.subscriptions.push(
+      this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
+        this.breadcrumbTrail = trail;
+      })
+    );
+
+  }
+
+  UpdateBreadcrumb(office) {
+    if ((office !== undefined) && (office.id !== '')){
+      let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == office.id);
+      if (index == -1) {
+        this.breadcrumbService.Add({
+          action: this.action,
+          active: false,
+          id: office.id,
+          label: office.name,
+          route: 'office'
         })
-      );
+      }
+      else {
+        this.breadcrumbService.GoTo(index);
+      }
     }
   }
 

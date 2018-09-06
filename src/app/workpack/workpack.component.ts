@@ -19,7 +19,8 @@ export class WorkpackComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private useful: Useful,
-    private router: Router) { }
+    private router: Router) {
+    }
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -34,29 +35,19 @@ export class WorkpackComponent implements OnInit {
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.id = this.route.snapshot.paramMap.get('id');
-    
+
     this.subscriptions
     .push(
       this.dataService.panel.subscribe(p => {
         this.panel = p;
-        console.log('this.panel',this.panel);
       })
     );
 
-
-    if ((this.action == 'new2schema') || (this.action == 'new2workpack')) {
-      this.workpack = new Workpack();
-    }
-    else
-    {
-      this.dataService.QueryWorkpackById(this.id);
-      this.subscriptions.push(
-        this.dataService.workpack.subscribe(wp =>{
-          this.workpack = wp;
-          console.log('wp',wp);
-        })
-      );
-    }
+    this.subscriptions.push(
+      this.dataService.workpack.subscribe(wp =>{
+        this.workpack = wp;
+      })
+    );
 
     this.subscriptions.push(
       this.dataService.schema.subscribe(s => {
@@ -65,15 +56,11 @@ export class WorkpackComponent implements OnInit {
     );
 
     this.subscriptions.push(
-      this.dataService.workpack.subscribe(w =>{
-        this.workpack = w;
-      })
-    );
-    this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
         this.office = o;
       })
     );
+    
     this.subscriptions.push(
       this.dataService.workpath.subscribe(wpath =>{
         this.workpath = wpath;
@@ -181,11 +168,10 @@ export class WorkpackComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.dataService.CleanWorkpack();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
   }
-
-
 
 }

@@ -3,6 +3,7 @@ import { Office } from '../model/office';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../data.service';
+import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
 
 @Component({
   selector: 'app-home',
@@ -13,11 +14,13 @@ export class HomeComponent implements OnInit {
 
   offices: Office[] = [];
   private subscriptions: Subscription[] = [];
+  private breadcrumbTrail: Breadcrumb[] = [];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dataService: DataService ) {
+    private dataService: DataService,
+    private breadcrumbService: BreadcrumbService ) {
   }
 
   private items = [];
@@ -26,10 +29,32 @@ export class HomeComponent implements OnInit {
     this.subscriptions.push(
       this.dataService.offices.subscribe(o => {
         this.offices = o;
-        console.log('this.offices', this.offices);
+        this.UpdateBreadcrumb();
       })
     );
     this.dataService.QueryOffices();
+    this.subscriptions.push(
+      this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
+        this.breadcrumbTrail = trail;
+      })
+    );
+    
+  }
+
+  UpdateBreadcrumb() {
+    let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == '');
+    if (index == -1) {
+      this.breadcrumbService.Add({
+        action: '',
+        active: false,
+        id: '',
+        label: 'Home',
+        route: ''
+      })
+    }
+    else {
+      this.breadcrumbService.GoTo(index);
+    }
   }
 
   deleteOffice(id: string) {
@@ -48,7 +73,6 @@ export class HomeComponent implements OnInit {
       );
     }
   }
-
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
