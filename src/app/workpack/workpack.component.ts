@@ -7,6 +7,7 @@ import { Schema } from '../model/schema';
 import { Workpack } from '../model/workpack';
 import { Useful } from '../useful';
 import { Panel } from '../model/panel';
+import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
 
 @Component({
   selector: 'app-workpack',
@@ -19,7 +20,8 @@ export class WorkpackComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private useful: Useful,
-    private router: Router) {
+    private router: Router, 
+    private crumbService: BreadcrumbService) {
     }
 
   subscriptions: Subscription[] = [];
@@ -30,6 +32,7 @@ export class WorkpackComponent implements OnInit {
   action: String;
   id: String;
   panel: Panel;
+  breadcrumbTrail: Breadcrumb[];
 
 
   ngOnInit() {
@@ -43,9 +46,14 @@ export class WorkpackComponent implements OnInit {
       })
     );
 
+    this.crumbService.breadcrumbTrail.subscribe(bct => {
+      this.breadcrumbTrail = bct;
+    });    
+
     this.subscriptions.push(
       this.dataService.workpack.subscribe(wp =>{
         this.workpack = wp;
+        this.UpdateBreadcrumb(wp);
       })
     );
 
@@ -66,6 +74,24 @@ export class WorkpackComponent implements OnInit {
         this.workpath = wpath;
       })
     );
+  }
+
+  UpdateBreadcrumb(workpack) {
+    if ((workpack !== undefined) && (workpack.id !== '')) {
+      let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == workpack.id);
+      if (index == -1) {
+        this.crumbService.Add({
+          action: this.action,
+          active: false,
+          id: workpack.id,
+          label: workpack.name,
+          route: 'workpack'
+        });
+      }
+      else {
+        this.crumbService.GoTo(index);
+      }
+    }
   }
 
   SetTrimmedNameAndShortName(value: String){
@@ -168,7 +194,6 @@ export class WorkpackComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.dataService.CleanWorkpack();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });

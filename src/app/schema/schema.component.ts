@@ -5,6 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Schema } from '../model/schema';
 import { Office } from '../model/office';
 import { Useful } from '../useful';
+import { Breadcrumb, BreadcrumbService } from '../breadcrumb.service';
 
 @Component({
   selector: 'app-schema',
@@ -17,7 +18,8 @@ export class SchemaComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private useful: Useful,
-    private router: Router ) {}
+    private router: Router,
+    private crumbService: BreadcrumbService ) {}
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -27,6 +29,7 @@ export class SchemaComponent implements OnInit {
   title: String;
   showForm: Boolean;
   showChildren: Boolean;
+  breadcrumbTrail: Breadcrumb[];
 
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
@@ -36,8 +39,14 @@ export class SchemaComponent implements OnInit {
     this.subscriptions.push(
       this.dataService.schema.subscribe(s =>{
         this.schema = s;
+        this.crumbService.SetCurrentSchema(s);
       })
     );
+
+    this.crumbService.breadcrumbTrail.subscribe(bct => {
+      this.breadcrumbTrail = bct;
+    });
+
 
     this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
@@ -117,7 +126,6 @@ export class SchemaComponent implements OnInit {
 
 
   ngOnDestroy() {
-    this.dataService.CleanSchema();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });

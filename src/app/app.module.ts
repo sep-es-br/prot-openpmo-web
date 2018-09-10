@@ -25,6 +25,7 @@ import { BreadcrumbService } from './breadcrumb.service';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { SchemaResolver } from './schema/schema.resolver';
 import { OfficeResolver } from './office/office.resolver';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { OfficeResolver } from './office/office.resolver';
   providers: [
     DataService,
     BreadcrumbService,
+    CookieService,
     WorkpackResolver,
     SchemaResolver,
     OfficeResolver,

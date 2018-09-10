@@ -26,16 +26,13 @@ export class OfficeComponent implements OnInit {
   action: String;
   breadcrumbTrail: Breadcrumb[] = [];
 
-
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.officeId = this.route.snapshot.paramMap.get('id');
-
-    this.dataService.QueryOfficeById(this.officeId);
     this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
         this.office = o;
-        this.UpdateBreadcrumb(this.office);          
+        this.breadcrumbService.SetCurrentOffice(o);
       })
     );
     this.subscriptions.push(
@@ -43,25 +40,6 @@ export class OfficeComponent implements OnInit {
         this.breadcrumbTrail = trail;
       })
     );
-
-  }
-
-  UpdateBreadcrumb(office) {
-    if ((office !== undefined) && (office.id !== '')){
-      let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == office.id);
-      if (index == -1) {
-        this.breadcrumbService.Add({
-          action: this.action,
-          active: false,
-          id: office.id,
-          label: office.name,
-          route: 'office'
-        })
-      }
-      else {
-        this.breadcrumbService.GoTo(index);
-      }
-    }
   }
 
   SetTrimmedNameAndShortName(value: String){
@@ -105,7 +83,6 @@ export class OfficeComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.dataService.CleanOffice();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });

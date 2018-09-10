@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { Office } from './model/office';
 import { Schema } from './model/schema';
 import { Workpack } from './model/workpack';
@@ -393,45 +392,6 @@ export class DataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Clean the Workpack Observable
-  //
-  // Parameters: none
-  //
-  // Return: none
-  //
-  CleanWorkpack() {
-    this.$workpack.next(new Workpack);
-  }
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Clean the Schema Observable
-  //
-  // Parameters: none
-  //
-  // Return: none
-  //
-  CleanSchema() {
-    this.$schema.next(new Schema);
-  }
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Clean the Office Observable
-  //
-  // Parameters: none
-  //
-  // Return: none
-  //
-  CleanOffice() {
-    this.$office.next(new Office);
-  }
-
-  
-
-
-  ////////////////////////////////////////////////////////////////////////
-  //
   // Run a PUT http to update a Workpack
   //
   // Parameters: 
@@ -724,5 +684,41 @@ export class DataService {
 
   SetPanel(panel: Panel) {
     this.$panel.next(panel);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Office Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanOffice() {
+    this.$office.next(new Office);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Schema Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanSchema() {
+    this.$schema.next(new Schema);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Workpack Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanWorkpack() {
+    this.$workpack.next(new Workpack);
   }
 }
