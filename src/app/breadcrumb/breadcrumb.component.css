@@ -1,0 +1,31 @@
+.menu-breadcrumb{
+    margin-top: 15px;
+    padding-right: 44px;
+    padding-left: 44px;
+}
+
+.breadcrumb{
+    height: 35px;
+    border-bottom: solid rgb(220, 220, 220) 0.5px;
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+}
+
+.breadcrumb li a{
+    text-decoration: none;
+    padding: 3px 6px 3px 6px;
+    border-radius: 5px;
+    color: rgb(59, 59, 59);
+    margin: -5px;
+}
+
+.breadcrumb li a:hover{
+    background-color: rgb(228, 228, 228);
+}
+
+.breadcrumb-item+.breadcrumb-item::before{
+    content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iY3VycmVudENvbG9yIi8+PC9zdmc+);
+    color: rgb(59, 59, 59);
+}
+
