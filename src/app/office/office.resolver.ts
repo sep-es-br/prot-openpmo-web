@@ -6,14 +6,14 @@ import { DataService } from '../data.service';
 export class OfficeResolver implements Resolve<void> {
 
   constructor(private dataService: DataService) {}
-  id: String;
-  action: String;
+  id: String = '';
+  action: String = '';
 
   resolve(route: ActivatedRouteSnapshot) {
     this.action = route.paramMap.get('action');
     this.dataService.CleanOffice();
+    this.id = route.paramMap.get('id');    
     if ((this.action == "edit") || (this.action == "children")) {
-      this.id = route.paramMap.get('id');
       this.dataService.QueryOfficeById(this.id);
     }
   }

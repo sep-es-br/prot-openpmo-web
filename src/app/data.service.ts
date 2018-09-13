@@ -8,18 +8,18 @@ import { Workpack } from './model/workpack';
 import { SchemaTemplate } from './model/schema-template';
 import { WorkpackTemplate } from './model/workpack-template';
 import { environment } from 'src/environments/environment';
-import { Panel } from './model/panel';
 
-
-
-/* Object type to receive the response from the http request */
+export class Panel {
+  action: String = '';
+  title: String = '';
+  showForm: Boolean = false;
+  showChildren: Boolean = true;
+}
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class DataService {
-
  
   // Observable property for the array of offices
   private $offices = new BehaviorSubject<Office[]>([]);
@@ -65,12 +65,8 @@ export class DataService {
   private $workpackTemplate = new BehaviorSubject<WorkpackTemplate>(new WorkpackTemplate);
   workpackTemplate = this.$workpackTemplate.asObservable();
 
-  // Observable property for the path of workpacks
-  private $templatePath = new BehaviorSubject<WorkpackTemplate[]>([]);
-  templatePath = this.$templatePath.asObservable();
-
-  // Observable property for the path of workpacks
-  private $panel = new BehaviorSubject<Panel>(new Panel);
+  // Observable property for current show status of the workpack page 
+  private $panel = new BehaviorSubject<Panel>(new Panel());
   panel = this.$panel.asObservable();
 
   private baseURL = environment.databaseHost;
@@ -125,14 +121,10 @@ export class DataService {
     const pathURL = environment.officeAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     if (id == '') {
-      this.$office.next(new Office);
       return this.office;
     }
     else {
-      this.http.get(URL).subscribe(res => {
-        this.$office.next(res as Office);
-        return this.office;
-      });
+      return this.http.get(URL).pipe(map<any,Office>(res => res));
     }
   }
 
@@ -249,14 +241,10 @@ export class DataService {
     const pathURL = environment.schemaAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     if (id == '') {
-      this.$schema.next(new Schema);
-      return this.schema;
+      return null;
     }
     else {
-      this.http.get(URL).subscribe(res => {
-        this.$schema.next(res as Schema);
-        return this.schema;
-      });
+      return this.http.get(URL).pipe(map<any, Schema>(res => res));
     }
   }
 
@@ -380,14 +368,11 @@ export class DataService {
     const pathURL = environment.workpackAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     if (id == '') {
-      this.$workpack.next(new Workpack);
+      return null;
     }
     else {
-      this.http.get(URL).subscribe(res => {
-        this.$workpack.next(res as Workpack);
-      });
+      return this.http.get(URL).pipe(map<any,Workpack>(res =>res));
     }
-    return this.workpack;
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -660,34 +645,6 @@ export class DataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Set a workpack template to be the leaf of the path. If it is already in the path,
-  // pops all further items, otherwise just add it
-  //
-  // Parameters: 
-  //    workpackTemplate: The workpack template to be set as leaf
-  //
-  // Return: void
-  //
-  Set2Templatepath(workpackTemplate: WorkpackTemplate) {
-    let foundIndex = this.$templatePath.value.findIndex(w => w.id == workpackTemplate.id);
-    // If the workpack is already in the path...
-    if (foundIndex != -1) {
-      for (let i=this.$templatePath.value.length-1; i>foundIndex; i--) {
-        this.$templatePath.value.pop();
-      }
-    }
-    else{
-      this.$templatePath.value.push(workpackTemplate);
-    }
-    this.$templatePath.next(this.$templatePath.value);
-  }
-
-  SetPanel(panel: Panel) {
-    this.$panel.next(panel);
-  }
-
-  ////////////////////////////////////////////////////////////////////////
-  //
   // Clean the Office Observable
   //
   // Parameters: none
@@ -721,4 +678,23 @@ export class DataService {
   CleanWorkpack() {
     this.$workpack.next(new Workpack);
   }
+
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Set the Panel observable
+  //
+  // Parameters: action
+  //
+  // Return: none
+  //
+  SetPanel(action: String) {
+    let panel = new Panel();
+    panel.action = action;
+    panel.title = (action.slice(0,3) == 'new') ? 'New' : 'Edit';
+    panel.showForm = (action != 'children');
+    panel.showChildren = ((action == 'children') || (action == 'detail'));
+    this.$panel.next(panel);
+  }  
+
 }

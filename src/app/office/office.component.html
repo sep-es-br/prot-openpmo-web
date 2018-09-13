@@ -54,17 +54,17 @@
                 <i class="fa fa-building" aria-hidden="true"></i>
               </div>
               <div class="card-title">
-                <a routerLink="/schema/children/{{schema.id}}" routerLinkActive="active">{{schema.name}}</a>
+                <a  routerLink="/schema/children/{{schema.id}}" 
+                    routerLinkActive="active">{{schema.name}}</a>
               </div>
     
               <div class="dropleft">
-                  <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" routerLink="/schema/edit/{{schema.id}}" routerLinkActive="active" href="#">Edit</a>
-                    <a class="dropdown-item" (click)="deleteSchema(schema.id)" href="#">Delete</a>
-                    <a class="dropdown-item" routerLink="/schemaadmin/children/{{schema.id}}" routerLinkActive="active" href="#">Admin</a>
-                  </div>
+                <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" routerLink="/schema/edit/{{schema.id}}" routerLinkActive="active">Edit</a>
+                  <a class="dropdown-item" (click)="DeleteSchema(schema.id)">Delete</a>
                 </div>
+              </div>
     
               <div class="card-manager">
                 <!-- <i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="schema.managerName" tooltipPosition="top"></i> -->
@@ -73,8 +73,17 @@
             </div>
           </div>
     
-          <div class="card new-card" routerLink="/schema/new/0" routerLinkActive="active">
+          <div class="card new-card">
             <div class="card-body">
+              <div class="dropleft">
+                  <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let template of office.schemaTemplates" 
+                        class="dropdown-item" 
+                        routerLink="/schema/new/{{office.id}}&{{template.id}}" 
+                        routerLinkActive="active">{{template.name}}</a>
+                  </div>
+                </div>
               <div class="card-image-new">
                   <i class="fa fa-plus" aria-hidden="true"></i>
               </div>

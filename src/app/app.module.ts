@@ -11,7 +11,6 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot, RouterModule } from '@angu
 
 import { WorkpackResolver } from './workpack/workpack.resolver';
 import { WorkpackTemplateResolver } from './workpack-template/workpack-template.resolver';
-import { PanelResolver } from './panel.resolver';
 import { NgPipesModule } from 'ngx-pipes';
 import { HomeComponent } from './home/home.component';
 import { OfficeComponent } from './office/office.component';
@@ -54,7 +53,6 @@ import { CookieService } from 'ngx-cookie-service';
     SchemaResolver,
     OfficeResolver,
     WorkpackTemplateResolver,
-    PanelResolver,
     HttpClient,
     Useful
   ],

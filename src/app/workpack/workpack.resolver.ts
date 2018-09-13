@@ -9,15 +9,29 @@ export class WorkpackResolver implements Resolve<void> {
 
   constructor(private dataService: DataService) {}
   id: String;
+  templateId: String;
   action: String;
  
     
   resolve(route: ActivatedRouteSnapshot) {
     this.action = route.paramMap.get('action');
     this.dataService.CleanWorkpack();
-    if ((this.action == "edit") || (this.action == "children")) {
-      this.id = route.paramMap.get('id');
-      this.dataService.QueryWorkpackById(this.id);
+    this.id = route.paramMap.get('id');
+    this.templateId = route.paramMap.get('tid');
+    
+    this.dataService.SetPanel(this.action);
+
+    this.dataService.QueryWorkpackTemplateById(this.templateId);
+
+    switch (this.action) {
+      case 'new2schema': {
+        this.dataService.QuerySchemaById(this.id);
+        break;
+      }
+      default: {
+        this.dataService.QueryWorkpackById(this.id);
+        break;
+      }
     }
   }
 }

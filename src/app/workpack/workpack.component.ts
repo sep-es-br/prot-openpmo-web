@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../data.service';
+import { DataService, Panel } from '../data.service';
 import { Subscription, Observable } from 'rxjs';
 import { Office } from '../model/office';
 import { Schema } from '../model/schema';
 import { Workpack } from '../model/workpack';
 import { Useful } from '../useful';
-import { Panel } from '../model/panel';
 import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
+import { WorkpackTemplate } from '../model/workpack-template';
 
 @Component({
   selector: 'app-workpack',
@@ -27,40 +27,61 @@ export class WorkpackComponent implements OnInit {
   subscriptions: Subscription[] = [];
   office: Office = new Office();
   schema: Schema = new Schema();
-  workpack: Workpack;
-  workpath: Workpack[] = [];
-  action: String;
+  workpack: Workpack = new Workpack();
+  workpackTemplate: WorkpackTemplate = new WorkpackTemplate();
+  parent: any;
   id: String;
+  possibleTemplates: WorkpackTemplate[] = [];
   panel: Panel;
-  breadcrumbTrail: Breadcrumb[];
-
 
   ngOnInit() {
-    this.action = this.route.snapshot.paramMap.get('action');
-    this.id = this.route.snapshot.paramMap.get('id');
-
-    this.subscriptions
-    .push(
+    this.subscriptions.push(
       this.dataService.panel.subscribe(p => {
         this.panel = p;
       })
     );
 
-    this.crumbService.breadcrumbTrail.subscribe(bct => {
-      this.breadcrumbTrail = bct;
-    });    
-
+    this.subscriptions.push(
+      this.dataService.workpackTemplate.subscribe(wt => {
+        this.workpackTemplate = wt;
+      })
+    );
+    
     this.subscriptions.push(
       this.dataService.workpack.subscribe(wp =>{
-        this.workpack = wp;
-        this.UpdateBreadcrumb(wp);
+        if (wp.id != '') {
+          if (this.panel.action == 'new2workpack') {
+            this.parent = wp;
+            this.workpack = new Workpack();
+            this.subscriptions.push(
+              this.dataService.GetWorkpackTemplateById(wp.template.id).subscribe(wptemp => {
+                this.possibleTemplates = wptemp.components;
+              })
+            );
+          }
+          else{
+            this.workpack = wp;
+            this.crumbService.SetCurrentWorkpack(wp);
+          }
+        }
       })
     );
 
     this.subscriptions.push(
       this.dataService.schema.subscribe(s => {
         this.schema = s;
-      })
+        if (s.id != '')
+          if (this.panel.action == 'new2schema') {
+            this.parent = s;
+            this.workpack = new Workpack();
+            this.subscriptions.push(
+              this.dataService.GetSchemaTemplateById(s.template.id).subscribe(stemp => {
+                this.possibleTemplates = stemp.workpackTemplates;
+              })
+            );
+          }
+        }
+      )
     );
 
     this.subscriptions.push(
@@ -69,46 +90,18 @@ export class WorkpackComponent implements OnInit {
       })
     );
     
-    this.subscriptions.push(
-      this.dataService.workpath.subscribe(wpath =>{
-        this.workpath = wpath;
-      })
-    );
-  }
-
-  UpdateBreadcrumb(workpack) {
-    if ((workpack !== undefined) && (workpack.id !== '')) {
-      let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == workpack.id);
-      if (index == -1) {
-        this.crumbService.Add({
-          action: this.action,
-          active: false,
-          id: workpack.id,
-          label: workpack.name,
-          route: 'workpack'
-        });
-      }
-      else {
-        this.crumbService.GoTo(index);
-      }
-    }
   }
 
   SetTrimmedNameAndShortName(value: String){
     this.workpack.name = this.useful.GetTrimmedName(value);
     this.workpack.shortName = this.useful.GetShortName(this.workpack.name);
   }
-  
-  NewWorkpack() {
-    this.action = 'new2workpack';
-    this.workpack = new Workpack();
-  }
 
   onSubmit(){
     this.workpack.name = this.workpack.name.trim();
     this.workpack.shortName = this.useful.GetShortName(this.workpack.shortName);
     
-    switch (this.action) {
+    switch (this.panel.action) {
       case 'new2schema': {
         this.schema.workpacks.push(this.workpack);
         this.subscriptions.push(
@@ -116,43 +109,31 @@ export class WorkpackComponent implements OnInit {
           .UpdateSchema(this.schema)
           .subscribe(
             () => {
-              this.action = 'children';
-              this.router.navigate(['./schema/'+ this.action + '/' + this.schema.id]);
+              this.panel.action = 'children';
+              this.router.navigate(['./schema/'+ this.panel.action + '/' + this.schema.id]);
             }
           )
         );
         break;
       }
       case 'new2workpack': {
-        let parent = this.workpath[this.workpath.length-1];
-        console.log('parent',parent);
-        parent.components.push(this.workpack);
+        this.parent.components.push(this.workpack);
         this.subscriptions.push(
           this.dataService
-          .UpdateWorkpack(parent)
+          .UpdateWorkpack(this.parent)
           .subscribe(
             () => {
-              this.action = 'children';
-              this.router.navigate(['./workpack/'+ this.action + '/' + parent.id]);
+              this.panel.action = 'children';
+              this.router.navigate(['./workpack/'+ this.panel.action + '/' + this.parent.id]);
             }
           )
         );
         break;
       }
       case 'edit': {
-        let parentId: String;
         let parentRoute: String;
-
         // if my parent is a schema...
-        if (this.workpath.length <= 1) {
-          parentId = this.schema.id;
-          parentRoute = 'schema';
-        }
-        else {
-          parentId = this.workpath[this.workpath.length-2].id;
-          parentRoute = 'workpack';
-        }
-
+        parentRoute = (this.schema.id == this.parent.id) ? 'schema' : 'workpack';
         this.subscriptions.push(
           this.dataService
           .UpdateWorkpack(this.workpack)
@@ -160,7 +141,7 @@ export class WorkpackComponent implements OnInit {
             () => {
               this.router.navigate([
                 './' + parentRoute + 
-                '/children/' + parentId]);
+                '/children/' + this.parent.id]);
             }
           )
         );
@@ -168,7 +149,7 @@ export class WorkpackComponent implements OnInit {
     }
   }
 
-  deleteWorkpack(id: string) {
+  DeleteWorkpack(id: string) {
     this.subscriptions
     .push(
       this.dataService
@@ -180,12 +161,7 @@ export class WorkpackComponent implements OnInit {
         else if(confirm("Are you sure you want to delete " + workpack2delete.name + "?")) {
           this.dataService.DeleteWorkpack(id).subscribe(
             () => {
-              if (this.workpath.length > 0) {
-                this.router.navigate(['./workpack/' + this.action + '/' + this.workpath[this.workpath.length-1].id]);
-              }
-              else {
-                this.router.navigate(['./schema/' + this.action + '/' + this.schema.id]);
-              }
+              this.dataService.QueryWorkpackById(this.workpack.id);
             }
           );
         }

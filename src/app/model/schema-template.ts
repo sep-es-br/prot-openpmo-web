@@ -5,4 +5,5 @@ export class SchemaTemplate {
     name: String = "";
     shortName: String = "";
     workpackTemplates: WorkpackTemplate[] = [];
+    template: SchemaTemplate[] = [];
 }

@@ -6,7 +6,6 @@ import { Office } from '../model/office';
 import { SchemaTemplate } from '../model/schema-template';
 import { WorkpackTemplate } from '../model/workpack-template';
 import { Useful } from '../useful';
-import { Panel } from '../model/panel';
 
 @Component({
   selector: 'app-workpack-template',
@@ -28,18 +27,10 @@ export class WorkpackTemplateComponent implements OnInit {
   templatepath: WorkpackTemplate[] = [];
   action: String;
   id: String;
-  panel: Panel;
 
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.id = this.route.snapshot.paramMap.get('id');
-    
-    this.subscriptions
-    .push(
-      this.dataService.panel.subscribe(p => {
-        this.panel = p;
-      })
-    );
     
     if ((this.action == 'new2schematemplate') || (this.action == 'new2workpacktemplate')) {
       this.workpackTemplate = new WorkpackTemplate();
@@ -69,11 +60,6 @@ export class WorkpackTemplateComponent implements OnInit {
     this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
         this.office = o;
-      })
-    );
-    this.subscriptions.push(
-      this.dataService.templatePath.subscribe(wptpath =>{
-        this.templatepath = wptpath;
       })
     );
   }

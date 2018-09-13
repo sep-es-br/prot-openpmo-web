@@ -9,7 +9,6 @@ import { OfficeAdminComponent } from './office-admin/office-admin.component';
 import { SchemaTemplateComponent } from './schema-template/schema-template.component';
 import { WorkpackTemplateComponent } from './workpack-template/workpack-template.component';
 import { WorkpackTemplateResolver } from './workpack-template/workpack-template.resolver';
-import { PanelResolver } from './panel.resolver';
 import { SchemaResolver } from './schema/schema.resolver';
 import { OfficeResolver } from './office/office.resolver';
 
@@ -23,24 +22,21 @@ const routes: Routes = [
     path: 'office/:action/:id',
     component: OfficeComponent,
     resolve: {      
-      office: OfficeResolver,
-      panel: PanelResolver,
+      office: OfficeResolver
     },
   },
   {
     path: 'schema/:action/:id',
     component: SchemaComponent,
     resolve: {      
-      schema: SchemaResolver,
-      panel: PanelResolver,
+      schema: SchemaResolver
     },
   },
   {
-    path: 'workpack/:action/:id',
+    path: 'workpack/:action/:id/:tid',
     component: WorkpackComponent,
     resolve: {      
-      workpack: WorkpackResolver,
-      panel: PanelResolver,
+      workpack: WorkpackResolver
     },
     runGuardsAndResolvers: 'always'
   },
@@ -56,8 +52,7 @@ const routes: Routes = [
     path: 'workpacktemplate/:action/:id',
     component: WorkpackTemplateComponent,
     resolve: {
-      workpack: WorkpackTemplateResolver,
-      panel: PanelResolver,
+      workpack: WorkpackTemplateResolver
     },
     runGuardsAndResolvers: "always"
   }

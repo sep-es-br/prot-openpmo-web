@@ -6,5 +6,5 @@ export class Schema {
     name: String = '';
     shortName: String = '';
     workpacks: Workpack[] = [];
-    schemaTemplates: SchemaTemplate[] = [];
+    template: SchemaTemplate = new SchemaTemplate();
 }

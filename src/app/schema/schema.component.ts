@@ -6,6 +6,7 @@ import { Schema } from '../model/schema';
 import { Office } from '../model/office';
 import { Useful } from '../useful';
 import { Breadcrumb, BreadcrumbService } from '../breadcrumb.service';
+import { SchemaTemplate } from '../model/schema-template';
 
 @Component({
   selector: 'app-schema',
@@ -24,18 +25,25 @@ export class SchemaComponent implements OnInit {
   subscriptions: Subscription[] = [];
   office: Office = new Office();
   schema: Schema = new Schema();
-  schemaId: String;
+  schemaTemplate: SchemaTemplate = new SchemaTemplate();
+  schemaId: String = '';
+  schemaTemplateId: String = '';
   action: String;
   title: String;
   showForm: Boolean;
   showChildren: Boolean;
-  breadcrumbTrail: Breadcrumb[];
 
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
-    this.schemaId = this.route.snapshot.paramMap.get('id');
-
-    this.title = 'Edit Schema';
+    let arrIds = this.route.snapshot.paramMap.get('id').split('&');
+    this.schemaId = arrIds[0];
+    
+    this.subscriptions.push(
+      this.dataService.schemaTemplate.subscribe(st => {
+        this.schemaTemplate = st;
+      })
+    );
+    
     this.subscriptions.push(
       this.dataService.schema.subscribe(s =>{
         this.schema = s;
@@ -43,22 +51,25 @@ export class SchemaComponent implements OnInit {
       })
     );
 
-    this.crumbService.breadcrumbTrail.subscribe(bct => {
-      this.breadcrumbTrail = bct;
-    });
-
-
     this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
         this.office = o;
       })
     );
+
+    if (this.action == 'new') {
+      this.dataService.schemaTemplate.subscribe(st => {
+        this.schema.template = st;
+      });
+    }
+
   }
 
   SetPanels(action: String) {
     this.action = action;
-    this.showForm = (action != 'children');
-    this.showChildren = ((action != 'children') || (action != 'detail'))
+    this.title = (action == 'new') ? 'New' : 'Edit';
+    this.showForm = ((action != 'children') && (action.slice(0,6) != 'delete'));
+    this.showChildren = (action != 'edit')
   }
 
   SetTrimmedNameAndShortName(value: String){
@@ -69,7 +80,6 @@ export class SchemaComponent implements OnInit {
   onSubmit(){
     this.schema.name = this.schema.name.trim();
     this.schema.shortName = this.useful.GetShortName(this.schema.shortName);
-
     if (this.action == 'new') {
       this.office.schemas.push(this.schema);
       this.subscriptions.push(
@@ -101,10 +111,9 @@ export class SchemaComponent implements OnInit {
         )
       );
     }
-
   }
 
-  deleteWorkpack(id: string) {
+  DeleteWorkpack(id: string) {
     this.subscriptions
     .push(
       this.dataService
@@ -116,7 +125,7 @@ export class SchemaComponent implements OnInit {
         else if(confirm("Are you sure to delete " + workpack2delete.name + "?")) {
           this.dataService.DeleteWorkpack(id).subscribe(
             () => {
-              this.router.navigate (['./schema/children/' + this.schema.id]);
+              this.dataService.QuerySchemaById(this.schema.id);
             }
           );
         }
