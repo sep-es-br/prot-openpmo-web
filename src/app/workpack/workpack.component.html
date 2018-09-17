@@ -1,7 +1,7 @@
 <div class="container-form">
   <div class="workpack-edit" *ngIf="(panel.showForm)">
     <div class="main-title">
-      <div >{{panel.title}} {{workpackTemplate.name}}</div>
+      <div >{{panel.title}} {{workpack.template.name}}</div>
     </div>
     <form name="workpackForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
       <div class="form-group">
@@ -54,16 +54,16 @@
               <i class="fa fa-building" aria-hidden="true"></i>
             </div>
             <div class="card-title">
-              <a routerLink="/workpack/children/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
+              <a routerLink="/workpack/children/{{component.id}}&{{component.template.id}}" routerLinkActive="active">{{component.name}}</a>
             </div>
   
             <div class="dropleft">
               <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" routerLink="/workpack/edit/{{component.id}}/{{workpackTemplate.id}}" routerLinkActive="active" href="#">Edit</a>
+                <a class="dropdown-item" routerLink="/workpack/edit/{{component.id}}&{{workpackTemplate.id}}" routerLinkActive="active" href="#">Edit</a>
                 <a class="dropdown-item" 
                     (click)="DeleteWorkpack(component.id)"
-                    routerLink="/workpack/children/{{workpack.id}}/{{workpackTemplate.id}}" 
+                    routerLink="/workpack/children/{{workpack.id}}&{{workpackTemplate.id}}" 
                     routerLinkActive="active">Delete</a>
               </div>
             </div>
@@ -74,18 +74,20 @@
             </div>
           </div>
         </div>
-        <div class="card new-card">
-          <div class="dropleft">
-            <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a  *ngFor="let template of possibleTemplates"
-                  class="dropdown-item" 
-                  routerLink="/workpack/new2workpack/{{workpack.id}}/{{template.id}}" 
-                  routerLinkActive="active">Edit</a>
+        <div class="card new-card" *ngIf="workpackTemplate.components.length > 0">
+            <div class="card-body">
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let template of workpackTemplate.components" 
+                        class="dropdown-item" 
+                        routerLink="/workpack/new2workpack/{{workpack.id}}&{{template.id}}" 
+                        routerLinkActive="active">{{template.name}}</a>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </div>

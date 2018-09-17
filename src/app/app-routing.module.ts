@@ -33,7 +33,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'workpack/:action/:id/:tid',
+    path: 'workpack/:action/:id',
     component: WorkpackComponent,
     resolve: {      
       workpack: WorkpackResolver

@@ -19,14 +19,13 @@ export class SchemaResolver implements Resolve<void> {
     let arrIds = route.paramMap.get('id').split('&');
     this.id = arrIds[0];
     if (arrIds.length > 1) {
+      
       this.dataService.QuerySchemaTemplateById(arrIds[1]);
     }    
 
     if ((this.action == "edit") || (this.action == "children")) {
       this.dataService.QuerySchemaById(this.id);
     }
-
-
   }
 
 }

@@ -54,7 +54,7 @@
                 <i class="fa fa-building" aria-hidden="true"></i>
               </div>
               <div class="card-title">
-                <a  routerLink="/schema/children/{{schema.id}}" 
+                <a  routerLink="/schema/children/{{schema.id}}&{{schema.template.id}}" 
                     routerLinkActive="active">{{schema.name}}</a>
               </div>
     
@@ -75,17 +75,14 @@
     
           <div class="card new-card">
             <div class="card-body">
-              <div class="dropleft">
-                  <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a *ngFor="let template of office.schemaTemplates" 
                         class="dropdown-item" 
                         routerLink="/schema/new/{{office.id}}&{{template.id}}" 
                         routerLinkActive="active">{{template.name}}</a>
                   </div>
-                </div>
-              <div class="card-image-new">
-                  <i class="fa fa-plus" aria-hidden="true"></i>
               </div>
             </div>
           </div>

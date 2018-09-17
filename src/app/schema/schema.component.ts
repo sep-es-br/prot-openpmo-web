@@ -62,7 +62,6 @@ export class SchemaComponent implements OnInit {
         this.schema.template = st;
       });
     }
-
   }
 
   SetPanels(action: String) {

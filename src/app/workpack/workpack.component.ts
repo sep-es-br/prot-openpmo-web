@@ -44,6 +44,7 @@ export class WorkpackComponent implements OnInit {
     this.subscriptions.push(
       this.dataService.workpackTemplate.subscribe(wt => {
         this.workpackTemplate = wt;
+        this.possibleTemplates = this.workpackTemplate.components;
       })
     );
     
@@ -53,11 +54,10 @@ export class WorkpackComponent implements OnInit {
           if (this.panel.action == 'new2workpack') {
             this.parent = wp;
             this.workpack = new Workpack();
-            this.subscriptions.push(
-              this.dataService.GetWorkpackTemplateById(wp.template.id).subscribe(wptemp => {
-                this.possibleTemplates = wptemp.components;
-              })
-            );
+          }
+          else if (this.panel.action == 'edit') {
+            this.parent = this.workpack;
+            this.workpack = wp;
           }
           else{
             this.workpack = wp;
@@ -73,12 +73,6 @@ export class WorkpackComponent implements OnInit {
         if (s.id != '')
           if (this.panel.action == 'new2schema') {
             this.parent = s;
-            this.workpack = new Workpack();
-            this.subscriptions.push(
-              this.dataService.GetSchemaTemplateById(s.template.id).subscribe(stemp => {
-                this.possibleTemplates = stemp.workpackTemplates;
-              })
-            );
           }
         }
       )
@@ -89,7 +83,6 @@ export class WorkpackComponent implements OnInit {
         this.office = o;
       })
     );
-    
   }
 
   SetTrimmedNameAndShortName(value: String){
@@ -100,6 +93,7 @@ export class WorkpackComponent implements OnInit {
   onSubmit(){
     this.workpack.name = this.workpack.name.trim();
     this.workpack.shortName = this.useful.GetShortName(this.workpack.shortName);
+    this.workpack.template = this.workpackTemplate;
     
     switch (this.panel.action) {
       case 'new2schema': {
@@ -110,7 +104,10 @@ export class WorkpackComponent implements OnInit {
           .subscribe(
             () => {
               this.panel.action = 'children';
-              this.router.navigate(['./schema/'+ this.panel.action + '/' + this.schema.id]);
+              this.router.navigate([
+                './schema/' + this.panel.action + 
+                '/' + this.schema.id +
+                '&' + this.schema.template.id]);
             }
           )
         );
@@ -124,24 +121,24 @@ export class WorkpackComponent implements OnInit {
           .subscribe(
             () => {
               this.panel.action = 'children';
-              this.router.navigate(['./workpack/'+ this.panel.action + '/' + this.parent.id]);
+              this.router.navigate([
+                './workpack/'+ this.panel.action + 
+                '/' + this.parent.id +
+                '&' + this.parent.template.id]);
             }
           )
         );
         break;
       }
       case 'edit': {
-        let parentRoute: String;
-        // if my parent is a schema...
-        parentRoute = (this.schema.id == this.parent.id) ? 'schema' : 'workpack';
         this.subscriptions.push(
           this.dataService
           .UpdateWorkpack(this.workpack)
           .subscribe(
             () => {
               this.router.navigate([
-                './' + parentRoute + 
-                '/children/' + this.parent.id]);
+                './workpack/children/' + this.parent.id +
+                '&' + this.parent.template.id]);
             }
           )
         );

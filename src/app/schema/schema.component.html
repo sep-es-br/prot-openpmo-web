@@ -53,22 +53,19 @@
               <i class="fa fa-building" aria-hidden="true"></i>
             </div>
             <div class="card-title">
-              <a routerLink="/workpack/children/{{workpack.id}}/{{workpack.template.id}}" routerLinkActive="active">{{workpack.name}}</a>
+              <a routerLink="/workpack/children/{{workpack.id}}&{{workpack.template.id}}" routerLinkActive="active">{{workpack.name}}</a>
             </div>
   
             <div class="dropleft">
               <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a  class="dropdown-item" 
-                    routerLink="/workpack/edit/{{workpack.id}}" 
+                    routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template.id}}" 
                     routerLinkActive="active">Edit</a>
                 <a  class="dropdown-item"
                     (click)="DeleteWorkpack(workpack.id)"
-                    routerLink="/schema/children/{{schema.id}}" 
+                    routerLink="/schema/children/{{schema.id}}&{{schema.template.id}}" 
                     routerLinkActive="active">Delete</a>
-                <a  class="dropdown-item" 
-                    routerLink="/workpackadmin/children/{{workpack.id}}" 
-                    routerLinkActive="active">Admin</a>
               </div>
             </div>
   
@@ -81,17 +78,15 @@
   
         <div class="card new-card">
           <div class="card-body">
-            <div class="dropleft">
-                <div class="card-image-new" id="dropdownMenuButton" data-toggle="dropdown">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                </div>
+            <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                <i class="fa fa-plus" aria-hidden="true"></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a  *ngFor="let template of schemaTemplate.workpackTemplates"
+                  <a *ngFor="let template of schemaTemplate.workpackTemplates" 
                       class="dropdown-item" 
-                      routerLink="/workpack/new2schema/{{schema.id}}/{{template.id}}" 
+                      routerLink="/workpack/new2schema/{{schema.id}}&{{template.id}}" 
                       routerLinkActive="active">{{template.name}}</a>
                 </div>
-              </div>
+            </div>
           </div>
         </div>
       </div>

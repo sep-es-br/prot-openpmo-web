@@ -12,6 +12,7 @@ export class Breadcrumb {
   label: String;
   route: String;
   id: String;
+  templateId: String;
   action: String;
   active: Boolean; 
 }
@@ -148,6 +149,7 @@ export class BreadcrumbService {
           action: 'children',
           active: false,
           id: node.id,
+          templateId: (node.template) ? '&' + node.template.id : '',
           label: node.name,
           route: route
         })

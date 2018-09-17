@@ -16,12 +16,14 @@ export class WorkpackResolver implements Resolve<void> {
   resolve(route: ActivatedRouteSnapshot) {
     this.action = route.paramMap.get('action');
     this.dataService.CleanWorkpack();
-    this.id = route.paramMap.get('id');
-    this.templateId = route.paramMap.get('tid');
     
     this.dataService.SetPanel(this.action);
-
-    this.dataService.QueryWorkpackTemplateById(this.templateId);
+    
+    let arrIds = route.paramMap.get('id').split('&');
+    this.id = arrIds[0];
+    if (arrIds.length > 1) {
+      this.dataService.QueryWorkpackTemplateById(arrIds[1]);
+    }
 
     switch (this.action) {
       case 'new2schema': {
