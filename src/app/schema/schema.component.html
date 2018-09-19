@@ -41,26 +41,24 @@
 
 <!-- schema-list.html -->
 <div *ngIf="((action == 'children') || (action == 'detail'))">
-  <div class="main-title">
-    <a routerLink="/office/children/{{office.id}}" routerLinkActive="active">{{schema.name}}</a>
-  </div>
+  <div class="main-title">{{schema.name}}</div>
   <div class="page-container">
     <div class="container-fluid cards">
       <div class="row">
         <div class="card card-style" *ngFor="let workpack of schema.workpacks"> 
           <div class="card-body">
             <div class="card-image">
-              <i class="fa fa-building" aria-hidden="true"></i>
+              <i class="fa fa-cube" aria-hidden="true"></i>
             </div>
             <div class="card-title">
-              <a routerLink="/workpack/children/{{workpack.id}}&{{workpack.template.id}}" routerLinkActive="active">{{workpack.name}}</a>
+              <a routerLink="/workpack/children/{{workpack.id}}&{{workpack.template?.id}}" routerLinkActive="active">{{workpack.name}}</a>
             </div>
   
             <div class="dropleft">
               <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a  class="dropdown-item" 
-                    routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template.id}}" 
+                    routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template?.id}}" 
                     routerLinkActive="active">Edit</a>
                 <a  class="dropdown-item"
                     (click)="DeleteWorkpack(workpack.id)"

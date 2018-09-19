@@ -44,13 +44,7 @@ export class HomeComponent implements OnInit {
   UpdateBreadcrumb() {
     let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == '');
     if (index == -1) {
-      this.breadcrumbService.Add({
-        action: '',
-        active: false,
-        id: '',
-        label: 'Home',
-        route: ''
-      })
+      this.breadcrumbService.Add(new Breadcrumb);
     }
     else {
       this.breadcrumbService.GoTo(index);

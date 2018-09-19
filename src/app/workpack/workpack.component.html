@@ -1,7 +1,10 @@
 <div class="container-form">
-  <div class="workpack-edit" *ngIf="(panel.showForm)">
+  <div class="workpack-edit" *ngIf="(viewOptions.showForm)">
     <div class="main-title">
-      <div >{{panel.title}} {{workpack.template.name}}</div>
+      <div>
+        <span>{{viewOptions.title}}</span>
+        <span *ngIf="viewOptions.action.slice(0,3) == 'new'" > {{workpackTemplate.name}}</span>
+      </div>
     </div>
     <form name="workpackForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
       <div class="form-group">
@@ -41,17 +44,15 @@
 </div>
 
 <!-- schema-list.html -->
-<div *ngIf="(panel.showChildren)">
-  <div class="main-title">
-    <div >{{workpack.name}}</div>
-  </div>
+<div *ngIf="(viewOptions.showChildren)">
+  <div class="main-title">{{workpack.name}}</div>
   <div class="page-container">
     <div class="container-fluid cards">
       <div class="row">
-        <div class="card card-style" *ngFor="let component of workpack.components"> 
+        <div class="card card-style"  *ngFor="let component of workpack.components"> 
           <div class="card-body">
             <div class="card-image">
-              <i class="fa fa-building" aria-hidden="true"></i>
+              <i class="fa fa-cube" aria-hidden="true"></i>
             </div>
             <div class="card-title">
               <a routerLink="/workpack/children/{{component.id}}&{{component.template.id}}" routerLinkActive="active">{{component.name}}</a>

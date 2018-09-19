@@ -42,19 +42,17 @@
 </div>  
 <!-- Office-list.html -->
 <div *ngIf="((action == 'children') || (action == 'detail'))">
-    <div class="main-title">
-      <a routerLink="/" routerLinkActive="active">{{office.name}}</a>
-    </div>
+    <div class="main-title">{{office.name}}</div>
     <div class="page-container">
       <div class="container-fluid cards">
         <div class="row">
           <div class="card card-style" *ngFor="let schema of office.schemas"> 
             <div class="card-body">
               <div class="card-image">
-                <i class="fa fa-building" aria-hidden="true"></i>
+                <i class="fa fa-sitemap" aria-hidden="true"></i>
               </div>
               <div class="card-title">
-                <a  routerLink="/schema/children/{{schema.id}}&{{schema.template.id}}" 
+                <a  routerLink="/schema/children/{{schema.id}}&{{schema.template?.id}}" 
                     routerLinkActive="active">{{schema.name}}</a>
               </div>
     

@@ -8,6 +8,7 @@ import { Workpack } from '../model/workpack';
 import { Useful } from '../useful';
 import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
 import { WorkpackTemplate } from '../model/workpack-template';
+import { ViewOptions } from '../model/view-options';
 
 @Component({
   selector: 'app-workpack',
@@ -29,53 +30,29 @@ export class WorkpackComponent implements OnInit {
   schema: Schema = new Schema();
   workpack: Workpack = new Workpack();
   workpackTemplate: WorkpackTemplate = new WorkpackTemplate();
-  parent: any;
   id: String;
-  possibleTemplates: WorkpackTemplate[] = [];
-  panel: Panel;
+  viewOptions: ViewOptions;
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.dataService.panel.subscribe(p => {
-        this.panel = p;
-      })
-    );
+
+    this.viewOptions = this.route.snapshot.data.workpack;
 
     this.subscriptions.push(
       this.dataService.workpackTemplate.subscribe(wt => {
         this.workpackTemplate = wt;
-        this.possibleTemplates = this.workpackTemplate.components;
       })
     );
     
     this.subscriptions.push(
       this.dataService.workpack.subscribe(wp =>{
-        if (wp.id != '') {
-          if (this.panel.action == 'new2workpack') {
-            this.parent = wp;
-            this.workpack = new Workpack();
-          }
-          else if (this.panel.action == 'edit') {
-            this.parent = this.workpack;
-            this.workpack = wp;
-          }
-          else{
-            this.workpack = wp;
-            this.crumbService.SetCurrentWorkpack(wp);
-          }
-        }
+        this.workpack = wp;
       })
     );
 
     this.subscriptions.push(
       this.dataService.schema.subscribe(s => {
         this.schema = s;
-        if (s.id != '')
-          if (this.panel.action == 'new2schema') {
-            this.parent = s;
-          }
-        }
-      )
+      })
     );
 
     this.subscriptions.push(
@@ -95,7 +72,7 @@ export class WorkpackComponent implements OnInit {
     this.workpack.shortName = this.useful.GetShortName(this.workpack.shortName);
     this.workpack.template = this.workpackTemplate;
     
-    switch (this.panel.action) {
+    switch (this.viewOptions.action) {
       case 'new2schema': {
         this.schema.workpacks.push(this.workpack);
         this.subscriptions.push(
@@ -103,9 +80,9 @@ export class WorkpackComponent implements OnInit {
           .UpdateSchema(this.schema)
           .subscribe(
             () => {
-              this.panel.action = 'children';
+              this.viewOptions.action = 'children';
               this.router.navigate([
-                './schema/' + this.panel.action + 
+                './schema/' + this.viewOptions.action + 
                 '/' + this.schema.id +
                 '&' + this.schema.template.id]);
             }
@@ -114,34 +91,44 @@ export class WorkpackComponent implements OnInit {
         break;
       }
       case 'new2workpack': {
-        this.parent.components.push(this.workpack);
         this.subscriptions.push(
-          this.dataService
-          .UpdateWorkpack(this.parent)
-          .subscribe(
-            () => {
-              this.panel.action = 'children';
-              this.router.navigate([
-                './workpack/'+ this.panel.action + 
-                '/' + this.parent.id +
-                '&' + this.parent.template.id]);
-            }
-          )
+          this.dataService.GetWorkpackById(this.crumbService.GetLast().id)
+          .subscribe(parentWP => {
+            parentWP.components.push(this.workpack);
+            this.subscriptions.push(
+              this.dataService
+              .UpdateWorkpack(parentWP)
+              .subscribe(
+                () => {
+                  this.viewOptions.action = 'children';
+                  this.router.navigate([
+                    './workpack/'+ this.viewOptions.action + 
+                    '/' + parentWP.id +
+                    '&' + parentWP.template.id]);
+                }
+              )
+            );
+          })
         );
         break;
       }
       case 'edit': {
         this.subscriptions.push(
-          this.dataService
-          .UpdateWorkpack(this.workpack)
-          .subscribe(
-            () => {
-              this.router.navigate([
-                './workpack/children/' + this.parent.id +
-                '&' + this.parent.template.id]);
-            }
-          )
-        );
+          this.dataService.GetWorkpackById(this.crumbService.GetLast().id)
+          .subscribe(parentWP => {
+            this.subscriptions.push(
+              this.dataService
+              .UpdateWorkpack(this.workpack)
+              .subscribe(
+                () => {
+                  this.router.navigate([
+                    './workpack/children/' + parentWP.id +
+                    '&' + parentWP.template.id]);
+                }
+              )
+            );
+          })
+        )
       }
     }
   }
@@ -153,12 +140,15 @@ export class WorkpackComponent implements OnInit {
       .GetWorkpackById(id)
       .subscribe(workpack2delete => {
         if (workpack2delete.components.length > 0) {
-          alert("Sorry, you can not delete this workpack because it contains workpacks.")
+          alert("Sorry, you can not delete " + workpack2delete.name + " because it is not empty.")
         }
         else if(confirm("Are you sure you want to delete " + workpack2delete.name + "?")) {
           this.dataService.DeleteWorkpack(id).subscribe(
             () => {
-              this.dataService.QueryWorkpackById(this.workpack.id);
+              this.router.navigate([
+                './workpack/children/' + this.workpack.id +
+                '&' + this.workpack.template.id]);
+
             }
           );
         }

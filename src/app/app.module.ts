@@ -25,6 +25,8 @@ import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { SchemaResolver } from './schema/schema.resolver';
 import { OfficeResolver } from './office/office.resolver';
 import { CookieService } from 'ngx-cookie-service';
+import { OfficeAdminResolver } from './office-admin/office-admin.resolver';
+import { SchemaTemplateResolver } from './schema-template/schema-template.resolver';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { CookieService } from 'ngx-cookie-service';
     CookieService,
     WorkpackResolver,
     SchemaResolver,
+    SchemaTemplateResolver,
     OfficeResolver,
+    OfficeAdminResolver,
     WorkpackTemplateResolver,
     HttpClient,
     Useful

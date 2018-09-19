@@ -4,6 +4,7 @@ import { DataService } from '../data.service';
 import { Subscription, Observable } from 'rxjs';
 import { Office } from '../model/office';
 import { Useful } from '../useful';
+import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
 
 @Component({
   selector: 'app-office-admin',
@@ -11,46 +12,33 @@ import { Useful } from '../useful';
   styleUrls: ['./office-admin.component.css']
 })
 export class OfficeAdminComponent implements OnInit {
+
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
+    private breadcrumbService: BreadcrumbService,
     private useful: Useful,
-    private router: Router ) { }
+    private router: Router) { }
 
   subscriptions: Subscription[] = [];
   office: Office;
   officeId: String;
   action: String;
-
+  breadcrumbTrail: Breadcrumb[] = [];
 
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.officeId = this.route.snapshot.paramMap.get('id');
-    this.dataService.QueryOfficeById(this.officeId);
     this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
         this.office = o;
+        this.breadcrumbService.SetCurrentOfficeAdmin(o);
       })
     );
-  }
-
-  SetTrimmedNameAndShortName(value: String){
-    this.office.name = this.useful.GetTrimmedName(value);
-    this.office.shortName = this.useful.GetShortName(this.office.name);
-  }
-
-  onSubmit(){
-    this.office.name = this.office.name.trim();
-    this.office.shortName = this.useful.GetShortName(this.office.shortName);
-
     this.subscriptions.push(
-      this.dataService
-      .SaveOffice(this.office)
-      .subscribe(
-        () => {
-          this.router.navigate(['./']); 
-        }
-      )
+      this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
+        this.breadcrumbTrail = trail;
+      })
     );
   }
 
@@ -70,12 +58,11 @@ export class OfficeAdminComponent implements OnInit {
     });
   }
 
-
-
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
   }
+
 
 }

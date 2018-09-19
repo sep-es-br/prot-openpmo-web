@@ -4,7 +4,7 @@ import { DataService } from '../data.service';
 import { Subscription } from 'rxjs';
 
 @Injectable()
-export class SchemaResolver implements Resolve<void> {
+export class SchemaTemplateResolver implements Resolve<void> {
 
   constructor(private dataService: DataService) {}
   id: String;
@@ -13,17 +13,12 @@ export class SchemaResolver implements Resolve<void> {
 
   resolve(route: ActivatedRouteSnapshot) {
     this.action = route.paramMap.get('action');
+    this.id = route.paramMap.get('id');
 
-    this.dataService.CleanSchema();
-
-    let arrIds = route.paramMap.get('id').split('&');
-    this.id = arrIds[0];
-    if (arrIds.length > 1) {
-      this.dataService.QuerySchemaTemplateById(arrIds[1]);
-    }    
+    this.dataService.CleanSchemaTemplate();
 
     if ((this.action == "edit") || (this.action == "children")) {
-      this.dataService.QuerySchemaById(this.id);
+      this.dataService.QuerySchemaTemplateById(this.id);
     }
   }
 

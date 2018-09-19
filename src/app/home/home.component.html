@@ -18,8 +18,8 @@
           <div class="dropleft">
               <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" routerLink="/office/edit/{{office.id}}" routerLinkActive="active" href="#">Edit</a>
-                <a class="dropdown-item" (click)="deleteOffice(office.id)" href="#">Delete</a>
+                <a class="dropdown-item" routerLink="/office/edit/{{office.id}}" routerLinkActive="active">Edit</a>
+                <a class="dropdown-item" (click)="deleteOffice(office.id)">Delete</a>
                 <a class="dropdown-item" routerLink="/officeadmin/children/{{office.id}}" routerLinkActive="active" href="#">Admin</a>
               </div>
             </div>

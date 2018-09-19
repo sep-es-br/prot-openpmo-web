@@ -11,6 +11,8 @@ import { WorkpackTemplateComponent } from './workpack-template/workpack-template
 import { WorkpackTemplateResolver } from './workpack-template/workpack-template.resolver';
 import { SchemaResolver } from './schema/schema.resolver';
 import { OfficeResolver } from './office/office.resolver';
+import { OfficeAdminResolver } from './office-admin/office-admin.resolver';
+import { SchemaTemplateResolver } from './schema-template/schema-template.resolver';
 
 const routes: Routes = [
   {
@@ -24,6 +26,7 @@ const routes: Routes = [
     resolve: {      
       office: OfficeResolver
     },
+    runGuardsAndResolvers: "always"
   },
   {
     path: 'schema/:action/:id',
@@ -31,6 +34,7 @@ const routes: Routes = [
     resolve: {      
       schema: SchemaResolver
     },
+    runGuardsAndResolvers: "always"
   },
   {
     path: 'workpack/:action/:id',
@@ -42,17 +46,25 @@ const routes: Routes = [
   },
   {
     path: 'officeadmin/:action/:id',
-    component: OfficeAdminComponent
+    component: OfficeAdminComponent,
+    resolve: {      
+      officeadmin: OfficeAdminResolver
+    },
+    runGuardsAndResolvers: "always"
   },
   {
     path: 'schematemplate/:action/:id',
-    component: SchemaTemplateComponent
+    component: SchemaTemplateComponent,
+    resolve: {      
+      schematemplate: SchemaTemplateResolver
+    },
+    runGuardsAndResolvers: "always"
   },
   {
     path: 'workpacktemplate/:action/:id',
     component: WorkpackTemplateComponent,
     resolve: {
-      workpack: WorkpackTemplateResolver
+      workpacktemplate: WorkpackTemplateResolver
     },
     runGuardsAndResolvers: "always"
   }

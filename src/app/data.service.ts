@@ -348,10 +348,13 @@ export class DataService {
   QueryWorkpackById(id: String) {
     const pathURL = environment.workpackAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    this.http.get(URL).subscribe(res => {
-      this.$workpack.next(res as Workpack);
-      this.Set2Workpath(this.$workpack.value);
-    });
+    return this
+            .http
+            .get(URL)
+            .pipe(map<any, Workpack>(res => {
+              this.$workpack.next(res as Workpack);
+              return res as Workpack;
+            }));
   }
 
 
@@ -580,12 +583,16 @@ export class DataService {
   //
   // Return: none
   //
-  QueryWorkpackTemplateById(id: String) {
+  QueryWorkpackTemplateById(id: String): Observable<WorkpackTemplate> {
     const pathURL = environment.workpackTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    this.http.get(URL).subscribe(res => {
-      this.$workpackTemplate.next(res as WorkpackTemplate);
-    });
+    return this
+            .http
+            .get(URL)
+            .pipe(map<any, WorkpackTemplate>(res => {
+              this.$workpackTemplate.next(res as WorkpackTemplate);
+              return res as WorkpackTemplate;
+            }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -669,6 +676,18 @@ export class DataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
+  // Clean the Schema Template Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanSchemaTemplate() {
+    this.$schemaTemplate.next(new SchemaTemplate);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
   // Clean the Workpack Observable
   //
   // Parameters: none
@@ -677,6 +696,18 @@ export class DataService {
   //
   CleanWorkpack() {
     this.$workpack.next(new Workpack);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Workpack Template Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanWorkpackTemplate() {
+    this.$workpackTemplate.next(new WorkpackTemplate);
   }
 
 
@@ -691,9 +722,32 @@ export class DataService {
   SetPanel(action: String) {
     let panel = new Panel();
     panel.action = action;
-    panel.title = (action.slice(0,3) == 'new') ? 'New' : 'Edit';
     panel.showForm = (action != 'children');
     panel.showChildren = ((action == 'children') || (action == 'detail'));
+
+    switch (panel.action) {
+      case 'new2schema': {
+        panel.title = 'New';
+        break;
+      }
+      case 'new2schematemplate': {
+        panel.title = 'New';
+        break;
+      }
+      case 'edit': {
+        panel.title = 'Edit';
+        break;
+      }
+      case 'new2workpack': {
+        panel.title = 'New';
+        break;
+      }
+      case 'new2workpacktemplate': {
+        panel.title = 'New Workpack Template';
+        break;
+      }
+    }
+
     this.$panel.next(panel);
   }  
 

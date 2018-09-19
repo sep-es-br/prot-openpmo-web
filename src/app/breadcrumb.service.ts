@@ -4,17 +4,19 @@ import { Office } from './model/office';
 import { Schema } from './model/schema';
 import { Workpack } from './model/workpack';
 import { CookieService } from 'ngx-cookie-service';
+import { SchemaTemplate } from './model/schema-template';
+import { WorkpackTemplate } from './model/workpack-template';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Breadcrumb {
-  label: String;
-  route: String;
-  id: String;
-  templateId: String;
-  action: String;
-  active: Boolean; 
+  label: String = '';
+  route: String = '';
+  id: String = '';
+  templateId: String = '';
+  action: String = '';
+  active: Boolean = false; 
 }
 @Injectable()
 export class BreadcrumbService {
@@ -31,9 +33,17 @@ export class BreadcrumbService {
   private $schema = new BehaviorSubject<Schema>(new Schema);
   schema = this.$schema.asObservable();
 
+  // Observable to the last schema template
+  private $schemaTemplate = new BehaviorSubject<SchemaTemplate>(new SchemaTemplate);
+  schemaTemplate = this.$schemaTemplate.asObservable();
+
   // Observable to the last workpack
   private $workpack = new BehaviorSubject<Workpack>(new Workpack);
   workpack = this.$workpack.asObservable();
+
+  // Observable to the last workpack template
+  private $workpackTemplate = new BehaviorSubject<WorkpackTemplate>(new WorkpackTemplate);
+  workpackTemplate = this.$workpackTemplate.asObservable();
 
   constructor(private cookie: CookieService) {
     if (cookie.check('breadcrumb')) {
@@ -81,6 +91,19 @@ export class BreadcrumbService {
 
   ////////////////////////////////////////////////////////////////////////
   //
+  // Set the curruent Workpack Template
+  //
+  // Parameters: workpack to set
+  //
+  // Return: none
+  //
+  SetCurrentWorkpackTemplate(workpackTemplate: WorkpackTemplate) {
+    this.$workpackTemplate.next(workpackTemplate);
+    this.UpdateBreadcrumb(workpackTemplate, 'workpacktemplate');
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
   // Clean the Workpack Observable
   //
   // Parameters: none
@@ -89,6 +112,18 @@ export class BreadcrumbService {
   //
   CleanWorkpack() {
     this.$workpack.next(new Workpack);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Clean the Workpack Template Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanWorkpackTemplate() {
+    this.$workpackTemplate.next(new WorkpackTemplate);
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -105,6 +140,18 @@ export class BreadcrumbService {
 
   ////////////////////////////////////////////////////////////////////////
   //
+  // Clean the Schema Template Observable
+  //
+  // Parameters: none
+  //
+  // Return: none
+  //
+  CleanSchemaTemplate() {
+    this.$schemaTemplate.next(new SchemaTemplate);
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
   // Set the curruent Schema
   //
   // Parameters: schema to set
@@ -114,6 +161,19 @@ export class BreadcrumbService {
   SetCurrentSchema(schema: Schema) {
     this.$schema.next(schema);
     this.UpdateBreadcrumb(schema, 'schema');
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Set the curruent Schema Template
+  //
+  // Parameters: schema template to set
+  //
+  // Return: none
+  //
+  SetCurrentSchemaTemplate(schemaTemplate: SchemaTemplate) {
+    this.$schemaTemplate.next(schemaTemplate);
+    this.UpdateBreadcrumb(schemaTemplate, 'schematemplate');
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -141,6 +201,19 @@ export class BreadcrumbService {
     this.UpdateBreadcrumb(office, 'office');
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Set the curruent Office Admin
+  //
+  // Parameters: office admin to set
+  //
+  // Return: none
+  //
+  SetCurrentOfficeAdmin(office: Office) {
+    this.$office.next(office);
+    this.UpdateBreadcrumb(office, 'officeadmin');
+  }
+
   UpdateBreadcrumb(node: any, route: String) {
     if ((node !== undefined) && (node.id !== '')){
       let index = this.$breadcrumbTrail.getValue().findIndex(crumb => crumb.id == node.id);
@@ -159,5 +232,12 @@ export class BreadcrumbService {
       }
     }
   }
+
+  GetLast(): Breadcrumb {
+    let lastIndex = this.$breadcrumbTrail.getValue().length - 1;
+
+    return (lastIndex >= 0) ? this.$breadcrumbTrail.getValue()[lastIndex] : null;
+  }
+
 
 }

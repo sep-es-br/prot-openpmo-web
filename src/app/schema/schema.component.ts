@@ -134,6 +134,7 @@ export class SchemaComponent implements OnInit {
 
 
   ngOnDestroy() {
+    this.crumbService.CleanSchema();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
