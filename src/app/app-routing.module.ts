@@ -17,56 +17,49 @@ import { SchemaTemplateResolver } from './schema-template/schema-template.resolv
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
-    runGuardsAndResolvers: 'always',
+    component: HomeComponent
   },
   {
     path: 'office/:action/:id',
     component: OfficeComponent,
     resolve: {      
       office: OfficeResolver
-    },
-    runGuardsAndResolvers: "always"
+    }
   },
   {
     path: 'schema/:action/:id',
     component: SchemaComponent,
     resolve: {      
       schema: SchemaResolver
-    },
-    runGuardsAndResolvers: "always"
+    }
   },
   {
     path: 'workpack/:action/:id',
     component: WorkpackComponent,
     resolve: {      
       workpack: WorkpackResolver
-    },
-    runGuardsAndResolvers: 'always'
+    }
   },
   {
     path: 'officeadmin/:action/:id',
     component: OfficeAdminComponent,
     resolve: {      
       officeadmin: OfficeAdminResolver
-    },
-    runGuardsAndResolvers: "always"
+    }
   },
   {
     path: 'schematemplate/:action/:id',
     component: SchemaTemplateComponent,
     resolve: {      
       schematemplate: SchemaTemplateResolver
-    },
-    runGuardsAndResolvers: "always"
+    }
   },
   {
     path: 'workpacktemplate/:action/:id',
     component: WorkpackTemplateComponent,
     resolve: {
       workpacktemplate: WorkpackTemplateResolver
-    },
-    runGuardsAndResolvers: "always"
+    }
   }
 ];
 

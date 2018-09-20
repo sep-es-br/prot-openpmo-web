@@ -32,6 +32,7 @@ export class WorkpackTemplateComponent implements OnInit {
   viewOptions: ViewOptions = new ViewOptions();
 
   ngOnInit() {
+
     this.viewOptions = this.route.snapshot.data.workpacktemplate;
 
     this.subscriptions.push(
@@ -132,7 +133,9 @@ export class WorkpackTemplateComponent implements OnInit {
         else if(confirm("Are you sure you want to delete " + workpackTemplate2delete.name + "?")) {
           this.dataService.DeleteWorkpackTemplate(id).subscribe(
             () => {
-              this.dataService.QueryWorkpackTemplateById(this.workpackTemplate.id);
+              this.subscriptions
+              .push(this.dataService.QueryWorkpackTemplateById(this.workpackTemplate.id)
+                .subscribe(wpt => wpt));
             }
           );
         }

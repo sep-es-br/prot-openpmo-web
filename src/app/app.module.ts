@@ -27,6 +27,7 @@ import { OfficeResolver } from './office/office.resolver';
 import { CookieService } from 'ngx-cookie-service';
 import { OfficeAdminResolver } from './office-admin/office-admin.resolver';
 import { SchemaTemplateResolver } from './schema-template/schema-template.resolver';
+import { TreeviewModule } from 'ngx-treeview';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { SchemaTemplateResolver } from './schema-template/schema-template.resolv
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    NgPipesModule
+    NgPipesModule,
+    TreeviewModule.forRoot(),
   ],
   providers: [
     DataService,

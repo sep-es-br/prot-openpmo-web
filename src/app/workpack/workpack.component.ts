@@ -145,10 +145,9 @@ export class WorkpackComponent implements OnInit {
         else if(confirm("Are you sure you want to delete " + workpack2delete.name + "?")) {
           this.dataService.DeleteWorkpack(id).subscribe(
             () => {
-              this.router.navigate([
-                './workpack/children/' + this.workpack.id +
-                '&' + this.workpack.template.id]);
-
+              this.subscriptions
+              .push(this.dataService.QueryWorkpackById(this.workpack.id)
+                .subscribe(wp => wp));
             }
           );
         }

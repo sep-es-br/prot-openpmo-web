@@ -51,7 +51,6 @@ export class OfficeAdminComponent implements OnInit {
         this.dataService.DeleteSchemaTemplate(id).subscribe(
           () => {
             this.dataService.QueryOfficeById(this.office.id);
-            this.router.navigate (['./officeadmin/' + this.action + '/' + this.office.id]);
           }
         );
       }

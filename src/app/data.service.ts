@@ -70,8 +70,7 @@ export class DataService {
   panel = this.$panel.asObservable();
 
   private baseURL = environment.databaseHost;
-  // private credentialsURL = (isDevMode())? "&userid=anonimo.bi&password=Da$hb0ard" : "";
-
+  
   private basePathURL = environment.baseAPIPath;
 
   constructor(private http: HttpClient) {
@@ -163,8 +162,6 @@ export class DataService {
   UpdateOffice(office: Office): Observable<Office> {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + office.id;
-    console.log('office', office);
-    console.log('URL', URL);
     return this.http.put(
       URL, 
       JSON.stringify(office), 
@@ -581,7 +578,7 @@ export class DataService {
   // Parameters: 
   //    id: The id of the Workpack Template to be retrieved
   //
-  // Return: none
+  // Return: An Observable to the Workpack Template
   //
   QueryWorkpackTemplateById(id: String): Observable<WorkpackTemplate> {
     const pathURL = environment.workpackTemplateAPI + id;
