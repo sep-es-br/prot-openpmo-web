@@ -9,14 +9,16 @@
       <div class="card card-style" *ngFor="let office of offices"> 
         <div class="card-body">
           <div class="card-image">
-            <i class="fa fa-building" aria-hidden="true"></i>
+            <mat-icon fontSet="fa" fontIcon="fa-building"></mat-icon>
           </div>
           <div class="card-title">
             <a routerLink="/office/children/{{office.id}}" routerLinkActive="active">{{office.name}}</a>
           </div>
 
           <div class="dropleft">
-              <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
+              <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+              </div>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" routerLink="/office/edit/{{office.id}}" routerLinkActive="active">Edit</a>
                 <a class="dropdown-item" (click)="deleteOffice(office.id)">Delete</a>
@@ -25,8 +27,7 @@
             </div>
 
           <div class="card-manager">
-            <!-- <i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="office.managerName" tooltipPosition="top"></i> -->
-            <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+            <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
           </div>
         </div>
       </div>
@@ -34,7 +35,7 @@
       <div class="card new-card" routerLink="/office/new/0" routerLinkActive="active">
         <div class="card-body">
           <div class="card-image-new">
-              <i class="fa fa-plus" aria-hidden="true"></i>
+              <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 body {
     margin: 0;
@@ -7,6 +8,13 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: rgb(241, 241, 241);
 }
+
+.mat-icon {
+    height: auto!important; 
+    width: auto!important;
+    padding: 5px;
+}
+
 
 /****************************************/
 

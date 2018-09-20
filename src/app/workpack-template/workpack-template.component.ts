@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService, Panel } from '../data.service';
 import { Subscription } from 'rxjs';
@@ -8,12 +8,19 @@ import { WorkpackTemplate } from '../model/workpack-template';
 import { Useful } from '../useful';
 import { BreadcrumbService } from '../breadcrumb.service';
 import { ViewOptions } from '../model/view-options';
+import { MatDialog } from '@angular/material/dialog';
+import { ReuseTreeviewDialogComponent } from './reuse-treeview-dialog/reuse-treeview-dialog.component';
 
 @Component({
   selector: 'app-workpack-template',
   templateUrl: './workpack-template.component.html',
   styleUrls: ['./workpack-template.component.css']
 })
+
+@NgModule({
+  entryComponents:[ ReuseTreeviewDialogComponent ]
+})
+
 export class WorkpackTemplateComponent implements OnInit {
 
   constructor(
@@ -21,7 +28,8 @@ export class WorkpackTemplateComponent implements OnInit {
     private dataService: DataService,
     private useful: Useful,
     private router: Router,
-    private crumbService: BreadcrumbService) {
+    private crumbService: BreadcrumbService,
+    private dialog: MatDialog) {
     }
 
   subscriptions: Subscription[] = [];
@@ -57,6 +65,21 @@ export class WorkpackTemplateComponent implements OnInit {
   SetTrimmedNameAndShortName(value: String){
     this.workpackTemplate.name = this.useful.GetTrimmedName(value);
     this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.name);
+  }
+
+  OpenReuseModal() {
+    let animal: string;
+    let name: string;
+    let dialogRef = this.dialog.open(ReuseTreeviewDialogComponent, {
+      width: '250px',
+      data: {
+        rootNode: this.workpackTemplate
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      animal = result;
+    });
   }
 
   onSubmit(){

@@ -48,14 +48,14 @@
         <div class="card card-style" *ngFor="let workpackTemplate of schemaTemplate.workpackTemplates"> 
           <div class="card-body">
             <div class="template-card-image">
-              <i class="fa fa-cube" aria-hidden="true"></i>
+              <mat-icon fontSet="fa" fontIcon="fa-cube" aria-hidden="true"></mat-icon>
             </div>
             <div class="template-card-title">
               <a routerLink="/workpacktemplate/children/{{workpackTemplate.id}}" routerLinkActive="active">{{workpackTemplate.name}}</a>
             </div>
   
-            <div class="dropleft">
-              <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
+            <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+              <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a  class="dropdown-item" 
                     routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" 
@@ -68,8 +68,7 @@
             </div>
   
             <div class="card-manager">
-              <!-- <i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="office.managerName" tooltipPosition="top"></i> -->
-              <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+              <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
             </div>
           </div>
         </div>
@@ -79,7 +78,7 @@
             <div class="card-image-new" 
                 routerLink="/workpacktemplate/new2schematemplate/{{schemaTemplate.id}}" 
                 routerLinkActive="active">
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
             </div>
           </div>
         </div>

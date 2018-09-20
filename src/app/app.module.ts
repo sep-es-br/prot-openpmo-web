@@ -27,7 +27,10 @@ import { OfficeResolver } from './office/office.resolver';
 import { CookieService } from 'ngx-cookie-service';
 import { OfficeAdminResolver } from './office-admin/office-admin.resolver';
 import { SchemaTemplateResolver } from './schema-template/schema-template.resolver';
-import { TreeviewModule } from 'ngx-treeview';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatIconModule, MatIconRegistry, MatNestedTreeNode, MatDialogModule } from '@angular/material';
+import { ReuseTreeviewDialogComponent } from './workpack-template/reuse-treeview-dialog/reuse-treeview-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +42,11 @@ import { TreeviewModule } from 'ngx-treeview';
     SchemaTemplateComponent,
     OfficeAdminComponent,
     WorkpackTemplateComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ReuseTreeviewDialogComponent
+  ],
+  entryComponents: [
+    ReuseTreeviewDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +54,9 @@ import { TreeviewModule } from 'ngx-treeview';
     AppRoutingModule,
     FormsModule,
     NgPipesModule,
-    TreeviewModule.forRoot(),
+    MatIconModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [
     DataService,
@@ -60,8 +69,15 @@ import { TreeviewModule } from 'ngx-treeview';
     OfficeAdminResolver,
     WorkpackTemplateResolver,
     HttpClient,
-    Useful
+    Useful,
+    MatIconRegistry
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+
+export class AppModule {
+  constructor(
+    public matIconRegistry: MatIconRegistry) {
+    matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
+  }
+}

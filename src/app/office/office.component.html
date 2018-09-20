@@ -49,15 +49,15 @@
           <div class="card card-style" *ngFor="let schema of office.schemas"> 
             <div class="card-body">
               <div class="card-image">
-                <i class="fa fa-sitemap" aria-hidden="true"></i>
+                <mat-icon fontSet="fa" fontIcon="fa-sitemap"></mat-icon>
               </div>
               <div class="card-title">
                 <a  routerLink="/schema/children/{{schema.id}}&{{schema.template?.id}}" 
                     routerLinkActive="active">{{schema.name}}</a>
               </div>
     
-              <div class="dropleft">
-                <i class="fa fa-bars card-setting" id="dropdownMenuButton" data-toggle="dropdown" ></i>
+              <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown" >
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" routerLink="/schema/edit/{{schema.id}}" routerLinkActive="active">Edit</a>
                   <a class="dropdown-item" (click)="DeleteSchema(schema.id)">Delete</a>
@@ -65,8 +65,7 @@
               </div>
     
               <div class="card-manager">
-                <!-- <i class="fa fa-user-circle" aria-hidden="true" [pTooltip]="schema.managerName" tooltipPosition="top"></i> -->
-                <i class="fa fa-user-circle" aria-hidden="true" pTooltip="managerName" tooltipPosition="top"></i>
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
               </div>
             </div>
           </div>
@@ -74,7 +73,7 @@
           <div *ngIf="office.schemaTemplates.length > 0" class="card new-card">
             <div class="card-body">
               <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
-                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a *ngFor="let template of office.schemaTemplates" 
                         class="dropdown-item" 
