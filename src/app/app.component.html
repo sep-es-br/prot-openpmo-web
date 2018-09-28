@@ -24,4 +24,14 @@
 
 <app-breadcrumb></app-breadcrumb>
 <router-outlet></router-outlet>
+<div class="spinner-container"
+    [style.top]="(spinnerOn) ? 0 : '-9999px'">
+    <mat-spinner
+    [style.opacity]="(spinnerOn) ? 1 : 0"
+    class="progress-spinner">
+    </mat-spinner>
+</div>
+
+
+
 </div>

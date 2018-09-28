@@ -33,6 +33,7 @@ export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
         break;
       }
       case 'children': {
+        this.dataService.QueryWorkpackTemplateTree(this.id);
         this.dataService.QueryWorkpackTemplateById(this.id).subscribe(wpt => {
           this.crumbService.SetCurrentWorkpackTemplate(wpt);
           this.viewOptions.title = wpt.name;
@@ -42,6 +43,7 @@ export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
         break;
       }
       case 'edit': {
+        this.dataService.QueryWorkpackTemplateTree(this.id);
         this.dataService.QueryWorkpackTemplateById(this.id).subscribe(wpt => {
           this.viewOptions.title = 'Edit ' + wpt.name;
         });
@@ -50,6 +52,7 @@ export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
         break;
       }
       case 'detail': {
+        this.dataService.QueryWorkpackTemplateTree(this.id);
         this.dataService.QueryWorkpackTemplateById(this.id).subscribe(wpt => {
           this.viewOptions.title = 'Edit ' + wpt.name;
         });

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReuseTreeviewDialogComponent } from './reuse-treeview-dialog.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('ReuseTreeviewDialogComponent', () => {
   let component: ReuseTreeviewDialogComponent;

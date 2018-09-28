@@ -59,8 +59,7 @@
                 <a class="dropdown-item" routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">Edit</a>
                 <a class="dropdown-item" 
                     (click)="DeleteWorkpackTemplate(component.id)"
-                    routerLink="/workpacktemplate/children/{{workpackTemplate.id}}" 
-                    routerLinkActive="active">Delete</a>
+                    routerLink="/workpacktemplate/children/{{workpackTemplate.id}}">Delete</a>
               </div>
             </div>
   
@@ -71,12 +70,30 @@
         </div>
         <div class="card new-card">
           <div class="card-body">
-            <div class="card-image-new" 
-                routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
-                routerLinkActive="active">
-                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+            <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+              <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a  class="dropdown-item" 
+                    routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
+                    routerLinkActive="active">New</a>
+                <div class="dropdown-item not-a-link disabled">Reuse:</div>
+                <a *ngFor="let template of flatTree"
+                    class="dropdown-item"
+                    [innerHTML]="template.label"></a>
+              </div>
             </div>
-            <i (click)="OpenReuseModal()">Reuse</i>
+            <!-- <mat-select placeholder="Or reuse a template">
+                <mat-option value="0">New</mat-option>
+                <mat-optgroup 
+                  label="Reuse a template:">
+                  <mat-option 
+                    *ngFor="let template of flatTree" 
+                    value={{template.id}}
+                    innerHTML="{{template.label}}"
+                    disabled="false">
+                  </mat-option>
+                </mat-optgroup>
+              </mat-select> -->
           </div>
         </div>
       </div>

@@ -8,6 +8,8 @@ import { Workpack } from './model/workpack';
 import { SchemaTemplate } from './model/schema-template';
 import { WorkpackTemplate } from './model/workpack-template';
 import { environment } from 'src/environments/environment';
+import { SpinnerService } from './spinner.service';
+import { delay } from 'q';
 
 export class Panel {
   action: String = '';
@@ -65,6 +67,10 @@ export class DataService {
   private $workpackTemplate = new BehaviorSubject<WorkpackTemplate>(new WorkpackTemplate);
   workpackTemplate = this.$workpackTemplate.asObservable();
 
+  // Observable property for the full tree on selected workpack template
+  private $workpackTemplateTree = new BehaviorSubject<WorkpackTemplate>(new WorkpackTemplate);
+  workpackTemplateTree = this.$workpackTemplateTree.asObservable();
+
   // Observable property for current show status of the workpack page 
   private $panel = new BehaviorSubject<Panel>(new Panel());
   panel = this.$panel.asObservable();
@@ -73,7 +79,8 @@ export class DataService {
   
   private basePathURL = environment.baseAPIPath;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, 
+              private spinnerService: SpinnerService) {
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -85,8 +92,10 @@ export class DataService {
   QueryOffices(){
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
     this.http.get(URL).subscribe(res => {
       this.$offices.next(res as Office[]);
+      this.spinnerService.HideSpinner();
     });
   }
 
@@ -102,8 +111,10 @@ export class DataService {
   QueryOfficeById(id: String) {
     const pathURL = environment.officeAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
     this.http.get(URL).subscribe(res => {
       this.$office.next(res as Office);
+      this.spinnerService.HideSpinner();
     });
   }
 
@@ -123,7 +134,11 @@ export class DataService {
       return this.office;
     }
     else {
-      return this.http.get(URL).pipe(map<any,Office>(res => res));
+      this.spinnerService.ShowSpinner();
+      return this.http.get(URL).pipe(map<any,Office>(res => {
+        this.spinnerService.HideSpinner();
+        return res;
+      }));
     }
   }
 
@@ -139,6 +154,7 @@ export class DataService {
   SaveOffice(office: Office): Observable<Office> {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
     return this.http.post(
       URL, 
       JSON.stringify(office), 
@@ -147,7 +163,10 @@ export class DataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Office>(res => res));
+    ).pipe(map<any, Office>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -162,6 +181,7 @@ export class DataService {
   UpdateOffice(office: Office): Observable<Office> {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + office.id;
+    this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
       JSON.stringify(office), 
@@ -170,7 +190,10 @@ export class DataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Office>(res => res));
+    ).pipe(map<any, Office>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -185,28 +208,12 @@ export class DataService {
   DeleteOffice(id: String): Observable<any> {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
-    return this.http.delete(URL).pipe(map<any, any>(res => res));
-  }
-
-  
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Run a GET http request for a list of Schemas adopted by an Office
-  //
-  // Parameters: 
-  //    id: The id of the Office that adopted the Schemas
-  //
-  // Return: An Observable array of Schemas adopted by the Office
-  //
-  GetSchemas(id: String) {
-    const pathURL = environment.schemaAPI + environment.listSchemasFunction + id;
-    const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, any>(res => {
-      this.$schemas.next(res as Schema[]);
+    this.spinnerService.ShowSpinner();
+    return this.http.delete(URL).pipe(map<any, any>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
     }));
   }
-
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -220,8 +227,10 @@ export class DataService {
   QuerySchemaById(id: String) {
     const pathURL = environment.schemaAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
     this.http.get(URL).subscribe(res => {
       this.$schema.next(res as Schema);
+      this.spinnerService.HideSpinner();
     });
   }
 
@@ -241,7 +250,11 @@ export class DataService {
       return null;
     }
     else {
-      return this.http.get(URL).pipe(map<any, Schema>(res => res));
+      this.spinnerService.ShowSpinner();
+      return this.http.get(URL).pipe(map<any, Schema>(res => {
+        this.spinnerService.HideSpinner();
+        return res;
+      }));
     }
   }
 
@@ -259,6 +272,7 @@ export class DataService {
   SaveSchema(schema: Schema, parentOffice: Office): Observable<Schema> {
     const pathURL = environment.schemaAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + parentOffice;
+    this.spinnerService.ShowSpinner();
     return this.http.post(
       URL, 
       JSON.stringify(schema), 
@@ -267,7 +281,10 @@ export class DataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Schema>(res => res));
+    ).pipe(map<any, Schema>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -282,10 +299,8 @@ export class DataService {
   UpdateSchema(schema: Schema): Observable<Schema> {
     const pathURL = environment.schemaAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + schema.id;
-
-    console.log('URL', URL);
-    console.log('schema', schema);
     
+    this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
       JSON.stringify(schema), 
@@ -294,7 +309,10 @@ export class DataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Schema>(res => res));
+    ).pipe(map<any, Schema>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
 
@@ -311,26 +329,11 @@ export class DataService {
   DeleteSchema(id: String): Observable<any> {
     const pathURL = environment.schemaAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
-    return this.http.delete(URL).pipe(map<any, any>(res => res));
-  }
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Run a GET http request for a list of Workpacks root of a Schema
-  //
-  // Parameters: 
-  //    id: The id of the parent Schema or Workpack 
-  //
-  // Return: An Observable array of Workpacks chiltren of the parent Schema or Workpack
-  //
-  GetWorkpacks(id: String) {
-    const pathURL =  environment.workpackAPI + environment.listWorkpacksFunction + id;
-    const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, any>(res => {
-      this.$workpacks.next(res as Workpack[]);
+    this.spinnerService.ShowSpinner();
+    return this.http.delete(URL).pipe(map<any, any>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
     }));
-
-
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -345,11 +348,13 @@ export class DataService {
   QueryWorkpackById(id: String) {
     const pathURL = environment.workpackAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
     return this
             .http
             .get(URL)
             .pipe(map<any, Workpack>(res => {
               this.$workpack.next(res as Workpack);
+              this.spinnerService.HideSpinner();
               return res as Workpack;
             }));
   }
@@ -371,7 +376,11 @@ export class DataService {
       return null;
     }
     else {
-      return this.http.get(URL).pipe(map<any,Workpack>(res =>res));
+      this.spinnerService.ShowSpinner();
+      return this.http.get(URL).pipe(map<any,Workpack>(res =>{
+        this.spinnerService.HideSpinner();
+        return res;
+      }));
     }
   }
 
@@ -388,6 +397,7 @@ export class DataService {
     const pathURL = environment.workpackAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + workpack.id;
 
+    this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
       JSON.stringify(workpack), 
@@ -396,7 +406,10 @@ export class DataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Workpack>(res => res));
+    ).pipe(map<any, Workpack>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
 
@@ -412,69 +425,12 @@ export class DataService {
   DeleteWorkpack(id: String): Observable<any> {
     const pathURL = environment.workpackAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
-    return this.http.delete(URL).pipe(map<any, any>(res => res));
-  }
-
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Set a workpack to be the leaf of the path. If it is already in the path,
-  // pops all further items, otherwise just add it
-  //
-  // Parameters: 
-  //    workpack: The workpack to be set as leaf
-  //
-  // Return: void
-  //
-  Set2Workpath(workpack: Workpack) {
-    let foundIndex = this.$workpath.value.findIndex(w => w.id == workpack.id);
-    // If the workpack is already in the path...
-    if (foundIndex != -1) {
-      for (let i=this.$workpath.value.length-1; i>foundIndex; i--) {
-        this.$workpath.value.pop();
-      }
-    }
-    else{
-      this.$workpath.value.push(workpack);
-    }
-    this.$workpath.next(this.$workpath.value);
-  }
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Run a GET http request for a list of Schemas Templates adopted by an Office
-  //
-  // Parameters: 
-  //    id: The id of the Office that adopted the Schema Templates
-  //
-  // Return: An Observable array of Schema Templates adopted by the Office
-  //
-  GetSchemaTemplates(id: String) {
-    const pathURL = environment.schemaTemplateAPI + environment.listSchemaTemplatesFunction + id;
-    const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, any>(res => {
-      this.$schemaTemplates.next(res as SchemaTemplate[]);
+    this.spinnerService.ShowSpinner();
+    return this.http.delete(URL).pipe(map<any, any>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
     }));
-
   }
-
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Run the GET http request to query a Schema Template by id
-  //
-  // Parameters: 
-  //    id: The id of the Schema Template to retrieve
-  //
-  // Return: The Observable Schema Template retrieved
-  //
-  // GetSchemaTemplateById(id: String) {
-  //   const pathURL = environment.schemaTemplateAPI + id;
-  //   const URL = this.baseURL + this.basePathURL + pathURL;
-  //   return this.http.get(URL).pipe(map<any, any>(res => {
-  //     this.$selectedSchemaTemplate.next(res);
-  //   }));
-  // }
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -488,8 +444,10 @@ export class DataService {
   QuerySchemaTemplateById(id: String) {
     const pathURL = environment.schemaTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
     return this.http.get(URL).subscribe(res => {
       this.$schemaTemplate.next(res as SchemaTemplate);
+      this.spinnerService.HideSpinner();
     });
   }
 
@@ -507,6 +465,7 @@ export class DataService {
     const pathURL = environment.schemaTemplateAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + schemaTemplate.id;
 
+    this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
       JSON.stringify(schemaTemplate), 
@@ -515,7 +474,10 @@ export class DataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, SchemaTemplate>(res => res));
+    ).pipe(map<any, SchemaTemplate>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
 
@@ -532,7 +494,11 @@ export class DataService {
   DeleteSchemaTemplate(id: String): Observable<any> {
     const pathURL = environment.schemaTemplateAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
-    return this.http.delete(URL).pipe(map<any, any>(res => res));
+    this.spinnerService.ShowSpinner();
+    return this.http.delete(URL).pipe(map<any, any>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -547,27 +513,10 @@ export class DataService {
   GetSchemaTemplateById(id: String): Observable<SchemaTemplate> {
     const pathURL = environment.schemaTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, SchemaTemplate>(res => res as SchemaTemplate));
-  }
-
-
-
-
-  ////////////////////////////////////////////////////////////////////////
-  //
-  // Run a GET http request for a list of Workpack Templates children of 
-  //    a parent Schema Template or Workpack Template
-  //
-  // Parameters: 
-  //    id: The id of the parent Schema Template or Workpack Template
-  //
-  // Return: An Observable array of children Workpack Templates
-  //
-  GetWorkpackTemplates(id: String) {
-    const pathURL = environment.workpackTemplateAPI + environment.listWorkpackTemplatesFunction + id;
-    const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, any>(res => {
-      this.$workpackTemplates.next(res as WorkpackTemplate[]);
+    this.spinnerService.ShowSpinner();
+    return this.http.get(URL).pipe(map<any, SchemaTemplate>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
     }));
   }
 
@@ -583,13 +532,40 @@ export class DataService {
   QueryWorkpackTemplateById(id: String): Observable<WorkpackTemplate> {
     const pathURL = environment.workpackTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
     return this
             .http
             .get(URL)
             .pipe(map<any, WorkpackTemplate>(res => {
               this.$workpackTemplate.next(res as WorkpackTemplate);
+              this.spinnerService.HideSpinner();
               return res as WorkpackTemplate;
             }));
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run the GET http request to query a tree of Workpack Templates 
+  //  and its siblings
+  //
+  // Parameters: 
+  //    id: The id of the root Workpack Template
+  //
+  // Return: An Observable to the root Workpack Template
+  //
+  QueryWorkpackTemplateTree(id: String){
+    const pathURL = environment.workpackTemplateAPI + environment.treeResource + id;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
+    this
+      .http
+      .get(URL)
+      .subscribe(res => {
+        this.$workpackTemplateTree.next(res as WorkpackTemplate);
+        this.spinnerService.HideSpinner();
+      });
+
+
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -604,7 +580,11 @@ export class DataService {
   GetWorkpackTemplateById(id: String): Observable<WorkpackTemplate> {
     const pathURL = environment.workpackTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    return this.http.get(URL).pipe(map<any, WorkpackTemplate>(res => res as WorkpackTemplate));
+    this.spinnerService.ShowSpinner();
+    return this.http.get(URL).pipe(map<any, WorkpackTemplate>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -620,6 +600,7 @@ export class DataService {
     const pathURL = environment.workpackTemplateAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + workpackTemplate.id;
 
+    this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
       JSON.stringify(workpackTemplate), 
@@ -628,7 +609,10 @@ export class DataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, WorkpackTemplate>(res => res));
+    ).pipe(map<any, WorkpackTemplate>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
 
@@ -644,7 +628,11 @@ export class DataService {
   DeleteWorkpackTemplate(id: String): Observable<any> {
     const pathURL = environment.workpackTemplateAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
-    return this.http.delete(URL).pipe(map<any, any>(res => res));
+    this.spinnerService.ShowSpinner();
+    return this.http.delete(URL).pipe(map<any, any>(res => {
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
   }
 
   ////////////////////////////////////////////////////////////////////////
