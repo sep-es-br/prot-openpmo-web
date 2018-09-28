@@ -38,6 +38,13 @@ export class WorkpackTemplateComponent implements OnInit {
   workpackTemplate: WorkpackTemplate = new WorkpackTemplate();
   parentWorkpackTemplate: WorkpackTemplate = new WorkpackTemplate();
   viewOptions: ViewOptions = new ViewOptions();
+  siblings: WorkpackTemplate[] = [];
+  tpTree: WorkpackTemplate = new WorkpackTemplate();
+  flatTree: {
+    ident: number;
+    id: String;
+    label: String; 
+  }[];
 
   ngOnInit() {
 
@@ -45,7 +52,15 @@ export class WorkpackTemplateComponent implements OnInit {
 
     this.subscriptions.push(
       this.dataService.workpackTemplate.subscribe(wpt =>{
-            this.workpackTemplate = wpt;
+        this.workpackTemplate = wpt;
+      })
+    );
+
+    this.subscriptions.push(
+      this.dataService.workpackTemplateTree
+      .subscribe(tree => {
+        this.flatTree = [];
+        this.FlattenTree(tree,1);
       })
     );
 
@@ -62,23 +77,37 @@ export class WorkpackTemplateComponent implements OnInit {
     );
   }
 
+  FlattenTree(root: WorkpackTemplate, ident: number){
+    root.components.forEach(template => {
+      if (this.flatTree.findIndex(item => {
+        return (item.id == template.id);
+      }) == -1) {
+        this.flatTree.push({
+          id: template.id,
+          ident: ident,
+          label: '&nbsp;&nbsp;'.repeat(ident) + template.name
+        });
+        this.FlattenTree(template, ident+1);
+      }
+    });
+  }
+
   SetTrimmedNameAndShortName(value: String){
     this.workpackTemplate.name = this.useful.GetTrimmedName(value);
     this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.name);
   }
 
   OpenReuseModal() {
-    let animal: string;
-    let name: string;
+    let selectedId: string;
+    console.log('this.siblings', this.siblings);
     let dialogRef = this.dialog.open(ReuseTreeviewDialogComponent, {
-      width: '250px',
-      data: {
-        rootNode: this.workpackTemplate
-      }
+      width: '600px',
+      height: '400px',
+      data: this.siblings
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      animal = result;
+      selectedId = result;
     });
   }
 

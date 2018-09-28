@@ -2,12 +2,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
-
+import { AppMatModule } from './app.mat.module';
 import { AppComponent } from './app.component';
 import { DataService } from './data.service';
 
 import { AppRoutingModule } from './/app-routing.module';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, RouterModule } from '@angular/router';
 
 import { WorkpackResolver } from './workpack/workpack.resolver';
 import { WorkpackTemplateResolver } from './workpack-template/workpack-template.resolver';
@@ -27,8 +26,6 @@ import { OfficeResolver } from './office/office.resolver';
 import { CookieService } from 'ngx-cookie-service';
 import { OfficeAdminResolver } from './office-admin/office-admin.resolver';
 import { SchemaTemplateResolver } from './schema-template/schema-template.resolver';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatIconModule, MatIconRegistry, MatNestedTreeNode, MatDialogModule } from '@angular/material';
 import { ReuseTreeviewDialogComponent } from './workpack-template/reuse-treeview-dialog/reuse-treeview-dialog.component';
 
 
@@ -50,13 +47,11 @@ import { ReuseTreeviewDialogComponent } from './workpack-template/reuse-treeview
   ],
   imports: [
     BrowserModule,
+    AppMatModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    NgPipesModule,
-    MatIconModule,
-    BrowserAnimationsModule,
-    MatDialogModule
+    NgPipesModule
   ],
   providers: [
     DataService,
@@ -69,15 +64,10 @@ import { ReuseTreeviewDialogComponent } from './workpack-template/reuse-treeview
     OfficeAdminResolver,
     WorkpackTemplateResolver,
     HttpClient,
-    Useful,
-    MatIconRegistry
+    Useful
   ],
   bootstrap: [AppComponent]
 })
 
 export class AppModule {
-  constructor(
-    public matIconRegistry: MatIconRegistry) {
-    matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
-  }
 }

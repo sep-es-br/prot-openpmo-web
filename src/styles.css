@@ -2,11 +2,17 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+
+
 body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
     background-color: rgb(241, 241, 241);
+}
+
+button, a, div {
+    outline: none!important;
 }
 
 .mat-icon {
@@ -158,4 +164,3 @@ body {
 .temp{
     height: 200px;
 }
-

@@ -8,13 +8,11 @@ export const environment = {
   baseAPIPath: 'api/',
   officeAPI: 'office/',
   schemaAPI: 'schema/',
-  listSchemasFunction: 'listschemas/',
   workpackAPI: 'workpack/',
-  listWorkpacksFunction: 'listworkpacks/',
   schemaTemplateAPI: 'schematemplate/',
-  listSchemaTemplatesFunction: 'listschematemplates/',
   workpackTemplateAPI: 'workpacktemplate/',
-  listWorkpackTemplatesFunction: 'listworkpacktemplates/'
+  treeResource: 'tree/',
+  templateResource: 'template/',
 };
 
 /*
