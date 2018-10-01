@@ -79,6 +79,7 @@
                 <div class="dropdown-item not-a-link disabled">Reuse:</div>
                 <a *ngFor="let template of flatTree"
                     class="dropdown-item"
+                    (click)="ReuseTemplate(template.id)"
                     [innerHTML]="template.label"></a>
               </div>
             </div>

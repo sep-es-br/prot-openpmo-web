@@ -92,6 +92,20 @@ export class WorkpackTemplateComponent implements OnInit {
     });
   }
 
+  ReuseTemplate(id: String) {
+    let template2Reuse = new WorkpackTemplate();
+    template2Reuse.id = id;
+    this.workpackTemplate.components.push(template2Reuse);
+    this.dataService
+      .UpdateWorkpackTemplate(this.workpackTemplate)
+      .subscribe(() => {
+        this.viewOptions.action = 'children';
+        this.router.navigate([
+          './workpacktemplate/'+ this.viewOptions.action + 
+          '/' + this.workpackTemplate.id]);
+      });
+  }
+
   SetTrimmedNameAndShortName(value: String){
     this.workpackTemplate.name = this.useful.GetTrimmedName(value);
     this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.name);
