@@ -37,6 +37,6 @@ import 'hammerjs';
 export class AppMatModule {
   constructor(
     public matIconRegistry: MatIconRegistry) {
-    matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
+    matIconRegistry.registerFontClassAlias('fontawesome', 'fas');
   }
 }

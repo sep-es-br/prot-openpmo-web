@@ -48,7 +48,7 @@
         <div class="card card-style" *ngFor="let workpack of schema.workpacks"> 
           <div class="card-body">
             <div class="card-image">
-              <mat-icon fontSet="fa" fontIcon="fa-cube"></mat-icon>
+              <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
             </div>
             <div class="card-title">
               <a routerLink="/workpack/children/{{workpack.id}}&{{workpack.template?.id}}" routerLinkActive="active">{{workpack.name}}</a>
