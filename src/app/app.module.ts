@@ -18,6 +18,7 @@ import { WorkpackComponent } from './workpack/workpack.component';
 import { SchemaTemplateComponent } from './schema-template/schema-template.component';
 import { OfficeAdminComponent } from './office-admin/office-admin.component';
 import { WorkpackTemplateComponent } from './workpack-template/workpack-template.component';
+import { PropertyTemplateComponent } from './workpack-template/property-template/property-template.component';
 import { Useful } from './useful';
 import { BreadcrumbService } from './breadcrumb.service';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
@@ -39,6 +40,7 @@ import { ReuseTreeviewDialogComponent } from './workpack-template/reuse-treeview
     SchemaTemplateComponent,
     OfficeAdminComponent,
     WorkpackTemplateComponent,
+    PropertyTemplateComponent,
     BreadcrumbComponent,
     ReuseTreeviewDialogComponent
   ],

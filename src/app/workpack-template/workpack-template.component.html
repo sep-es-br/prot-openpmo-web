@@ -16,29 +16,49 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="workpacktemplateshortname">Short Name</label>
-        <input  class="form-control" 
-                name="workpacktemplateshortname"
-                #workpackTemplateShortName="ngModel" 
-                [ngClass]="{ 'is-invalid': f.submitted && workpackTemplateShortName.invalid }"
-                required 
-                pattern="[a-z0-9_]*"
-                type="text" 
-                size="30" 
-                [(ngModel)]="workpackTemplate.shortName"/> 
-        <div *ngIf="f.submitted && workpackTemplateShortName.invalid" class="invalid-feedback">
-          <div *ngIf="workpackTemplateShortName.errors.required">Name is required</div>
-          <div *ngIf="workpackTemplateShortName.errors.pattern">The short name can have only lowercase letters, digits and underscore (_)</div>
+        <label for="workpacktemplateshortname">Properties</label>
+        <app-property-template></app-property-template>
+        <div class="container-fluid cards">
+          <div class="row">
+            <div class="card card-style" *ngFor="let property of properties"> 
+              <div class="card-body">
+                <div class="template-card-image">
+                  <mat-icon fontSet="fas" fontIcon="fa-window-maximize"></mat-icon>
+                </div>
+                <div class="template-card-title">
+                  <span>{{property.name}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="card new-card">
+              <div class="card-body">
+                <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let type of propertyTypes"
+                        class="dropdown-item"
+                        [innerHTML]="type.typeName"></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
       <div class="form-group">
         <button class="btn btn-primary">Save</button>
       </div>
+
+    
+
+
+
     </form>
   </div>
 </div>
 
-<!-- schema-list.html -->
+<!-- workpack-template-list.html -->
 <div *ngIf="(viewOptions.showChildren)">
   <div class="main-title">{{workpackTemplate.name}}</div>
   <div class="page-container">
@@ -47,7 +67,7 @@
         <div class="card card-style" *ngFor="let component of workpackTemplate.components"> 
           <div class="card-body">
             <div class="template-card-image">
-              <mat-icon fontSet="fa" fontIcon="fa-cube"></mat-icon>
+              <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
             </div>
             <div class="template-card-title">
               <a routerLink="/workpacktemplate/children/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
@@ -79,6 +99,7 @@
                 <div class="dropdown-item not-a-link disabled">Reuse:</div>
                 <a *ngFor="let template of flatTree"
                     class="dropdown-item"
+                    (click)="ReuseTemplate(template.id)"
                     [innerHTML]="template.label"></a>
               </div>
             </div>
