@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {  MatFormFieldModule,
+          MatInputModule,
           MatButtonModule, 
           MatIconModule, 
           MatDialogModule, 
@@ -8,6 +9,7 @@ import {  MatFormFieldModule,
           MatProgressSpinnerModule,
           MatRadioModule,
           MatSelectModule,
+          MatExpansionModule,
           MatIconRegistry } from '@angular/material';
 import 'hammerjs';
 
@@ -15,23 +17,27 @@ import 'hammerjs';
   imports: [ 
     BrowserAnimationsModule, 
     MatFormFieldModule,
+    MatInputModule,
     MatButtonModule, 
     MatIconModule,
     MatDialogModule,
     MatTreeModule,
     MatRadioModule,
     MatSelectModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   exports: [ 
     MatFormFieldModule,
+    MatInputModule,
     MatButtonModule, 
     MatIconModule,
     MatDialogModule,
     MatTreeModule,
     MatRadioModule,
     MatSelectModule,
-    MatProgressSpinnerModule  ]
+    MatProgressSpinnerModule,
+    MatExpansionModule  ]
 })
 
 export class AppMatModule {

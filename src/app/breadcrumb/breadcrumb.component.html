@@ -14,8 +14,8 @@
                     <span *ngIf="((i > 0) && (i < breadcrumbTrail.length - 1))">
                         {{crumb.label}}
                     </span>
-                    <span *ngIf="((i > 0) && (i == breadcrumbTrail.length - 1))">
-                        <b>{{crumb.label}}</b>
+                    <span *ngIf="((i > 0) && (i == breadcrumbTrail.length - 1))" disabled>
+                        {{crumb.label}}
                     </span>
             </a>
           </li>

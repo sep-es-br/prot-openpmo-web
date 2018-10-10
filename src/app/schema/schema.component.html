@@ -1,95 +1,108 @@
+<div class="main-title">{{title}} {{(action == 'new')?schema.template.name:schema.name}}</div>
 <div class="container-form"> 
-  <div class="schema-edit" *ngIf="(showForm)">
-      <label for="schemaForm">{{title}} {{schema.template.name}}</label>
-      <form name="schemaForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-        <div class="form-group">
-            <label for="schemaname">Name</label>
-            <input type="text" class="form-control" 
-                name="schemaname" autocomplete="off"
-                #schemaName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && schemaName.invalid }"
-                required
-                type="text" size="30" 
-                [ngModel]="schema.name | trim"
-                (ngModelChange)="SetTrimmedNameAndShortName($event)" /> 
-            <div *ngIf="f.submitted && schemaName.invalid" class="invalid-feedback">
-                <div *ngIf="schemaName.errors.required">Name is required</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="schemashortname">Short Name</label>
-            <input  id="schemashortname" class="form-control" 
-                    name="schemashortname" autocomplete="off"
-                    #schemashortname="ngModel" 
-                    [ngClass]="{ 'is-invalid': f.submitted && schemashortname.invalid }"
-                    required 
-                    pattern="[a-z0-9_]*"
-                    type="text" 
-                    size="30" 
-                    [(ngModel)]="schema.shortName"/> 
-            <div *ngIf="f.submitted && schemashortname.invalid" class="invalid-feedback">
-                <div *ngIf="schemashortname.errors.required">Short Name is required</div>
-                <div *ngIf="schemashortname.errors.pattern">The short name can have only lowercase letters, digits and underscore (_)</div>
-            </div>
-        </div>
+  <mat-accordion >
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Properties
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        name="schemaForm" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm"
+        class="form-container" 
+        novalidate>
+        <mat-form-field>
+          <input matInput
+            type="text"      
+            [formControl]="nameFormControl"
+            placeholder="Name"
+            required
+            [(ngModel)]="schema.name"/>
+        </mat-form-field>
+        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+        <mat-form-field>
+          <input matInput 
+            type="text" 
+            [formControl]="shortNameFormControl"
+            placeholder="Short Name"
+            required
+            [(ngModel)]="schema.shortName"/>
+        </mat-form-field>
+        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
 
-        <div class="form-group">
-            <button class="btn btn-primary">Save</button>
-        </div>
+        <button mat-raised-button>Save</button>
+
       </form>
-    </div>
-</div>
+    </mat-expansion-panel>
 
-<!-- schema-list.html -->
-<div *ngIf="((action == 'children') || (action == 'detail'))">
-  <div class="main-title">{{schema.name}}</div>
-  <div class="page-container">
-    <div class="container-fluid cards">
-      <div class="row">
-        <div class="card card-style" *ngFor="let workpack of schema.workpacks"> 
-          <div class="card-body">
-            <div class="card-image">
-              <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
-            </div>
-            <div class="card-title">
-              <a routerLink="/workpack/children/{{workpack.id}}&{{workpack.template?.id}}" routerLinkActive="active">{{workpack.name}}</a>
-            </div>
-  
-            <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
-              <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a  class="dropdown-item" 
-                    routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template?.id}}" 
-                    routerLinkActive="active">Edit</a>
-                <a  class="dropdown-item"
-                    (click)="DeleteWorkpack(workpack.id)"
-                    routerLink="/schema/children/{{schema.id}}&{{schema.template.id}}" 
-                    routerLinkActive="active">Delete</a>
+    <!-- Workpacks Panel -->
+    <mat-expansion-panel
+      *ngIf="action != 'new'"
+      [expanded]="workpacksPanelOpenState"
+      (opened)="workpacksPanelOpenState = true"
+      (closed)="workpacksPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Workpacks
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <div class="container-fluid cards">
+        <div class="row">
+          <div class="card card-style" *ngFor="let workpack of schema.workpacks"> 
+            <div class="card-body">
+              <div class="card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+              </div>
+              <div class="card-title">
+                <a routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template?.id}}" routerLinkActive="active">{{workpack.name}}</a>
+              </div>
+    
+              <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a  class="dropdown-item"
+                      (click)="DeleteWorkpack(workpack.id)"
+                      routerLink="/schema/edit/{{schema.id}}&{{schema.template.id}}" 
+                      routerLinkActive="active">Delete</a>
+                </div>
+              </div>
+    
+              <div class="card-manager">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
               </div>
             </div>
-  
-            <div class="card-manager">
-              <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
-            </div>
           </div>
-        </div>
-  
-        <div class="card new-card">
-          <div class="card-body">
-            <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
-                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a *ngFor="let template of schemaTemplate.workpackTemplates" 
-                      class="dropdown-item" 
-                      routerLink="/workpack/new2schema/{{schema.id}}&{{template.id}}" 
-                      routerLinkActive="active">{{template.name}}</a>
-                </div>
+
+          <div class="card new-card">
+            <div class="card-body">
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let template of schemaTemplate.workpackTemplates" 
+                        class="dropdown-item" 
+                        routerLink="/workpack/new2schema/{{schema.id}}&{{template.id}}" 
+                        routerLinkActive="active">{{template.name}}</a>
+                  </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
+  
+    </mat-expansion-panel>
 
-<div class="temp">
+  </mat-accordion>
 </div>

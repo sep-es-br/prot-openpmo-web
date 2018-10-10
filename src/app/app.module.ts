@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHandler, HttpClientModule } from '@angular/common/http';
 import { AppMatModule } from './app.mat.module';
 import { AppComponent } from './app.component';
@@ -53,6 +53,7 @@ import { ReuseTreeviewDialogComponent } from './workpack-template/reuse-treeview
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     NgPipesModule
   ],
   providers: [

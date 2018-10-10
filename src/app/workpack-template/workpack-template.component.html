@@ -1,32 +1,88 @@
+<div class="main-title">{{viewOptions.title}}</div>
 <div class="container-form">
-  <div class="workpack-edit" *ngIf="(viewOptions.showForm)">
-    <div class="main-title">{{viewOptions.title}}</div>
-    <form name="workpackTemplateForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-      <div class="form-group">
-        <label for="workpacktemplatename">Name</label>
-        <input type="text" class="form-control" 
-            name="workpacktemplatename"
-            #workpackTemplateName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && workpackTemplateName.invalid }"
+  <mat-accordion >
+
+    <!-- Edit/View Panel -->
+    <mat-expansion-panel 
+      [expanded]="viewOptions.propertiesPanelOpenState"
+      (opened)="viewOptions.propertiesPanelOpenState = true"
+      (closed)="viewOptions.propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Properties
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        name="workpackForm" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm"
+        class="form-container" 
+        novalidate>
+        <mat-form-field>
+          <input matInput
+            type="text"      
+            [formControl]="nameFormControl"
+            placeholder="Name"
             required
-            type="text" size="30" 
-            [ngModel]="workpackTemplate.name | trim"
-            (ngModelChange)="SetTrimmedNameAndShortName($event)" /> 
-        <div *ngIf="f.submitted && workpackTemplateName.invalid" class="invalid-feedback">
-          <div *ngIf="workpackTemplateName.errors.required">Name is required</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="workpacktemplateshortname">Properties</label>
-        <app-property-template></app-property-template>
-        <div class="container-fluid cards">
+            [(ngModel)]="workpackTemplate.name"/>
+        </mat-form-field>
+        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+        <mat-form-field>
+          <input matInput 
+            type="text" 
+            [formControl]="shortNameFormControl"
+            placeholder="Short Name"
+            required
+            [(ngModel)]="workpackTemplate.shortName"/>
+        </mat-form-field>
+        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+
+        <button mat-raised-button>Save</button>
+
+      </form>
+    </mat-expansion-panel>
+
+    <!-- Workpack Templates Panel -->
+    <mat-expansion-panel
+      *ngIf="viewOptions.action == 'edit'"
+      [expanded]="viewOptions.workpacksPanelOpenState"
+      (opened)="viewOptions.workpacksPanelOpenState = true"
+      (closed)="viewOptions.workpacksPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Workpack Templates
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <div class="container-fluid cards">
           <div class="row">
-            <div class="card card-style" *ngFor="let property of properties"> 
+            <div class="card card-style" *ngFor="let component of workpackTemplate.components"> 
               <div class="card-body">
                 <div class="template-card-image">
-                  <mat-icon fontSet="fas" fontIcon="fa-window-maximize"></mat-icon>
+                  <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
                 </div>
                 <div class="template-card-title">
-                  <span>{{property.name}}</span>
+                  <a routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
+                </div>
+      
+                <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" 
+                        (click)="DeleteWorkpackTemplate(component.id)"
+                        routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}">Delete</a>
+                  </div>
+                </div>
+      
+                <div class="card-manager">
+                  <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
                 </div>
               </div>
             </div>
@@ -35,92 +91,22 @@
                 <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
                   <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a *ngFor="let type of propertyTypes"
+                    <a  class="dropdown-item" 
+                        routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
+                        routerLinkActive="active">New</a>
+                    <div class="dropdown-item not-a-link disabled">Reuse:</div>
+                    <a *ngFor="let template of flatTree"
                         class="dropdown-item"
-                        [innerHTML]="type.typeName"></a>
+                        (click)="ReuseTemplate(template.id)"
+                        [innerHTML]="template.label"></a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="form-group">
-        <button class="btn btn-primary">Save</button>
-      </div>
-
-    
-
-
-
-    </form>
-  </div>
-</div>
-
-<!-- workpack-template-list.html -->
-<div *ngIf="(viewOptions.showChildren)">
-  <div class="main-title">{{workpackTemplate.name}}</div>
-  <div class="page-container">
-    <div class="container-fluid cards">
-      <div class="row">
-        <div class="card card-style" *ngFor="let component of workpackTemplate.components"> 
-          <div class="card-body">
-            <div class="template-card-image">
-              <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
-            </div>
-            <div class="template-card-title">
-              <a routerLink="/workpacktemplate/children/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
-            </div>
   
-            <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
-              <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">Edit</a>
-                <a class="dropdown-item" 
-                    (click)="DeleteWorkpackTemplate(component.id)"
-                    routerLink="/workpacktemplate/children/{{workpackTemplate.id}}">Delete</a>
-              </div>
-            </div>
+    </mat-expansion-panel>
   
-            <div class="card-manager">
-              <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
-            </div>
-          </div>
-        </div>
-        <div class="card new-card">
-          <div class="card-body">
-            <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
-              <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a  class="dropdown-item" 
-                    routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
-                    routerLinkActive="active">New</a>
-                <div class="dropdown-item not-a-link disabled">Reuse:</div>
-                <a *ngFor="let template of flatTree"
-                    class="dropdown-item"
-                    (click)="ReuseTemplate(template.id)"
-                    [innerHTML]="template.label"></a>
-              </div>
-            </div>
-            <!-- <mat-select placeholder="Or reuse a template">
-                <mat-option value="0">New</mat-option>
-                <mat-optgroup 
-                  label="Reuse a template:">
-                  <mat-option 
-                    *ngFor="let template of flatTree" 
-                    value={{template.id}}
-                    innerHTML="{{template.label}}"
-                    disabled="false">
-                  </mat-option>
-                </mat-optgroup>
-              </mat-select> -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="temp">
+  </mat-accordion>
 </div>

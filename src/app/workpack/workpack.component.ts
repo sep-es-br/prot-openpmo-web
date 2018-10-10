@@ -9,6 +9,7 @@ import { Useful } from '../useful';
 import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
 import { WorkpackTemplate } from '../model/workpack-template';
 import { ViewOptions } from '../model/view-options';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-workpack',
@@ -22,9 +23,16 @@ export class WorkpackComponent implements OnInit {
     private dataService: DataService,
     private useful: Useful,
     private router: Router, 
-    private crumbService: BreadcrumbService) {
-    }
+    private crumbService: BreadcrumbService) {}
 
+  nameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  
+  shortNameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+     
   subscriptions: Subscription[] = [];
   office: Office = new Office();
   schema: Schema = new Schema();
@@ -34,9 +42,8 @@ export class WorkpackComponent implements OnInit {
   viewOptions: ViewOptions;
 
   ngOnInit() {
-
     this.viewOptions = this.route.snapshot.data.workpack;
-
+    
     this.subscriptions.push(
       this.dataService.workpackTemplate.subscribe(wt => {
         this.workpackTemplate = wt;
@@ -80,7 +87,7 @@ export class WorkpackComponent implements OnInit {
           .UpdateSchema(this.schema)
           .subscribe(
             () => {
-              this.viewOptions.action = 'children';
+              this.viewOptions.action = 'edit';
               this.router.navigate([
                 './schema/' + this.viewOptions.action + 
                 '/' + this.schema.id +
@@ -100,7 +107,7 @@ export class WorkpackComponent implements OnInit {
               .UpdateWorkpack(parentWP)
               .subscribe(
                 () => {
-                  this.viewOptions.action = 'children';
+                  this.viewOptions.action = 'edit';
                   this.router.navigate([
                     './workpack/'+ this.viewOptions.action + 
                     '/' + parentWP.id +
@@ -122,7 +129,7 @@ export class WorkpackComponent implements OnInit {
               .subscribe(
                 () => {
                   this.router.navigate([
-                    './workpack/children/' + parentWP.id +
+                    './workpack/edit/' + parentWP.id +
                     '&' + parentWP.template.id]);
                 }
               )

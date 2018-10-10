@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  databaseHost: 'http://localhost:4200/',
+  databaseHost: 'http://10.179.7.1:4200/',
   baseAPIPath: 'api/',
   officeAPI: 'office/',
   schemaAPI: 'schema/',

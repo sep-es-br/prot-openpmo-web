@@ -3,6 +3,7 @@ import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { DataService } from '../data.service';
 import { BreadcrumbService } from '../breadcrumb.service';
 import { ViewOptions } from '../model/view-options';
+import { WorkpackTemplate } from '../model/workpack-template';
 
 @Injectable()
 export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
@@ -18,46 +19,36 @@ export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
  
     switch (this.viewOptions.action) {
       case 'new2schematemplate': {
-        this.dataService.QuerySchemaTemplateById(this.id);
+        this.dataService.QuerySchemaTemplateById(this.id).subscribe(res => res);
         this.dataService.CleanWorkpackTemplate();
-        this.viewOptions.showChildren = false;
-        this.viewOptions.showForm = true;
+        this.viewOptions.propertiesPanelOpenState = true;
+        this.viewOptions.workpacksPanelOpenState = false;
         this.viewOptions.title = 'New Workpack Template';
+        this.viewOptions.arrIds.push(this.id);
+        let newWorkpackTemplate = new WorkpackTemplate();
+        newWorkpackTemplate.id = 'new';
+        this.crumbService.SetCurrentWorkpackTemplate(newWorkpackTemplate);
         break;
       }
       case 'new2workpacktemplate': {
         this.dataService.CleanWorkpackTemplate();
-        this.viewOptions.showChildren = false;
-        this.viewOptions.showForm = true;
+        this.viewOptions.propertiesPanelOpenState = true;
+        this.viewOptions.workpacksPanelOpenState = false;
         this.viewOptions.title = 'New Workpack Template';
-        break;
-      }
-      case 'children': {
-        this.dataService.QueryWorkpackTemplateTree(this.id);
-        this.dataService.QueryWorkpackTemplateById(this.id).subscribe(wpt => {
-          this.crumbService.SetCurrentWorkpackTemplate(wpt);
-          this.viewOptions.title = wpt.name;
-        });
-        this.viewOptions.showChildren = true;
-        this.viewOptions.showForm = false;
-        break;
+        this.viewOptions.arrIds.push(this.id);
+        let newWorkpackTemplate = new WorkpackTemplate();
+        newWorkpackTemplate.id = 'new';
+        this.crumbService.SetCurrentWorkpackTemplate(newWorkpackTemplate);
+        break;        
       }
       case 'edit': {
         this.dataService.QueryWorkpackTemplateTree(this.id);
         this.dataService.QueryWorkpackTemplateById(this.id).subscribe(wpt => {
-          this.viewOptions.title = 'Edit ' + wpt.name;
+          this.viewOptions.title = wpt.name;
+          this.crumbService.SetCurrentWorkpackTemplate(wpt);
         });
-        this.viewOptions.showChildren = false;
-        this.viewOptions.showForm = true;
-        break;
-      }
-      case 'detail': {
-        this.dataService.QueryWorkpackTemplateTree(this.id);
-        this.dataService.QueryWorkpackTemplateById(this.id).subscribe(wpt => {
-          this.viewOptions.title = 'Edit ' + wpt.name;
-        });
-        this.viewOptions.showChildren = true;
-        this.viewOptions.showForm = true;
+        this.viewOptions.propertiesPanelOpenState = false;
+        this.viewOptions.workpacksPanelOpenState = true;
         break;
       }
     }

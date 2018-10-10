@@ -7,6 +7,7 @@ import { Office } from '../model/office';
 import { Useful } from '../useful';
 import { Breadcrumb, BreadcrumbService } from '../breadcrumb.service';
 import { SchemaTemplate } from '../model/schema-template';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-schema',
@@ -22,6 +23,15 @@ export class SchemaComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService ) {}
 
+  nameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  
+  shortNameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+   
+
   subscriptions: Subscription[] = [];
   office: Office = new Office();
   schema: Schema = new Schema();
@@ -32,9 +42,15 @@ export class SchemaComponent implements OnInit {
   title: String;
   showForm: Boolean;
   showChildren: Boolean;
+  propertiesPanelOpenState: Boolean = false;
+  workpacksPanelOpenState: Boolean = true;
 
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
+    if (this.action == 'new') {
+      this.propertiesPanelOpenState = true;
+      this.workpacksPanelOpenState = false;
+    } 
     let arrIds = this.route.snapshot.paramMap.get('id').split('&');
     this.schemaId = arrIds[0];
     
@@ -47,7 +63,6 @@ export class SchemaComponent implements OnInit {
     this.subscriptions.push(
       this.dataService.schema.subscribe(s =>{
         this.schema = s;
-        this.crumbService.SetCurrentSchema(s);
       })
     );
 
@@ -66,7 +81,7 @@ export class SchemaComponent implements OnInit {
 
   SetPanels(action: String) {
     this.action = action;
-    this.title = (action == 'new') ? 'New' : 'Edit';
+    this.title = (action == 'new') ? 'New' : '';
     this.showForm = ((action != 'children') && (action.slice(0,6) != 'delete'));
     this.showChildren = (action != 'edit')
   }
@@ -86,11 +101,11 @@ export class SchemaComponent implements OnInit {
         .UpdateOffice(this.office)
         .subscribe(
           ret => {
-            this.router.navigate(['./office/children/' + this.office.id]);
+            this.router.navigate(['./office/edit/' + this.office.id]);
           },
           error => Observable.throw(error),
           () => {
-            this.router.navigate(['./office/children/' + this.office.id]); 
+            this.router.navigate(['./office/edit/' + this.office.id]); 
           }
         )
       );
@@ -101,11 +116,11 @@ export class SchemaComponent implements OnInit {
         .UpdateSchema(this.schema)
         .subscribe(
           ret => {
-            this.router.navigate(['./office/children/' + this.office.id]);
+            this.router.navigate(['./office/edit/' + this.office.id]);
           },
           error => Observable.throw(error),
           () => {
-            this.router.navigate(['./office/children/' + this.office.id]); 
+            this.router.navigate(['./office/edit/' + this.office.id]); 
           }
         )
       );
@@ -124,7 +139,11 @@ export class SchemaComponent implements OnInit {
         else if(confirm("Are you sure to delete " + workpack2delete.name + "?")) {
           this.dataService.DeleteWorkpack(id).subscribe(
             () => {
-              this.dataService.QuerySchemaById(this.schema.id);
+              this.subscriptions
+              .push(
+                this.dataService.QuerySchemaById(this.schema.id)
+                .subscribe(res => res)
+              );
             }
           );
         }

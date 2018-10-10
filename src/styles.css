@@ -3,12 +3,16 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
+html {
+    height: 100%;
+}
 
 body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
-    background-color: rgb(241, 241, 241);
+    background-color: rgb(241, 241, 241)!important;
+    min-height: 100%;
 }
 
 button, a, div {
@@ -31,12 +35,23 @@ button, a, div {
 }
 
 .main-title{
-    margin-top: 25px;
-    margin-bottom: 30px;
+    margin: 0;
     padding-left: 50px;
     padding-right: 50px;
     color: #606062;
-    font-size: 24px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.panel-container {
+    margin: 0;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .cards{
@@ -150,7 +165,7 @@ button, a, div {
 .container-form  {
     padding-left: 50px;
     padding-right: 50px;
-    margin-top: 50px;
+    margin-top: 15px;
 }
 
 .shortName{
@@ -163,4 +178,10 @@ button, a, div {
 
 .temp{
     height: 200px;
+}
+
+.collapsed {
+    display: none;
+    animation-duration: 3s;
+    animation-timing-function: ease-in-out;
 }

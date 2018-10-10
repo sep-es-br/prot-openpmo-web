@@ -5,6 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Office } from '../model/office';
 import { Useful } from '../useful';
 import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-office-admin',
@@ -20,11 +21,21 @@ export class OfficeAdminComponent implements OnInit {
     private useful: Useful,
     private router: Router) { }
 
+  nameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  
+  shortNameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  
   subscriptions: Subscription[] = [];
   office: Office;
   officeId: String;
   action: String;
   breadcrumbTrail: Breadcrumb[] = [];
+  schemaTemplatesPanelOpenState: Boolean = true;
+
 
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
@@ -32,7 +43,6 @@ export class OfficeAdminComponent implements OnInit {
     this.subscriptions.push(
       this.dataService.office.subscribe(o =>{
         this.office = o;
-        this.breadcrumbService.SetCurrentOfficeAdmin(o);
       })
     );
     this.subscriptions.push(
@@ -50,7 +60,7 @@ export class OfficeAdminComponent implements OnInit {
       else if(confirm("Are you sure to delete " + schemaTemplate2delete.name + "?")) {
         this.dataService.DeleteSchemaTemplate(id).subscribe(
           () => {
-            this.dataService.QueryOfficeById(this.office.id);
+            this.dataService.QueryOfficeById(this.office.id).subscribe(res => res);
           }
         );
       }

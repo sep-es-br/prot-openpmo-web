@@ -1,91 +1,105 @@
+<div class="main-title">{{title}} {{(action == 'new')? 'Schema Template' : schemaTemplate.name}}</div>
 <div class="container-form"> 
-  <div class="schema-edit" *ngIf="(showForm)">
-      <label for="schemaForm">{{title}}</label>
-      <form name="schemaForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-        <div class="form-group">
-            <label for="schematemplatename">Name</label>
-            <input type="text" class="form-control" 
-                name="schematemplatename" autocomplete="off"
-                #schemaTemplateName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && schemaTemplateName.invalid }"
-                required
-                type="text" size="30" 
-                [ngModel]="schemaTemplate.name | trim"
-                (ngModelChange)="SetTrimmedNameAndShortName($event)" /> 
-            <div *ngIf="f.submitted && schemaTemplateName.invalid" class="invalid-feedback">
-                <div *ngIf="schemaTemplateName.errors.required">Name is required</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="schematemplateshortname">Short Name</label>
-            <input  id="schematemplateshortname" class="form-control" 
-                    name="schematemplateshortname" autocomplete="off"
-                    #schematemplateshortname="ngModel" 
-                    [ngClass]="{ 'is-invalid': f.submitted && schematemplateshortname.invalid }"
-                    required 
-                    pattern="[a-z0-9_]*"
-                    type="text" 
-                    size="30" 
-                    [(ngModel)]="schemaTemplate.shortName"/> 
-            <div *ngIf="f.submitted && schematemplateshortname.invalid" class="invalid-feedback">
-                <div *ngIf="schematemplateshortname.errors.required">Short Name is required</div>
-                <div *ngIf="schematemplateshortname.errors.pattern">The short name can have only lowercase letters, digits and underscore (_)</div>
-            </div>
-        </div>
+  <mat-accordion >
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Properties
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        name="schemaForm" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm"
+        class="form-container" 
+        novalidate>
+        <mat-form-field>
+          <input matInput
+            type="text"      
+            [formControl]="nameFormControl"
+            placeholder="Name"
+            required
+            [(ngModel)]="schemaTemplate.name"/>
+        </mat-form-field>
+        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+        <mat-form-field>
+          <input matInput 
+            type="text" 
+            [formControl]="shortNameFormControl"
+            placeholder="Short Name"
+            required
+            [(ngModel)]="schemaTemplate.shortName"/>
+        </mat-form-field>
+        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
 
-        <div class="form-group">
-            <button class="btn btn-primary">Save</button>
-        </div>
+        <button mat-raised-button>Save</button>
+
       </form>
-    </div>
-</div>
+    </mat-expansion-panel>
 
-<!-- schema-emplate-list -->
-<div *ngIf="((action == 'children') || (action == 'detail'))">
-  <div class="main-title">{{schemaTemplate.name}}</div>
-  <div class="page-container">
-    <div class="container-fluid cards">
-      <div class="row">
-        <div class="card card-style" *ngFor="let workpackTemplate of schemaTemplate.workpackTemplates"> 
-          <div class="card-body">
-            <div class="template-card-image">
-              <mat-icon fontSet="fas" fontIcon="fa-cube" aria-hidden="true"></mat-icon>
-            </div>
-            <div class="template-card-title">
-              <a routerLink="/workpacktemplate/children/{{workpackTemplate.id}}" routerLinkActive="active">{{workpackTemplate.name}}</a>
-            </div>
-  
-            <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
-              <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a  class="dropdown-item" 
-                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" 
-                    routerLinkActive="active">Edit</a>
-                <a  class="dropdown-item"
-                    (click)="DeleteWorkpackTemplate(workpackTemplate.id)"
-                    routerLink="/schematemplate/children/{{schemaTemplate.id}}" 
-                    routerLinkActive="active">Delete</a>
+    <!-- Workpack Templates Panel -->
+    <mat-expansion-panel
+      *ngIf="action != 'new'"
+      [expanded]="workpackTemplatesPanelOpenState"
+      (opened)="workpackTemplatesPanelOpenState = true"
+      (closed)="workpackTemplatesPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Workpack Templates
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <div class="container-fluid cards">
+        <div class="row">
+          <div class="card card-style" *ngFor="let workpackTemplate of schemaTemplate.workpackTemplates"> 
+            <div class="card-body">
+              <div class="template-card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-cube" aria-hidden="true"></mat-icon>
+              </div>
+              <div class="template-card-title">
+                <a routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" routerLinkActive="active">{{workpackTemplate.name}}</a>
+              </div>
+    
+              <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a  class="dropdown-item"
+                      (click)="DeleteWorkpackTemplate(workpackTemplate.id)"
+                      routerLink="/schematemplate/edit/{{schemaTemplate.id}}" 
+                      routerLinkActive="active">Delete</a>
+                </div>
+              </div>
+    
+              <div class="card-manager">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
               </div>
             </div>
-  
-            <div class="card-manager">
-              <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
-            </div>
           </div>
-        </div>
-  
-        <div class="card new-card">
-          <div class="card-body">
-            <div class="card-image-new" 
-                routerLink="/workpacktemplate/new2schematemplate/{{schemaTemplate.id}}" 
-                routerLinkActive="active">
-                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-            </div>
+      
+          <div class="card new-card">
+              <div class="card-body">
+                <div class="card-image-new" 
+                    routerLink="/workpacktemplate/new2schematemplate/{{schemaTemplate.id}}" 
+                    routerLinkActive="active">
+                    <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                </div>
+              </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<div class="temp">
+  
+    </mat-expansion-panel>
+  
+  </mat-accordion>  
+  
 </div>

@@ -1,45 +1,59 @@
 <!-- Office-list.html -->
-<div *ngIf="((action == 'children') || (action == 'detail'))">
-  <div class="main-title">{{office.name}}</div>
+  <div class="main-title">{{office.name}} Administration</div>
   <div class="page-container">
-    <div class="container-fluid cards">
-      <div class="row">
-        <div class="card card-style" *ngFor="let schemaTemplate of office.schemaTemplates"> 
-          <div class="card-body">
-            <div class="template-card-image">
-              <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>
-            </div>
-            <div class="template-card-title">
-              <a  routerLink="/schematemplate/children/{{schemaTemplate.id}}" 
-                  routerLinkActive="active">{{schemaTemplate.name}}</a>
-            </div>
-  
-            <div class="dropleft card-setting" data-toggle="dropdown">
-              <mat-icon fontSet="fa" fontIcon="fa-bars" id="dropdownMenuButton"></mat-icon>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" routerLink="/schematemplate/edit/{{schemaTemplate.id}}" routerLinkActive="active">Edit</a>
-                <a class="dropdown-item" (click)="DeleteSchemaTemplate(schemaTemplate.id)">Delete</a>
-              </div>
-            </div>
-  
-            <div class="card-manager">
-              <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
-            </div>
-          </div>
-        </div>
-  
-        <div class="card new-card">
-          <div class="card-body">
-            <div class="card-image-new" 
-                  routerLink="/schematemplate/new/{{office.id}}" 
-                  routerLinkActive="active">
-                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <mat-accordion >
+          <!-- Planning Schemas Panel -->
+          <mat-expansion-panel
+            [expanded]="schemaTemplatesPanelOpenState"
+            (opened)="schemaTemplatesPanelOpenState = true"
+            (closed)="schemaTemplatesPanelOpenState = false">
+            
+            <!-- Header -->
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Schema Templates
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            
+            <!-- Body -->
+            <div class="container-fluid cards">
+                <div class="row">
+                  <div class="card card-style" *ngFor="let schemaTemplate of office.schemaTemplates"> 
+                    <div class="card-body">
+                      <div class="template-card-image">
+                        <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>
+                      </div>
+                      <div class="template-card-title">
+                        <a  routerLink="/schematemplate/edit/{{schemaTemplate.id}}" 
+                            routerLinkActive="active">{{schemaTemplate.name}}</a>
+                      </div>
+            
+                      <div class="dropleft card-setting" data-toggle="dropdown">
+                        <mat-icon fontSet="fa" fontIcon="fa-bars" id="dropdownMenuButton"></mat-icon>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" (click)="DeleteSchemaTemplate(schemaTemplate.id)">Delete</a>
+                        </div>
+                      </div>
+            
+                      <div class="card-manager">
+                        <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div class="card new-card">
+                    <div class="card-body">
+                      <div class="card-image-new" 
+                            routerLink="/schematemplate/new/{{office.id}}" 
+                            routerLinkActive="active">
+                          <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>      
+          </mat-expansion-panel>
+        
+        </mat-accordion>
   </div>
-</div>
-<div class="temp">
-</div>
+

@@ -1,8 +1,4 @@
 <!-- office-list.html -->
-<div class="main-title">
-  HOME
-</div>
-
 <div class="page-container">
   <div class="container-fluid cards">
     <div class="row">
@@ -12,7 +8,7 @@
             <mat-icon fontSet="fas" fontIcon="fa-building"></mat-icon>
           </div>
           <div class="card-title">
-            <a routerLink="/office/children/{{office.id}}" routerLinkActive="active">{{office.name}}</a>
+            <a routerLink="/office/edit/{{office.id}}" routerLinkActive="active">{{office.name}}</a>
           </div>
 
           <div class="dropleft">
@@ -20,9 +16,8 @@
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
               </div>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" routerLink="/office/edit/{{office.id}}" routerLinkActive="active">Edit</a>
                 <a class="dropdown-item" (click)="deleteOffice(office.id)">Delete</a>
-                <a class="dropdown-item" routerLink="/officeadmin/children/{{office.id}}" routerLinkActive="active" href="#">Admin</a>
+                <a class="dropdown-item" routerLink="/officeadmin/edit/{{office.id}}" routerLinkActive="active" href="#">Admin</a>
               </div>
             </div>
 
@@ -32,7 +27,7 @@
         </div>
       </div>
 
-      <div class="card new-card" routerLink="/office/new/0" routerLinkActive="active">
+      <div class="card new-card" routerLink="/office/new/new" routerLinkActive="active">
         <div class="card-body">
           <div class="card-image-new">
               <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>

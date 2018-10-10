@@ -10,6 +10,8 @@ import { BreadcrumbService } from '../breadcrumb.service';
 import { ViewOptions } from '../model/view-options';
 import { MatDialog } from '@angular/material/dialog';
 import { ReuseTreeviewDialogComponent } from './reuse-treeview-dialog/reuse-treeview-dialog.component';
+import { FormControl, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-workpack-template',
@@ -31,6 +33,14 @@ export class WorkpackTemplateComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private dialog: MatDialog) {
     }
+
+  nameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  
+  shortNameFormControl = new FormControl('', [
+    Validators.required
+  ]);    
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -99,7 +109,7 @@ export class WorkpackTemplateComponent implements OnInit {
     this.dataService
       .UpdateWorkpackTemplate(this.workpackTemplate)
       .subscribe(() => {
-        this.viewOptions.action = 'children';
+        this.viewOptions.action = 'edit';
         this.router.navigate([
           './workpacktemplate/'+ this.viewOptions.action + 
           '/' + this.workpackTemplate.id]);
@@ -109,20 +119,6 @@ export class WorkpackTemplateComponent implements OnInit {
   SetTrimmedNameAndShortName(value: String){
     this.workpackTemplate.name = this.useful.GetTrimmedName(value);
     this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.name);
-  }
-
-  OpenReuseModal() {
-    let selectedId: string;
-    console.log('this.siblings', this.siblings);
-    let dialogRef = this.dialog.open(ReuseTreeviewDialogComponent, {
-      width: '600px',
-      height: '400px',
-      data: this.siblings
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      selectedId = result;
-    });
   }
 
   onSubmit(){
@@ -137,10 +133,8 @@ export class WorkpackTemplateComponent implements OnInit {
           .UpdateSchemaTemplate(this.schemaTemplate)
           .subscribe(
             () => {
-              this.viewOptions.action = 'children';
               this.router.navigate([
-                './schematemplate/' + this.viewOptions.action + 
-                '/' + this.schemaTemplate.id]);
+                './schematemplate/edit/' + this.schemaTemplate.id]);
             }
           )
         );
@@ -148,7 +142,7 @@ export class WorkpackTemplateComponent implements OnInit {
       }
       case 'new2workpacktemplate': {
         this.subscriptions.push(
-          this.dataService.GetWorkpackTemplateById(this.crumbService.GetLast().id)
+          this.dataService.GetWorkpackTemplateById(this.viewOptions.arrIds[0])
           .subscribe(parentWPT => {
             parentWPT.components.push(this.workpackTemplate);
             this.subscriptions.push(
@@ -156,10 +150,8 @@ export class WorkpackTemplateComponent implements OnInit {
               .UpdateWorkpackTemplate(parentWPT)
               .subscribe(
                 () => {
-                  this.viewOptions.action = 'children';
                   this.router.navigate([
-                    './workpacktemplate/'+ this.viewOptions.action + 
-                    '/' + parentWPT.id]);
+                    './workpacktemplate/edit/' + parentWPT.id]);
                 }
               )
             );

@@ -1,49 +1,65 @@
-<div class="container-form">
-    <div class="office-edit" *ngIf="((action == 'new') || (action == 'edit') || (action == 'detail'))">
-        <form name="officeForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>  
-            <div class="form-group">
-                <label for="officename">Name</label>
-                <input type="text" class="form-control" 
-                    name="officename" autocomplete="off"
-                    #officeName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && officeName.invalid }"
-                    required
-                    type="text" size="30" 
-                    [ngModel]="office.name | trim"
-                    (ngModelChange)="SetTrimmedNameAndShortName($event)" /> 
-                <div *ngIf="f.submitted && officeName.invalid" class="invalid-feedback">
-                    <div *ngIf="officeName.errors.required">Name is required</div>
-                </div>
-            </div>
-            <div class=shortName>
-              <div class="form-group">
-                <label for="officeshortname">Short Name</label>
-                <input  id="officeshortname" class="form-control" 
-                        name="officeshortname" autocomplete="off"
-                        #officeshortname="ngModel" 
-                        [ngClass]="{ 'is-invalid': f.submitted && officeshortname.invalid }"
-                        required 
-                        pattern="[a-z0-9_]*"
-                        type="text" 
-                        size="30" 
-                        [(ngModel)]="office.shortName"/> 
-                <div *ngIf="f.submitted && officeshortname.invalid" class="invalid-feedback">
-                    <div *ngIf="officeshortname.errors.required">Name is required</div>
-                    <div *ngIf="officeshortname.errors.pattern">The short name can have only lowercase letters, digits and underscore (_)</div>
-                </div>
-              </div>
-            </div>
-            <div class=button>
-              <div class="form-group">
-                <button class="btn btn-primary">Save</button>
-              </div>
-            </div>
-        </form>
-    </div>
-</div>  
-<!-- Office-list.html -->
-<div *ngIf="((action == 'children') || (action == 'detail'))">
-    <div class="main-title">{{office.name}}</div>
-    <div class="page-container">
+<div class="main-title">{{(action == 'new') ? 'New office' : office.name}}</div>
+<div class="panel-container">
+  <mat-accordion >
+    <!-- Properties Panel -->
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Properties
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        name="officeForm" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm"
+        class="form-container"
+        novalidate>  
+        <mat-form-field>
+          <input matInput
+            type="text"
+            [formControl]="nameFormControl"
+            placeholder="Name"
+            required
+            [(ngModel)]="office.name"/> 
+        </mat-form-field>
+        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+        <mat-form-field>
+          <input matInput 
+            type="text" 
+            [formControl]="shortNameFormControl"
+            placeholder="Short Name"
+            required
+            [(ngModel)]="office.shortName"/>
+        </mat-form-field>
+        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+
+        <button mat-raised-button>Save</button>
+
+      </form>
+    </mat-expansion-panel>
+    
+    <!-- Planning Schemas Panel -->
+    <mat-expansion-panel
+      *ngIf="action != 'new'"
+      [expanded]="schemasPanelOpenState"
+      (opened)="schemasPanelOpenState = true"
+      (closed)="schemasPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Planning
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <!-- Body -->
       <div class="container-fluid cards">
         <div class="row">
           <div class="card card-style" *ngFor="let schema of office.schemas"> 
@@ -52,14 +68,13 @@
                 <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>
               </div>
               <div class="card-title">
-                <a  routerLink="/schema/children/{{schema.id}}&{{schema.template?.id}}" 
+                <a  routerLink="/schema/edit/{{schema.id}}&{{schema.template?.id}}" 
                     routerLinkActive="active">{{schema.name}}</a>
               </div>
     
               <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown" >
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" routerLink="/schema/edit/{{schema.id}}" routerLinkActive="active">Edit</a>
                   <a class="dropdown-item" (click)="DeleteSchema(schema.id)">Delete</a>
                 </div>
               </div>
@@ -85,7 +100,9 @@
           </div>
         </div>
       </div>
-    </div>
+
+    </mat-expansion-panel>
+  
+  </mat-accordion>
 </div>
-<div class="temp">
-</div>
+

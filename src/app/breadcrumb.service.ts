@@ -215,17 +215,54 @@ export class BreadcrumbService {
   }
 
   UpdateBreadcrumb(node: any, route: String) {
-    if ((node !== undefined) && (node.id !== '')){
+    if (node !== undefined){
       let index = this.$breadcrumbTrail.getValue().findIndex(crumb => crumb.id == node.id);
       if (index == -1) {
-        this.Add({
-          action: 'children',
-          active: false,
-          id: node.id,
-          templateId: (node.template) ? '&' + node.template.id : '',
-          label: node.name,
-          route: route
-        })
+        let crumb = new Breadcrumb();
+        let templateName = '';
+        crumb.action = 'edit';
+        crumb.active = false;
+        crumb.route = route;
+        switch (route) {
+          case 'office': {
+            crumb.templateId = '';
+            templateName = 'office';
+            crumb.label = node.name;
+            break;
+          }
+          case 'officeadmin': {
+            crumb.templateId = '';
+            crumb.label = node.name + " Administration"
+            templateName = 'office';
+            break;
+          }
+          case 'schematemplate': {
+            crumb.templateId = '';
+            templateName = 'schema template';
+            crumb.label = node.name;
+            break;
+          }
+          case 'workpacktemplate': {
+            crumb.templateId = '';
+            templateName = 'workpack template';
+            crumb.label = node.name;
+            break;
+          }
+          default:{
+            crumb.templateId = '&' + node.template.id;
+            templateName = node.template.name;
+            crumb.label = node.name;
+          }
+        }
+        if (node.id == 'new') {
+          crumb.id = 'new';
+          crumb.label = 'New ' + templateName;
+          crumb.action = 'new';
+        }
+        else {
+          crumb.id = node.id;
+        }
+        this.Add(crumb);
       }
       else {
         this.GoTo(index);

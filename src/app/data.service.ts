@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Office } from './model/office';
 import { Schema } from './model/schema';
 import { Workpack } from './model/workpack';
@@ -108,14 +108,18 @@ export class DataService {
   //
   // Return: none
   //
-  QueryOfficeById(id: String) {
+  QueryOfficeById(id: String): Observable<Office> {
     const pathURL = environment.officeAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    this.http.get(URL).subscribe(res => {
-      this.$office.next(res as Office);
-      this.spinnerService.HideSpinner();
-    });
+    return this
+            .http
+            .get(URL)
+            .pipe(map<any, Office>(res => {
+              this.$office.next(res as Office);
+              this.spinnerService.HideSpinner();
+              return res as Office;
+            }));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -224,14 +228,30 @@ export class DataService {
   //
   // Return: none
   //
-  QuerySchemaById(id: String) {
+  QuerySchemaById(id: String): Observable<Schema> {
     const pathURL = environment.schemaAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
-    this.spinnerService.ShowSpinner();
-    this.http.get(URL).subscribe(res => {
-      this.$schema.next(res as Schema);
-      this.spinnerService.HideSpinner();
-    });
+//    this.spinnerService.ShowSpinner();
+    return this.http.get(URL)
+    .pipe(
+      map<any, Schema>(
+        (res,err) => {
+          this.$schema.next(res as Schema);
+          this.spinnerService.HideSpinner();
+          return res as Schema;
+        }
+      ),
+      catchError(
+        (err) => {
+          console.log(err);
+          return new Observable<Schema>();
+        }
+      )
+    );
+  }
+
+  errorHandler(e): Observable<any> {
+    return Observable.throw(e || 'Internal Server error');
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -441,14 +461,17 @@ export class DataService {
   //
   // Return: none
   //
-  QuerySchemaTemplateById(id: String) {
+  QuerySchemaTemplateById(id: String): Observable<SchemaTemplate> {
     const pathURL = environment.schemaTemplateAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).subscribe(res => {
-      this.$schemaTemplate.next(res as SchemaTemplate);
-      this.spinnerService.HideSpinner();
-    });
+    return this.http
+      .get(URL)
+      .pipe(map<any,SchemaTemplate>(res => {
+        this.$schemaTemplate.next(res as SchemaTemplate);
+        this.spinnerService.HideSpinner();
+        return res as SchemaTemplate;
+      }));
   }
 
 
