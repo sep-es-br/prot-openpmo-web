@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { OfficeComponent } from './office/office.component';
-import { SchemaComponent } from './schema/schema.component';
-import { WorkpackComponent } from './workpack/workpack.component';
-import { WorkpackResolver } from './workpack/workpack.resolver';
-import { OfficeAdminComponent } from './office-admin/office-admin.component';
-import { SchemaTemplateComponent } from './schema-template/schema-template.component';
-import { WorkpackTemplateComponent } from './workpack-template/workpack-template.component';
-import { WorkpackTemplateResolver } from './workpack-template/workpack-template.resolver';
-import { SchemaResolver } from './schema/schema.resolver';
-import { OfficeResolver } from './office/office.resolver';
-import { OfficeAdminResolver } from './office-admin/office-admin.resolver';
-import { SchemaTemplateResolver } from './schema-template/schema-template.resolver';
+import { HomeComponent } from './components/home/home.component';
+import { OfficeComponent } from './components/office/office.component';
+import { SchemaComponent } from './components/schema/schema.component';
+import { WorkpackComponent } from './components/workpack/workpack.component';
+import { WorkpackResolver } from './components/workpack/workpack.resolver';
+import { OfficeAdminComponent } from './components/office-admin/office-admin.component';
+import { SchemaTemplateComponent } from './components/schema-template/schema-template.component';
+import { WorkpackTemplateComponent } from './components/workpack-template/workpack-template.component';
+import { WorkpackTemplateResolver } from './components/workpack-template/workpack-template.resolver';
+import { SchemaResolver } from './components/schema/schema.resolver';
+import { OfficeResolver } from './components/office/office.resolver';
+import { OfficeAdminResolver } from './components/office-admin/office-admin.resolver';
+import { SchemaTemplateResolver } from './components/schema-template/schema-template.resolver';
 
 const routes: Routes = [
   {

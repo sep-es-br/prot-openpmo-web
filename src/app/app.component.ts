@@ -1,10 +1,6 @@
 import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SpinnerService } from './spinner.service';
-import { MatSpinner } from '@angular/material';
-import { DataService } from './data.service';
-import { startWith, map, tap } from 'rxjs/operators';
-import { delay } from 'q';
+import { SpinnerService } from './services/spinner/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +12,7 @@ export class AppComponent implements OnInit, OnDestroy {
   spinnerOn: Boolean = false;
   subscriptions: Subscription[] = [];
 
-  constructor(private spinnerService: SpinnerService, 
-              private dataService: DataService){}
+  constructor(private spinnerService: SpinnerService){}
 
   ngOnInit() {
     this.subscriptions.push(

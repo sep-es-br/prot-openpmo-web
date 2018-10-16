@@ -1,0 +1,124 @@
+<div class="main-title">{{viewOptions.title}}</div>
+<div class="container-form">
+  <mat-accordion >
+
+    <!-- Edit/View Panel -->
+    <mat-expansion-panel 
+      [expanded]="viewOptions.propertiesPanelOpenState"
+      (opened)="viewOptions.propertiesPanelOpenState = true"
+      (closed)="viewOptions.propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Properties
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        name="workpackForm" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm"
+        class="form-container" 
+        novalidate>
+        <mat-form-field>
+          <input matInput
+            type="text"      
+            [formControl]="nameFormControl"
+            placeholder="Name"
+            required
+            [(ngModel)]="workpackTemplate.name"/>
+        </mat-form-field>
+        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+        <mat-form-field>
+          <input matInput 
+            type="text" 
+            [formControl]="shortNameFormControl"
+            placeholder="Short Name"
+            required
+            [(ngModel)]="workpackTemplate.shortName"/>
+        </mat-form-field>
+        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+
+        <mat-form-field>
+          <mat-select placeholder="Select a property type" 
+                      [(ngModel)]="selectedPropertyType" 
+                      name="propertyType">
+            <mat-option 
+              *ngFor="let pType of propertyTypes" 
+              [value]="pType.typeName">
+              {{pType.typeName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button>Save</button>
+
+      </form>
+    </mat-expansion-panel>
+
+    <!-- Workpack Templates Panel -->
+    <mat-expansion-panel
+      *ngIf="viewOptions.action == 'edit'"
+      [expanded]="viewOptions.workpacksPanelOpenState"
+      (opened)="viewOptions.workpacksPanelOpenState = true"
+      (closed)="viewOptions.workpacksPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Workpack Templates
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <div class="container-fluid cards">
+          <div class="row">
+            <div class="card card-style" *ngFor="let component of workpackTemplate.components"> 
+              <div class="card-body">
+                <div class="template-card-image">
+                  <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+                </div>
+                <div class="template-card-title">
+                  <a routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
+                </div>
+      
+                <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" 
+                        (click)="DeleteWorkpackTemplate(component.id)"
+                        routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}">Delete</a>
+                  </div>
+                </div>
+      
+                <div class="card-manager">
+                  <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+                </div>
+              </div>
+            </div>
+            <div class="card new-card">
+              <div class="card-body">
+                <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a  class="dropdown-item" 
+                        routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
+                        routerLinkActive="active">New</a>
+                    <div class="dropdown-item not-a-link disabled">Reuse:</div>
+                    <a *ngFor="let template of flatTree"
+                        class="dropdown-item"
+                        (click)="ReuseTemplate(template.id)"
+                        [innerHTML]="template.label"></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+    </mat-expansion-panel>
+  
+  </mat-accordion>
+</div>

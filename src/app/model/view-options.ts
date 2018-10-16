@@ -1,4 +1,3 @@
-
 export class ViewOptions {
     action: String = '';
     title: String = '';
