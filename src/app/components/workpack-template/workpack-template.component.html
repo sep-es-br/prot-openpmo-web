@@ -41,19 +41,40 @@
           Name is <strong>required</strong>
         </mat-error>
 
-        <mat-form-field>
-          <mat-select placeholder="Select a property type" 
-                      [(ngModel)]="selectedPropertyType" 
-                      name="propertyType">
-            <mat-option 
-              *ngFor="let pType of propertyTypes" 
-              [value]="pType.typeName">
-              {{pType.typeName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="property-card" *ngFor="let property of workpackTemplate.properties; let i = index;">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title class="property-name">{{property.name}}</mat-card-title>
+              <mat-card-subtitle class="type-in-parentesis">({{property.typeName}})</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <input matInput
+                  [formControl]="propertyFormControls[i].name"
+                  type="text"
+                  required   
+                  placeholder="Property Name"
+                  [(ngModel)]="workpackTemplate.properties[i].name"/>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+        </div>
 
-        <button mat-raised-button>Save</button>
+        <button mat-raised-button class="add-property-button dropleft card-setting" id="dropdownAddPropertyButton" data-toggle="dropdown">
+          Add Property 
+          <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+          <div class="dropdown-menu" aria-labelledby="dropdownAddPropertyButton">
+            <a *ngFor="let pType of propertyTypes"
+                class="dropdown-item"
+                (click)="AddProperty(pType.typeName)"
+                [innerHTML]="pType.typeName"></a>
+          </div>
+        </button>
+
+        <div class="save-button">
+          <button mat-raised-button>Save</button>
+        </div>
+        
 
       </form>
     </mat-expansion-panel>

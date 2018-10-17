@@ -10,8 +10,7 @@ import { WorkpackTemplate } from '../../model/workpack-template';
 import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ViewOptions } from '../../model/view-options';
-import { MatDialog } from '@angular/material/dialog';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Property } from '../../model/property';
 
 
@@ -33,8 +32,7 @@ export class WorkpackTemplateComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private useful: Useful,
     private router: Router,
-    private crumbService: BreadcrumbService,
-    private dialog: MatDialog) {
+    private crumbService: BreadcrumbService) {
     }
 
   nameFormControl = new FormControl('', [
@@ -44,6 +42,13 @@ export class WorkpackTemplateComponent implements OnInit {
   shortNameFormControl = new FormControl('', [
     Validators.required
   ]);    
+
+  propertyFormControls: {
+    name: FormControl;
+    min: FormControl;
+    max: FormControl;
+  }[] = [];
+
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -59,7 +64,6 @@ export class WorkpackTemplateComponent implements OnInit {
     label: String; 
   }[];
   propertyTypes: Property[] = [];
-  selectedPropertyType: Property;
 
 
   ngOnInit() {
@@ -69,6 +73,15 @@ export class WorkpackTemplateComponent implements OnInit {
     this.subscriptions.push(
       this.workpackDataService.workpackTemplate.subscribe(wpt =>{
         this.workpackTemplate = wpt;
+        this.workpackTemplate.properties.forEach(property => {
+          this.propertyFormControls.push({
+            'name': new FormControl('', [
+              Validators.required
+            ]),
+            'min': null,
+            'max': null
+          });
+        });
       })
     );
 
@@ -97,7 +110,6 @@ export class WorkpackTemplateComponent implements OnInit {
         this.propertyTypes = pt.sort((a,b) => {
           return (a.typeName < b.typeName) ? -1 : 1; 
         });
-        console.log('pt', pt);
       })
     );
   }
@@ -129,6 +141,19 @@ export class WorkpackTemplateComponent implements OnInit {
           './workpacktemplate/'+ this.viewOptions.action + 
           '/' + this.workpackTemplate.id]);
       });
+  }
+
+  AddProperty(type: String) {
+    let newProperty = new Property();
+    newProperty.typeName = type;
+    this.workpackTemplate.properties.push(newProperty);
+    this.propertyFormControls.push({
+      'name': new FormControl('', [
+        Validators.required
+      ]),
+      'min': null,
+      'max': null
+    });
   }
 
   SetTrimmedNameAndShortName(value: String){
@@ -175,6 +200,7 @@ export class WorkpackTemplateComponent implements OnInit {
         break;
       }
       case 'edit': {
+        console.log('this.workpackTemplate',this.workpackTemplate);
         this.subscriptions.push(
           this.workpackDataService
           .UpdateWorkpackTemplate(this.workpackTemplate)

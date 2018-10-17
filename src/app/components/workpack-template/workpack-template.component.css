@@ -1,3 +1,35 @@
 .not-a-link {
     cursor: default!important;
 }
+
+.propertytype-selection {
+    flex: none;
+}
+
+.save-button {
+    margin-top: 20px;
+}
+
+.add-property-button {
+    margin-top: 10px;
+}
+
+.property-card {
+    margin-bottom: 10px;
+}
+
+.type-in-parentesis {
+    margin-left: 5px;
+}
+
+.property-name {
+    display: inline-block;
+    margin-left: -8px;
+    font-weight: 500;
+}
+
+.type-in-parentesis {
+    font-size: x-small;
+    margin-left: 3px;
+    display: inline-block;
+}
