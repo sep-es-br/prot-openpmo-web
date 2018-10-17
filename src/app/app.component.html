@@ -8,22 +8,21 @@
     <div class="user">
         <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
     </div>
-</div>
-
-<div class="container-fluid panel">
     <div class="config">
         <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-    </div>
-    <div class="filter">
-        <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
-    </div>
-    <div class="search">
-       
     </div>
 </div>
 
 <app-breadcrumb></app-breadcrumb>
+
+<div class="container-fluid panel">
+    <div class="filter">
+        <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
+    </div>
+</div>
+
 <router-outlet></router-outlet>
+
 <div class="spinner-container"
     [style.top]="(spinnerOn) ? 0 : '-9999px'">
     <mat-spinner

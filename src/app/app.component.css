@@ -22,7 +22,7 @@
 
 .user{
     float: right;
-    font-size: 28px;
+    font-size: 25px;
     color: white;
     line-height: 50px;
 }
@@ -34,27 +34,22 @@
 
 .panel{
     height: 27px;
-    margin-top: 20px;
+    margin-top: 0;
     padding-right: 50px;
     padding-left: 50px;
 }
 
 .config{
-    font-size: 20px;
     float: right;
-    color: #A6A9AB;
-}
-
-.config:hover{
-    color: #00A1DD;
-    cursor: pointer;
+    font-size: 25px;
+    color: white;
+    line-height: 50px;
 }
 
 .filter{
     font-size: 20px;
     float: right;
     color: #A6A9AB;
-    margin-right: 30px;
 }
 
 .filter:hover{
