@@ -1,0 +1,108 @@
+<div class="main-title">{{(action == 'new') ? 'New office' : office.name}}</div>
+<div class="panel-container">
+  <mat-accordion >
+    <!-- Properties Panel -->
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Properties
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        name="officeForm" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm"
+        class="form-container"
+        novalidate>  
+        <mat-form-field>
+          <input matInput
+            type="text"
+            [formControl]="nameFormControl"
+            placeholder="Name"
+            required
+            [(ngModel)]="office.name"/> 
+        </mat-form-field>
+        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+        <mat-form-field>
+          <input matInput 
+            type="text" 
+            [formControl]="shortNameFormControl"
+            placeholder="Short Name"
+            required
+            [(ngModel)]="office.shortName"/>
+        </mat-form-field>
+        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+
+        <button mat-raised-button>Save</button>
+
+      </form>
+    </mat-expansion-panel>
+    
+    <!-- Planning Schemas Panel -->
+    <mat-expansion-panel
+      *ngIf="action != 'new'"
+      [expanded]="schemasPanelOpenState"
+      (opened)="schemasPanelOpenState = true"
+      (closed)="schemasPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Planning
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <!-- Body -->
+      <div class="container-fluid cards">
+        <div class="row">
+          <div class="card card-style" *ngFor="let schema of office.schemas"> 
+            <div class="card-body">
+              <div class="card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>
+              </div>
+              <div class="card-title">
+                <a  routerLink="/schema/edit/{{schema.id}}&{{schema.template?.id}}" 
+                    routerLinkActive="active">{{schema.name}}</a>
+              </div>
+    
+              <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown" >
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="DeleteSchema(schema.id)">Delete</a>
+                </div>
+              </div>
+    
+              <div class="card-manager">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+              </div>
+            </div>
+          </div>
+    
+          <div *ngIf="office.schemaTemplates.length > 0" class="card new-card">
+            <div class="card-body">
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let template of office.schemaTemplates" 
+                        class="dropdown-item" 
+                        routerLink="/schema/new/{{office.id}}&{{template.id}}" 
+                        routerLinkActive="active">{{template.name}}</a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-expansion-panel>
+  
+  </mat-accordion>
+</div>
+

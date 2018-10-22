@@ -1,0 +1,108 @@
+<div class="main-title">{{title}} {{(action == 'new')?schema.template.name:schema.name}}</div>
+<div class="container-form"> 
+  <mat-accordion >
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Properties
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        name="schemaForm" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm"
+        class="form-container" 
+        novalidate>
+        <mat-form-field>
+          <input matInput
+            type="text"      
+            [formControl]="nameFormControl"
+            placeholder="Name"
+            required
+            [(ngModel)]="schema.name"/>
+        </mat-form-field>
+        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+        <mat-form-field>
+          <input matInput 
+            type="text" 
+            [formControl]="shortNameFormControl"
+            placeholder="Short Name"
+            required
+            [(ngModel)]="schema.shortName"/>
+        </mat-form-field>
+        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+          Name is <strong>required</strong>
+        </mat-error>
+
+        <button mat-raised-button>Save</button>
+
+      </form>
+    </mat-expansion-panel>
+
+    <!-- Workpacks Panel -->
+    <mat-expansion-panel
+      *ngIf="action != 'new'"
+      [expanded]="workpacksPanelOpenState"
+      (opened)="workpacksPanelOpenState = true"
+      (closed)="workpacksPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Workpacks
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <div class="container-fluid cards">
+        <div class="row">
+          <div class="card card-style" *ngFor="let workpack of schema.workpacks"> 
+            <div class="card-body">
+              <div class="card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+              </div>
+              <div class="card-title">
+                <a routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template?.id}}" routerLinkActive="active">{{workpack.name}}</a>
+              </div>
+    
+              <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a  class="dropdown-item"
+                      (click)="DeleteWorkpack(workpack.id)"
+                      routerLink="/schema/edit/{{schema.id}}&{{schema.template.id}}" 
+                      routerLinkActive="active">Delete</a>
+                </div>
+              </div>
+    
+              <div class="card-manager">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="card new-card">
+            <div class="card-body">
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let template of schemaTemplate.workpackTemplates" 
+                        class="dropdown-item" 
+                        routerLink="/workpack/new2schema/{{schema.id}}&{{template.id}}" 
+                        routerLinkActive="active">{{template.name}}</a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </mat-expansion-panel>
+
+  </mat-accordion>
+</div>

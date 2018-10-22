@@ -1,7 +1,7 @@
-
 export class ViewOptions {
     action: String = '';
     title: String = '';
-    showForm: Boolean = false;
-    showChildren: Boolean = true;
+    arrIds: String[] = [];
+    propertiesPanelOpenState: Boolean = false;
+    workpacksPanelOpenState: Boolean = true;
 }

@@ -6,7 +6,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
-    background-color: rgb(241, 241, 241);
+    background-color: rgb(241, 241, 241)!important;
+    min-height: 100%;
 }
 
 button, a, div {
@@ -32,7 +33,19 @@ button, a, div {
     padding-left: 50px;
     padding-right: 50px;
     color: #606062;
-    font-size: 24px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.panel-container {
+    margin: 0;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .cards{
@@ -58,6 +71,7 @@ button, a, div {
     font-size: 60px;
     color: #BDBFC1;
     text-align: center;
+    padding-top: 30px;
 }
 
 .card-image{
@@ -149,7 +163,7 @@ button, a, div {
 .container-form  {
     padding-left: 50px;
     padding-right: 50px;
-    margin-top: 50px;
+    margin-top: 15px;
 }
 
 .shortName{
@@ -164,12 +178,12 @@ button, a, div {
     height: 200px;
 }
 
-.mat-card {
+/* .mat-card {
     padding: 10px!important;
     border-radius: 4px;
-}
+} */
 
-.mat-card-title {
+.title-card {
     line-height: 18px;
     padding-top: 8px;
     padding-right: 45px;
@@ -178,22 +192,24 @@ button, a, div {
     border-bottom: solid 1px #e6e6e6;
 }
 
-.mat-card-title a {
+.title-card a {
     font-size: 16px;
     height: 50px;
     font-weight: bold;
     color: #00a1dd!important;
 }
 
-.mat-card-content{
+.img-card{
     color: #E6E7E8;
     font-size: 47px;
     text-align: center;
 }
 
 .card {
-    max-width: 300px;
+    width: 300px;
     height: 150px;
+    padding: 10px!important;
+    border-radius: 4px;
   }
 
   .example-header-image {

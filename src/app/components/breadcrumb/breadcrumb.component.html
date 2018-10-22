@@ -1,0 +1,24 @@
+<div class="menu-breadcrumb">
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li *ngFor="let crumb of breadcrumbTrail; let i = index" 
+              class="breadcrumb-item"
+              [ngClass]="{active: crumb.active}">
+              <a  routerLink="/{{crumb.route}}/{{crumb.action}}/{{crumb.id}}{{crumb.templateId}}" 
+                    routerLinkActive="active" 
+                    aria-current="page"
+                    (click)="GoTo(i)">
+                    <span class="home-icon" *ngIf="i == 0">
+                        <mat-icon fontSet="fa" fontIcon="fa-home"></mat-icon>
+                    </span>
+                    <span *ngIf="((i > 0) && (i < breadcrumbTrail.length - 1))">
+                        {{crumb.label}}
+                    </span>
+                    <span *ngIf="((i > 0) && (i == breadcrumbTrail.length - 1))" disabled>
+                        {{crumb.label}}
+                    </span>
+            </a>
+          </li>
+      </ol>
+  </nav>
+</div>

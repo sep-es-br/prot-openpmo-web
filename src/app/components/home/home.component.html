@@ -1,0 +1,31 @@
+<!-- office-list.html -->
+<div class="page-container">
+  <div class="container-fluid cards">
+    <div class="row">
+      <!-- CARD OFFICE -->
+      <mat-card class="card card-style" *ngFor="let office of offices">
+        <div class="dropleft">
+          <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+            <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+          </div>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" (click)="deleteOffice(office.id)">Delete</a>
+            <a class="dropdown-item" routerLink="/officeadmin/edit/{{office.id}}" routerLinkActive="active" href="#">Admin</a>
+          </div>
+        </div>
+        <mat-card-title class="title-card">
+          <a routerLink="/office/edit/{{office.id}}" routerLinkActive="active">{{office.name}}</a>
+        </mat-card-title>
+        <mat-card-content class="img-card">
+          <mat-icon fontSet="fas" fontIcon="fa-building"></mat-icon>   
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="card new-card card-style" routerLink="/office/new/new" routerLinkActive="active">
+        <div class="card-image-new">
+          <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
+

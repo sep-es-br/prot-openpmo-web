@@ -13,6 +13,7 @@ export const environment = {
   workpackTemplateAPI: 'workpacktemplate/',
   treeResource: 'tree/',
   templateResource: 'template/',
+  propertyTypesResource: 'listpropertytypes/'
 };
 
 /*
