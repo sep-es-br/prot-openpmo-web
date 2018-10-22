@@ -2,11 +2,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-
-html {
-    height: 100%;
-}
-
 body {
     margin: 0;
     padding: 0;
@@ -25,7 +20,6 @@ button, a, div {
     padding: 5px;
 }
 
-
 /****************************************/
 
 /* office-list.css */
@@ -35,7 +29,7 @@ button, a, div {
 }
 
 .main-title{
-    margin: 0;
+    margin-bottom: 30px;
     padding-left: 50px;
     padding-right: 50px;
     color: #606062;
@@ -77,18 +71,20 @@ button, a, div {
     font-size: 60px;
     color: #BDBFC1;
     text-align: center;
+    padding-top: 30px;
 }
 
 .card-image{
     background-color: #E6E7E8;
-    height: 50px;
-    width: 64px;
+    height: 42px;
+    width: 55px;
     border-radius: 3px;
     float: left;
-    line-height: 50px;
-    font-size: 34px;
-    color: #007bff;
+    line-height: 42px;
+    font-size: 35px;
+    color: #00a1dd;
     text-align: center;
+    margin-right: 6px;
 }
 
 .template-card-image{
@@ -106,15 +102,17 @@ button, a, div {
 .card-title{
     float: left;
     margin-left: 10px;
-    color: rgb(0, 161, 221);
     text-decoration: none;
     font-weight: bold;
+}
+
+.card-title a{
+    color: #00a1dd;
 }
 
 .template-card-title{
     float: left;
     margin-left: 10px;
-    
     text-decoration: none;
     font-weight: bold;
 }
@@ -124,16 +122,16 @@ button, a, div {
 }
 
 .card-manager{
-    margin-right: -15px;
-    font-size: 22px;
+    margin-right: 0;
+    font-size: 20px;
     float: right;
-    margin-top: 65px;
-    color: #CC99FF;
+    margin-top: 40px;
+    color: #00a1dd;
     cursor: pointer;
 }
 
 .card-manager:hover{
-    color: rgb(173, 98, 248);
+    color: #007daa;
 }
 
 .card-setting{
@@ -180,8 +178,41 @@ button, a, div {
     height: 200px;
 }
 
-.collapsed {
-    display: none;
-    animation-duration: 3s;
-    animation-timing-function: ease-in-out;
+/* .mat-card {
+    padding: 10px!important;
+    border-radius: 4px;
+} */
+
+.title-card {
+    line-height: 18px;
+    padding-top: 8px;
+    padding-right: 45px;
+    font-size: 16px;
+    height: 50px;
+    border-bottom: solid 1px #e6e6e6;
 }
+
+.title-card a {
+    font-size: 16px;
+    height: 50px;
+    font-weight: bold;
+    color: #00a1dd!important;
+}
+
+.img-card{
+    color: #E6E7E8;
+    font-size: 47px;
+    text-align: center;
+}
+
+.card {
+    width: 300px;
+    height: 150px;
+    padding: 10px!important;
+    border-radius: 4px;
+  }
+
+  .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  }
