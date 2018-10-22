@@ -70,17 +70,29 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="card-content">
-
-                  <mat-form-field 
-                    class="textInput">
-                    <input matInput
-                      [formControl]="propertyFormControls[i].name"
-                      type="text"
-                      required   
-                      placeholder="Property Name"
-                      [(ngModel)]="propertyListView[i].property.name"/>
-                  </mat-form-field>
-                  <div class="delete-button"> <div>
+                  <div class="{{(propertyView.editing) ? 'textInput' : 'minimum-width'}}">
+                    <mat-form-field 
+                      class="form-field">
+                      <input matInput
+                        [formControl]="propertyFormControls[i].name"
+                        type="text"
+                        required   
+                        placeholder="Property Name"
+                        [(ngModel)]="propertyListView[i].property.name"/>
+                    </mat-form-field>
+                  </div>
+                  <div class="{{(propertyView.editing) ? 'textInput' : 'minimum-width'}}">
+                    <mat-form-field 
+                      class="form-field">
+                      <input matInput
+                        [formControl]="propertyFormControls[i].name"
+                        type="text"
+                        required   
+                        placeholder="Property Name"
+                        [(ngModel)]="propertyListView[i].property.name"/>
+                    </mat-form-field>
+                 </div>
+                 <div class="delete-button"> <div>
                     <button mat-button 
                       (click)="DeleteProperty(i)">
                       <mat-icon fontSet="fas" fontIcon="fa-trash-alt"></mat-icon>

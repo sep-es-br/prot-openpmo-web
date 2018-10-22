@@ -80,6 +80,7 @@ export class WorkpackTemplateComponent implements OnInit {
     this.subscriptions.push(
       this.workpackDataService.workpackTemplate.subscribe(wpt =>{
         this.workpackTemplate = wpt;
+        this.propertyListView = [];
         this.workpackTemplate.properties.forEach(property => {
           this.propertyListView.push({
             'property': property,

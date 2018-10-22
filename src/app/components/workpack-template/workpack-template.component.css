@@ -92,6 +92,10 @@
     display: inline-block;
 }
 
+.form-field {
+    width: 100%;
+}
+
 .minimum-width {
     display: flex;
     width: 80px!important;
