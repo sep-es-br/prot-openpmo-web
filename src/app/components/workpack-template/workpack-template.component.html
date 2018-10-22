@@ -93,8 +93,8 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <!-- Body -->
-      <div class="container-fluid cards">
+        <!-- Body -->
+        <div class="container-fluid cards">
           <div class="row">
             <div class="card card-style" *ngFor="let component of workpackTemplate.components"> 
               <div class="card-body">
@@ -104,42 +104,37 @@
                 <div class="template-card-title">
                   <a routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
                 </div>
-      
                 <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
                   <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" 
-                        (click)="DeleteWorkpackTemplate(component.id)"
-                        routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}">Delete</a>
+                    (click)="DeleteWorkpackTemplate(component.id)"
+                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}">Delete</a>
                   </div>
                 </div>
-      
                 <div class="card-manager">
-                  <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
                 </div>
               </div>
             </div>
-            <div class="card new-card">
-              <div class="card-body">
-                <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
-                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a  class="dropdown-item" 
-                        routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
-                        routerLinkActive="active">New</a>
-                    <div class="dropdown-item not-a-link disabled">Reuse:</div>
-                    <a *ngFor="let template of flatTree"
-                        class="dropdown-item"
-                        (click)="ReuseTemplate(template.id)"
-                        [innerHTML]="template.label"></a>
-                  </div>
+
+            <mat-card class="card new-card card-style">
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a  class="dropdown-item" 
+                  routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
+                  routerLinkActive="active">New</a>
+                  <div class="dropdown-item not-a-link disabled">Reuse:</div>
+                  <a *ngFor="let template of flatTree"
+                  class="dropdown-item"
+                  (click)="ReuseTemplate(template.id)"
+                  [innerHTML]="template.label"></a>
                 </div>
               </div>
-            </div>
+            </mat-card>
           </div>
         </div>
-  
     </mat-expansion-panel>
-  
   </mat-accordion>
 </div>
