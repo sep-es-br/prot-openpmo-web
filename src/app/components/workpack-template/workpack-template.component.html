@@ -40,26 +40,57 @@
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
           Name is <strong>required</strong>
         </mat-error>
+        
+        <div class="container-fluid cards">
+          <div class="row property-row">
+            <div class="property-card-box" 
+                [class]="(propertyView.editing) ? 'property-card-box property-full-width' : 'property-card-box'"    
+                *ngFor="let propertyView of propertyListView; let i = index;">
+              <mat-expansion-panel class="property-card row"
+                [expanded]="propertyView.editing"
+                (opened)="propertyView.editing = true"
+                (closed)="propertyView.editing = false"
+                *ngIf="!propertyView.toDelete">
+                <mat-expansion-panel-header class="property-header">
+                  <mat-panel-title class="property-name">
+                    <div class="property-logo-mat-icon" 
+                        *ngIf="GetPropertyLogo(propertyView.property.typeName).source == 'mat-icon'">
+                        <mat-icon 
+                          fontSet="{{GetPropertyLogo(propertyView.property.typeName).set}}" 
+                          fontIcon="{{GetPropertyLogo(propertyView.property.typeName).icon}}"></mat-icon>
+                    </div>
+                    <div class="property-logo-font" 
+                        *ngIf="GetPropertyLogo(propertyView.property.typeName).source == 'font'">
+                      {{GetPropertyLogo(propertyView.property.typeName).icon}}
+                    </div>
+                    <div class="property-title"
+                        *ngIf="!propertyView.editing">
+                      {{propertyView.property.name}}
+                    </div>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="card-content">
 
-        <div class="property-card" *ngFor="let property of workpackTemplate.properties; let i = index;">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title class="property-name">{{property.name}}</mat-card-title>
-              <mat-card-subtitle class="type-in-parentesis">({{property.typeName}})</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <mat-form-field>
-                <input matInput
-                  [formControl]="propertyFormControls[i].name"
-                  type="text"
-                  required   
-                  placeholder="Property Name"
-                  [(ngModel)]="workpackTemplate.properties[i].name"/>
-              </mat-form-field>
-            </mat-card-content>
-          </mat-card>
+                  <mat-form-field 
+                    class="textInput">
+                    <input matInput
+                      [formControl]="propertyFormControls[i].name"
+                      type="text"
+                      required   
+                      placeholder="Property Name"
+                      [(ngModel)]="propertyListView[i].property.name"/>
+                  </mat-form-field>
+                  <div class="delete-button"> <div>
+                    <button mat-button 
+                      (click)="DeleteProperty(i)">
+                      <mat-icon fontSet="fas" fontIcon="fa-trash-alt"></mat-icon>
+                    </button>
+                  </div></div>
+                </div>
+              </mat-expansion-panel>
+            </div>
+          </div>
         </div>
-
         <button mat-raised-button class="add-property-button dropleft card-setting" id="dropdownAddPropertyButton" data-toggle="dropdown">
           Add Property 
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>

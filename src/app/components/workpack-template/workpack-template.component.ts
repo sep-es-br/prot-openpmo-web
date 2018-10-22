@@ -12,6 +12,7 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { ViewOptions } from '../../model/view-options';
 import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Property } from '../../model/property';
+import { SanitizeHtmlPipe } from '../../pipes/sanitize-html.pipe';
 
 
 @Component({
@@ -64,6 +65,12 @@ export class WorkpackTemplateComponent implements OnInit {
     label: String; 
   }[];
   propertyTypes: Property[] = [];
+  
+  propertyListView: {
+    property: Property;
+    toDelete: Boolean;
+    editing: Boolean;
+  }[] = [];
 
 
   ngOnInit() {
@@ -74,6 +81,11 @@ export class WorkpackTemplateComponent implements OnInit {
       this.workpackDataService.workpackTemplate.subscribe(wpt =>{
         this.workpackTemplate = wpt;
         this.workpackTemplate.properties.forEach(property => {
+          this.propertyListView.push({
+            'property': property,
+            'toDelete': false,
+            'editing': false
+          });
           this.propertyFormControls.push({
             'name': new FormControl('', [
               Validators.required
@@ -82,6 +94,8 @@ export class WorkpackTemplateComponent implements OnInit {
             'max': null
           });
         });
+        console.log('this.propertyListView', this.propertyListView);
+        console.log('this.propertyFormControls', this.propertyFormControls);
       })
     );
 
@@ -143,10 +157,39 @@ export class WorkpackTemplateComponent implements OnInit {
       });
   }
 
+
+  GetPropertyLogo(type: String): {source: String, set: String, icon: String} {
+    let code4TypeNotFound = {
+      'source': 'mat-icon',
+      'set': 'fas',
+      'icon': 'fa-question'
+    }
+    let logoHTMLMap: {
+      type:String;
+      target: {source: String, set: String, icon: String};
+    }[] = [
+      {'type':'Number',     'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-hashtag'}},
+      {'type':'Text',       'target':{'source': 'font',    'set': '',   'icon': 'T'}},
+      {'type':'Cost',       'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-dollar-sign'}},
+      {'type':'Measure',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-tachometer-alt'}},
+      {'type':'TextList',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-list'}},
+      {'type':'Address',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-envelope'}},
+      {'type':'Email',      'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-at'}},
+      {'type':'NumberList', 'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-sort-numeric-down'}},
+    ];
+    let typeFound = logoHTMLMap.find(elem => elem.type == type);
+    return (typeFound) ? typeFound.target : code4TypeNotFound;
+  }
+
+
   AddProperty(type: String) {
     let newProperty = new Property();
     newProperty.typeName = type;
-    this.workpackTemplate.properties.push(newProperty);
+    this.propertyListView.push({
+      'property': newProperty,
+      'toDelete': false,
+      'editing': true
+    });
     this.propertyFormControls.push({
       'name': new FormControl('', [
         Validators.required
@@ -156,15 +199,49 @@ export class WorkpackTemplateComponent implements OnInit {
     });
   }
 
+  EditProperty(index) {
+    this.propertyListView[index].editing = true;
+  }
+
+  StopEditing(index) {
+    this.propertyListView[index].editing = false;
+  }
+
+  DeleteProperty(index) {
+
+    if (!this.propertyListView[index].property.id) {
+      this.propertyListView.splice(index,1);
+    }
+    else {
+      this.propertyListView[index].toDelete = true;
+    }
+
+    console.log('this.currentProperties', this.propertyListView);
+  }
+
   SetTrimmedNameAndShortName(value: String){
     this.workpackTemplate.name = this.useful.GetTrimmedName(value);
     this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.name);
   }
 
+  UpdatePropertiesArray() {
+    this.propertyListView.forEach((elem, index) => {
+      if (elem.toDelete) {
+        //this.propertyDataService.DeleteProperty(elem.property.id);
+      }
+    });
+    this.workpackTemplate.properties = [];
+    this.propertyListView
+      .filter(elem => !elem.toDelete)
+      .forEach (elem => this.workpackTemplate.properties.push(elem.property));
+  }
+
   onSubmit(){
     this.workpackTemplate.name = this.workpackTemplate.name.trim();
     this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.shortName);
-    
+
+    this.UpdatePropertiesArray();
+
     switch (this.viewOptions.action) {
       case 'new2schematemplate': {
         this.schemaTemplate.workpackTemplates.push(this.workpackTemplate);

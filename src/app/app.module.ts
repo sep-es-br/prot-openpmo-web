@@ -29,6 +29,7 @@ import { OfficeAdminResolver } from './components/office-admin/office-admin.reso
 import { SchemaTemplateResolver } from './components/schema-template/schema-template.resolver';
 import { WorkpackDataService } from './services/data/workpack/workpack-data.service';
 import { SchemaDataService } from './services/data/schema/schema-data.service';
+import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { SchemaDataService } from './services/data/schema/schema-data.service';
     OfficeAdminComponent,
     WorkpackTemplateComponent,
     PropertyTemplateComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    SanitizeHtmlPipe
   ],
   imports: [
     BrowserModule,
