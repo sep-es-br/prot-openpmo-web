@@ -10,9 +10,10 @@ import { WorkpackTemplate } from '../../model/workpack-template';
 import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ViewOptions } from '../../model/view-options';
-import { FormControl, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { Property } from '../../model/property';
 import { SanitizeHtmlPipe } from '../../pipes/sanitize-html.pipe';
+import { fbind } from 'q';
 
 
 @Component({
@@ -33,23 +34,16 @@ export class WorkpackTemplateComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private useful: Useful,
     private router: Router,
-    private crumbService: BreadcrumbService) {
+    private crumbService: BreadcrumbService,
+    private fb: FormBuilder) {
     }
 
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
-  shortNameFormControl = new FormControl('', [
-    Validators.required
-  ]);    
-
-  propertyFormControls: {
-    name: FormControl;
-    min: FormControl;
-    max: FormControl;
-  }[] = [];
-
+  formGroupWorkpackTemplate = this.fb.group({
+    id: [''],
+    name: ['', Validators.required],
+    shortName: ['', Validators.required],
+    properties: this.fb.array([])
+  });
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -65,12 +59,6 @@ export class WorkpackTemplateComponent implements OnInit {
     label: String; 
   }[];
   propertyTypes: Property[] = [];
-  
-  propertyListView: {
-    property: Property;
-    toDelete: Boolean;
-    editing: Boolean;
-  }[] = [];
 
 
   ngOnInit() {
@@ -80,25 +68,28 @@ export class WorkpackTemplateComponent implements OnInit {
     this.subscriptions.push(
       this.workpackDataService.workpackTemplate.subscribe(wpt =>{
         this.workpackTemplate = wpt;
-        this.propertyListView = [];
-        this.workpackTemplate.properties.forEach(property => {
-          this.propertyListView.push({
-            'property': property,
-            'toDelete': false,
-            'editing': false
+        if (this.workpackTemplate.id != '') {
+          this.formGroupWorkpackTemplate.controls['name'].setValue(this.workpackTemplate.name);
+          this.formGroupWorkpackTemplate.controls['shortName'].setValue(this.workpackTemplate.shortName);
+          let myArray = [];
+          this.workpackTemplate.properties.forEach(property => {
+            (this.formGroupWorkpackTemplate.get('properties') as FormArray).push(
+              this.fb.group({
+                toDelete: [false],
+                editing: [false],
+                id: [property.id],
+                name: [property.name, Validators.required],
+                typeName: [property.typeName],
+                min: [property.min],
+                max: [property.max],
+                value: [property.value]
+              })
+            );
           });
-          this.propertyFormControls.push({
-            'name': new FormControl('', [
-              Validators.required
-            ]),
-            'min': null,
-            'max': null
-          });
-        });
-        console.log('this.propertyListView', this.propertyListView);
-        console.log('this.propertyFormControls', this.propertyFormControls);
+        }
       })
     );
+   
 
     this.subscriptions.push(
       this.workpackDataService.workpackTemplateTree
@@ -184,40 +175,50 @@ export class WorkpackTemplateComponent implements OnInit {
 
 
   AddProperty(type: String) {
-    let newProperty = new Property();
-    newProperty.typeName = type;
-    this.propertyListView.push({
-      'property': newProperty,
-      'toDelete': false,
-      'editing': true
-    });
-    this.propertyFormControls.push({
-      'name': new FormControl('', [
-        Validators.required
-      ]),
-      'min': null,
-      'max': null
-    });
+    (this.formGroupWorkpackTemplate.get('properties') as FormArray).push(
+      this.fb.group({
+        toDelete: [false],
+        editing: [true],
+        id: [''],
+        name: ['', Validators.required],
+        typeName: [type],
+        min: [''],
+        max: [''],
+        value: ['']
+      })
+    );
+
+
+
   }
 
   EditProperty(index) {
-    this.propertyListView[index].editing = true;
+    (this.formGroupWorkpackTemplate.get('properties') as FormArray)
+      .at(index)
+      .get('editing')
+      .setValue(true);
   }
 
   StopEditing(index) {
-    this.propertyListView[index].editing = false;
+    (this.formGroupWorkpackTemplate.get('properties') as FormArray)
+      .at(index)
+      .get('editing')
+      .setValue(false);
   }
 
   DeleteProperty(index) {
 
-    if (!this.propertyListView[index].property.id) {
-      this.propertyListView.splice(index,1);
+    let prop = (this.formGroupWorkpackTemplate.get('properties') as FormArray).at(index);
+
+    if (prop.get('id').value != '') {
+      prop.get('toDelete').setValue(true);
     }
     else {
-      this.propertyListView[index].toDelete = true;
+      // control refers to your formarray
+      const control = <FormArray>this.formGroupWorkpackTemplate.controls['properties'];
+      // remove the chosen row
+      control.removeAt(index);
     }
-
-    console.log('this.currentProperties', this.propertyListView);
   }
 
   SetTrimmedNameAndShortName(value: String){
@@ -225,23 +226,25 @@ export class WorkpackTemplateComponent implements OnInit {
     this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.name);
   }
 
-  UpdatePropertiesArray() {
-    this.propertyListView.forEach((elem, index) => {
-      if (elem.toDelete) {
-        //this.propertyDataService.DeleteProperty(elem.property.id);
+  onSubmit(){
+    this.workpackTemplate.name = this.formGroupWorkpackTemplate.value.name.trim();
+    this.workpackTemplate.shortName = this.useful.GetShortName(this.formGroupWorkpackTemplate.value.shortName);
+    this.workpackTemplate.properties = [];
+    this.formGroupWorkpackTemplate.get('properties').value.forEach(formProp => {
+      if(formProp.toDelete){
+        // ToDo: Delete the property
+      }
+      else{
+        this.workpackTemplate.properties.push({
+          'id': formProp.id,
+          'max': formProp.max,
+          'min': formProp.min,
+          'value': formProp.value,
+          'name': formProp.name,
+          'typeName': formProp.typeName,
+        });
       }
     });
-    this.workpackTemplate.properties = [];
-    this.propertyListView
-      .filter(elem => !elem.toDelete)
-      .forEach (elem => this.workpackTemplate.properties.push(elem.property));
-  }
-
-  onSubmit(){
-    this.workpackTemplate.name = this.workpackTemplate.name.trim();
-    this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.shortName);
-
-    this.UpdatePropertiesArray();
 
     switch (this.viewOptions.action) {
       case 'new2schematemplate': {
@@ -294,6 +297,11 @@ export class WorkpackTemplateComponent implements OnInit {
         );
       }
     }
+
+    // this.properties2Delete.forEach(id => {
+    //   //this.propertyDataService.DeleteProperty(id);
+    // });
+    // this.properties2Delete = [];
   }
 
   DeleteWorkpackTemplate(id: string) {
