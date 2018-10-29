@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.js -o",
+    "starten" :"ng serve --proxy-config proxy.config.js --configuration=en -o",
+    "startpt" :"ng serve --proxy-config proxy.config.js --configuration=pt-BR -o",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

@@ -1,36 +1,35 @@
 <!-- app.component.html -->
 <div class="background-page">
-<div class="container-fluid topo">
-    <div class="logo">
-        <mat-icon fontSet="fas" fontIcon="fa-list" aria-hidden="true"></mat-icon>
-        <span>OpenPMO</span>
+    
+    <div class="container-fluid topo">
+        <div class="logo">
+            <mat-icon fontSet="fas" fontIcon="fa-list" aria-hidden="true"></mat-icon>
+            <span>OpenPMO</span>
+        </div>
+        <div class="user">
+            <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
+        </div>
+        <div class="config">
+            <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
+        </div>
     </div>
-    <div class="user">
-        <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
+
+    <app-breadcrumb></app-breadcrumb>
+
+    <div class="container-fluid panel">
+        <div class="filter">
+            <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
+        </div>
     </div>
-    <div class="config">
-        <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
+
+    <router-outlet></router-outlet>
+
+    <div class="spinner-container"
+        [style.top]="(spinnerOn) ? 0 : '-9999px'">
+        <mat-spinner
+        [style.opacity]="(spinnerOn) ? 1 : 0"
+        class="progress-spinner">
+        </mat-spinner>
     </div>
-</div>
-
-<app-breadcrumb></app-breadcrumb>
-
-<div class="container-fluid panel">
-    <div class="filter">
-        <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
-    </div>
-</div>
-
-<router-outlet></router-outlet>
-
-<div class="spinner-container"
-    [style.top]="(spinnerOn) ? 0 : '-9999px'">
-    <mat-spinner
-    [style.opacity]="(spinnerOn) ? 1 : 0"
-    class="progress-spinner">
-    </mat-spinner>
-</div>
-
-
 
 </div>

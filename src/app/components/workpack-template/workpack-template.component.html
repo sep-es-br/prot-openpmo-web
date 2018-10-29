@@ -1,4 +1,4 @@
-<div class="main-title">{{viewOptions.title}}</div>
+<div class="main-title" >translation2({{viewOptions.title}})</div>
 <div class="container-form">
   <mat-accordion >
 
@@ -8,7 +8,7 @@
       (opened)="viewOptions.propertiesPanelOpenState = true"
       (closed)="viewOptions.propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title i18n="@@translation_Properties">
           Properties
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -27,7 +27,7 @@
             [(ngModel)]="workpackTemplate.name"/>
         </mat-form-field>
         <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          Name is <strong>required</strong>
+          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
@@ -38,7 +38,7 @@
             [(ngModel)]="workpackTemplate.shortName"/>
         </mat-form-field>
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          Name is <strong>required</strong>
+          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
         </mat-error>
         
         <div class="container-fluid cards">
@@ -104,7 +104,7 @@
           </div>
         </div>
         <button mat-raised-button class="add-property-button dropleft card-setting" id="dropdownAddPropertyButton" data-toggle="dropdown">
-          Add Property 
+          <span i18n="@@translation_Add-Property">Add Property</span>
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
           <div class="dropdown-menu" aria-labelledby="dropdownAddPropertyButton">
             <a *ngFor="let pType of propertyTypes"
@@ -115,7 +115,7 @@
         </button>
 
         <div class="save-button">
-          <button mat-raised-button>Save</button>
+          <button mat-raised-button i18n="@@translation_Save">Save</button>
         </div>
         
 
@@ -131,7 +131,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title i18n="@@translation_Workpack-Templates">
           Workpack Templates
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -152,7 +152,7 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" 
                     (click)="DeleteWorkpackTemplate(component.id)"
-                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}">Delete</a>
+                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" i18n="@@translation_Delete">Delete</a>
                   </div>
                 </div>
                 <div class="card-manager">
@@ -167,8 +167,8 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a  class="dropdown-item" 
                   routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
-                  routerLinkActive="active">New</a>
-                  <div class="dropdown-item not-a-link disabled">Reuse:</div>
+                  routerLinkActive="active" i18n="@@translation_New">New</a>
+                  <div class="dropdown-item not-a-link disabled" i18n="@@translation_Reuse:">Reuse:</div>
                   <a *ngFor="let template of flatTree"
                   class="dropdown-item"
                   (click)="ReuseTemplate(template.id)"

@@ -1,5 +1,5 @@
 <!-- Office-list.html -->
-<div class="main-title">{{office.name}} Administration</div>
+<div class="main-title">{{office.name}} <span i18n="@@translation_Administration"> Administration</span></div>
 
 <div class="page-container">
   <mat-accordion >
@@ -11,7 +11,7 @@
 
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title i18n="@@translation_Schema-Templates">
         Schema Templates
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -24,7 +24,7 @@
             <div class="dropleft card-setting" data-toggle="dropdown">
               <mat-icon fontSet="fa" fontIcon="fa-bars" id="dropdownMenuButton"></mat-icon>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" (click)="DeleteSchemaTemplate(schemaTemplate.id)">Delete</a>
+                <a class="dropdown-item" (click)="DeleteSchemaTemplate(schemaTemplate.id)" i18n="@@translation_Delete">Delete</a>
               </div>
             </div>
             <mat-card-title class="title-card">

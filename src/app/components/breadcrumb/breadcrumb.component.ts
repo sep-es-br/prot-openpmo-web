@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  private breadcrumbTrail: Breadcrumb[] = [];
+  breadcrumbTrail: Breadcrumb[] = [];
 
   constructor(private breadcrumbservice: BreadcrumbService){}
 

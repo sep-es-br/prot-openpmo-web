@@ -14,7 +14,6 @@ import { FormControl, Validators, FormArray } from '@angular/forms';
 import { Property } from '../../model/property';
 import { SanitizeHtmlPipe } from '../../pipes/sanitize-html.pipe';
 
-
 @Component({
   selector: 'app-workpack-template',
   templateUrl: './workpack-template.component.html',
@@ -22,6 +21,7 @@ import { SanitizeHtmlPipe } from '../../pipes/sanitize-html.pipe';
 })
 
 @NgModule({
+  
 })
 
 export class WorkpackTemplateComponent implements OnInit {

@@ -1,4 +1,5 @@
-<div class="main-title">{{(action == 'new') ? 'New office' : office.name}}</div>
+<div class="main-title" *ngIf="action == 'new'"><span i18n="@@translation_New-office">New office</span></div>
+<div class="main-title" *ngIf="action != 'new'">{{office.name}}</div>
 <div class="panel-container">
   <mat-accordion >
     <!-- Properties Panel -->
@@ -7,7 +8,7 @@
       (opened)="propertiesPanelOpenState = true"
       (closed)="propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title i18n="@@translation_Properties">
           Properties
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -26,7 +27,7 @@
             [(ngModel)]="office.name"/> 
         </mat-form-field>
         <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          Name is <strong>required</strong>
+          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
@@ -37,10 +38,10 @@
             [(ngModel)]="office.shortName"/>
         </mat-form-field>
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          Name is <strong>required</strong>
+          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
         </mat-error>
 
-        <button mat-raised-button>Save</button>
+        <button mat-raised-button i18n="@@translation_Save">Save</button>
 
       </form>
     </mat-expansion-panel>
@@ -54,7 +55,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title>
+        <mat-panel-title i18n="@@translation_Planning">
           Planning
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -66,7 +67,7 @@
               <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" (click)="DeleteSchema(schema.id)">Delete</a>
+                  <a class="dropdown-item" (click)="DeleteSchema(schema.id)" i18n="@@translation_Delete">Delete</a>
                 </div>
               </div>
               <mat-card-title class="title-card">

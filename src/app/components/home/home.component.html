@@ -9,8 +9,8 @@
             <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
           </div>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" (click)="deleteOffice(office.id)">Delete</a>
-            <a class="dropdown-item" routerLink="/officeadmin/edit/{{office.id}}" routerLinkActive="active" href="#">Admin</a>
+            <a class="dropdown-item" (click)="deleteOffice(office.id)" i18n="@@translation_Delete">Delete</a>
+            <a class="dropdown-item" routerLink="/officeadmin/edit/{{office.id}}" routerLinkActive="active" href="#" i18n="@@translation_Admin">Admin</a>
           </div>
         </div>
         <mat-card-title class="title-card">
