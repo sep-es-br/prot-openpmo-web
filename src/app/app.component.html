@@ -14,7 +14,7 @@
 </div>
 
 <div class="progress-bar">
-    <div *ngIf="spinnerOn">
+    <div [ngClass]="{hideProgress: !spinnerOn}">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
 </div>
