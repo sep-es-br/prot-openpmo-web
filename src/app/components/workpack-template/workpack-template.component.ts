@@ -281,7 +281,6 @@ export class WorkpackTemplateComponent implements OnInit {
         break;
       }
       case 'edit': {
-        console.log('this.workpackTemplate',this.workpackTemplate);
         this.subscriptions.push(
           this.workpackDataService
           .UpdateWorkpackTemplate(this.workpackTemplate)
