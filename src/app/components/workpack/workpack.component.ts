@@ -103,7 +103,7 @@ export class WorkpackComponent implements OnInit {
       }
       case 'new2workpack': {
         this.subscriptions.push(
-          this.workpackDataService.GetWorkpackById(this.crumbService.GetLast().id)
+          this.workpackDataService.GetWorkpackById(this.crumbService.GetBeforeLast(1).id)
           .subscribe(parentWP => {
             parentWP.components.push(this.workpack);
             this.subscriptions.push(
