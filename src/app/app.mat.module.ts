@@ -12,6 +12,7 @@ import {  MatFormFieldModule,
           MatGridListModule,
           MatExpansionModule,
           MatCardModule,
+          MatProgressBarModule,
           MatIconRegistry } from '@angular/material';
 import 'hammerjs';
 
@@ -30,7 +31,8 @@ import 'hammerjs';
     MatGridListModule,
     MatCardModule, 
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatProgressBarModule
   ],
   exports: [ 
     MatFormFieldModule,
@@ -45,7 +47,8 @@ import 'hammerjs';
     MatGridListModule,
     MatCardModule,
     MatCardModule,
-    MatExpansionModule  ]
+    MatExpansionModule,
+    MatProgressBarModule  ]
 })
 
 export class AppMatModule {
