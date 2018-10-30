@@ -2,7 +2,14 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+html {
+    margin: 0px;
+    height: 100%;
+    width: 100%; 
+}
+
 body {
+    width: 100%;
     margin: 0;
     padding: 0;
     font-family: 'Open Sans', sans-serif;
@@ -217,8 +224,8 @@ button, a, div {
     background-size: cover;
   }
 
-  .mat-button{
-    background-color: rgb(76, 175, 80);
+  .save-button{
+    background-color: #4caf50b8;
     color: white;
     font-weight: bold;
     height: 40px;
@@ -226,15 +233,23 @@ button, a, div {
     font-size: 16px;
   }
 
-  .footer-button{
-    position:absolute;
-    bottom:0;
-    width:150px;
-    height:110px;
+.footer-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%
+}
+
+.footer-button{
+    position: fixed;
+    display: block;
+    bottom: 50px;
+    left: 50px;
   }
 
   .notification{
-    background-color: #4caf50b0;
+    background-color: #4caf50b8;
     height: 40px;
     width: 175px;
     line-height: 40px;
@@ -245,3 +260,4 @@ button, a, div {
     margin-top: -90px;
     margin-right: -66px;
   }
+
