@@ -68,10 +68,10 @@
               <div class="card-image">
                 <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a  class="dropdown-item"
-                    (click)="DeleteWorkpack(component.id)"
-                    routerLink="/schema/edit/{{workpack.id}}&{{workpack.template.id}}" 
-                    routerLinkActive="active">Delete</a>
+                  <a  class="dropdown-item"
+                      (click)="DeleteWorkpack(component.id)"
+                      routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template.id}}" 
+                      routerLinkActive="active">Delete</a>
                 </div>
               </div>
               <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
