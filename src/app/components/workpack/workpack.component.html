@@ -63,7 +63,29 @@
       <!-- Body -->
       <div class="container-fluid cards">
         <div class="row">
-          <div class="card card-style" *ngFor="let component of workpack.components"> 
+
+          <mat-card class="card card-style" *ngFor="let component of workpack.components">
+              <div class="card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a  class="dropdown-item"
+                    (click)="DeleteWorkpack(component.id)"
+                    routerLink="/schema/edit/{{workpack.id}}&{{workpack.template.id}}" 
+                    routerLinkActive="active">Delete</a>
+                </div>
+              </div>
+              <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+              </div>
+              <mat-card-title class="title-card">
+                <a routerLink="/workpack/edit/{{component.id}}&{{component.template?.id}}" routerLinkActive="active">{{component.name}}</a>
+              </mat-card-title>
+              <div class="card-manager">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+              </div>
+            </mat-card>
+
+          <!-- <div class="card card-style" *ngFor="let component of workpack.components"> 
             <div class="card-body">
               <div class="card-image">
                 <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
@@ -86,7 +108,7 @@
                 <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <mat-card class="card new-card card-style">
               <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
