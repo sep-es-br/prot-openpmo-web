@@ -296,11 +296,6 @@ export class WorkpackTemplateComponent implements OnInit {
         );
       }
     }
-
-    // this.properties2Delete.forEach(id => {
-    //   //this.propertyDataService.DeleteProperty(id);
-    // });
-    // this.properties2Delete = [];
   }
 
   DeleteWorkpackTemplate(id: string) {

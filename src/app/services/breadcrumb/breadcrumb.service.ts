@@ -265,6 +265,7 @@ export class BreadcrumbService {
         this.Add(crumb);
       }
       else {
+        this.$breadcrumbTrail.value[index].label = node.name;
         this.GoTo(index);
       }
     }
