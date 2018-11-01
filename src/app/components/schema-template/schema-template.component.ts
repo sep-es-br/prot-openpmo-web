@@ -65,13 +65,23 @@ export class SchemaTemplateComponent implements OnInit {
       })
     );
 
-    this.formGroupSchemaTemplate.statusChanges.subscribe(val => {
-      this.ShowSaveButton();
+    this.formGroupSchemaTemplate.statusChanges.subscribe(status => {
+        return (status == 'VALID' && this.UserChangedSomething(this.formGroupSchemaTemplate.value)) 
+                ? this.ShowSaveButton() 
+                : this.HideSaveButton();
     });
 
     this.HideMessage();
 
   }
+
+
+  UserChangedSomething(val): Boolean {
+    if (val.name != this.schemaTemplate.name) return true;
+    if (val.shortName != this.schemaTemplate.shortName) return true;
+  }
+
+
 
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";

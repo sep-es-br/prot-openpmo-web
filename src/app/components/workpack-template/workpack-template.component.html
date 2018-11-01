@@ -1,3 +1,7 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  Saved successfully
+</div>
+
 <div class="main-title">{{viewOptions.title}}</div>
 <div class="container-form">
   <mat-accordion >
@@ -123,10 +127,15 @@
           </div>
         </button>
 
-        <div class="save-button">
-          <button type="submit" [disabled]="!formGroupWorkpackTemplate.controls['name'].valid" mat-raised-button>Save</button>
-        </div>
-        
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button 
+              class="save-button" mat-button>Save</button>
+          </div>
+        </div>        
+
 
       </form>
     </mat-expansion-panel>

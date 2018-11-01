@@ -10,10 +10,8 @@ import { WorkpackTemplate } from '../../model/workpack-template';
 import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ViewOptions } from '../../model/view-options';
-import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { Property } from '../../model/property';
-import { SanitizeHtmlPipe } from '../../pipes/sanitize-html.pipe';
-import { fbind } from 'q';
 
 
 @Component({
@@ -59,7 +57,8 @@ export class WorkpackTemplateComponent implements OnInit {
     label: String; 
   }[];
   propertyTypes: Property[] = [];
-
+  SaveButtonBottomPosition: String;
+  MessageRightPosition: String;
 
   ngOnInit() {
 
@@ -69,27 +68,12 @@ export class WorkpackTemplateComponent implements OnInit {
       this.workpackDataService.workpackTemplate.subscribe(wpt =>{
         this.workpackTemplate = wpt;
         if (this.workpackTemplate.id != '') {
-          this.formGroupWorkpackTemplate.controls['name'].setValue(this.workpackTemplate.name);
-          this.formGroupWorkpackTemplate.controls['shortName'].setValue(this.workpackTemplate.shortName);
-          let myArray = [];
-          this.workpackTemplate.properties.forEach(property => {
-            (this.formGroupWorkpackTemplate.get('properties') as FormArray).push(
-              this.fb.group({
-                toDelete: [false],
-                editing: [false],
-                id: [property.id],
-                name: [property.name, Validators.required],
-                typeName: [property.typeName],
-                min: [property.min],
-                max: [property.max],
-                value: [property.value]
-              })
-            );
-          });
+          this.LoadFormControls();
         }
       })
     );
    
+    this.HideMessage();
 
     this.subscriptions.push(
       this.workpackDataService.workpackTemplateTree
@@ -118,6 +102,75 @@ export class WorkpackTemplateComponent implements OnInit {
         });
       })
     );
+  }
+
+  CleanPropertiesFormArray(){
+    const ctrl = <FormArray>this.formGroupWorkpackTemplate.controls['properties'];
+    while (this.formGroupWorkpackTemplate.controls['properties'].value.length !== 0) {
+      ctrl.removeAt(0);
+    }
+  }
+
+  LoadFormControls() {
+    this.formGroupWorkpackTemplate.controls['name'].setValue(this.workpackTemplate.name);
+    this.formGroupWorkpackTemplate.controls['shortName'].setValue(this.workpackTemplate.shortName);
+    this.CleanPropertiesFormArray();
+    this.workpackTemplate.properties.forEach(property => {
+      (this.formGroupWorkpackTemplate.get('properties') as FormArray).push(
+        this.fb.group({
+          toDelete: [false],
+          editing: [false],
+          id: [property.id],
+          name: [property.name, Validators.required],
+          typeName: [property.typeName],
+          min: [(property.min == null) ? '0' : property.min],
+          max: [(property.max == null) ? '100' : property.max],
+          value: [(property.value == null) ? "" : property.value]
+        })
+      );
+    });
+
+    this.subscriptions.push(    
+      this.formGroupWorkpackTemplate.statusChanges.subscribe((status) => {
+        return (status == 'VALID' && this.UserChangedSomething(this.formGroupWorkpackTemplate.value)) 
+                ? this.ShowSaveButton() 
+                : this.HideSaveButton();
+      })
+    );
+  }
+
+
+  UserChangedSomething(val): Boolean {
+    if (val.name != this.workpackTemplate.name) return true;
+    if (val.shortName != this.workpackTemplate.shortName) return true;
+    if (val.properties.length != this.workpackTemplate.properties.length) return true;
+    let changed = false;
+    val.properties.forEach((prop, i, props) => {
+      if (prop.id == '') changed = true;
+      if (prop.toDelete) changed = true;
+      if (prop.name != this.workpackTemplate.properties[i].name) changed = true;
+      //if (prop.min != this.workpackTemplate.properties[i].min) changed = true;
+      //if (prop.max != this.workpackTemplate.properties[i].max) changed = true;
+      //if (prop.value != this.workpackTemplate.properties[i].value) changed = true;
+    });
+    return changed;
+  }
+
+  ShowSaveButton(){
+    this.SaveButtonBottomPosition = "50px";
+    this.HideMessage();
+  }
+
+  HideSaveButton(){
+    this.SaveButtonBottomPosition = "-40px";
+  }
+
+  ShowMessage(){
+    this.MessageRightPosition = "50px";
+  }
+
+  HideMessage(){
+    this.MessageRightPosition = "-180px";
   }
 
   FlattenTree(root: WorkpackTemplate, ident: number){
@@ -179,12 +232,12 @@ export class WorkpackTemplateComponent implements OnInit {
       this.fb.group({
         toDelete: [false],
         editing: [true],
-        id: [''],
-        name: ['', Validators.required],
+        id: [""],
+        name: ["", Validators.required],
         typeName: [type],
-        min: [''],
-        max: [''],
-        value: ['']
+        min: [""],
+        max: [""],
+        value: [""]
       })
     );
 
@@ -285,12 +338,14 @@ export class WorkpackTemplateComponent implements OnInit {
           this.workpackDataService
           .UpdateWorkpackTemplate(this.workpackTemplate)
           .subscribe(
-            () => {
-              let lastCrumb = this.crumbService.GetLast();
-              this.router.navigate([
-                './' + lastCrumb.route +
-                '/' + lastCrumb.action +
-                '/' + lastCrumb.id]);
+            wt => {
+              this.workpackTemplate = wt;
+              this.LoadFormControls();
+              this.ShowMessage();
+              window.setTimeout(
+                () => {this.HideMessage();}, 
+                3000);
+              this.crumbService.SetCurrentWorkpackTemplate(wt);
             }
           )
         );

@@ -87,12 +87,19 @@ export class SchemaComponent implements OnInit {
       });
     }
 
-    this.formGroupSchema.statusChanges.subscribe(val => {
-      this.ShowSaveButton();
+    this.formGroupSchema.statusChanges.subscribe(status => {
+      return (status == 'VALID' && this.UserChangedSomething(this.formGroupSchema.value)) 
+      ? this.ShowSaveButton() 
+      : this.HideSaveButton();
     });
 
     this.HideMessage(); 
   }
+
+  UserChangedSomething(val): Boolean {
+    if (val.name != this.schema.name) return true;
+    if (val.shortName != this.schema.shortName) return true;
+  }  
 
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
@@ -117,11 +124,6 @@ export class SchemaComponent implements OnInit {
     this.title = (action == 'new') ? 'New' : '';
     this.showForm = ((action != 'children') && (action.slice(0,6) != 'delete'));
     this.showChildren = (action != 'edit')
-  }
-
-  SetTrimmedNameAndShortName(value: String){
-    this.schema.name = this.useful.GetTrimmedName(value);
-    this.schema.shortName = this.useful.GetShortName(this.schema.name);
   }
 
   onSubmit(){
