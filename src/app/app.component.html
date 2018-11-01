@@ -18,11 +18,11 @@
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
         </button>
         <mat-menu class="UserLangButton" xPosition="after" #menu="matMenu">
-            <button class="UserLangButton" mat-menu-item [matMenuTriggerFor]="languages">Languages {{lang}}</button>
+            <button class="UserLangButton" mat-menu-item [matMenuTriggerFor]="languages"><span translate>Languages</span>{{lang}}</button>
         </mat-menu>
         <mat-menu #languages="matMenu">
-            <button (click)="switchLanguage('en')" mat-menu-item>English</button>
-            <button (click)="switchLanguage('pt-BR')" mat-menu-item>Português BR</button>
+            <button (click)="switchLanguage('en')" mat-menu-item translate>English</button>
+            <button (click)="switchLanguage('pt-BR')" mat-menu-item translate>Português BR</button>
         </mat-menu>
 
         <div class="config">
