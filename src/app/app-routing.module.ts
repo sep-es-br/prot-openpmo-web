@@ -53,7 +53,8 @@ const routes: Routes = [
     component: SchemaTemplateComponent,
     resolve: {      
       schematemplate: SchemaTemplateResolver
-    }
+    },
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'workpacktemplate/:action/:id',

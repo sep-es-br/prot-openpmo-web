@@ -219,19 +219,19 @@ button, a, div {
     border-radius: 4px;
   }
 
-  .example-header-image {
+.example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
-  }
+}
 
-  .save-button{
+.save-button{
     background-color: #4caf50b8;
     color: white;
     font-weight: bold;
     height: 40px;
     width: 115px;
     font-size: 16px;
-  }
+}
 
 .footer-container{
     position: absolute;
@@ -244,11 +244,13 @@ button, a, div {
 .footer-button{
     position: fixed;
     display: block;
-    bottom: 50px;
+    transition: bottom .5s;
+    transition-timing-function: ease-in;
+    bottom: -40px;
     left: 50px;
-  }
+}
 
-  .notification{
+.notification{
     background-color: #4caf50b8;
     height: 40px;
     width: 175px;
@@ -256,7 +258,17 @@ button, a, div {
     text-align: center;
     color: white;
     border-radius: 5px;
+<<<<<<< HEAD
     float: right;
     margin-top: -90px;
     margin-right: -66px;
   }
+=======
+    position: fixed;
+    transition: right .5s;
+    transition-timing-function: ease-in;
+    right: -180px;
+    top: 60px;
+}
+
+>>>>>>> 833b08552ba76f5986075be185a1e8a30ac5dcd9

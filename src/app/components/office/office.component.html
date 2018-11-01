@@ -1,3 +1,6 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  Saved successfully
+</div>
 <div class="main-title">{{(action == 'new') ? 'New office' : office.name}}</div>
 <div class="panel-container">
   <mat-accordion >
@@ -12,35 +15,38 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <form 
-        name="officeForm" 
-        (ngSubmit)="f.form.valid && onSubmit()" 
-        #f="ngForm"
-        class="form-container"
-        novalidate>  
+        [formGroup]="formGroupOffice"
+        (ngSubmit)="onSubmit()" 
+        class="form-container"> 
         <mat-form-field>
           <input matInput
-            type="text"
-            [formControl]="nameFormControl"
+            type="text"      
+            formControlName="name"
             placeholder="Name"
-            required
-            [(ngModel)]="office.name"/> 
+            required/> 
         </mat-form-field>
-        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+        <mat-error *ngIf="formGroupOffice.controls['name'].invalid && formGroupOffice.controls['name'].touched">
           Name is <strong>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
-            [formControl]="shortNameFormControl"
+            formControlName="shortName"
             placeholder="Short Name"
-            required
-            [(ngModel)]="office.shortName"/>
+            required/>
         </mat-form-field>
-        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
+        <mat-error *ngIf="formGroupOffice.controls['shortName'].invalid && formGroupOffice.controls['shortName'].touched">
           Name is <strong>required</strong>
         </mat-error>
 
-        <button mat-raised-button>Save</button>
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button 
+              class="save-button" mat-button>Save</button>
+          </div>
+        </div>        
 
       </form>
     </mat-expansion-panel>

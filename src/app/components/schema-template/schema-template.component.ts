@@ -6,7 +6,7 @@ import { Office } from '../../model/office';
 import { SchemaTemplate } from '../../model/schema-template';
 import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 
@@ -24,15 +24,13 @@ export class SchemaTemplateComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private useful: Useful,
     private router: Router,
-    private crumbService: BreadcrumbService ) {}
+    private crumbService: BreadcrumbService,
+    private fb: FormBuilder) {}
 
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
-  shortNameFormControl = new FormControl('', [
-    Validators.required
-  ]);
+  formGroupSchemaTemplate = this.fb.group({
+    name: ['', Validators.required],
+    shortName: ['', Validators.required]
+  });
   
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -42,7 +40,9 @@ export class SchemaTemplateComponent implements OnInit {
   showForm: Boolean;
   showChildren: Boolean;
   propertiesPanelOpenState: Boolean = false;
-  workpackTemplatesPanelOpenState: Boolean = true;  
+  workpackTemplatesPanelOpenState: Boolean = true;
+  SaveButtonBottomPosition: String;
+  MessageRightPosition: String;
 
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
@@ -54,6 +54,8 @@ export class SchemaTemplateComponent implements OnInit {
     this.subscriptions.push(
       this.schemaDataService.schemaTemplate.subscribe(st => {
         this.schemaTemplate = st;
+        this.formGroupSchemaTemplate.controls['name'].setValue(this.schemaTemplate.name);
+        this.formGroupSchemaTemplate.controls['shortName'].setValue(this.schemaTemplate.shortName);
       })
     );
 
@@ -62,6 +64,40 @@ export class SchemaTemplateComponent implements OnInit {
         this.office = o;
       })
     );
+
+    this.formGroupSchemaTemplate.statusChanges.subscribe(status => {
+        return (status == 'VALID' && this.UserChangedSomething(this.formGroupSchemaTemplate.value)) 
+                ? this.ShowSaveButton() 
+                : this.HideSaveButton();
+    });
+
+    this.HideMessage();
+
+  }
+
+
+  UserChangedSomething(val): Boolean {
+    if (val.name != this.schemaTemplate.name) return true;
+    if (val.shortName != this.schemaTemplate.shortName) return true;
+  }
+
+
+
+  ShowSaveButton(){
+    this.SaveButtonBottomPosition = "50px";
+    this.HideMessage();
+  }
+
+  HideSaveButton(){
+    this.SaveButtonBottomPosition = "-40px";
+  }
+
+  ShowMessage(){
+    this.MessageRightPosition = "50px";
+  }
+
+  HideMessage(){
+    this.MessageRightPosition = "-180px";
   }
 
   SetPanels(action: String) {
@@ -70,8 +106,9 @@ export class SchemaTemplateComponent implements OnInit {
   }
 
   onSubmit(){
-    this.schemaTemplate.name = this.schemaTemplate.name.trim();
-    this.schemaTemplate.shortName = this.useful.GetShortName(this.schemaTemplate.shortName);
+
+    this.schemaTemplate.name = this.formGroupSchemaTemplate.value.name.trim();
+    this.schemaTemplate.shortName = this.useful.GetShortName(this.formGroupSchemaTemplate.value.shortName);
     if (this.action == 'new') {
       this.office.schemaTemplates.push(this.schemaTemplate);
       this.subscriptions.push(
@@ -93,12 +130,14 @@ export class SchemaTemplateComponent implements OnInit {
         this.schemaDataService
         .UpdateSchemaTemplate(this.schemaTemplate)
         .subscribe(
-          ret => {
-            this.router.navigate(['./officeadmin/edit/' + this.office.id]);
-          },
-          error => Observable.throw(error),
-          () => {
-            this.router.navigate(['./officeadmin/edit/' + this.office.id]); 
+          st => {
+            this.schemaTemplate = st;
+            this.HideSaveButton();
+            this.ShowMessage();
+            window.setTimeout(
+              () => {this.HideMessage();}, 
+              3000);
+            this.crumbService.SetCurrentSchemaTemplate(st);
           }
         )
       );
