@@ -30,7 +30,8 @@ import { SchemaTemplateResolver } from './components/schema-template/schema-temp
 import { WorkpackDataService } from './services/data/workpack/workpack-data.service';
 import { SchemaDataService } from './services/data/schema/schema-data.service';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
-import { translation } from './pipes/translation'
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -44,8 +45,7 @@ import { translation } from './pipes/translation'
     WorkpackTemplateComponent,
     PropertyTemplateComponent,
     BreadcrumbComponent,
-    SanitizeHtmlPipe,
-    translation
+    SanitizeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -54,7 +54,14 @@ import { translation } from './pipes/translation'
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgPipesModule
+    NgPipesModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     OfficeDataService,
@@ -75,4 +82,8 @@ import { translation } from './pipes/translation'
 })
 
 export class AppModule {
+}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
 }

@@ -8,9 +8,7 @@
       (opened)="viewOptions.propertiesPanelOpenState = true"
       (closed)="viewOptions.propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Properties">
-          Properties
-        </mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
         name="workpackForm" 
@@ -27,7 +25,7 @@
             [(ngModel)]="workpack.name"/>
         </mat-form-field>
         <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+          <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
@@ -38,10 +36,10 @@
             [(ngModel)]="workpack.shortName"/>
         </mat-form-field>
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+          <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button i18n="@@translation_Save">Save</button>
+        <button mat-raised-button translate>Save</button>
 
       </form>
     </mat-expansion-panel>
@@ -55,9 +53,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Workpacks">
-          Workpacks
-        </mat-panel-title>
+        <mat-panel-title translate>Workpacks</mat-panel-title>
       </mat-expansion-panel-header>
 
       <!-- Body -->
@@ -78,7 +74,7 @@
                   <a  class="dropdown-item"
                       (click)="DeleteWorkpack(component.id)"
                       routerLink="/schema/edit/{{workpack.id}}&{{workpack.template.id}}" 
-                      routerLinkActive="active" i18n="@@translation_Delete">Delete</a>
+                      routerLinkActive="active" i18n="@@translation_Delete" translate>Delete</a>
                 </div>
               </div>
     

@@ -46,6 +46,17 @@
     line-height: 50px;
 }
 
+.UserLangButton {
+    width: 180px;
+}
+
+.ButtonTransparent{
+    background-color:transparent;
+    border:1px solid transparent;
+    text-align: center;
+    width:120px;
+}
+
 .filter{
     font-size: 20px;
     float: right;

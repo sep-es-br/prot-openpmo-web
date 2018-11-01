@@ -5,7 +5,6 @@ import { ViewOptions } from '../../model/view-options';
 import { WorkpackTemplate } from '../../model/workpack-template';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { SchemaDataService } from 'src/app/services/data/schema/schema-data.service';
-import { translation,translation2 } from '../../pipes/translation'
 
 @Injectable()
 export class WorkpackTemplateResolver implements Resolve<ViewOptions> {

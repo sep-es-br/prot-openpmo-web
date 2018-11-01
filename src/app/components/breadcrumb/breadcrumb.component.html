@@ -12,10 +12,10 @@
                         <mat-icon fontSet="fa" fontIcon="fa-home"></mat-icon>
                     </span>
                     <span *ngIf="((i > 0) && (i < breadcrumbTrail.length - 1))">
-                        {{crumb.label}}
+                        {{crumb.label|translate:user}}
                     </span>
                     <span *ngIf="((i > 0) && (i == breadcrumbTrail.length - 1))" disabled>
-                        {{crumb.label}}
+                        {{crumb.label|translate:user}}
                     </span>
             </a>
           </li>

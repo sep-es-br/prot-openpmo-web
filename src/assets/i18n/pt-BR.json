@@ -1,0 +1,21 @@
+{
+    "Delete" : "Excluir",
+    "Admin" : "Admin",
+    "New office" : "Novo escritório",
+    "Properties" : "Propriedades",
+    "Name is" : "Nome ",
+    "required" : "obrigatório",
+    "Save" : "Salvar",
+    "Planning" : "Planejamento",
+    "Workpacks" : "Pacotes de trabalho",
+    "New Schema Template" : "Novo Modelo de Esquema",
+    "New Workpack Template" : "Novo Modelo de Pacote de Trabalho",
+    "New workpack template" : "Novo Modelo de Pacote de Trabalho",
+    "Workpack Templates" : "Modelos de Pacote de Trabalho",
+    " Administration" : " Administração",
+    "Schema Templates" : "Modelos de esquema",
+    "Add Property" : "Adicionar Propriedade",
+    "New" : "Novo ",
+    "Reuse:" : "Reutilizar:",
+    "property-template works!" : "Propriedades-modelo de trabalho!"
+}

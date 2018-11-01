@@ -1,4 +1,4 @@
-<div class="main-title" >translation2({{viewOptions.title}})</div>
+<div class="main-title">{{viewOptions.title|translate:use}}</div>
 <div class="container-form">
   <mat-accordion >
 
@@ -8,91 +8,98 @@
       (opened)="viewOptions.propertiesPanelOpenState = true"
       (closed)="viewOptions.propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Properties">
-          Properties
-        </mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
-      <form 
-        name="workpackForm" 
-        (ngSubmit)="f.form.valid && onSubmit()" 
-        #f="ngForm"
-        class="form-container" 
-        novalidate>
+      <form [formGroup]="formGroupWorkpackTemplate" (ngSubmit)="onSubmit()"
+        class="form-container">
         <mat-form-field>
           <input matInput
             type="text"      
-            [formControl]="nameFormControl"
-            placeholder="Name"
-            required
-            [(ngModel)]="workpackTemplate.name"/>
+            formControlName="name"
+            placeholder="Name"/>
         </mat-form-field>
-        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+        <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
+          <span translate>Name is</span> 
+          <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
-            [formControl]="shortNameFormControl"
-            placeholder="Short Name"
-            required
-            [(ngModel)]="workpackTemplate.shortName"/>
+            formControlName="shortName"
+            placeholder="Short Name"/>
         </mat-form-field>
-        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+        <mat-error *ngIf="formGroupWorkpackTemplate.controls['shortName'].invalid && formGroupWorkpackTemplate.controls['shortName'].touched">
+          <span translate>Name is</span> 
+          <strong translate>required</strong>
         </mat-error>
         
-        <div class="container-fluid cards">
+        <div class="container-fluid cards" formArrayName="properties">
           <div class="row property-row">
-            <div class="property-card-box" 
-                [class]="(propertyView.editing) ? 'property-card-box property-full-width' : 'property-card-box'"    
-                *ngFor="let propertyView of propertyListView; let i = index;">
-              <mat-expansion-panel class="property-card row"
-                [expanded]="propertyView.editing"
-                (opened)="propertyView.editing = true"
-                (closed)="propertyView.editing = false"
-                *ngIf="!propertyView.toDelete">
+            <div [class]="(property.editing) ? 'property-card-box property-full-width' : 'property-card-box'"    
+              *ngFor="let property of formGroupWorkpackTemplate['controls'].properties['controls']; let i=index;">
+              <mat-expansion-panel 
+                [formGroupName]="i"
+                class="property-card row"
+                [expanded]="property.get('editing').value"
+                (opened)="EditProperty(i)"
+                (closed)="StopEditing(i)"
+                *ngIf="!property.get('toDelete').value">
                 <mat-expansion-panel-header class="property-header">
                   <mat-panel-title class="property-name">
                     <div class="property-logo-mat-icon" 
-                        *ngIf="GetPropertyLogo(propertyView.property.typeName).source == 'mat-icon'">
+                        *ngIf="GetPropertyLogo(property.get('typeName').value).source == 'mat-icon'">
                         <mat-icon 
-                          fontSet="{{GetPropertyLogo(propertyView.property.typeName).set}}" 
-                          fontIcon="{{GetPropertyLogo(propertyView.property.typeName).icon}}"></mat-icon>
+                          fontSet="{{GetPropertyLogo(property.get('typeName').value).set}}" 
+                          fontIcon="{{GetPropertyLogo(property.get('typeName').value).icon}}"></mat-icon>
                     </div>
                     <div class="property-logo-font" 
-                        *ngIf="GetPropertyLogo(propertyView.property.typeName).source == 'font'">
-                      {{GetPropertyLogo(propertyView.property.typeName).icon}}
+                        *ngIf="GetPropertyLogo(property.get('typeName').value).source == 'font'">
+                      {{GetPropertyLogo(property.get('typeName').value).icon}}
                     </div>
-                    <div class="property-title"
-                        *ngIf="!propertyView.editing">
-                      {{propertyView.property.name}}
+                    <div class="property-title">
+                      {{property.get('name').value}}
                     </div>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="card-content">
-                  <div class="{{(propertyView.editing) ? 'textInput' : 'minimum-width'}}">
+                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
                     <mat-form-field 
                       class="form-field">
                       <input matInput
-                        [formControl]="propertyFormControls[i].name"
                         type="text"
-                        required   
-                        placeholder="Property Name"
-                        [(ngModel)]="propertyListView[i].property.name"/>
+                        placeholder="Name"
+                        formControlName="name"/>
                     </mat-form-field>
                   </div>
-                  <div class="{{(propertyView.editing) ? 'textInput' : 'minimum-width'}}">
+                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
                     <mat-form-field 
                       class="form-field">
                       <input matInput
-                        [formControl]="propertyFormControls[i].name"
                         type="text"
-                        required   
-                        placeholder="Property Name"
-                        [(ngModel)]="propertyListView[i].property.name"/>
+                        placeholder="Minimum"
+                        formControlName="min"
+                        value=""/>
                     </mat-form-field>
-                 </div>
-                 <div class="delete-button"> <div>
+                  </div>
+                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+                    <mat-form-field 
+                      class="form-field">
+                      <input matInput
+                        type="text" 
+                        placeholder="Maximum"
+                        formControlName="max"/>
+                    </mat-form-field>
+                  </div>
+                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+                    <mat-form-field 
+                      class="form-field">
+                      <input matInput
+                        type="text"
+                        placeholder="Default value"
+                        formControlName="value"/>
+                    </mat-form-field>
+                  </div>
+                  <div class="delete-button"> <div>
                     <button mat-button 
                       (click)="DeleteProperty(i)">
                       <mat-icon fontSet="fas" fontIcon="fa-trash-alt"></mat-icon>
@@ -104,7 +111,7 @@
           </div>
         </div>
         <button mat-raised-button class="add-property-button dropleft card-setting" id="dropdownAddPropertyButton" data-toggle="dropdown">
-          <span i18n="@@translation_Add-Property">Add Property</span>
+          <span translate>Add Property</span>
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
           <div class="dropdown-menu" aria-labelledby="dropdownAddPropertyButton">
             <a *ngFor="let pType of propertyTypes"
@@ -115,7 +122,7 @@
         </button>
 
         <div class="save-button">
-          <button mat-raised-button i18n="@@translation_Save">Save</button>
+          <button type="submit" [disabled]="!formGroupWorkpackTemplate.controls['name'].valid" mat-raised-button translate>Save</button>
         </div>
         
 
@@ -131,9 +138,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Workpack-Templates">
-          Workpack Templates
-        </mat-panel-title>
+        <mat-panel-title translate>Workpack Templates</mat-panel-title>
       </mat-expansion-panel-header>
 
         <!-- Body -->
@@ -152,7 +157,7 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" 
                     (click)="DeleteWorkpackTemplate(component.id)"
-                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" i18n="@@translation_Delete">Delete</a>
+                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" translate>Delete</a>
                   </div>
                 </div>
                 <div class="card-manager">
@@ -167,8 +172,8 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a  class="dropdown-item" 
                   routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
-                  routerLinkActive="active" i18n="@@translation_New">New</a>
-                  <div class="dropdown-item not-a-link disabled" i18n="@@translation_Reuse:">Reuse:</div>
+                  routerLinkActive="active" translate>New</a>
+                  <div class="dropdown-item not-a-link disabled" translate>Reuse:</div>
                   <a *ngFor="let template of flatTree"
                   class="dropdown-item"
                   (click)="ReuseTemplate(template.id)"

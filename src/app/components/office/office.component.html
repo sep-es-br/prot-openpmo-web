@@ -1,6 +1,6 @@
-<div class="main-title" *ngIf="action == 'new'"><span i18n="@@translation_New-office">New office</span></div>
-<div class="main-title" *ngIf="action != 'new'">{{office.name}}</div>
+<div class="main-title" translate>{{(action == 'new') ? 'New office' : office.name}}</div>
 <div class="panel-container">
+
   <mat-accordion >
     <!-- Properties Panel -->
     <mat-expansion-panel 
@@ -8,9 +8,7 @@
       (opened)="propertiesPanelOpenState = true"
       (closed)="propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Properties">
-          Properties
-        </mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
         name="officeForm" 
@@ -22,26 +20,28 @@
           <input matInput
             type="text"
             [formControl]="nameFormControl"
+            i18n-placeholder="@@teste"
             placeholder="Name"
             required
             [(ngModel)]="office.name"/> 
         </mat-form-field>
         <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+          <span translate>Name is</span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
             [formControl]="shortNameFormControl"
+            i18n i18n-placeholder="@@teste2"
             placeholder="Short Name"
             required
             [(ngModel)]="office.shortName"/>
         </mat-form-field>
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+          <span translate>Name is</span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button i18n="@@translation_Save">Save</button>
+        <button mat-raised-button translate>Save</button>
 
       </form>
     </mat-expansion-panel>
@@ -55,9 +55,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Planning">
-          Planning
-        </mat-panel-title>
+        <mat-panel-title translate>Planning</mat-panel-title>
       </mat-expansion-panel-header>
       
         <!-- Body -->
@@ -67,7 +65,7 @@
               <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" (click)="DeleteSchema(schema.id)" i18n="@@translation_Delete">Delete</a>
+                  <a class="dropdown-item" (click)="DeleteSchema(schema.id)" translate>Delete</a>
                 </div>
               </div>
               <mat-card-title class="title-card">

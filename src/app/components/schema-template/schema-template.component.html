@@ -1,5 +1,5 @@
-<div class="main-title" *ngIf="action == 'new'"><span i18n="@@translation_New-Schema-Template">New Schema Template</span></div>
-<div class="main-title" *ngIf="action != 'new'">{{title}} {{schemaTemplate.name}}</div>
+<div class="main-title">{{title|translate:user}} {{(action == 'new')? '' : schemaTemplate.name}}</div>
+
 <div class="container-form"> 
   <mat-accordion >
     <mat-expansion-panel 
@@ -7,9 +7,7 @@
       (opened)="propertiesPanelOpenState = true"
       (closed)="propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Properties">
-          Properties
-        </mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
         name="schemaForm" 
@@ -26,7 +24,7 @@
             [(ngModel)]="schemaTemplate.name"/>
         </mat-form-field>
         <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+          <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
@@ -37,10 +35,10 @@
             [(ngModel)]="schemaTemplate.shortName"/>
         </mat-form-field>
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span i18n="@@translation_Name-is">Name is </span> <strong i18n="@@translation_required">required</strong>
+          <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button i18n="@@translation_Save">Save</button>
+        <button mat-raised-button translate>Save</button>
 
       </form>
     </mat-expansion-panel>
@@ -54,9 +52,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title i18n="@@translation_Workpack-Templates">
-          Workpack Templates
-        </mat-panel-title>
+        <mat-panel-title translate>Workpack Templates</mat-panel-title>
       </mat-expansion-panel-header>
 
       <!-- Body -->
@@ -69,7 +65,7 @@
                 <a  class="dropdown-item"
                 (click)="DeleteWorkpackTemplate(workpackTemplate.id)"
                 routerLink="/schematemplate/edit/{{schemaTemplate.id}}" 
-                routerLinkActive="active" i18n="@@translation_Delete">Delete</a>
+                routerLinkActive="active" i18n="@@translation_Delete" translate>Delete</a>
               </div>
             </div>
             <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
