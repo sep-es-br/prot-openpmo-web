@@ -30,10 +30,10 @@
           <input matInput 
             type="text" 
             formControlName="shortName"
-            placeholder={{translate.shortname|translate:use}}/>
+            placeholder={{translate.fullname|translate:use}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['shortName'].invalid && formGroupWorkpackTemplate.controls['shortName'].touched">
-          <span translate>Name is</span> 
+          <span translate>Full name is</span> 
           <strong translate>required</strong>
         </mat-error>
         

@@ -12,17 +12,15 @@
     "New Workpack Template" : "",
     "New workpack template" : "",
     "Workpack Templates" : "",
-    " Administration" : "",
+    "Administration" : "",
     "Schema Templates" : "",
     "Add Property" : "",
     "New" : "",
     "Reuse:" : "",
     "property-template works!" : "",
-    "English" : "",
-    "Português BR" : "",
-    "Languages" : "",
     "Name" : "",
-    "Short Name" : "",
+    "Full Name" : "",
+    "Full name is" : "",
     "Address" : "",
     "Cost" : "",
     "Measure" : "",
@@ -35,6 +33,8 @@
     "Minimum" : "",
     "Maximum" : "",
     "Default value" : "",
-    "Saved successfully" : ""
+    "Saved successfully" : "",
+    "en" : "",
+    "pt-BR" : ""
 
 }

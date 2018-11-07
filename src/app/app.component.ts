@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
     translate.setDefaultLang('en');
   }
 
-  lang:string = "En";
+  lang:string = "en";
 
   ngOnInit() {
     this.subscriptions.push(
@@ -37,11 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   switchLanguage(language: string) {
     this.translate.use(language);
-
-    if (language == "en")
-      this.lang = "En";
-    if (language == "pt-BR")
-      this.lang = "Pt-BR"; 
+    this.lang = language;    
   }
 }
 

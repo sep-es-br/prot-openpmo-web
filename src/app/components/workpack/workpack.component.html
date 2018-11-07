@@ -25,18 +25,18 @@
             [(ngModel)]="workpack.name"/>
         </mat-form-field>
         <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          <span translate>Name is </span> <strong translate>required</strong>
+          <span translate>Name is</span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
             [formControl]="shortNameFormControl"
-            placeholder={{translate.shortname|translate:use}}
+            placeholder={{translate.fullname|translate:use}}
             required
             [(ngModel)]="workpack.shortName"/>
         </mat-form-field>
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span translate>Name is </span> <strong translate>required</strong>
+          <span translate>Full name is</span> <strong translate>required</strong>
         </mat-error>
 
         <button mat-raised-button>
