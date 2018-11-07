@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
     if (language == "pt-BR")
       this.lang = "Pt-BR"; 
   }
+
 }
 
  
