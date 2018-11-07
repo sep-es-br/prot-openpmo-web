@@ -14,7 +14,9 @@
       <mat-expansion-panel-header>
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
-      <form [formGroup]="formGroupWorkpackTemplate" (ngSubmit)="onSubmit()"
+      <form 
+        [formGroup]="formGroupWorkpackTemplate" 
+        (ngSubmit)="onSubmit()"
         class="form-container">
         <mat-form-field>
           <input matInput
@@ -29,13 +31,9 @@
         <mat-form-field>
           <input matInput 
             type="text" 
-            formControlName="shortName"
+            formControlName="fullName"
             placeholder={{translate.fullname|translate:use}}/>
         </mat-form-field>
-        <mat-error *ngIf="formGroupWorkpackTemplate.controls['shortName'].invalid && formGroupWorkpackTemplate.controls['shortName'].touched">
-          <span translate>Full name is</span> 
-          <strong translate>required</strong>
-        </mat-error>
         
         <div class="container-fluid cards" formArrayName="properties">
           <div class="row property-row">

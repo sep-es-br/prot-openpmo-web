@@ -30,6 +30,8 @@ import { SchemaTemplateResolver } from './components/schema-template/schema-temp
 import { WorkpackDataService } from './services/data/workpack/workpack-data.service';
 import { SchemaDataService } from './services/data/schema/schema-data.service';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
+import { ProgressComponent } from './components/progress/progress.component';
+
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -45,7 +47,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     WorkpackTemplateComponent,
     PropertyTemplateComponent,
     BreadcrumbComponent,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    ProgressComponent
   ],
   imports: [
     BrowserModule,

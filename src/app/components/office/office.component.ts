@@ -28,19 +28,11 @@ export class OfficeComponent implements OnInit {
   //Constants for translate
   translate = new TranslateConstants();
   
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
+  formGroupOffice = this.fb.group({
+    name: ['', Validators.required],
+    fullName: ['']
+  });
   
-  shortNameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-    formGroupOffice = this.fb.group({
-      name: ['', Validators.required],
-      shortName: ['', Validators.required]
-    });
-  
-
   subscriptions: Subscription[] = [];
   office: Office;
   officeId: String;
@@ -63,7 +55,7 @@ export class OfficeComponent implements OnInit {
       this.officeDataService.office.subscribe(o =>{
         this.office = o;
         this.formGroupOffice.controls['name'].setValue(this.office.name);
-        this.formGroupOffice.controls['shortName'].setValue(this.office.shortName);
+        this.formGroupOffice.controls['fullName'].setValue(this.office.fullName);
         this.HideSaveButton();     
       })
     );
@@ -85,7 +77,7 @@ export class OfficeComponent implements OnInit {
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.office.name) return true;
-    if (val.shortName != this.office.shortName) return true;
+    if (val.fullName != this.office.fullName) return true;
   }  
 
   ShowSaveButton(){
@@ -108,11 +100,8 @@ export class OfficeComponent implements OnInit {
 
 
   onSubmit(){
-    this.office.name = this.office.name.trim();
-    this.office.shortName = this.office.shortName.trim();
-
     this.office.name = this.formGroupOffice.value.name.trim();
-    this.office.shortName = this.useful.GetShortName(this.formGroupOffice.value.shortName);
+    this.office.fullName = this.formGroupOffice.value.fullName.trim();
 
     this.subscriptions.push(
       this.officeDataService
@@ -126,6 +115,9 @@ export class OfficeComponent implements OnInit {
            () => {this.HideMessage();}, 
            3000);
           this.crumbService.SetCurrentOffice(o);
+          if (this.action == 'new') {
+            this.router.navigate(['./']);
+          }
         }
       )
     );

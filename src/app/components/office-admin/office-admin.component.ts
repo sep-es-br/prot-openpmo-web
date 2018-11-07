@@ -27,7 +27,7 @@ export class OfficeAdminComponent implements OnInit {
     Validators.required
   ]);
   
-  shortNameFormControl = new FormControl('', [
+  fullNameFormControl = new FormControl('', [
     Validators.required
   ]);
   

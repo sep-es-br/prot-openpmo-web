@@ -61,6 +61,7 @@ export class BreadcrumbService {
     });
     newTrail.push(breadcrumb);
     this.$breadcrumbTrail.next(newTrail);
+    this.cookie.delete('breadcrumb');
     this.cookie.set('breadcrumb', JSON.stringify(newTrail), 365);
   }
 
@@ -73,6 +74,7 @@ export class BreadcrumbService {
       }
     });
     this.$breadcrumbTrail.next(newTrail);
+    this.cookie.delete('breadcrumb');
     this.cookie.set('breadcrumb', JSON.stringify(newTrail), 365);
   }
 
@@ -216,7 +218,7 @@ export class BreadcrumbService {
 
   UpdateBreadcrumb(node: any, route: String) {
     if (node !== undefined){
-      let index = this.$breadcrumbTrail.getValue().findIndex(crumb => crumb.id == node.id);
+      let index = this.$breadcrumbTrail.getValue().findIndex(crumb => crumb.id === node.id);
       if (index == -1) {
         let crumb = new Breadcrumb();
         let templateName = '';

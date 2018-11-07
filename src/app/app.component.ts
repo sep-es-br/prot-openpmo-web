@@ -1,6 +1,4 @@
-import { Component, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { SpinnerService } from './services/spinner/spinner.service';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -8,37 +6,23 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   title = 'openpmo-web';
-  spinnerOn: Boolean = false;
-  subscriptions: Subscription[] = [];
 
-  constructor(private spinnerService: SpinnerService, private translate: TranslateService){
+  constructor(private translate: TranslateService){
     translate.setDefaultLang('en');
   }
 
   lang:string = "en";
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.spinnerService.spinnerOn
-        .subscribe(sp => {
-          this.spinnerOn = sp;
-        })
-    );
-  }
-
-  ngOnDestroy(){
-    this.subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
   }
 
   switchLanguage(language: string) {
     this.translate.use(language);
     this.lang = language;    
   }
+
 }
 
  

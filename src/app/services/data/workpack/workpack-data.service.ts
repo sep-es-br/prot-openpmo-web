@@ -73,6 +73,9 @@ export class WorkpackDataService {
             .http
             .get(URL)
             .pipe(map<any, Workpack>(res => {
+              if (res.properties[0] == undefined) {
+                res.properties = [];
+              }
               this.$workpack.next(res as Workpack);
               this.spinnerService.HideSpinner();
               return res as Workpack;
@@ -98,6 +101,9 @@ export class WorkpackDataService {
     else {
       this.spinnerService.ShowSpinner();
       return this.http.get(URL).pipe(map<any,Workpack>(res =>{
+        if (res.properties[0] == undefined) {
+          res.properties = [];
+        }
         this.spinnerService.HideSpinner();
         return res;
       }));

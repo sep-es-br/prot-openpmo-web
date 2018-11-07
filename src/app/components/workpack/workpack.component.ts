@@ -9,7 +9,7 @@ import { Useful } from '../../useful';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { WorkpackTemplate } from '../../model/workpack-template';
 import { ViewOptions } from '../../model/view-options';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { TranslateConstants } from '../../model/translate';
@@ -28,18 +28,18 @@ export class WorkpackComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private useful: Useful,
     private router: Router, 
-    private crumbService: BreadcrumbService) {}
+    private crumbService: BreadcrumbService,
+    private fb: FormBuilder) {}
 
-  //Constants for translate
-  translate = new TranslateConstants();
+    //Constants for translate
+    translate = new TranslateConstants();
 
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
-  shortNameFormControl = new FormControl('', [
-    Validators.required
-  ]);
+    formGroupWorkpack = this.fb.group({
+      id: [''],
+      name: ['', Validators.required],
+      fullName: [''],
+      properties: this.fb.array([])
+    });
      
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -48,6 +48,8 @@ export class WorkpackComponent implements OnInit {
   workpackTemplate: WorkpackTemplate = new WorkpackTemplate();
   id: String;
   viewOptions: ViewOptions;
+  SaveButtonBottomPosition: String;
+  MessageRightPosition: String;
 
   ngOnInit() {
     this.viewOptions = this.route.snapshot.data.workpack;
@@ -61,6 +63,9 @@ export class WorkpackComponent implements OnInit {
     this.subscriptions.push(
       this.workpackDataService.workpack.subscribe(wp =>{
         this.workpack = wp;
+        if (this.workpack.id != '') {
+          this.LoadFormControls();
+        }
       })
     );
 
@@ -75,16 +80,89 @@ export class WorkpackComponent implements OnInit {
         this.office = o;
       })
     );
+
+    this.subscriptions.push(    
+      this.formGroupWorkpack.statusChanges.subscribe((status) => {
+        return (status == 'VALID' && this.UserChangedSomething(this.formGroupWorkpack.value)) 
+                ? this.ShowSaveButton() 
+                : this.HideSaveButton();
+      })
+    );
+
+
+
+    
   }
 
-  SetTrimmedNameAndShortName(value: String){
+  CleanPropertiesFormArray(){
+    const ctrl = <FormArray>this.formGroupWorkpack.controls['properties'];
+    while (this.formGroupWorkpack.controls['properties'].value.length !== 0) {
+      ctrl.removeAt(0);
+    }
+  }
+
+  LoadFormControls() {
+    this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
+    this.formGroupWorkpack.controls['fullName'].setValue(this.workpack.fullName);
+    this.CleanPropertiesFormArray();
+    this.workpack.properties.forEach(property => {
+      (this.formGroupWorkpack.get('properties') as FormArray).push(
+        this.fb.group({
+          toDelete: [false],
+          editing: [false],
+          id: [property.id],
+          name: [property.name, Validators.required],
+          typeName: [property.typeName],
+          min: [(property.min == null) ? '0' : property.min],
+          max: [(property.max == null) ? '100' : property.max],
+          value: [(property.value == null) ? "" : property.value]
+        })
+      );
+    });
+  }
+
+  UserChangedSomething(val): Boolean {
+    if (val.name != this.workpack.name) return true;
+    if (val.fullName != this.workpack.fullName) return true;
+    if (val.properties.length != this.workpack.properties.length) return true;
+    let changed = false;
+    val.properties.forEach((prop, i) => {
+      if (prop.id == '') changed = true;
+      if (prop.toDelete) changed = true;
+      if (prop.name != this.workpack.properties[i].name) changed = true;
+      //if (prop.min != this.workpackTemplate.properties[i].min) changed = true;
+      //if (prop.max != this.workpackTemplate.properties[i].max) changed = true;
+      //if (prop.value != this.workpackTemplate.properties[i].value) changed = true;
+    });
+    return changed;
+  }
+
+  ShowSaveButton(){
+    this.SaveButtonBottomPosition = "50px";
+    this.HideMessage();
+  }
+
+  HideSaveButton(){
+    this.SaveButtonBottomPosition = "-40px";
+  }
+
+  ShowMessage(){
+    this.MessageRightPosition = "50px";
+  }
+
+  HideMessage(){
+    this.MessageRightPosition = "-180px";
+  }
+
+
+  SetTrimmedNameAndfullName(value: String){
     this.workpack.name = this.useful.GetTrimmedName(value);
-    this.workpack.shortName = this.useful.GetShortName(this.workpack.name);
+    this.workpack.fullName = this.useful.GetfullName(this.workpack.name);
   }
 
   onSubmit(){
-    this.workpack.name = this.workpack.name.trim();
-    this.workpack.shortName = this.useful.GetShortName(this.workpack.shortName);
+    this.workpack.name = this.formGroupWorkpack.value.name.trim();
+    this.workpack.fullName = this.formGroupWorkpack.value.fullName.trim();
     this.workpack.template = this.workpackTemplate;
     
     switch (this.viewOptions.action) {
@@ -135,10 +213,14 @@ export class WorkpackComponent implements OnInit {
               this.workpackDataService
               .UpdateWorkpack(this.workpack)
               .subscribe(
-                () => {
-                  this.router.navigate([
-                    './workpack/edit/' + parentWP.id +
-                    '&' + parentWP.template.id]);
+                wp => {
+                  this.workpackTemplate = wp;
+                  this.LoadFormControls();
+                  this.ShowMessage();
+                  window.setTimeout(
+                    () => {this.HideMessage();}, 
+                    3000);
+                  this.crumbService.SetCurrentWorkpackTemplate(wp);
                 }
               )
             );

@@ -31,16 +31,9 @@ export class SchemaTemplateComponent implements OnInit {
   //Constants for translate
   translate = new TranslateConstants();
 
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
-  shortNameFormControl = new FormControl('', [
-    Validators.required
-  ]);
   formGroupSchemaTemplate = this.fb.group({
     name: ['', Validators.required],
-    shortName: ['', Validators.required]
+    fullName: ['']
   });
   
   subscriptions: Subscription[] = [];
@@ -66,7 +59,7 @@ export class SchemaTemplateComponent implements OnInit {
       this.schemaDataService.schemaTemplate.subscribe(st => {
         this.schemaTemplate = st;
         this.formGroupSchemaTemplate.controls['name'].setValue(this.schemaTemplate.name);
-        this.formGroupSchemaTemplate.controls['shortName'].setValue(this.schemaTemplate.shortName);
+        this.formGroupSchemaTemplate.controls['fullName'].setValue(this.schemaTemplate.fullName);
       })
     );
 
@@ -89,7 +82,7 @@ export class SchemaTemplateComponent implements OnInit {
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.schemaTemplate.name) return true;
-    if (val.shortName != this.schemaTemplate.shortName) return true;
+    if (val.fullName != this.schemaTemplate.fullName) return true;
   }
 
 
@@ -119,7 +112,7 @@ export class SchemaTemplateComponent implements OnInit {
   onSubmit(){
 
     this.schemaTemplate.name = this.formGroupSchemaTemplate.value.name.trim();
-    this.schemaTemplate.shortName = this.useful.GetShortName(this.formGroupSchemaTemplate.value.shortName);
+    this.schemaTemplate.fullName = this.formGroupSchemaTemplate.value.fullName.trim();
     if (this.action == 'new') {
       this.office.schemaTemplates.push(this.schemaTemplate);
       this.subscriptions.push(
