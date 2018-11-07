@@ -102,6 +102,15 @@ export class WorkpackTemplateComponent implements OnInit {
         });
       })
     );
+
+    this.subscriptions.push(    
+      this.formGroupWorkpackTemplate.statusChanges.subscribe((status) => {
+        return (status == 'VALID' && this.UserChangedSomething(this.formGroupWorkpackTemplate.value)) 
+                ? this.ShowSaveButton() 
+                : this.HideSaveButton();
+      })
+    );
+
   }
 
   CleanPropertiesFormArray(){
@@ -129,14 +138,6 @@ export class WorkpackTemplateComponent implements OnInit {
         })
       );
     });
-
-    this.subscriptions.push(    
-      this.formGroupWorkpackTemplate.statusChanges.subscribe((status) => {
-        return (status == 'VALID' && this.UserChangedSomething(this.formGroupWorkpackTemplate.value)) 
-                ? this.ShowSaveButton() 
-                : this.HideSaveButton();
-      })
-    );
   }
 
 
@@ -145,7 +146,7 @@ export class WorkpackTemplateComponent implements OnInit {
     if (val.shortName != this.workpackTemplate.shortName) return true;
     if (val.properties.length != this.workpackTemplate.properties.length) return true;
     let changed = false;
-    val.properties.forEach((prop, i, props) => {
+    val.properties.forEach((prop, i) => {
       if (prop.id == '') changed = true;
       if (prop.toDelete) changed = true;
       if (prop.name != this.workpackTemplate.properties[i].name) changed = true;

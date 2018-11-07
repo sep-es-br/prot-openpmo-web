@@ -115,6 +115,9 @@ export class OfficeComponent implements OnInit {
            () => {this.HideMessage();}, 
            3000);
           this.crumbService.SetCurrentOffice(o);
+          if (this.action == 'new') {
+            this.router.navigate(['./']);
+          }
         }
       )
     );

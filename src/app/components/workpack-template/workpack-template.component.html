@@ -16,7 +16,9 @@
           Properties
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <form [formGroup]="formGroupWorkpackTemplate" (ngSubmit)="onSubmit()"
+      <form 
+        [formGroup]="formGroupWorkpackTemplate" 
+        (ngSubmit)="onSubmit()"
         class="form-container">
         <mat-form-field>
           <input matInput
