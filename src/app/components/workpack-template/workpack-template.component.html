@@ -1,5 +1,5 @@
 <div class="notification" [style.right]="MessageRightPosition">
-  Saved successfully
+    <span translate>Saved successfully</span>
 </div>
 
 <div class="main-title">{{viewOptions.title|translate:use}}</div>
@@ -20,7 +20,7 @@
           <input matInput
             type="text"      
             formControlName="name"
-            placeholder={{translate.name|translate}}/>
+            placeholder={{translate.name|translate:use}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
           <span translate>Name is</span> 
@@ -30,7 +30,7 @@
           <input matInput 
             type="text" 
             formControlName="shortName"
-            placeholder={{translate.shortname|translate}}/>
+            placeholder={{translate.shortname|translate:use}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['shortName'].invalid && formGroupWorkpackTemplate.controls['shortName'].touched">
           <span translate>Name is</span> 
@@ -71,7 +71,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder={{translate.name|translate}}
+                        placeholder={{translate.name|translate:use}}
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
@@ -80,7 +80,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder={{translate.minimum|translate}}
+                        placeholder={{translate.minimum|translate:use}}
                         formControlName="min"
                         value=""/>
                     </mat-form-field>
@@ -90,7 +90,7 @@
                       class="form-field">
                       <input matInput
                         type="text" 
-                        placeholder={{translate.maximum|translate}}
+                        placeholder={{translate.maximum|translate:use}}
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
@@ -99,7 +99,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder={{translate.defaultvalue|translate}}
+                        placeholder={{translate.defaultvalue|translate:use}}
                         formControlName="value"/>
                     </mat-form-field>
                   </div>
