@@ -12,6 +12,7 @@ import { ViewOptions } from '../../model/view-options';
 import { FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { TranslateConstants } from '../../model/translate';
 
 @Component({
   selector: 'app-workpack',
@@ -29,6 +30,9 @@ export class WorkpackComponent implements OnInit {
     private router: Router, 
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {}
+
+    //Constants for translate
+    translate = new TranslateConstants();
 
     formGroupWorkpack = this.fb.group({
       id: [''],

@@ -2,7 +2,7 @@
     Saved successfully
 </div>
 
-<div class="main-title">{{title}} {{(action == 'new')? 'Schema Template' : schemaTemplate.name}}</div>
+<div class="main-title">{{title|translate:user}} {{(action == 'new')? '' : schemaTemplate.name}}</div>
 <div class="container-form"> 
   <mat-accordion >
     <mat-expansion-panel 
@@ -10,9 +10,7 @@
       (opened)="propertiesPanelOpenState = true"
       (closed)="propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Properties
-        </mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
         [formGroup]="formGroupSchemaTemplate"
@@ -22,29 +20,30 @@
           <input matInput
             type="text"      
             formControlName="name"
-            placeholder="Name"
+            placeholder={{translate.name|translate}}
             required/>
         </mat-form-field>
         <mat-error *ngIf="formGroupSchemaTemplate.controls['name'].invalid && formGroupSchemaTemplate.controls['name'].touched">
-          Name is <strong>required</strong>
+            <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
             formControlName="shortName"
-            placeholder="Short Name"
+            placeholder={{translate.shortname|translate}}
             required/>
         </mat-form-field>
         <mat-error *ngIf="formGroupSchemaTemplate.controls['shortName'].invalid && formGroupSchemaTemplate.controls['shortName'].touched">
-          Name is <strong>required</strong>
+            <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
 
         <!-- SAVE BUTTON -->
         <div class="footer-button"
             [style.bottom]="SaveButtonBottomPosition">
           <div class="example-button-row">
-            <button 
-              class="save-button" mat-button>Save</button>
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
           </div>
         </div>        
       </form>
@@ -59,9 +58,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Workpack Templates
-        </mat-panel-title>
+        <mat-panel-title translate>Workpack Templates</mat-panel-title>
       </mat-expansion-panel-header>
 
       <!-- Body -->
@@ -74,7 +71,7 @@
                 <a  class="dropdown-item"
                 (click)="DeleteWorkpackTemplate(workpackTemplate.id)"
                 routerLink="/schematemplate/edit/{{schemaTemplate.id}}" 
-                routerLinkActive="active">Delete</a>
+                routerLinkActive="active" translate>Delete</a>
               </div>
             </div>
             <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">

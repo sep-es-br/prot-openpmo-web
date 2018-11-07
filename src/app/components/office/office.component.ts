@@ -7,6 +7,7 @@ import { Useful } from '../../useful';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { TranslateConstants } from '../../model/translate';
 
 @Component({
   selector: 'app-office',
@@ -24,6 +25,16 @@ export class OfficeComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) { }
 
+  //Constants for translate
+  translate = new TranslateConstants();
+  
+  nameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  
+  shortNameFormControl = new FormControl('', [
+    Validators.required
+  ]);
     formGroupOffice = this.fb.group({
       name: ['', Validators.required],
       shortName: ['', Validators.required]

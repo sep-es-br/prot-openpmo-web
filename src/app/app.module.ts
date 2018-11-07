@@ -32,6 +32,8 @@ import { SchemaDataService } from './services/data/schema/schema-data.service';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 import { ProgressComponent } from './components/progress/progress.component';
 
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,14 @@ import { ProgressComponent } from './components/progress/progress.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgPipesModule
+    NgPipesModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     OfficeDataService,
@@ -76,4 +85,8 @@ import { ProgressComponent } from './components/progress/progress.component';
 })
 
 export class AppModule {
+}
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
 }
