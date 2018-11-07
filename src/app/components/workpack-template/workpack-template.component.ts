@@ -12,7 +12,9 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { ViewOptions } from '../../model/view-options';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { Property } from '../../model/property';
-
+import { SanitizeHtmlPipe } from '../../pipes/sanitize-html.pipe';
+import { fbind } from 'q';
+import { TranslateConstants } from '../../model/translate';
 
 @Component({
   selector: 'app-workpack-template',
@@ -21,6 +23,7 @@ import { Property } from '../../model/property';
 })
 
 @NgModule({
+  
 })
 
 export class WorkpackTemplateComponent implements OnInit {
@@ -35,6 +38,9 @@ export class WorkpackTemplateComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {
     }
+
+  //Constants for translate
+  translate = new TranslateConstants();
 
   formGroupWorkpackTemplate = this.fb.group({
     id: [''],

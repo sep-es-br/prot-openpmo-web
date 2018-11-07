@@ -9,6 +9,7 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
+import { TranslateConstants } from '../../model/translate';
 
 @Component({
   selector: 'app-schema-template',
@@ -27,6 +28,16 @@ export class SchemaTemplateComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {}
 
+  //Constants for translate
+  translate = new TranslateConstants();
+
+  nameFormControl = new FormControl('', [
+    Validators.required
+  ]);
+  
+  shortNameFormControl = new FormControl('', [
+    Validators.required
+  ]);
   formGroupSchemaTemplate = this.fb.group({
     name: ['', Validators.required],
     shortName: ['', Validators.required]

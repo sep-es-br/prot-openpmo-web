@@ -8,9 +8,7 @@
       (opened)="viewOptions.propertiesPanelOpenState = true"
       (closed)="viewOptions.propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Properties
-        </mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
         name="workpackForm" 
@@ -22,26 +20,28 @@
           <input matInput
             type="text"      
             [formControl]="nameFormControl"
-            placeholder="Name"
+            placeholder={{translate.name|translate}}
             required
             [(ngModel)]="workpack.name"/>
         </mat-form-field>
         <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          Name is <strong>required</strong>
+          <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
             [formControl]="shortNameFormControl"
-            placeholder="Short Name"
+            placeholder={{translate.shortname|translate}}
             required
             [(ngModel)]="workpack.shortName"/>
         </mat-form-field>
         <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          Name is <strong>required</strong>
+          <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button>Save</button>
+        <button mat-raised-button>
+          <span translate>Save</span>
+        </button>
 
       </form>
     </mat-expansion-panel>
@@ -55,9 +55,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Workpacks
-        </mat-panel-title>
+        <mat-panel-title translate>Workpacks</mat-panel-title>
       </mat-expansion-panel-header>
 
       <!-- Body -->
@@ -71,7 +69,7 @@
                   <a  class="dropdown-item"
                       (click)="DeleteWorkpack(component.id)"
                       routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template.id}}" 
-                      routerLinkActive="active">Delete</a>
+                      routerLinkActive="active" translate>Delete</a>
                 </div>
               </div>
               <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">

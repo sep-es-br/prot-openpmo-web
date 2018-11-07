@@ -12,6 +12,7 @@ import {  MatFormFieldModule,
           MatGridListModule,
           MatExpansionModule,
           MatCardModule,
+          MatMenuModule,
           MatProgressBarModule,
           MatIconRegistry } from '@angular/material';
 import 'hammerjs';
@@ -31,6 +32,7 @@ import 'hammerjs';
     MatGridListModule,
     MatCardModule, 
     MatCardModule,
+    MatMenuModule,
     MatExpansionModule,
     MatProgressBarModule
   ],
@@ -47,6 +49,7 @@ import 'hammerjs';
     MatGridListModule,
     MatCardModule,
     MatCardModule,
+    MatMenuModule,
     MatExpansionModule,
     MatProgressBarModule  ]
 })

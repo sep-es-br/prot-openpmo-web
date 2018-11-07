@@ -10,5 +10,8 @@ export const environment = {
   schemaTemplateAPI: 'schematemplate/',
   listSchemaTemplatesFunction: 'listschematemplates/',
   workpackTemplateAPI: 'workpacktemplate/',
-  listWorkpackTemplatesFunction: 'listworkpacktemplates/'
+  listWorkpackTemplatesFunction: 'listworkpacktemplates/',
+  treeResource: 'tree/',
+  templateResource: 'template/',
+  propertyTypesResource: 'listpropertytypes/'
 };

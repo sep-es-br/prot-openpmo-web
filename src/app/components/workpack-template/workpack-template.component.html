@@ -2,7 +2,7 @@
   Saved successfully
 </div>
 
-<div class="main-title">{{viewOptions.title}}</div>
+<div class="main-title">{{viewOptions.title|translate:use}}</div>
 <div class="container-form">
   <mat-accordion >
 
@@ -12,9 +12,7 @@
       (opened)="viewOptions.propertiesPanelOpenState = true"
       (closed)="viewOptions.propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Properties
-        </mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form [formGroup]="formGroupWorkpackTemplate" (ngSubmit)="onSubmit()"
         class="form-container">
@@ -22,20 +20,21 @@
           <input matInput
             type="text"      
             formControlName="name"
-            placeholder="Name"/>
+            placeholder={{translate.name|translate}}/>
         </mat-form-field>
-        <mat-error 
-          *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
-          Name is <strong>required</strong>
+        <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
+          <span translate>Name is</span> 
+          <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
             formControlName="shortName"
-            placeholder="Short Name"/>
+            placeholder={{translate.shortname|translate}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['shortName'].invalid && formGroupWorkpackTemplate.controls['shortName'].touched">
-          Name is <strong>required</strong>
+          <span translate>Name is</span> 
+          <strong translate>required</strong>
         </mat-error>
         
         <div class="container-fluid cards" formArrayName="properties">
@@ -72,7 +71,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder="Name"
+                        placeholder={{translate.name|translate}}
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
@@ -81,7 +80,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder="Minimum"
+                        placeholder={{translate.minimum|translate}}
                         formControlName="min"
                         value=""/>
                     </mat-form-field>
@@ -91,7 +90,7 @@
                       class="form-field">
                       <input matInput
                         type="text" 
-                        placeholder="Maximum"
+                        placeholder={{translate.maximum|translate}}
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
@@ -100,7 +99,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder="Default value"
+                        placeholder={{translate.defaultvalue|translate}}
                         formControlName="value"/>
                     </mat-form-field>
                   </div>
@@ -115,24 +114,25 @@
             </div>
           </div>
         </div>
-        <button mat-raised-button class="add-property-button dropleft card-setting" 
-                id="dropdownAddPropertyButton" data-toggle="dropdown">
-          Add Property 
+        <button mat-raised-button class="add-property-button dropleft card-setting" id="dropdownAddPropertyButton" data-toggle="dropdown">
+          <span translate>Add Property</span>
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
           <div class="dropdown-menu" aria-labelledby="dropdownAddPropertyButton">
             <a *ngFor="let pType of propertyTypes"
                 class="dropdown-item"
                 (click)="AddProperty(pType.typeName)"
-                [innerHTML]="pType.typeName"></a>
+                [innerHTML]="pType.typeName"
+                translate></a>
           </div>
         </button>
-
+        
         <!-- SAVE BUTTON -->
         <div class="footer-button"
             [style.bottom]="SaveButtonBottomPosition">
           <div class="example-button-row">
-            <button 
-              class="save-button" mat-button>Save</button>
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
           </div>
         </div>        
 
@@ -149,9 +149,7 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Workpack Templates
-        </mat-panel-title>
+        <mat-panel-title translate>Workpack Templates</mat-panel-title>
       </mat-expansion-panel-header>
 
         <!-- Body -->
@@ -164,7 +162,7 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" 
                     (click)="DeleteWorkpackTemplate(component.id)"
-                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}">Delete</a>
+                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" translate>Delete</a>
                   </div>
                 </div>
                 <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
@@ -184,8 +182,8 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a  class="dropdown-item" 
                   routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
-                  routerLinkActive="active">New</a>
-                  <div class="dropdown-item not-a-link disabled">Reuse:</div>
+                  routerLinkActive="active" translate>New</a>
+                  <div class="dropdown-item not-a-link disabled" translate>Reuse:</div>
                   <a *ngFor="let template of flatTree"
                   class="dropdown-item"
                   (click)="ReuseTemplate(template.id)"

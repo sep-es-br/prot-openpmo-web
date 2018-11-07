@@ -1,32 +1,52 @@
 <!-- app.component.html -->
 <div class="background-page">
-<div class="container-fluid topo">
-    <div class="logo">
-        <mat-icon fontSet="fas" fontIcon="fa-list" aria-hidden="true"></mat-icon>
-        <span>OpenPMO</span>
-    </div>
-    <div class="user">
-        <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
-    </div>
-    <div class="config">
-        <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-    </div>
-</div>
+    
+    <div class="container-fluid topo">
 
-<div class="progress-bar">
-    <div [ngClass]="{hideProgress: !spinnerOn}">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <!--PROJECT NAME-->
+        <div class="logo">
+            <mat-icon fontSet="fas" fontIcon="fa-list" aria-hidden="true"></mat-icon>
+            <span>OpenPMO</span>
+        </div>
+
+        <!--Old button user
+        <div class="user">
+            <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
+        </div>-->
+        
+        <div class="progress-bar">
+            <div [ngClass]="{hideProgress: !spinnerOn}">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+        </div>
+
+        <!--BUTTON USER-->
+        <button class="config" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages"><span translate>Languages</span>{{lang}}</button>
+        </mat-menu>
+        <mat-menu #languages="matMenu">
+            <button class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>English</button>
+            <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>Português BR</button>
+        </mat-menu>
+
+        <!--BUTTON CONFIG-->
+        <div class="config">
+            <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
+        </div>
+       
     </div>
-</div>
 
-<app-breadcrumb></app-breadcrumb>
+    <app-breadcrumb></app-breadcrumb>
 
-<div class="container-fluid panel">
-    <div class="filter">
-        <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
+    <div class="container-fluid panel">
+        <div class="filter">
+            <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
+        </div>
     </div>
-</div>
 
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 
 </div>
