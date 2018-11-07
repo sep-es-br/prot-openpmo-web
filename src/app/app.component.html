@@ -20,8 +20,6 @@
             </div>
         </div>
 
-        <app-breadcrumb></app-breadcrumb>
-
         <!--BUTTON USER-->
         <button class="config" mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
@@ -50,13 +48,5 @@
     </div>
 
     <router-outlet></router-outlet>
-
-    <div class="spinner-container"
-        [style.top]="(spinnerOn) ? 0 : '-9999px'">
-        <mat-spinner
-        [style.opacity]="(spinnerOn) ? 1 : 0"
-        class="progress-spinner">
-        </mat-spinner>
-    </div>
 
 </div>
