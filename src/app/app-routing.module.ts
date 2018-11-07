@@ -38,7 +38,8 @@ const routes: Routes = [
     component: WorkpackComponent,
     resolve: {      
       workpack: WorkpackResolver
-    }
+    },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   },
   {
     path: 'officeadmin/:action/:id',
@@ -52,14 +53,16 @@ const routes: Routes = [
     component: SchemaTemplateComponent,
     resolve: {      
       schematemplate: SchemaTemplateResolver
-    }
+    },
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'workpacktemplate/:action/:id',
     component: WorkpackTemplateComponent,
     resolve: {
       workpacktemplate: WorkpackTemplateResolver
-    }
+    },
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   }
 ];
 

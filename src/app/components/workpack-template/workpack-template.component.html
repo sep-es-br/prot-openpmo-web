@@ -1,3 +1,7 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  Saved successfully
+</div>
+
 <div class="main-title">{{viewOptions.title|translate:use}}</div>
 <div class="container-form">
   <mat-accordion >
@@ -121,13 +125,17 @@
                 translate></a>
           </div>
         </button>
-
-        <div class="save-button">
-          <button type="submit" [disabled]="!formGroupWorkpackTemplate.controls['name'].valid" mat-raised-button>
-            <span translate>Save</span>
-          </button>
-        </div>
         
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
+          </div>
+        </div>        
+
 
       </form>
     </mat-expansion-panel>
@@ -147,27 +155,26 @@
         <!-- Body -->
         <div class="container-fluid cards">
           <div class="row">
-            <div class="card card-style" *ngFor="let component of workpackTemplate.components"> 
-              <div class="card-body">
-                <div class="template-card-image">
+
+            <mat-card class="card card-style" *ngFor="let component of workpackTemplate.components">
+                <div class="card-image">
                   <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
-                </div>
-                <div class="template-card-title">
-                  <a routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
-                </div>
-                <div class="dropleft card-setting" id="dropdownMenuButton" data-toggle="dropdown">
-                  <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" 
                     (click)="DeleteWorkpackTemplate(component.id)"
                     routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" translate>Delete</a>
                   </div>
                 </div>
-                <div class="card-manager">
-                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+                <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                 </div>
-              </div>
-            </div>
+                <mat-card-title class="title-card">
+                  <a routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
+                </mat-card-title>
+                <div class="card-manager">
+                  <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+                </div>
+              </mat-card>
 
             <mat-card class="card new-card card-style">
               <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">

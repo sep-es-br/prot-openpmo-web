@@ -1,3 +1,6 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  Saved successfully
+</div>
 <div class="main-title" translate>{{(action == 'new') ? 'New office' : office.name}}</div>
 <div class="panel-container">
 
@@ -11,37 +14,41 @@
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
-        name="officeForm" 
-        (ngSubmit)="f.form.valid && onSubmit()" 
-        #f="ngForm"
-        class="form-container"
-        novalidate>  
+        [formGroup]="formGroupOffice"
+        (ngSubmit)="onSubmit()" 
+        class="form-container"> 
         <mat-form-field>
           <input matInput
-            type="text"
-            [formControl]="nameFormControl"
+            type="text"      
+            formControlName="name"
             placeholder={{translate.name|translate}}
-            required
-            [(ngModel)]="office.name"/> 
+            required/> 
         </mat-form-field>
-        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          <span translate>Name is</span> <strong translate>required</strong>
-        </mat-error>
+      <mat-error *ngIf="formGroupOffice.controls['name'].invalid && formGroupOffice.controls['name'].touched">
+        <span translate>Name is</span> <strong translate>required</strong>
+      </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
-            [formControl]="shortNameFormControl"
+            formControlName="shortName"
             placeholder={{translate.shortname|translate}}
-            required
-            [(ngModel)]="office.shortName"/>
+            required/>
         </mat-form-field>
-        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span translate>Name is</span> <strong translate>required</strong>
+        <mat-error *ngIf="formGroupOffice.controls['shortName'].invalid && formGroupOffice.controls['shortName'].touched">
+            <span translate>Name is</span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button>
-          <span translate>Save</span>
-        </button>
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
+          </div>
+        </div>        
+
+
 
       </form>
     </mat-expansion-panel>
@@ -77,7 +84,7 @@
               </mat-card-content>
             </mat-card>
 
-            <mat-card class="card card-style new-card" *ngFor="let schema of office.schemas">
+            <mat-card class="card card-style new-card">
               <div *ngIf="office.schemaTemplates.length > 0">
                 <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
                   <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>

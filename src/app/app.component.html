@@ -13,6 +13,14 @@
         <div class="user">
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
         </div>-->
+        
+        <div class="progress-bar">
+            <div [ngClass]="{hideProgress: !spinnerOn}">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+        </div>
+
+        <app-breadcrumb></app-breadcrumb>
 
         <!--BUTTON USER-->
         <button class="config" mat-icon-button [matMenuTriggerFor]="menu">

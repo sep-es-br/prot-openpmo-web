@@ -6,7 +6,7 @@ import { Office } from '../../model/office';
 import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { SchemaTemplate } from '../../model/schema-template';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
@@ -26,7 +26,7 @@ export class SchemaComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private useful: Useful,
     private router: Router,
-    private crumbService: BreadcrumbService ) {}
+    private crumbService: BreadcrumbService, private fb: FormBuilder ) {}
 
   nameFormControl = new FormControl('', [
     Validators.required
@@ -51,6 +51,15 @@ export class SchemaComponent implements OnInit {
   showChildren: Boolean;
   propertiesPanelOpenState: Boolean = false;
   workpacksPanelOpenState: Boolean = true;
+  SaveButtonBottomPosition: String;
+  MessageRightPosition: String;
+
+  formGroupSchema = this.fb.group({
+    name: ['', Validators.required],
+    shortName: ['', Validators.required]
+  });
+
+
 
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
@@ -70,6 +79,10 @@ export class SchemaComponent implements OnInit {
     this.subscriptions.push(
       this.schemaDataService.schema.subscribe(s =>{
         this.schema = s;
+        this.formGroupSchema.controls['name'].setValue(this.schema.name);
+        this.formGroupSchema.controls['shortName'].setValue(this.schema.shortName);
+        this.HideSaveButton();     
+
       })
     );
 
@@ -84,7 +97,38 @@ export class SchemaComponent implements OnInit {
         this.schema.template = st;
       });
     }
+
+    this.formGroupSchema.statusChanges.subscribe(status => {
+      return (status == 'VALID' && this.UserChangedSomething(this.formGroupSchema.value)) 
+      ? this.ShowSaveButton() 
+      : this.HideSaveButton();
+    });
+
+    this.HideMessage(); 
   }
+
+  UserChangedSomething(val): Boolean {
+    if (val.name != this.schema.name) return true;
+    if (val.shortName != this.schema.shortName) return true;
+  }  
+
+  ShowSaveButton(){
+    this.SaveButtonBottomPosition = "50px";
+    this.HideMessage();
+  }
+
+  HideSaveButton(){
+    this.SaveButtonBottomPosition = "-40px";
+  }
+
+  ShowMessage(){
+    this.MessageRightPosition = "50px";
+  }
+
+  HideMessage(){
+    this.MessageRightPosition = "-180px";
+  }
+
 
   SetPanels(action: String) {
     this.action = action;
@@ -93,14 +137,9 @@ export class SchemaComponent implements OnInit {
     this.showChildren = (action != 'edit')
   }
 
-  SetTrimmedNameAndShortName(value: String){
-    this.schema.name = this.useful.GetTrimmedName(value);
-    this.schema.shortName = this.useful.GetShortName(this.schema.name);
-  }
-
   onSubmit(){
-    this.schema.name = this.schema.name.trim();
-    this.schema.shortName = this.useful.GetShortName(this.schema.shortName);
+    this.schema.name = this.formGroupSchema.value.name.trim();
+    this.schema.shortName = this.useful.GetShortName(this.formGroupSchema.value.shortName);
     if (this.action == 'new') {
       this.office.schemas.push(this.schema);
       this.subscriptions.push(
@@ -122,12 +161,14 @@ export class SchemaComponent implements OnInit {
         this.schemaDataService
         .UpdateSchema(this.schema)
         .subscribe(
-          ret => {
-            this.router.navigate(['./office/edit/' + this.office.id]);
-          },
-          error => Observable.throw(error),
-          () => {
-            this.router.navigate(['./office/edit/' + this.office.id]); 
+          s => {
+            this.schema = s;
+            this.HideSaveButton();
+            this.ShowMessage();
+            window.setTimeout(
+             () => {this.HideMessage();}, 
+             3000);
+            this.crumbService.SetCurrentSchema(s);
           }
         )
       );

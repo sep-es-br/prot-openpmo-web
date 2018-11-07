@@ -1,3 +1,6 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  Saved successfully
+</div>
 <div class="main-title">{{title}} {{(action == 'new')?schema.template.name:schema.name}}</div>
 <div class="container-form"> 
   <mat-accordion >
@@ -9,37 +12,40 @@
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
-        name="schemaForm" 
-        (ngSubmit)="f.form.valid && onSubmit()" 
-        #f="ngForm"
-        class="form-container" 
-        novalidate>
+        [formGroup]="formGroupSchema"
+        (ngSubmit)="onSubmit()" 
+        class="form-container">
         <mat-form-field>
           <input matInput
-            type="text"      
-            [formControl]="nameFormControl"
+            type="text"
+            formControlName="name"
             placeholder={{translate.name|translate}}
-            required
-            [(ngModel)]="schema.name"/>
+            required/>
         </mat-form-field>
-        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
-          <span translate>Name is </span> <strong translate>required</strong>
+        <mat-error *ngIf="formGroupSchema.controls['name'].invalid && formGroupSchema.controls['name'].touched">
+            <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
+
         <mat-form-field>
           <input matInput 
             type="text" 
-            [formControl]="shortNameFormControl"
+            formControlName="shortName"
             placeholder={{translate.shortname|translate}}
-            required
-            [(ngModel)]="schema.shortName"/>
+            required/>
         </mat-form-field>
-        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span translate>Name is </span> <strong translate>required</strong>
+        <mat-error *ngIf="formGroupSchema.controls['shortName'].invalid && formGroupSchema.controls['shortName'].touched">
+            <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button>
-          <span translate>Save</span>
-        </button>
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
+          </div>
+        </div>        
 
       </form>
     </mat-expansion-panel>
@@ -60,42 +66,43 @@
       <div class="container-fluid cards">
         <div class="row">
 
-        <!-- CARD WORKPACK -->
-        <mat-card class="card card-style" *ngFor="let workpack of schema.workpacks">
-            <div class="card-image">
-              <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+          <!-- CARD WORKPACK -->
+          <mat-card class="card card-style" *ngFor="let workpack of schema.workpacks">
+              <div class="card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a  class="dropdown-item"
+                      (click)="DeleteWorkpack(workpack.id)"
+                      routerLink="/schema/edit/{{schema.id}}&{{schema.template.id}}" 
+                      routerLinkActive="active" translate>Delete</a>
+                </div>
+              </div>
+              <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+              </div>
+              <mat-card-title class="title-card">
+                <a  routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template?.id}}" 
+                    routerLinkActive="active">{{workpack.name}}</a>
+              </mat-card-title>
+              <div class="card-manager">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+              </div>
+          </mat-card>
+
+          <mat-card class="card new-card card-style">
+            <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+              <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a  class="dropdown-item"
-                    (click)="DeleteWorkpack(workpack.id)"
-                    routerLink="/schema/edit/{{schema.id}}&{{schema.template.id}}" 
-                    routerLinkActive="active" translate>Delete</a>
+                <a *ngFor="let template of schemaTemplate.workpackTemplates" 
+                    class="dropdown-item" 
+                    routerLink="/workpack/new2schema/{{schema.id}}&{{template.id}}" 
+                    routerLinkActive="active">{{template.name}}</a>
               </div>
             </div>
-            <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
-              <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
-            </div>
-            <mat-card-title class="title-card">
-              <a routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template?.id}}" routerLinkActive="active">{{workpack.name}}</a>
-            </mat-card-title>
-            <div class="card-manager">
-              <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
-            </div>
-        </mat-card>
-
-        <mat-card class="card new-card card-style" *ngFor="let workpack of schema.workpacks">
-            <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
-                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a *ngFor="let template of schemaTemplate.workpackTemplates" 
-                      class="dropdown-item" 
-                      routerLink="/workpack/new2schema/{{schema.id}}&{{template.id}}" 
-                      routerLinkActive="active">{{template.name}}</a>
-                </div>
-            </div>
-        </mat-card>
-        
+          </mat-card>
+          
+          </div>
         </div>
-      </div>
   
     </mat-expansion-panel>
 

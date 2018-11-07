@@ -88,3 +88,12 @@
     opacity: 0;
     transition: opacity ease-in-out 1s;
 }
+
+.progress-bar{
+    height: 5px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.hideProgress {
+    display: none;
+}

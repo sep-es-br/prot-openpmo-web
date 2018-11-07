@@ -265,6 +265,7 @@ export class BreadcrumbService {
         this.Add(crumb);
       }
       else {
+        this.$breadcrumbTrail.value[index].label = node.name;
         this.GoTo(index);
       }
     }
@@ -272,6 +273,12 @@ export class BreadcrumbService {
 
   GetLast(): Breadcrumb {
     let lastIndex = this.$breadcrumbTrail.getValue().length - 1;
+
+    return (lastIndex >= 0) ? this.$breadcrumbTrail.getValue()[lastIndex] : null;
+  }
+
+  GetBeforeLast(n: number): Breadcrumb {
+    let lastIndex = this.$breadcrumbTrail.getValue().length - 1 - n;
 
     return (lastIndex >= 0) ? this.$breadcrumbTrail.getValue()[lastIndex] : null;
   }
