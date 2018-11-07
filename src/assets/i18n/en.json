@@ -20,5 +20,19 @@
     "property-template works!" : "property-template works!",
     "English" : "English",
     "Português BR" : "Português BR",
-    "Languages" : "Languages "
+    "Languages" : "Languages ",
+    "Name" : "Name",
+    "Short Name" : "Short Name",
+    "Address" : "Address",
+    "Cost" : "Cost",
+    "Measure" : "Measure",
+    "Number" : "Number",
+    "NumberList" : "Number List",
+    "Status" : "Status",
+    "StatusList" : "Status List",
+    "Text" : "Text",
+    "TextList" : "Text List",
+    "Minimum" : "Minimum",
+    "Maximum" : "Maximum",
+    "Default value" : "Default value"
 }

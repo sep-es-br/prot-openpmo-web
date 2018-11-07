@@ -20,5 +20,19 @@
     "property-template works!" : "Propriedades-modelo de trabalho!",
     "English" : "Inglês",
     "Português BR" : "Português BR",
-    "Languages" : "Idiomas "
+    "Languages" : "Idiomas ",
+    "Name" : "Nome",
+    "Short Name" : "Nome Curto",
+    "Address" : "Endereço",
+    "Cost" : "Custo",
+    "Measure" : "Medida",
+    "Number" : "Número",
+    "NumberList" : "Lista Números",
+    "Status" : "Status",
+    "StatusList" : "Lista de Status",
+    "Text" : "Texto",
+    "TextList" : "Lista de Texto",
+    "Minimum" : "Mínimo",
+    "Maximum" : "Máximo",
+    "Default value" : "Valor padrão"
 }

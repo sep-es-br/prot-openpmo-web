@@ -9,6 +9,7 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { FormControl, Validators } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
+import { TranslateConstants } from '../../model/translate';
 
 @Component({
   selector: 'app-schema-template',
@@ -25,6 +26,9 @@ export class SchemaTemplateComponent implements OnInit {
     private useful: Useful,
     private router: Router,
     private crumbService: BreadcrumbService ) {}
+
+  //Constants for translate
+  translate = new TranslateConstants();
 
   nameFormControl = new FormControl('', [
     Validators.required

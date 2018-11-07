@@ -10,6 +10,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
+import { TranslateConstants } from '../../model/translate';
 
 @Component({
   selector: 'app-schema',
@@ -34,7 +35,9 @@ export class SchemaComponent implements OnInit {
   shortNameFormControl = new FormControl('', [
     Validators.required
   ]);
-   
+  
+  //Constants for translate
+  translate = new TranslateConstants();
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();

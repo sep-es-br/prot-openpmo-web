@@ -46,8 +46,11 @@
     line-height: 50px;
 }
 
-.UserLangButton {
-    width: 180px;
+.UserButton{
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    font-size: 15px;
 }
 
 .ButtonTransparent{
@@ -85,4 +88,3 @@
     opacity: 0;
     transition: opacity ease-in-out 1s;
 }
-

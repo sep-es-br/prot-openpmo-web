@@ -20,8 +20,7 @@
           <input matInput
             type="text"
             [formControl]="nameFormControl"
-            i18n-placeholder="@@teste"
-            placeholder="Name"
+            placeholder={{translate.name|translate}}
             required
             [(ngModel)]="office.name"/> 
         </mat-form-field>
@@ -32,8 +31,7 @@
           <input matInput 
             type="text" 
             [formControl]="shortNameFormControl"
-            i18n i18n-placeholder="@@teste2"
-            placeholder="Short Name"
+            placeholder={{translate.shortname|translate}}
             required
             [(ngModel)]="office.shortName"/>
         </mat-form-field>
@@ -41,7 +39,9 @@
           <span translate>Name is</span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button translate>Save</button>
+        <button mat-raised-button>
+          <span translate>Save</span>
+        </button>
 
       </form>
     </mat-expansion-panel>

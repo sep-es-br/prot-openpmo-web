@@ -3,12 +3,13 @@
     
     <div class="container-fluid topo">
 
+        <!--PROJECT NAME-->
         <div class="logo">
             <mat-icon fontSet="fas" fontIcon="fa-list" aria-hidden="true"></mat-icon>
             <span>OpenPMO</span>
         </div>
 
-        <!--Antigo icon do button user
+        <!--Old button user
         <div class="user">
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
         </div>-->
@@ -17,14 +18,15 @@
         <button class="config" mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
         </button>
-        <mat-menu class="UserLangButton" xPosition="after" #menu="matMenu">
-            <button class="UserLangButton" mat-menu-item [matMenuTriggerFor]="languages"><span translate>Languages</span>{{lang}}</button>
+        <mat-menu #menu="matMenu">
+            <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages"><span translate>Languages</span>{{lang}}</button>
         </mat-menu>
         <mat-menu #languages="matMenu">
-            <button (click)="switchLanguage('en')" mat-menu-item translate>English</button>
-            <button (click)="switchLanguage('pt-BR')" mat-menu-item translate>Português BR</button>
+            <button class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>English</button>
+            <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>Português BR</button>
         </mat-menu>
 
+        <!--BUTTON CONFIG-->
         <div class="config">
             <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
         </div>

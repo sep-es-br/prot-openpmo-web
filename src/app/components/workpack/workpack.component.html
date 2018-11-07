@@ -20,7 +20,7 @@
           <input matInput
             type="text"      
             [formControl]="nameFormControl"
-            placeholder="Name"
+            placeholder={{translate.name|translate}}
             required
             [(ngModel)]="workpack.name"/>
         </mat-form-field>
@@ -31,7 +31,7 @@
           <input matInput 
             type="text" 
             [formControl]="shortNameFormControl"
-            placeholder="Short Name"
+            placeholder={{translate.shortname|translate}}
             required
             [(ngModel)]="workpack.shortName"/>
         </mat-form-field>
@@ -39,7 +39,9 @@
           <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
 
-        <button mat-raised-button translate>Save</button>
+        <button mat-raised-button>
+          <span translate>Save</span>
+        </button>
 
       </form>
     </mat-expansion-panel>
@@ -74,7 +76,7 @@
                   <a  class="dropdown-item"
                       (click)="DeleteWorkpack(component.id)"
                       routerLink="/schema/edit/{{workpack.id}}&{{workpack.template.id}}" 
-                      routerLinkActive="active" i18n="@@translation_Delete" translate>Delete</a>
+                      routerLinkActive="active" translate>Delete</a>
                 </div>
               </div>
     

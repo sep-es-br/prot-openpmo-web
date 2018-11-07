@@ -16,7 +16,7 @@
           <input matInput
             type="text"      
             formControlName="name"
-            placeholder="Name"/>
+            placeholder={{translate.name|translate}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
           <span translate>Name is</span> 
@@ -26,7 +26,7 @@
           <input matInput 
             type="text" 
             formControlName="shortName"
-            placeholder="Short Name"/>
+            placeholder={{translate.shortname|translate}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['shortName'].invalid && formGroupWorkpackTemplate.controls['shortName'].touched">
           <span translate>Name is</span> 
@@ -67,7 +67,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder="Name"
+                        placeholder={{translate.name|translate}}
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
@@ -76,7 +76,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder="Minimum"
+                        placeholder={{translate.minimum|translate}}
                         formControlName="min"
                         value=""/>
                     </mat-form-field>
@@ -86,7 +86,7 @@
                       class="form-field">
                       <input matInput
                         type="text" 
-                        placeholder="Maximum"
+                        placeholder={{translate.maximum|translate}}
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
@@ -95,7 +95,7 @@
                       class="form-field">
                       <input matInput
                         type="text"
-                        placeholder="Default value"
+                        placeholder={{translate.defaultvalue|translate}}
                         formControlName="value"/>
                     </mat-form-field>
                   </div>
@@ -117,12 +117,15 @@
             <a *ngFor="let pType of propertyTypes"
                 class="dropdown-item"
                 (click)="AddProperty(pType.typeName)"
-                [innerHTML]="pType.typeName"></a>
+                [innerHTML]="pType.typeName"
+                translate></a>
           </div>
         </button>
 
         <div class="save-button">
-          <button type="submit" [disabled]="!formGroupWorkpackTemplate.controls['name'].valid" mat-raised-button translate>Save</button>
+          <button type="submit" [disabled]="!formGroupWorkpackTemplate.controls['name'].valid" mat-raised-button>
+            <span translate>Save</span>
+          </button>
         </div>
         
 
