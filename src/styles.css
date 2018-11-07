@@ -258,12 +258,6 @@ button, a, div {
     text-align: center;
     color: white;
     border-radius: 5px;
-<<<<<<< HEAD
-    float: right;
-    margin-top: -90px;
-    margin-right: -66px;
-  }
-=======
     position: fixed;
     transition: right .5s;
     transition-timing-function: ease-in;
@@ -271,4 +265,19 @@ button, a, div {
     top: 60px;
 }
 
->>>>>>> 833b08552ba76f5986075be185a1e8a30ac5dcd9
+.id-container-card{
+    color: #bdbfc1;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: -32px;
+    float: right;
+}
+
+.id-container-properties{
+    color: #bdbfc1;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: end;
+}
+
+

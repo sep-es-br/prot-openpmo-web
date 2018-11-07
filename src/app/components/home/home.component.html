@@ -16,10 +16,16 @@
         <mat-card-title class="title-card">
           <a routerLink="/office/edit/{{office.id}}" routerLinkActive="active">{{office.name}}</a>
         </mat-card-title>
+        
         <mat-card-content class="img-card">
           <mat-icon fontSet="fas" fontIcon="fa-building"></mat-icon>   
         </mat-card-content>
+        
+        <div class="id-container-card">
+          <span>ID: 005</span>
+        </div>
       </mat-card>
+
       <mat-card class="card new-card card-style" routerLink="/office/new/new" routerLinkActive="active">
         <div class="card-image-new">
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
