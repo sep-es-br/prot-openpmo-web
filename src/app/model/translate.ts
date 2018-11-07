@@ -1,6 +1,6 @@
 export class TranslateConstants {
     name: string = 'Name';
-    shortname: string = 'Short Name';
+    fullname: string = 'Full name';
     minimum: string = 'Minimum';
     maximum: string = 'Maximum';
     defaultvalue: string = 'Default value';

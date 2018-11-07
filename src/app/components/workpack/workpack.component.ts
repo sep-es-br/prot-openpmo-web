@@ -37,7 +37,7 @@ export class WorkpackComponent implements OnInit {
     formGroupWorkpack = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-      shortName: ['', Validators.required],
+      fullName: [''],
       properties: this.fb.array([])
     });
      
@@ -103,7 +103,7 @@ export class WorkpackComponent implements OnInit {
 
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
-    this.formGroupWorkpack.controls['shortName'].setValue(this.workpack.shortName);
+    this.formGroupWorkpack.controls['fullName'].setValue(this.workpack.fullName);
     this.CleanPropertiesFormArray();
     this.workpack.properties.forEach(property => {
       (this.formGroupWorkpack.get('properties') as FormArray).push(
@@ -123,7 +123,7 @@ export class WorkpackComponent implements OnInit {
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
-    if (val.shortName != this.workpack.shortName) return true;
+    if (val.fullName != this.workpack.fullName) return true;
     if (val.properties.length != this.workpack.properties.length) return true;
     let changed = false;
     val.properties.forEach((prop, i) => {
@@ -155,14 +155,14 @@ export class WorkpackComponent implements OnInit {
   }
 
 
-  SetTrimmedNameAndShortName(value: String){
+  SetTrimmedNameAndfullName(value: String){
     this.workpack.name = this.useful.GetTrimmedName(value);
-    this.workpack.shortName = this.useful.GetShortName(this.workpack.name);
+    this.workpack.fullName = this.useful.GetfullName(this.workpack.name);
   }
 
   onSubmit(){
-    this.workpack.name = this.workpack.name.trim();
-    this.workpack.shortName = this.useful.GetShortName(this.workpack.shortName);
+    this.workpack.name = this.formGroupWorkpack.value.name.trim();
+    this.workpack.fullName = this.formGroupWorkpack.value.fullName.trim();
     this.workpack.template = this.workpackTemplate;
     
     switch (this.viewOptions.action) {

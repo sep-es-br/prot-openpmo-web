@@ -28,14 +28,6 @@ export class SchemaComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService, private fb: FormBuilder ) {}
 
-  nameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
-  shortNameFormControl = new FormControl('', [
-    Validators.required
-  ]);
-  
   //Constants for translate
   translate = new TranslateConstants();
 
@@ -56,7 +48,7 @@ export class SchemaComponent implements OnInit {
 
   formGroupSchema = this.fb.group({
     name: ['', Validators.required],
-    shortName: ['', Validators.required]
+    fullName: ['']
   });
 
 
@@ -80,7 +72,7 @@ export class SchemaComponent implements OnInit {
       this.schemaDataService.schema.subscribe(s =>{
         this.schema = s;
         this.formGroupSchema.controls['name'].setValue(this.schema.name);
-        this.formGroupSchema.controls['shortName'].setValue(this.schema.shortName);
+        this.formGroupSchema.controls['fullName'].setValue(this.schema.fullName);
         this.HideSaveButton();     
 
       })
@@ -109,7 +101,7 @@ export class SchemaComponent implements OnInit {
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.schema.name) return true;
-    if (val.shortName != this.schema.shortName) return true;
+    if (val.fullName != this.schema.fullName) return true;
   }  
 
   ShowSaveButton(){
@@ -139,7 +131,7 @@ export class SchemaComponent implements OnInit {
 
   onSubmit(){
     this.schema.name = this.formGroupSchema.value.name.trim();
-    this.schema.shortName = this.useful.GetShortName(this.formGroupSchema.value.shortName);
+    this.schema.fullName = this.formGroupSchema.value.fullName.trim();
     if (this.action == 'new') {
       this.office.schemas.push(this.schema);
       this.subscriptions.push(

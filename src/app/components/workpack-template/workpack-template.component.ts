@@ -12,8 +12,6 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { ViewOptions } from '../../model/view-options';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { Property } from '../../model/property';
-import { SanitizeHtmlPipe } from '../../pipes/sanitize-html.pipe';
-import { fbind } from 'q';
 import { TranslateConstants } from '../../model/translate';
 
 @Component({
@@ -44,8 +42,8 @@ export class WorkpackTemplateComponent implements OnInit {
 
   formGroupWorkpackTemplate = this.fb.group({
     id: [''],
-    name: ['', Validators.required],
-    shortName: ['', Validators.required],
+    name: ['', Validators.required, Validators.minLength(3), Validators.maxLength(20)],
+    fullName: [''],
     properties: this.fb.array([])
   });
 
@@ -128,7 +126,7 @@ export class WorkpackTemplateComponent implements OnInit {
 
   LoadFormControls() {
     this.formGroupWorkpackTemplate.controls['name'].setValue(this.workpackTemplate.name);
-    this.formGroupWorkpackTemplate.controls['shortName'].setValue(this.workpackTemplate.shortName);
+    this.formGroupWorkpackTemplate.controls['fullName'].setValue(this.workpackTemplate.fullName);
     this.CleanPropertiesFormArray();
     this.workpackTemplate.properties.forEach(property => {
       (this.formGroupWorkpackTemplate.get('properties') as FormArray).push(
@@ -149,7 +147,7 @@ export class WorkpackTemplateComponent implements OnInit {
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpackTemplate.name) return true;
-    if (val.shortName != this.workpackTemplate.shortName) return true;
+    if (val.fullName != this.workpackTemplate.fullName) return true;
     if (val.properties.length != this.workpackTemplate.properties.length) return true;
     let changed = false;
     val.properties.forEach((prop, i) => {
@@ -281,15 +279,14 @@ export class WorkpackTemplateComponent implements OnInit {
     }
   }
 
-  SetTrimmedNameAndShortName(value: String){
+  SetTrimmedNameAndfullName(value: String){
     this.workpackTemplate.name = this.useful.GetTrimmedName(value);
-    this.workpackTemplate.shortName = this.useful.GetShortName(this.workpackTemplate.name);
+    this.workpackTemplate.fullName = this.useful.GetfullName(this.workpackTemplate.name);
   }
 
   onSubmit(){
     this.workpackTemplate.name = this.formGroupWorkpackTemplate.value.name.trim();
-    this.workpackTemplate.shortName = this.useful.GetShortName(this.formGroupWorkpackTemplate.value.shortName);
-    this.workpackTemplate.properties = [];
+    this.workpackTemplate.fullName = this.formGroupWorkpackTemplate.value.fullName.trim();
     this.formGroupWorkpackTemplate.get('properties').value.forEach(formProp => {
       if(formProp.toDelete){
         // ToDo: Delete the property

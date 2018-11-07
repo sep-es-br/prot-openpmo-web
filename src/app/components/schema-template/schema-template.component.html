@@ -29,13 +29,9 @@
         <mat-form-field>
           <input matInput 
             type="text" 
-            formControlName="shortName"
-            placeholder={{translate.shortname|translate}}
-            required/>
+            formControlName="fullName"
+            placeholder={{translate.fullname|translate}}/>
         </mat-form-field>
-        <mat-error *ngIf="formGroupSchemaTemplate.controls['shortName'].invalid && formGroupSchemaTemplate.controls['shortName'].touched">
-            <span translate>Name is </span> <strong translate>required</strong>
-        </mat-error>
 
         <!-- SAVE BUTTON -->
         <div class="footer-button"

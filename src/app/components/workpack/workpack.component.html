@@ -26,12 +26,9 @@
         <mat-form-field>
           <input matInput 
             type="text" 
-            formControlName="shortName"
-            placeholder={{translate.shortname|translate}}/>
+            formControlName="fullName"
+            placeholder={{translate.fullname|translate}}/>
         </mat-form-field>
-        <mat-error *ngIf="formGroupWorkpack.controls['shortName'].invalid && formGroupWorkpack.controls['shortName'].touched">
-          <span translate>Short Name is </span> <strong translate>required</strong>
-        </mat-error>
 
         <!-- SAVE BUTTON -->
         <div class="footer-button"
