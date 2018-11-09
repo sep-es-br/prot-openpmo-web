@@ -8,16 +8,16 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent implements OnInit {
   title = 'openpmo-web';
+  lang : string = "en";
 
   constructor(private translate: TranslateService){
     translate.setDefaultLang('en');
   }
 
-  lang:string = "en";
-
   ngOnInit() {
   }
 
+  //Translation module
   switchLanguage(language: string) {
     this.translate.use(language);
     this.lang = language;    
