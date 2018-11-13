@@ -50,7 +50,7 @@ export class SchemaTemplateComponent implements OnInit {
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
-  // Preparing data before loading screen
+  // Prepare data before loading screen
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
@@ -82,7 +82,7 @@ export class SchemaTemplateComponent implements OnInit {
 
   }
 
-  //Identifying changes made by the user in 'name' or 'fullname'
+  //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
     if (val.name != this.schemaTemplate.name) return true;
     if (val.fullName != this.schemaTemplate.fullName) return true;
@@ -114,9 +114,9 @@ export class SchemaTemplateComponent implements OnInit {
   }
 
   ////////////////////////////////////////////////////////////////////////
-  // EXPORTING TO THE DATABASE
+  // EXPORT TO THE DATABASE
   //
-  // Exporting the information to be saved to the database after pressing the save button
+  // Export the information to be saved to the database after pressing the save button
   //
   onSubmit(){
     this.schemaTemplate.name = this.formGroupSchemaTemplate.value.name.trim();

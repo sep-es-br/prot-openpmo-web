@@ -53,7 +53,7 @@ export class WorkpackComponent implements OnInit {
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
-  // Preparing data before loading screen
+  // Prepare data before loading screen
   ngOnInit() {
     this.viewOptions = this.route.snapshot.data.workpack;
     
@@ -94,7 +94,7 @@ export class WorkpackComponent implements OnInit {
     
   }
 
-  //Clearing property form
+  //Clear property form
   CleanPropertiesFormArray(){
     const ctrl = <FormArray>this.formGroupWorkpack.controls['properties'];
     while (this.formGroupWorkpack.controls['properties'].value.length !== 0) {
@@ -102,7 +102,7 @@ export class WorkpackComponent implements OnInit {
     }
   }
 
-  //Loading property form
+  //Load property form
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.formGroupWorkpack.controls['fullName'].setValue(this.workpack.fullName);
@@ -123,7 +123,7 @@ export class WorkpackComponent implements OnInit {
     });
   }
 
-  //Identifying changes made by the user
+  //Identify changes made by the user
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
     if (val.fullName != this.workpack.fullName) return true;
@@ -159,16 +159,16 @@ export class WorkpackComponent implements OnInit {
   }
   //End - Save Button Interaction
 
-  //Defining name and full name
+  //Define name and full name
   SetTrimmedNameAndfullName(value: String){
     this.workpack.name = this.useful.GetTrimmedName(value);
     this.workpack.fullName = this.useful.GetfullName(this.workpack.name);
   }
 
   ////////////////////////////////////////////////////////////////////////
-  // EXPORTING TO THE DATABASE
+  // EXPORT TO THE DATABASE
   //
-  // Exporting the information to be saved to the database after pressing the save button
+  // Export the information to be saved to the database after pressing the save button
   //
   onSubmit(){
     this.workpack.name = this.formGroupWorkpack.value.name.trim();

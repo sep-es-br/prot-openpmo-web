@@ -40,7 +40,7 @@ export class OfficeAdminComponent implements OnInit {
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
-  // Preparing data before loading screen
+  // Prepare data before loading screen
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.officeId = this.route.snapshot.paramMap.get('id');
@@ -49,7 +49,7 @@ export class OfficeAdminComponent implements OnInit {
         this.office = o;
       })
     );
-    //Updating path traveled by the user
+    //Update path traveled by the user
     this.subscriptions.push(
       this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
         this.breadcrumbTrail = trail;

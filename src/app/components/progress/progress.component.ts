@@ -13,7 +13,7 @@ export class ProgressComponent implements OnInit, OnDestroy {
 
   constructor(private spinnerService: SpinnerService) { }
   
-  // TOP OF THE PAGE - Preparing data before loading screen
+  // TOP OF THE PAGE - Prepare data before loading screen
   ngOnInit() {
     this.subscriptions.push(
       this.spinnerService.spinnerOn

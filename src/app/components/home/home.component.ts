@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
-  // Preparing data before loading screen
+  // Prepare data before loading screen
   ngOnInit() {
     this.subscriptions.push(
       this.officeDataService.offices.subscribe(o => {
@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
     
   }
 
-  //Updating path traveled by the user
+  //Update path traveled by the user
   UpdateBreadcrumb() {
     let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == '');
     if (index == -1) {

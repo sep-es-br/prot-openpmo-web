@@ -45,7 +45,7 @@ export class OfficeComponent implements OnInit {
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
-  // Preparing data before loading screen
+  // Prepare data before loading screen
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     if (this.action == 'new') {
@@ -70,7 +70,7 @@ export class OfficeComponent implements OnInit {
 
     this.HideMessage();
 
-    //Updating path traveled by the user
+    //Update path traveled by the user
     this.subscriptions.push(
       this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
         this.breadcrumbTrail = trail;
@@ -79,7 +79,7 @@ export class OfficeComponent implements OnInit {
   }
 
   
-  //Identifying changes made by the user in 'name' or 'fullname'
+  //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
     if (val.name != this.office.name) return true;
     if (val.fullName != this.office.fullName) return true;
@@ -105,9 +105,9 @@ export class OfficeComponent implements OnInit {
   //End - Save Button Interaction
 
   ////////////////////////////////////////////////////////////////////////
-  // EXPORTING TO THE DATABASE
+  // EXPORT TO THE DATABASE
   //
-  // Exporting the information to be saved to the database after pressing the save button
+  // Export the information to be saved to the database after pressing the save button
   //
   onSubmit(){
     this.office.name = this.formGroupOffice.value.name.trim();
