@@ -1,8 +1,8 @@
+import { PropertyProfile } from "./property-profile";
+
 export class Property {
-    id: String = '';
-    typeName: String = '';
-    name: String = '';
-    max: Number = -1;
-    min: Number = -1;
+    id: String;
+    name: String;
     value: any;
+    profile: PropertyProfile;
 }

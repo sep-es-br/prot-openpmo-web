@@ -4,7 +4,6 @@ import { OfficeDataService } from '../../services/data/office/office-data.servic
 import { Subscription, Observable } from 'rxjs';
 import { Office } from '../../model/office';
 import { SchemaTemplate } from '../../model/schema-template';
-import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
@@ -23,7 +22,6 @@ export class SchemaTemplateComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private workpackDataService: WorkpackDataService,
-    private useful: Useful,
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {}

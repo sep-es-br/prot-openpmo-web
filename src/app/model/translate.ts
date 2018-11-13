@@ -4,4 +4,5 @@ export class TranslateConstants {
     minimum: string = 'Minimum';
     maximum: string = 'Maximum';
     defaultvalue: string = 'Default value';
+    sortIndex: string = 'SortIndex';
 }

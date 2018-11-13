@@ -30,8 +30,10 @@ export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
         this.viewOptions.title = 'New Workpack Template';
         this.viewOptions.arrIds.push(this.id);
         let newWorkpackTemplate = new WorkpackTemplate();
-        newWorkpackTemplate.id = 'new';
-        this.crumbService.SetCurrentWorkpackTemplate(newWorkpackTemplate);
+        this.workpackDataService.QueryDefaultWorkpackTemplate().subscribe(newWPT => {
+          newWPT.id = 'new';
+          this.crumbService.SetCurrentWorkpackTemplate(newWPT);
+        });
         break;
       }
       case 'new2workpacktemplate': {
@@ -40,9 +42,11 @@ export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
         this.viewOptions.workpacksPanelOpenState = false;
         this.viewOptions.title = 'New Workpack Template';
         this.viewOptions.arrIds.push(this.id);
-        let newWorkpackTemplate = new WorkpackTemplate();
-        newWorkpackTemplate.id = 'new';
-        this.crumbService.SetCurrentWorkpackTemplate(newWorkpackTemplate);
+
+        this.workpackDataService.QueryDefaultWorkpackTemplate().subscribe(newWPT => {
+          newWPT.id = 'new';
+          this.crumbService.SetCurrentWorkpackTemplate(newWPT);
+        });
         break;        
       }
       case 'edit': {

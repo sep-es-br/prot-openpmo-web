@@ -26,41 +26,39 @@
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
           <span translate>Name is</span> 
-          <strong translate>required</strong>
+          <strong translate> required</strong>
         </mat-error>
-        <mat-form-field>
-          <input matInput 
-            type="text" 
-            formControlName="fullName"
-            placeholder={{translate.fullname|translate}}/>
-        </mat-form-field>
-        
         <div class="container-fluid cards" formArrayName="properties">
           <div class="row property-row">
-            <div [class]="(property.editing) ? 'property-card-box property-full-width' : 'property-card-box'"    
-              *ngFor="let property of formGroupWorkpackTemplate['controls'].properties['controls']; let i=index;">
+            <div [class]="(property.get('editing').value) ? 'property-card-box property-full-width' : 'property-card-box'"    
+              *ngFor="let property of formGroupWorkpackTemplate.controls.properties.controls; let i=index;">
               <mat-expansion-panel 
-                [formGroupName]="i"
+                [formGroup]="property"
                 class="property-card row"
                 [expanded]="property.get('editing').value"
-                (opened)="EditProperty(i)"
+                (opened)="EditProperty(i, property.get('type').value)"
                 (closed)="StopEditing(i)"
-                *ngIf="!property.get('toDelete').value">
+                *ngIf="!property.toDelete">
                 <mat-expansion-panel-header class="property-header">
                   <mat-panel-title class="property-name">
                     <div class="property-logo-mat-icon" 
-                        *ngIf="GetPropertyLogo(property.get('typeName').value).source == 'mat-icon'">
+                        *ngIf="GetPropertyLogo(property.get('type').value).source == 'mat-icon'">
                         <mat-icon 
-                          fontSet="{{GetPropertyLogo(property.get('typeName').value).set}}" 
-                          fontIcon="{{GetPropertyLogo(property.get('typeName').value).icon}}"></mat-icon>
+                          fontSet="{{GetPropertyLogo(property.get('type').value).set}}" 
+                          fontIcon="{{GetPropertyLogo(property.get('type').value).icon}}"></mat-icon>
                     </div>
                     <div class="property-logo-font" 
-                        *ngIf="GetPropertyLogo(property.get('typeName').value).source == 'font'">
-                      {{GetPropertyLogo(property.get('typeName').value).icon}}
+                        *ngIf="GetPropertyLogo(property.get('type').value).source == 'font'">
+                      {{GetPropertyLogo(property.get('type').value).icon}}
                     </div>
                     <div class="property-title">
                       {{property.get('name').value}}
                     </div>
+                    <mat-slide-toggle
+                      (click)="$event.stopPropagation()"
+                      [color]="color"
+                      class="toggle-property"
+                      formControlName="using"></mat-slide-toggle>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="card-content">
@@ -73,26 +71,51 @@
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
-                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+                  <div 
+                    class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
                     <mat-form-field 
                       class="form-field">
                       <input matInput
-                        type="text"
-                        placeholder={{translate.minimum|translate}}
-                        formControlName="min"
-                        value=""/>
+                        type="number"
+                        placeholder={{translate.sortIndex|translate}}
+                        formControlName="sortIndex"/>
                     </mat-form-field>
                   </div>
-                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
+                    *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
                     <mat-form-field 
                       class="form-field">
                       <input matInput
-                        type="text" 
+                        type="number"
+                        placeholder={{translate.minimum|translate}}
+                        formControlName="min"/>
+                    </mat-form-field>
+                  </div>
+                  <div 
+                    class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
+                    *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
+                    <mat-form-field 
+                      class="form-field">
+                      <input matInput
+                        type="number" 
                         placeholder={{translate.maximum|translate}}
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
-                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+                  <div 
+                    class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
+                    *ngIf="property.get('type').value == 'Selection'">
+                    <mat-form-field 
+                      class="form-field">
+                      <input matInput 
+                        type="text"
+                        placeholder="Possible values"
+                        formControlName="possibleValues"/>
+                      <mat-hint>Use comma to separate the values. Empty means any.</mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <div 
+                    class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
                     <mat-form-field 
                       class="form-field">
                       <input matInput
@@ -112,14 +135,18 @@
             </div>
           </div>
         </div>
-        <button mat-raised-button class="add-property-button dropleft card-setting" id="dropdownAddPropertyButton" data-toggle="dropdown">
+        
+        <button mat-raised-button 
+                class="add-property-button dropleft card-setting" 
+                id="dropdownAddPropertyButton" 
+                data-toggle="dropdown">
           <span translate>Add Property</span>
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
           <div class="dropdown-menu" aria-labelledby="dropdownAddPropertyButton">
             <a *ngFor="let pType of propertyTypes"
                 class="dropdown-item"
-                (click)="AddProperty(pType.typeName)"
-                [innerHTML]="pType.typeName"
+                (click)="AddProperty(pType)"
+                [innerHTML]="pType"
                 translate></a>
           </div>
         </button>

@@ -105,3 +105,9 @@
     margin-right: -20px;
     margin-left: -20px;
 }
+
+.toggle-property{
+    float: right;
+    margin-left: 20px;
+    margin-top: 6px;
+}

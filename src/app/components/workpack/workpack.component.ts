@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { Office } from '../../model/office';
 import { Schema } from '../../model/schema';
 import { Workpack } from '../../model/workpack';
-import { Useful } from '../../useful';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { WorkpackTemplate } from '../../model/workpack-template';
 import { ViewOptions } from '../../model/view-options';
@@ -13,6 +12,7 @@ import { FormControl, Validators, FormBuilder, FormArray } from '@angular/forms'
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { TranslateConstants } from '../../model/translate';
+import { PropertyProfile } from 'src/app/model/property-profile';
 
 @Component({
   selector: 'app-workpack',
@@ -26,7 +26,6 @@ export class WorkpackComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private workpackDataService: WorkpackDataService,
-    private useful: Useful,
     private router: Router, 
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {}
@@ -37,7 +36,6 @@ export class WorkpackComponent implements OnInit {
     formGroupWorkpack = this.fb.group({
       id: [''],
       name: ['', Validators.required],
-      fullName: [''],
       properties: this.fb.array([])
     });
      
@@ -65,6 +63,8 @@ export class WorkpackComponent implements OnInit {
         this.workpack = wp;
         if (this.workpack.id != '') {
           this.LoadFormControls();
+          console.log('formcontrol', this.formGroupWorkpack);
+          console.log('wp', this.workpack);
         }
       })
     );
@@ -88,9 +88,6 @@ export class WorkpackComponent implements OnInit {
                 : this.HideSaveButton();
       })
     );
-
-
-
     
   }
 
@@ -103,36 +100,36 @@ export class WorkpackComponent implements OnInit {
 
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
-    this.formGroupWorkpack.controls['fullName'].setValue(this.workpack.fullName);
     this.CleanPropertiesFormArray();
-    this.workpack.properties.forEach(property => {
+    this.workpack.properties
+      .sort((a,b) => {
+        return (a.profile.sortIndex < b.profile.sortIndex) ? -1 : 1;
+      })
+      .forEach(property => {
       (this.formGroupWorkpack.get('properties') as FormArray).push(
         this.fb.group({
-          toDelete: [false],
-          editing: [false],
           id: [property.id],
-          name: [property.name, Validators.required],
-          typeName: [property.typeName],
-          min: [(property.min == null) ? '0' : property.min],
-          max: [(property.max == null) ? '100' : property.max],
-          value: [(property.value == null) ? "" : property.value]
+          name: [property.name],
+          value: [property.value],
+          profile: [property.profile]
         })
       );
     });
   }
 
+  ArrayOf(list: String): String[] {
+    let array = list.split(',');
+    array.forEach(str => {
+      str = str.trim();
+    });
+    return array;
+  }
+
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
-    if (val.fullName != this.workpack.fullName) return true;
-    if (val.properties.length != this.workpack.properties.length) return true;
     let changed = false;
     val.properties.forEach((prop, i) => {
-      if (prop.id == '') changed = true;
-      if (prop.toDelete) changed = true;
-      if (prop.name != this.workpack.properties[i].name) changed = true;
-      //if (prop.min != this.workpackTemplate.properties[i].min) changed = true;
-      //if (prop.max != this.workpackTemplate.properties[i].max) changed = true;
-      //if (prop.value != this.workpackTemplate.properties[i].value) changed = true;
+      if (prop.value != this.workpack.properties[i].value) changed = true;
     });
     return changed;
   }
@@ -155,18 +152,16 @@ export class WorkpackComponent implements OnInit {
   }
 
 
-  SetTrimmedNameAndfullName(value: String){
-    this.workpack.name = this.useful.GetTrimmedName(value);
-    this.workpack.fullName = this.useful.GetfullName(this.workpack.name);
-  }
-
   onSubmit(){
     this.workpack.name = this.formGroupWorkpack.value.name.trim();
-    this.workpack.fullName = this.formGroupWorkpack.value.fullName.trim();
     this.workpack.template = this.workpackTemplate;
+    this.formGroupWorkpack.value.properties.forEach(prop => {
+      this.workpack.properties.find(p => (p.profile.id == prop.profile.id)).value = prop.value;
+    });
     
     switch (this.viewOptions.action) {
       case 'new2schema': {
+        this.workpack.id = '';
         this.schema.workpacks.push(this.workpack);
         this.subscriptions.push(
           this.schemaDataService
@@ -187,6 +182,7 @@ export class WorkpackComponent implements OnInit {
         this.subscriptions.push(
           this.workpackDataService.GetWorkpackById(this.crumbService.GetBeforeLast(1).id)
           .subscribe(parentWP => {
+            this.workpack.id = '';
             parentWP.components.push(this.workpack);
             this.subscriptions.push(
               this.workpackDataService
@@ -214,13 +210,13 @@ export class WorkpackComponent implements OnInit {
               .UpdateWorkpack(this.workpack)
               .subscribe(
                 wp => {
-                  this.workpackTemplate = wp;
+                  this.workpackTemplate = wp.template;
                   this.LoadFormControls();
                   this.ShowMessage();
                   window.setTimeout(
                     () => {this.HideMessage();}, 
                     3000);
-                  this.crumbService.SetCurrentWorkpackTemplate(wp);
+                  this.crumbService.SetCurrentWorkpack(wp);
                 }
               )
             );

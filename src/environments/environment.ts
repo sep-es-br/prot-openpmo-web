@@ -14,8 +14,13 @@ export const environment = {
   schemaTemplateAPI: 'schematemplate/',
   listSchemaTemplatesFunction: 'listschematemplates/',
   workpackTemplateAPI: 'workpacktemplate/',
+  propertyAPI: 'property/',
+  textPropertyAPI: 'textproperty/',
+  numberPropertyAPI: 'numberproperty/',
+  addressPropertyAPI: 'addressproperty/',
   listWorkpackTemplatesFunction: 'listworkpacktemplates/',
   treeResource: 'tree/',
+  defaultResource: 'default/',
   templateResource: 'template/',
   propertyTypesResource: 'listpropertytypes/'
 };

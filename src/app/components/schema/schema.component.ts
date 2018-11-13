@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { Schema } from '../../model/schema';
 import { Office } from '../../model/office';
-import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { SchemaTemplate } from '../../model/schema-template';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
@@ -24,7 +23,6 @@ export class SchemaComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private workpackDataService: WorkpackDataService,
-    private useful: Useful,
     private router: Router,
     private crumbService: BreadcrumbService, private fb: FormBuilder ) {}
 

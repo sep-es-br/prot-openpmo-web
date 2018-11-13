@@ -32,6 +32,7 @@
     "StatusList" : "Status List",
     "Text" : "Text",
     "TextList" : "Text List",
+    "SortIndex" : "Sort index",
     "Minimum" : "Minimum",
     "Maximum" : "Maximum",
     "Default value" : "Default value"

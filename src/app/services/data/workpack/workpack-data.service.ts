@@ -6,7 +6,6 @@ import { Workpack } from '../../../model/workpack';
 import { WorkpackTemplate } from '../../../model/workpack-template';
 import { environment } from 'src/environments/environment';
 import { SpinnerService } from '../../spinner/spinner.service';
-import { Property } from '../../../model/property';
 
 export class Panel {
   action: String = '';
@@ -41,7 +40,7 @@ export class WorkpackDataService {
   workpackTemplateTree = this.$workpackTemplateTree.asObservable();
 
   // Observable property for the list of property types available
-  private $propertyTypes = new BehaviorSubject<Property[]>([]);
+  private $propertyTypes = new BehaviorSubject<String[]>([]);
   propertyTypes = this.$propertyTypes.asObservable();
 
   // Observable property for current show status of the workpack page 
@@ -109,6 +108,20 @@ export class WorkpackDataService {
       }));
     }
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Set the workpack observable variable
+  //
+  // Parameters: 
+  //    workpack: The Workpack object to be set
+  //
+  // Return: none
+  //
+  SetWorkpack(workpack: Workpack) {
+    this.$workpack.next(workpack);
+  }
+
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -213,14 +226,16 @@ export class WorkpackDataService {
   //
   // Return: Observable to the property types list
   //
-  QueryPropertyTypes(): Observable<Property[]> {
+  QueryPropertyTypes(): Observable<String[]> {
     const pathURL = environment.workpackTemplateAPI + environment.propertyTypesResource;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any,Property[]>(res => {
-      this.$propertyTypes.next(res as Property[]);
+    return this.http.get(URL).pipe(map<any,String[]>(res => {
+      if (res.length > 0) {
+        this.$propertyTypes.next(res as String[]);
+      }
       this.spinnerService.HideSpinner();
-      return res as Property[];
+      return res as String[];
     }));
   }
 
@@ -243,6 +258,28 @@ export class WorkpackDataService {
     }));
   }
 
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run the GET http request to get a Workpack Template with default values
+  //
+  // Parameters: none
+  //
+  // Return: An Observable to the Workpack Template retrieved
+  //
+  QueryDefaultWorkpackTemplate(): Observable<WorkpackTemplate> {
+ 
+    const pathURL = environment.workpackTemplateAPI + environment.defaultResource;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
+    return this.http.get(URL).pipe(map<any, WorkpackTemplate>(res => {
+      this.$workpackTemplate.next(res as WorkpackTemplate);
+      this.spinnerService.HideSpinner();
+      return res;
+    }));
+  }
+
+
   ////////////////////////////////////////////////////////////////////////
   //
   // Run a PUT http to update a Workpack Template
@@ -255,6 +292,8 @@ export class WorkpackDataService {
   UpdateWorkpackTemplate(workpackTemplate: WorkpackTemplate): Observable<WorkpackTemplate> {
     const pathURL = environment.workpackTemplateAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + workpackTemplate.id;
+
+    //this.propertyDataService.UpdateProperties(workpackTemplate.properties);
 
     this.spinnerService.ShowSpinner();
     return this.http.put(

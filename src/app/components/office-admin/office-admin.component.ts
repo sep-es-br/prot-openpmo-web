@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { Subscription, Observable } from 'rxjs';
 import { Office } from '../../model/office';
-import { Useful } from '../../useful';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
@@ -20,7 +19,6 @@ export class OfficeAdminComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private breadcrumbService: BreadcrumbService,
-    private useful: Useful,
     private router: Router) { }
 
   nameFormControl = new FormControl('', [

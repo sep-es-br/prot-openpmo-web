@@ -1,9 +1,8 @@
-import { Property } from "./property";
+import { PropertyProfile } from "./property-profile";
 
 export class WorkpackTemplate {
     id: String = "";
     name: String = "";
-    fullName: String = "";
     components: WorkpackTemplate[] = [];
-    properties: Property[] = [];
+    properties: PropertyProfile[] = [];
 }

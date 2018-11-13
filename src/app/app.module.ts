@@ -18,8 +18,6 @@ import { WorkpackComponent } from './components/workpack/workpack.component';
 import { SchemaTemplateComponent } from './components/schema-template/schema-template.component';
 import { OfficeAdminComponent } from './components/office-admin/office-admin.component';
 import { WorkpackTemplateComponent } from './components/workpack-template/workpack-template.component';
-import { PropertyTemplateComponent } from './components/workpack-template/property-template/property-template.component';
-import { Useful } from './useful';
 import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { SchemaResolver } from './components/schema/schema.resolver';
@@ -45,7 +43,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     SchemaTemplateComponent,
     OfficeAdminComponent,
     WorkpackTemplateComponent,
-    PropertyTemplateComponent,
     BreadcrumbComponent,
     SanitizeHtmlPipe,
     ProgressComponent
@@ -78,8 +75,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     OfficeResolver,
     OfficeAdminResolver,
     WorkpackTemplateResolver,
-    HttpClient,
-    Useful
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })

@@ -3,7 +3,6 @@ import { Office } from '../../model/office';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
-import { Useful } from '../../useful';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
@@ -20,7 +19,6 @@ export class OfficeComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private breadcrumbService: BreadcrumbService,
-    private useful: Useful,
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) { }
