@@ -43,7 +43,9 @@ export class OfficeComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Preparing data before loading screen
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     if (this.action == 'new') {
@@ -68,6 +70,7 @@ export class OfficeComponent implements OnInit {
 
     this.HideMessage();
 
+    //Updating path traveled by the user
     this.subscriptions.push(
       this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
         this.breadcrumbTrail = trail;
@@ -80,6 +83,7 @@ export class OfficeComponent implements OnInit {
     if (val.fullName != this.office.fullName) return true;
   }  
 
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -96,9 +100,13 @@ export class OfficeComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
+  //End - Save Button Interaction
 
-
-
+  ////////////////////////////////////////////////////////////////////////
+  // EXPORTING TO THE DATABASE
+  //
+  // Exporting the information to be saved to the database after pressing the save button
+  //
   onSubmit(){
     this.office.name = this.formGroupOffice.value.name.trim();
     this.office.fullName = this.formGroupOffice.value.fullName.trim();
@@ -123,6 +131,11 @@ export class OfficeComponent implements OnInit {
     );
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Schema
+  //
+  //Identification Parameter: id
+  //
   DeleteSchema(id: string) {
     this.schemaDataService.GetSchemaById(id).subscribe(schema2delete => {
       if (schema2delete.workpacks.length > 0) {
@@ -139,6 +152,9 @@ export class OfficeComponent implements OnInit {
     });
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();

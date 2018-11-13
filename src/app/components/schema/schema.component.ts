@@ -51,8 +51,9 @@ export class SchemaComponent implements OnInit {
     fullName: ['']
   });
 
-
-
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Preparing data before loading screen
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
@@ -104,6 +105,7 @@ export class SchemaComponent implements OnInit {
     if (val.fullName != this.schema.fullName) return true;
   }  
 
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -120,7 +122,7 @@ export class SchemaComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
-
+  //End - Save Button Interaction
 
   SetPanels(action: String) {
     this.action = action;
@@ -129,6 +131,11 @@ export class SchemaComponent implements OnInit {
     this.showChildren = (action != 'edit')
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // EXPORTING TO THE DATABASE
+  //
+  // Exporting the information to be saved to the database after pressing the save button
+  //
   onSubmit(){
     this.schema.name = this.formGroupSchema.value.name.trim();
     this.schema.fullName = this.formGroupSchema.value.fullName.trim();
@@ -167,6 +174,11 @@ export class SchemaComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Workpack
+  //
+  //Identification Parameter: id
+  //
   DeleteWorkpack(id: string) {
     this.subscriptions
     .push(
@@ -191,7 +203,9 @@ export class SchemaComponent implements OnInit {
     );
   }
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.crumbService.CleanSchema();
     this.subscriptions.forEach(subscription => {

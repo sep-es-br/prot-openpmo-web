@@ -13,6 +13,7 @@ export class BreadcrumbComponent implements OnInit {
 
   constructor(private breadcrumbservice: BreadcrumbService){}
 
+  // Preparing data before loading screen
   ngOnInit() {
     this.breadcrumbservice.breadcrumbTrail.subscribe(bct => {
       this.breadcrumbTrail = bct;

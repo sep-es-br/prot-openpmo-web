@@ -51,6 +51,9 @@ export class WorkpackComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Preparing data before loading screen
   ngOnInit() {
     this.viewOptions = this.route.snapshot.data.workpack;
     
@@ -88,9 +91,6 @@ export class WorkpackComponent implements OnInit {
                 : this.HideSaveButton();
       })
     );
-
-
-
     
   }
 
@@ -137,6 +137,7 @@ export class WorkpackComponent implements OnInit {
     return changed;
   }
 
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -153,13 +154,18 @@ export class WorkpackComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
-
+  //End - Save Button Interaction
 
   SetTrimmedNameAndfullName(value: String){
     this.workpack.name = this.useful.GetTrimmedName(value);
     this.workpack.fullName = this.useful.GetfullName(this.workpack.name);
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // EXPORTING TO THE DATABASE
+  //
+  // Exporting the information to be saved to the database after pressing the save button
+  //
   onSubmit(){
     this.workpack.name = this.formGroupWorkpack.value.name.trim();
     this.workpack.fullName = this.formGroupWorkpack.value.fullName.trim();
@@ -230,6 +236,11 @@ export class WorkpackComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Workpack
+  //
+  //Identification Parameter: id
+  //
   DeleteWorkpack(id: string) {
     this.subscriptions
     .push(
@@ -252,6 +263,9 @@ export class WorkpackComponent implements OnInit {
     );
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();

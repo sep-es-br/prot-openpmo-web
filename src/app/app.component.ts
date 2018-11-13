@@ -17,7 +17,22 @@ export class AppComponent implements OnInit {
   ngOnInit() {
   }
 
-  //Translation module
+  ////////////////////////////////////////////////////////////////////////
+  // TRANSLATE MODULE - LIBRARY:
+  //
+  // Parameters:
+  //    language:     receives language parameter: (en, pt-BR, ...)
+  //  
+  // Variables: 
+  //    lang:         modifies interface in app.component.html - standard:'en'
+  //
+  // Data source:     src/assets/i18n
+  //
+  // Use to translate:
+  //    Variables or arrays:       {{ <variable> | translate:use }}
+  //    Text html or ngFor:        Example: <span translate> text </span>
+  //    By the translation model:  {{ translate.<id> | translate:use }}  -  import { TranslateConstants } from 'app/model/translate';
+  //
   switchLanguage(language: string) {
     this.translate.use(language);
     this.lang = language;    

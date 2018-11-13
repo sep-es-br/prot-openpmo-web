@@ -38,7 +38,9 @@ export class OfficeAdminComponent implements OnInit {
   breadcrumbTrail: Breadcrumb[] = [];
   schemaTemplatesPanelOpenState: Boolean = true;
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Preparing data before loading screen
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.officeId = this.route.snapshot.paramMap.get('id');
@@ -47,6 +49,7 @@ export class OfficeAdminComponent implements OnInit {
         this.office = o;
       })
     );
+    //Updating path traveled by the user
     this.subscriptions.push(
       this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
         this.breadcrumbTrail = trail;
@@ -54,6 +57,11 @@ export class OfficeAdminComponent implements OnInit {
     );
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Schema Template
+  //
+  //Identification Parameter: id
+  //
   DeleteSchemaTemplate(id: string) {
     this.schemaDataService.GetSchemaTemplateById(id).subscribe(schemaTemplate2delete => {
       if (schemaTemplate2delete.workpackTemplates.length > 0) {
@@ -69,6 +77,9 @@ export class OfficeAdminComponent implements OnInit {
     });
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
