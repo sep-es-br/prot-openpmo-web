@@ -31,15 +31,15 @@ export class WorkpackComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {}
 
-    //Constants for translate
-    translate = new TranslateConstants();
+  //Constants for translate
+  translate = new TranslateConstants();
 
-    formGroupWorkpack = this.fb.group({
-      id: [''],
-      name: ['', Validators.required],
-      fullName: [''],
-      properties: this.fb.array([])
-    });
+  formGroupWorkpack = this.fb.group({
+    id: [''],
+    name: ['', Validators.required],
+    fullName: [''],
+    properties: this.fb.array([])
+  });
      
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -94,6 +94,7 @@ export class WorkpackComponent implements OnInit {
     
   }
 
+  //Clearing property form
   CleanPropertiesFormArray(){
     const ctrl = <FormArray>this.formGroupWorkpack.controls['properties'];
     while (this.formGroupWorkpack.controls['properties'].value.length !== 0) {
@@ -101,6 +102,7 @@ export class WorkpackComponent implements OnInit {
     }
   }
 
+  //Loading property form
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.formGroupWorkpack.controls['fullName'].setValue(this.workpack.fullName);
@@ -121,6 +123,7 @@ export class WorkpackComponent implements OnInit {
     });
   }
 
+  //Identifying changes made by the user
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
     if (val.fullName != this.workpack.fullName) return true;
@@ -156,6 +159,7 @@ export class WorkpackComponent implements OnInit {
   }
   //End - Save Button Interaction
 
+  //Defining name and full name
   SetTrimmedNameAndfullName(value: String){
     this.workpack.name = this.useful.GetTrimmedName(value);
     this.workpack.fullName = this.useful.GetfullName(this.workpack.name);

@@ -82,7 +82,7 @@ export class SchemaTemplateComponent implements OnInit {
 
   }
 
-
+  //Identifying changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
     if (val.name != this.schemaTemplate.name) return true;
     if (val.fullName != this.schemaTemplate.fullName) return true;
@@ -107,6 +107,7 @@ export class SchemaTemplateComponent implements OnInit {
   }
   //End - Save Button Interaction
 
+  //Panel definition dariables
   SetPanels(action: String) {
     this.action = action;
     this.title = (action == 'new') ? 'New Schema Template' : '';

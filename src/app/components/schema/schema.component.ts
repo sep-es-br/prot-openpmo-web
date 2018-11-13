@@ -100,6 +100,7 @@ export class SchemaComponent implements OnInit {
     this.HideMessage(); 
   }
 
+  //Identifying changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
     if (val.name != this.schema.name) return true;
     if (val.fullName != this.schema.fullName) return true;
@@ -124,6 +125,7 @@ export class SchemaComponent implements OnInit {
   }
   //End - Save Button Interaction
 
+  //Panel definition dariables
   SetPanels(action: String) {
     this.action = action;
     this.title = (action == 'new') ? 'New' : '';

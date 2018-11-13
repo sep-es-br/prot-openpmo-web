@@ -78,6 +78,8 @@ export class OfficeComponent implements OnInit {
     );
   }
 
+  
+  //Identifying changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
     if (val.name != this.office.name) return true;
     if (val.fullName != this.office.fullName) return true;
