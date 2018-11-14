@@ -10,4 +10,7 @@ export class PropertyProfile {
     custom: Boolean = false;
     possibleValues: any[];
     required: Boolean = false;
+    label: string = '';
+    rows: Number = 1;
+    fullLine: Boolean = false;
 }

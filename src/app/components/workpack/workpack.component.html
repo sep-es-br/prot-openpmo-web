@@ -35,20 +35,20 @@
             <input matInput
               type="text"      
               formControlName="value"
-              placeholder="{{property.value.name}}"/>
+              placeholder="{{property.value.profile.label}}"/>
           </mat-form-field>
           <mat-form-field *ngIf="property.value.profile.type == 'Number'"
             [formGroup]="property">
             <input matInput
               type="number"      
               formControlName="value"
-              placeholder="{{property.value.name}}"/>
+              placeholder="{{property.value.profile.label}}"/>
           </mat-form-field>
           <mat-form-field *ngIf="property.value.profile.type == 'Date'"
             [formGroup]="property">
             <input matInput 
               [matDatepicker]="picker" 
-              placeholder="{{property.value.name}}"
+              placeholder="{{property.value.profile.label}}"
               formControlName="value">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -56,7 +56,7 @@
           <mat-form-field *ngIf="property.value.profile.type == 'Selection'"
           [formGroup]="property">
             <mat-select 
-              placeholder="{{property.value.name}}"
+              placeholder="{{property.value.profile.label}}"
               formControlName="value">
               <mat-option 
                 *ngFor="let pValue of property.value.profile.possibleValues" 
