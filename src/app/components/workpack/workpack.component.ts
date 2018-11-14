@@ -31,14 +31,14 @@ export class WorkpackComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {}
 
-    //Constants for translate
-    translate = new TranslateConstants();
+  //Constants for translate
+  translate = new TranslateConstants();
 
-    formGroupWorkpack = this.fb.group({
-      id: [''],
-      name: ['', Validators.required],
-      properties: this.fb.array([])
-    });
+  formGroupWorkpack = this.fb.group({
+    id: [''],
+    name: ['', Validators.required],
+    properties: this.fb.array([])
+  });
      
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -50,6 +50,9 @@ export class WorkpackComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
     this.viewOptions = this.route.snapshot.data.workpack;
     
@@ -92,6 +95,7 @@ export class WorkpackComponent implements OnInit {
     
   }
 
+  //Clear property form
   CleanPropertiesFormArray(){
     const ctrl = <FormArray>this.formGroupWorkpack.controls['properties'];
     while (this.formGroupWorkpack.controls['properties'].value.length !== 0) {
@@ -99,6 +103,7 @@ export class WorkpackComponent implements OnInit {
     }
   }
 
+  //Load property form
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.CleanPropertiesFormArray();
@@ -118,14 +123,7 @@ export class WorkpackComponent implements OnInit {
     });
   }
 
-  ArrayOf(list: String): String[] {
-    let array = list.split(',');
-    array.forEach(str => {
-      str = str.trim();
-    });
-    return array;
-  }
-
+  //Identify changes made by the user
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
     let changed = false;
@@ -135,6 +133,7 @@ export class WorkpackComponent implements OnInit {
     return changed;
   }
 
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -151,8 +150,13 @@ export class WorkpackComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
+  //End - Save Button Interaction
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // EXPORT TO THE DATABASE
+  //
+  // Export the information to be saved to the database after pressing the save button
+  //
   onSubmit(){
     this.workpack.name = this.formGroupWorkpack.value.name.trim();
     this.workpack.template = this.workpackTemplate;
@@ -229,6 +233,11 @@ export class WorkpackComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Workpack
+  //
+  //Identification Parameter: id
+  //
   DeleteWorkpack(id: string) {
     this.subscriptions
     .push(
@@ -251,6 +260,9 @@ export class WorkpackComponent implements OnInit {
     );
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();

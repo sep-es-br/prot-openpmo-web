@@ -187,6 +187,7 @@ export class WorkpackTemplateComponent implements OnInit {
     );
   }
 
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -203,6 +204,7 @@ export class WorkpackTemplateComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
+  //End - Save Button Interaction
 
   FlattenTree(root: WorkpackTemplate, ident: number){
     root.components.forEach(template => {

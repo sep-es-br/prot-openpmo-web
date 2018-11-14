@@ -9,36 +9,36 @@
             <span>OpenPMO</span>
         </div>
 
-        <!--Old button user
+        <!-- OLD BUTTON USER
         <div class="user">
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
         </div>-->
         
-        <div class="progress-bar">
-            <div [ngClass]="{hideProgress: !spinnerOn}">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </div>
-        </div>
-
         <!--BUTTON USER-->
         <button class="config" mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-            <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages"><span translate>Languages</span>{{lang}}</button>
+            <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages">{{lang|translate:use}}</button>
         </mat-menu>
         <mat-menu #languages="matMenu">
             <button class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>English</button>
             <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>Português BR</button>
         </mat-menu>
-
-        <app-progress></app-progress>
         
         <!--BUTTON CONFIG-->
         <div class="config">
             <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
         </div>
-       
+
+    </div>
+
+    <!--PROGRESS BAR-->
+    <app-progress></app-progress>
+    <div class="progress-bar">
+        <div [ngClass]="{hideProgress: !spinnerOn}">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
     </div>
 
     <app-breadcrumb></app-breadcrumb>

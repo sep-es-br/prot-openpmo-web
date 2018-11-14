@@ -24,7 +24,7 @@
             type="text"      
             formControlName="name"
             requiered
-            placeholder={{translate.name|translate}}/>
+            placeholder={{translate.name|translate:use}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
           <span translate>Name is </span> <strong translate>required</strong>

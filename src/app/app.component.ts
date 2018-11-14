@@ -8,23 +8,34 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class AppComponent implements OnInit {
   title = 'openpmo-web';
+  lang : string = "en";
 
   constructor(private translate: TranslateService){
     translate.setDefaultLang('en');
   }
 
-  lang:string = "En";
-
   ngOnInit() {
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // TRANSLATE MODULE - LIBRARY:
+  //
+  // Parameters:
+  //    language:     receives language parameter: (en, pt-BR, ...)
+  //  
+  // Variables: 
+  //    lang:         modifies interface in app.component.html - standard:'en'
+  //
+  // Data source:     src/assets/i18n
+  //
+  // Use to translate:
+  //    Variables or arrays:       {{ <variable> | translate:use }}
+  //    Text html or ngFor:        Example: <span translate> text </span>
+  //    By the translation model:  {{ translate.<id> | translate:use }}  -  import { TranslateConstants } from 'app/model/translate';
+  //
   switchLanguage(language: string) {
     this.translate.use(language);
-
-    if (language == "en")
-      this.lang = "En";
-    if (language == "pt-BR")
-      this.lang = "Pt-BR"; 
+    this.lang = language;    
   }
 
 }

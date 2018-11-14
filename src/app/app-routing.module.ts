@@ -14,6 +14,13 @@ import { OfficeResolver } from './components/office/office.resolver';
 import { OfficeAdminResolver } from './components/office-admin/office-admin.resolver';
 import { SchemaTemplateResolver } from './components/schema-template/schema-template.resolver';
 
+////////////////////////////////////////////////////////////////////////
+// ROUTES DEFINITION:
+//
+// path: leads to the route
+// resolver: Service to be run before loading interface
+// runGuardsAndResolvers: defines actions to be taken when updating the page
+//
 const routes: Routes = [
   {
     path: '',

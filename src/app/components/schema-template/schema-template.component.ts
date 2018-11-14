@@ -46,6 +46,9 @@ export class SchemaTemplateComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
@@ -77,14 +80,13 @@ export class SchemaTemplateComponent implements OnInit {
 
   }
 
-
+  //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
     if (val.name != this.schemaTemplate.name) return true;
     if (val.fullName != this.schemaTemplate.fullName) return true;
   }
 
-
-
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -101,14 +103,20 @@ export class SchemaTemplateComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
+  //End - Save Button Interaction
 
+  //Panel definition dariables
   SetPanels(action: String) {
     this.action = action;
     this.title = (action == 'new') ? 'New Schema Template' : '';
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // EXPORT TO THE DATABASE
+  //
+  // Export the information to be saved to the database after pressing the save button
+  //
   onSubmit(){
-
     this.schemaTemplate.name = this.formGroupSchemaTemplate.value.name.trim();
     this.schemaTemplate.fullName = this.formGroupSchemaTemplate.value.fullName.trim();
     if (this.action == 'new') {
@@ -146,6 +154,11 @@ export class SchemaTemplateComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Workpack Template
+  //
+  //Identification Parameter: id
+  //
   DeleteWorkpackTemplate(id: string) {
     this.subscriptions
     .push(
@@ -166,7 +179,9 @@ export class SchemaTemplateComponent implements OnInit {
     );
   }
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.crumbService.CleanSchemaTemplate();
     this.subscriptions.forEach(subscription => {
