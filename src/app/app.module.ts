@@ -29,6 +29,7 @@ import { WorkpackDataService } from './services/data/workpack/workpack-data.serv
 import { SchemaDataService } from './services/data/schema/schema-data.service';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 import { ProgressComponent } from './components/progress/progress.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -49,6 +50,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
   ],
   imports: [
     BrowserModule,
+    FlexLayoutModule,
     AppMatModule,
     HttpClientModule,
     AppRoutingModule,

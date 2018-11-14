@@ -13,6 +13,7 @@ import { WorkpackDataService } from '../../services/data/workpack/workpack-data.
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { TranslateConstants } from '../../model/translate';
 import { PropertyProfile } from 'src/app/model/property-profile';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'app-workpack',
@@ -156,7 +157,9 @@ export class WorkpackComponent implements OnInit {
     this.workpack.name = this.formGroupWorkpack.value.name.trim();
     this.workpack.template = this.workpackTemplate;
     this.formGroupWorkpack.value.properties.forEach(prop => {
-      this.workpack.properties.find(p => (p.profile.id == prop.profile.id)).value = prop.value;
+      let property = this.workpack.properties.find(p => (p.profile.id == prop.profile.id));
+      property.value = prop.value;
+      property.name = property.profile.name;
     });
     
     switch (this.viewOptions.action) {

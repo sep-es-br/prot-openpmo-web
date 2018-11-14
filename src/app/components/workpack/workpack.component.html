@@ -13,7 +13,12 @@
       <form 
         [formGroup]="formGroupWorkpack" 
         (ngSubmit)="onSubmit()"
-        class="form-container">
+        class="form-container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0">
         <mat-form-field>
           <input matInput
             type="text"      
@@ -26,7 +31,7 @@
         </mat-error>
         <div *ngFor="let property of formGroupWorkpack.controls.properties.controls; let i=index;">
           <mat-form-field *ngIf="property.value.profile.type == 'Text'"
-            [formGroup]="property">
+            [formGroup]="property" >
             <input matInput
               type="text"      
               formControlName="value"
