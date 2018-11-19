@@ -4,8 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.js -o",
-    "starten": "ng serve --proxy-config proxy.config.js --configuration=en -o",
-    "startpt": "ng serve --proxy-config proxy.config.js --configuration=pt-BR -o",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -42,7 +40,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
-    "@angular/cli": "~6.1.2",
+    "@angular/cli": "^6.1.5",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
     "@fortawesome/fontawesome-free": "^5.2.0",

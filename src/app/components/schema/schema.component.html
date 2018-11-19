@@ -1,5 +1,5 @@
 <div class="notification" [style.right]="MessageRightPosition">
-  Saved successfully
+    <span translate>Saved successfully</span>
 </div>
 <div class="main-title">{{title}} {{(action == 'new')?schema.template.name:schema.name}}</div>
 <div class="container-form"> 
@@ -19,23 +19,19 @@
           <input matInput
             type="text"
             formControlName="name"
-            placeholder={{translate.name|translate}}
+            placeholder={{translate.name|translate:use}}
             required/>
         </mat-form-field>
         <mat-error *ngIf="formGroupSchema.controls['name'].invalid && formGroupSchema.controls['name'].touched">
-            <span translate>Name is </span> <strong translate>required</strong>
+            <span translate>Name is</span> <strong translate>required</strong>
         </mat-error>
 
         <mat-form-field>
           <input matInput 
             type="text" 
-            formControlName="shortName"
-            placeholder={{translate.shortname|translate}}
-            required/>
+            formControlName="fullName"
+            placeholder={{translate.fullname|translate:use}}/>
         </mat-form-field>
-        <mat-error *ngIf="formGroupSchema.controls['shortName'].invalid && formGroupSchema.controls['shortName'].touched">
-            <span translate>Name is </span> <strong translate>required</strong>
-        </mat-error>
 
         <!-- SAVE BUTTON -->
         <div class="footer-button"

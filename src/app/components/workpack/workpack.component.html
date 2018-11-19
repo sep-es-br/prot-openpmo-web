@@ -11,37 +11,33 @@
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
-        name="workpackForm" 
-        (ngSubmit)="f.form.valid && onSubmit()" 
-        #f="ngForm"
-        class="form-container" 
-        novalidate>
+        [formGroup]="formGroupWorkpack" 
+        (ngSubmit)="onSubmit()"
+        class="form-container">
         <mat-form-field>
           <input matInput
             type="text"      
-            [formControl]="nameFormControl"
-            placeholder={{translate.name|translate}}
-            required
-            [(ngModel)]="workpack.name"/>
+            formControlName="name"
+            placeholder={{translate.name|translate:use}}/>
         </mat-form-field>
-        <mat-error *ngIf="nameFormControl.invalid && nameFormControl.touched">
+        <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
           <span translate>Name is </span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
           <input matInput 
             type="text" 
-            [formControl]="shortNameFormControl"
-            placeholder={{translate.shortname|translate}}
-            required
-            [(ngModel)]="workpack.shortName"/>
+            formControlName="fullName"
+            placeholder={{translate.fullname|translate:use}}/>
         </mat-form-field>
-        <mat-error *ngIf="shortNameFormControl.invalid && shortNameFormControl.touched">
-          <span translate>Name is </span> <strong translate>required</strong>
-        </mat-error>
 
-        <button mat-raised-button>
-          <span translate>Save</span>
-        </button>
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button 
+              class="save-button" mat-button><span translate>Save</span></button>
+          </div>
+        </div>        
 
       </form>
     </mat-expansion-panel>

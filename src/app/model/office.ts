@@ -4,7 +4,7 @@ import { SchemaTemplate } from '../model/schema-template';
 export class Office {
     id: String = "";
     name: String = "";
-    shortName: String = "";
+    fullName: String = "";
     schemas: Schema[] = [];
     schemaTemplates: SchemaTemplate[] = [];
 }

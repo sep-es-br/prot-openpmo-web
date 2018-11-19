@@ -1,6 +1,6 @@
 export class Useful {
     
-    public GetShortName(name: String){
+    public GetfullName(name: String){
         return name
           .trim()
           .toLowerCase()
