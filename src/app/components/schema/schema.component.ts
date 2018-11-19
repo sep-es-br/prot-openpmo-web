@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { Schema } from '../../model/schema';
 import { Office } from '../../model/office';
-import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { SchemaTemplate } from '../../model/schema-template';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
@@ -24,7 +23,6 @@ export class SchemaComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private workpackDataService: WorkpackDataService,
-    private useful: Useful,
     private router: Router,
     private crumbService: BreadcrumbService, private fb: FormBuilder ) {}
 
@@ -51,8 +49,9 @@ export class SchemaComponent implements OnInit {
     fullName: ['']
   });
 
-
-
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
@@ -99,11 +98,13 @@ export class SchemaComponent implements OnInit {
     this.HideMessage(); 
   }
 
+  //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
     if (val.name != this.schema.name) return true;
     if (val.fullName != this.schema.fullName) return true;
   }  
 
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -120,8 +121,9 @@ export class SchemaComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
+  //End - Save Button Interaction
 
-
+  //Panel definition dariables
   SetPanels(action: String) {
     this.action = action;
     this.title = (action == 'new') ? 'New' : '';
@@ -129,6 +131,11 @@ export class SchemaComponent implements OnInit {
     this.showChildren = (action != 'edit')
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // EXPORT TO THE DATABASE
+  //
+  // Export the information to be saved to the database after pressing the save button
+  //
   onSubmit(){
     this.schema.name = this.formGroupSchema.value.name.trim();
     this.schema.fullName = this.formGroupSchema.value.fullName.trim();
@@ -138,10 +145,6 @@ export class SchemaComponent implements OnInit {
         this.officeDataService
         .UpdateOffice(this.office)
         .subscribe(
-          ret => {
-            this.router.navigate(['./office/edit/' + this.office.id]);
-          },
-          error => Observable.throw(error),
           () => {
             this.router.navigate(['./office/edit/' + this.office.id]); 
           }
@@ -167,6 +170,11 @@ export class SchemaComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Workpack
+  //
+  //Identification Parameter: id
+  //
   DeleteWorkpack(id: string) {
     this.subscriptions
     .push(
@@ -191,7 +199,9 @@ export class SchemaComponent implements OnInit {
     );
   }
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.crumbService.CleanSchema();
     this.subscriptions.forEach(subscription => {

@@ -18,8 +18,6 @@ import { WorkpackComponent } from './components/workpack/workpack.component';
 import { SchemaTemplateComponent } from './components/schema-template/schema-template.component';
 import { OfficeAdminComponent } from './components/office-admin/office-admin.component';
 import { WorkpackTemplateComponent } from './components/workpack-template/workpack-template.component';
-import { PropertyTemplateComponent } from './components/workpack-template/property-template/property-template.component';
-import { Useful } from './useful';
 import { BreadcrumbService } from './services/breadcrumb/breadcrumb.service';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { SchemaResolver } from './components/schema/schema.resolver';
@@ -31,6 +29,7 @@ import { WorkpackDataService } from './services/data/workpack/workpack-data.serv
 import { SchemaDataService } from './services/data/schema/schema-data.service';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 import { ProgressComponent } from './components/progress/progress.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -45,13 +44,13 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     SchemaTemplateComponent,
     OfficeAdminComponent,
     WorkpackTemplateComponent,
-    PropertyTemplateComponent,
     BreadcrumbComponent,
     SanitizeHtmlPipe,
     ProgressComponent
   ],
   imports: [
     BrowserModule,
+    FlexLayoutModule,
     AppMatModule,
     HttpClientModule,
     AppRoutingModule,
@@ -78,8 +77,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     OfficeResolver,
     OfficeAdminResolver,
     WorkpackTemplateResolver,
-    HttpClient,
-    Useful
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })

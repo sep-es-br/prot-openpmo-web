@@ -38,6 +38,17 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
                 let newWorkpack = new Workpack();
                 newWorkpack.id = 'new';
                 newWorkpack.template = wpt;
+                newWorkpack.name = '';
+                wpt.properties.forEach(pProfile => {
+                  newWorkpack.properties.push({
+                    id: '',
+                    name: pProfile.name,
+                    value: pProfile.value,
+                    profile: pProfile
+                  });
+                });
+                this.workpackDataService.SetWorkpack(newWorkpack);
+
                 this.crumbService.SetCurrentWorkpack(newWorkpack);
                 break;
               }
@@ -49,6 +60,17 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
                 let newWorkpack = new Workpack();
                 newWorkpack.id = 'new';
                 newWorkpack.template = wpt;
+                newWorkpack.name = '';
+                wpt.properties.forEach(pProfile => {
+                  newWorkpack.properties.push({
+                    id: '',
+                    name: pProfile.name,
+                    value: pProfile.value,
+                    profile: pProfile
+                  });
+                });
+                this.workpackDataService.SetWorkpack(newWorkpack);
+               
                 this.crumbService.SetCurrentWorkpack(newWorkpack);
                 break;
               }

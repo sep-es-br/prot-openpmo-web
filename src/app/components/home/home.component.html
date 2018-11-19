@@ -4,15 +4,26 @@
     <div class="row">
       <!-- CARD OFFICE -->
       <mat-card class="card card-style" *ngFor="let office of offices">
-        <div class="dropleft">
-          <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+        
+        <div class="setting-container">
+        <span class="card-setting" mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
-          </div>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" (click)="deleteOffice(office.id)" translate>Delete</a>
-            <a class="dropdown-item" routerLink="/officeadmin/edit/{{office.id}}" routerLinkActive="active" href="#" translate>Admin</a>
-          </div>
+        </span>
         </div>
+      
+
+        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+          
+          <button mat-menu-item>
+            <span (click)="deleteOffice(office.id)" translate>Delete</span>
+          </button>
+
+          <button mat-menu-item>
+            <span routerLink="/officeadmin/edit/{{office.id}}" routerLinkActive="active" href="#" translate>Admin</span>
+          </button>
+
+        </mat-menu>
+
         <mat-card-title class="title-card">
           <a routerLink="/office/edit/{{office.id}}" routerLinkActive="active">{{office.name}}</a>
         </mat-card-title>

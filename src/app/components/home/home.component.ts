@@ -39,6 +39,9 @@ export class HomeComponent implements OnInit {
 
   private items = [];
 
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
     this.subscriptions.push(
       this.officeDataService.offices.subscribe(o => {
@@ -55,6 +58,7 @@ export class HomeComponent implements OnInit {
     
   }
 
+  //Update path traveled by the user
   UpdateBreadcrumb() {
     let index = this.breadcrumbTrail.findIndex(crumb => crumb.id == '');
     if (index == -1) {
@@ -65,6 +69,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Offices
+  //
+  //Identification Parameter: id
+  //
   deleteOffice(id: string) {
 
     let officeToDelete = this.offices.find(o => o.id === id);
@@ -82,6 +91,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();

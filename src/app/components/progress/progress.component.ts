@@ -13,6 +13,7 @@ export class ProgressComponent implements OnInit, OnDestroy {
 
   constructor(private spinnerService: SpinnerService) { }
   
+  // TOP OF THE PAGE - Prepare data before loading screen
   ngOnInit() {
     this.subscriptions.push(
       this.spinnerService.spinnerOn
@@ -21,7 +22,8 @@ export class ProgressComponent implements OnInit, OnDestroy {
         })
     );
   }
-
+  
+  // END OF PAGE - Suspension of signatures when closing the page
   ngOnDestroy(){
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();

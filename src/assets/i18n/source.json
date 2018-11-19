@@ -29,11 +29,16 @@
     "StatusList" : "",
     "Text" : "",
     "TextList" : "",
+    "SortIndex" : "",
     "Minimum" : "",
     "Maximum" : "",
     "Default value" : "",
     "Saved successfully" : "",
     "en" : "",
-    "pt-BR" : ""
-
+    "pt-BR" : "",
+    "My profile" : "",
+    "Account settings" : "",
+    "Log out" : "",
+    "English" : "",
+    "Português BR" : ""
 }

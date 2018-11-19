@@ -7,11 +7,10 @@ import { Subscription } from 'rxjs';
 import { Office } from '../../model/office';
 import { SchemaTemplate } from '../../model/schema-template';
 import { WorkpackTemplate } from '../../model/workpack-template';
-import { Useful } from '../../useful';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ViewOptions } from '../../model/view-options';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
-import { Property } from '../../model/property';
+import { PropertyProfile } from '../../model/property-profile';
 import { TranslateConstants } from '../../model/translate';
 
 @Component({
@@ -31,7 +30,6 @@ export class WorkpackTemplateComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private workpackDataService: WorkpackDataService,
-    private useful: Useful,
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder) {
@@ -42,10 +40,11 @@ export class WorkpackTemplateComponent implements OnInit {
 
   formGroupWorkpackTemplate = this.fb.group({
     id: [''],
-    name: ['', Validators.required, Validators.minLength(3), Validators.maxLength(20)],
-    fullName: [''],
-    properties: this.fb.array([])
+    name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
+    properties: this.fb.array([]),
   });
+
+  color = 'primary';
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -60,7 +59,7 @@ export class WorkpackTemplateComponent implements OnInit {
     id: String;
     label: String; 
   }[];
-  propertyTypes: Property[] = [];
+  propertyTypes: String[] = [];
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
@@ -102,23 +101,25 @@ export class WorkpackTemplateComponent implements OnInit {
     this.subscriptions.push(
       this.workpackDataService.propertyTypes.subscribe(pt =>{
         this.propertyTypes = pt.sort((a,b) => {
-          return (a.typeName < b.typeName) ? -1 : 1; 
+          return (a < b) ? -1 : 1; 
         });
       })
     );
 
+
     this.subscriptions.push(    
       this.formGroupWorkpackTemplate.statusChanges.subscribe((status) => {
+        if (this.workpackTemplate.properties === undefined) return this.HideSaveButton();
         return (status == 'VALID' && this.UserChangedSomething(this.formGroupWorkpackTemplate.value)) 
                 ? this.ShowSaveButton() 
                 : this.HideSaveButton();
       })
-    );
+    );     
 
   }
 
-  CleanPropertiesFormArray(){
-    const ctrl = <FormArray>this.formGroupWorkpackTemplate.controls['properties'];
+  CleanPropertiesFormArrays(){
+    let ctrl = <FormArray>this.formGroupWorkpackTemplate.controls['properties'];
     while (this.formGroupWorkpackTemplate.controls['properties'].value.length !== 0) {
       ctrl.removeAt(0);
     }
@@ -126,41 +127,73 @@ export class WorkpackTemplateComponent implements OnInit {
 
   LoadFormControls() {
     this.formGroupWorkpackTemplate.controls['name'].setValue(this.workpackTemplate.name);
-    this.formGroupWorkpackTemplate.controls['fullName'].setValue(this.workpackTemplate.fullName);
-    this.CleanPropertiesFormArray();
-    this.workpackTemplate.properties.forEach(property => {
-      (this.formGroupWorkpackTemplate.get('properties') as FormArray).push(
-        this.fb.group({
-          toDelete: [false],
-          editing: [false],
-          id: [property.id],
-          name: [property.name, Validators.required],
-          typeName: [property.typeName],
-          min: [(property.min == null) ? '0' : property.min],
-          max: [(property.max == null) ? '100' : property.max],
-          value: [(property.value == null) ? "" : property.value]
+    this.CleanPropertiesFormArrays();
+    if (this.workpackTemplate.properties !== undefined) {
+      this.workpackTemplate.properties
+        .sort((a,b) => {
+          return (a.sortIndex < b.sortIndex) ? -1 : 1;
         })
-      );
-    });
+        .forEach(property => {
+        (this.formGroupWorkpackTemplate.get('properties') as FormArray).push(
+          this.fb.group({
+            toDelete: [false],
+            editing: [false],
+            id: [property.id],
+            name: [property.name, Validators.required],
+            type: [property.type],
+            using: [property.using],
+            sortIndex: [property.sortIndex],
+            value: [property.value],
+            min: [property.min],
+            max: [property.max],
+            custom: [property.custom],
+            possibleValues: [property.possibleValues],
+            label: [property.label],
+            rows: [property.rows],
+            fullLine: [property.fullLine]
+          })
+        );
+      });
+
+    }
+    console.log('this.formGroupWorkpackTemplate', this.formGroupWorkpackTemplate);
   }
 
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpackTemplate.name) return true;
-    if (val.fullName != this.workpackTemplate.fullName) return true;
     if (val.properties.length != this.workpackTemplate.properties.length) return true;
     let changed = false;
-    val.properties.forEach((prop, i) => {
-      if (prop.id == '') changed = true;
-      if (prop.toDelete) changed = true;
-      if (prop.name != this.workpackTemplate.properties[i].name) changed = true;
-      //if (prop.min != this.workpackTemplate.properties[i].min) changed = true;
-      //if (prop.max != this.workpackTemplate.properties[i].max) changed = true;
-      //if (prop.value != this.workpackTemplate.properties[i].value) changed = true;
-    });
+    if (val.properties !== undefined) {
+      val.properties.forEach((prop, i) => {
+        if (prop.id == '') changed = true;
+        if (prop.toDelete) changed = true;
+        if (this.PropertyChanged(prop)) changed = true;
+      });
+    }
     return changed;
   }
 
+  PropertyChanged(prop): Boolean {
+    let foundIndex = this.workpackTemplate.properties.findIndex(p => p.name == prop.name);
+    return (
+      (foundIndex == -1) ||
+      (this.workpackTemplate.properties[foundIndex].custom != prop.custom) ||
+      (this.workpackTemplate.properties[foundIndex].max != prop.max)  ||
+      (this.workpackTemplate.properties[foundIndex].min != prop.min)  ||
+      (this.workpackTemplate.properties[foundIndex].name != prop.name)  ||
+      (this.workpackTemplate.properties[foundIndex].possibleValues != prop.possibleValues) ||
+      (this.workpackTemplate.properties[foundIndex].sortIndex != prop.sortIndex) ||
+      (this.workpackTemplate.properties[foundIndex].type != prop.type) ||
+      (this.workpackTemplate.properties[foundIndex].using != prop.using) ||
+      (this.workpackTemplate.properties[foundIndex].value != prop.value) ||
+      (this.workpackTemplate.properties[foundIndex].label != prop.label) ||
+      (this.workpackTemplate.properties[foundIndex].rows != prop.rows) ||
+      (this.workpackTemplate.properties[foundIndex].fullLine != prop.fullLine)
+    );
+  }
+
+  //Start - Save Button Interaction
   ShowSaveButton(){
     this.SaveButtonBottomPosition = "50px";
     this.HideMessage();
@@ -177,6 +210,7 @@ export class WorkpackTemplateComponent implements OnInit {
   HideMessage(){
     this.MessageRightPosition = "-180px";
   }
+  //End - Save Button Interaction
 
   FlattenTree(root: WorkpackTemplate, ident: number){
     root.components.forEach(template => {
@@ -218,14 +252,16 @@ export class WorkpackTemplateComponent implements OnInit {
       type:String;
       target: {source: String, set: String, icon: String};
     }[] = [
-      {'type':'Number',     'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-hashtag'}},
+      {'type':'Number',     'target':{'source': 'font',    'set': '',   'icon': '.0'}},
       {'type':'Text',       'target':{'source': 'font',    'set': '',   'icon': 'T'}},
-      {'type':'Cost',       'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-dollar-sign'}},
+      {'type':'Currency',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-dollar-sign'}},
       {'type':'Measure',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-tachometer-alt'}},
-      {'type':'TextList',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-list'}},
-      {'type':'Address',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-envelope'}},
+      {'type':'TextArea',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-align-justify'}},
+      {'type':'Integer',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-hashtag'}},
       {'type':'Email',      'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-at'}},
       {'type':'NumberList', 'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-sort-numeric-down'}},
+      {'type':'Date',       'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-calendar'}},
+      {'type':'Selection',  'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-list-ul'}},
     ];
     let typeFound = logoHTMLMap.find(elem => elem.type == type);
     return (typeFound) ? typeFound.target : code4TypeNotFound;
@@ -237,69 +273,86 @@ export class WorkpackTemplateComponent implements OnInit {
       this.fb.group({
         toDelete: [false],
         editing: [true],
-        id: [""],
-        name: ["", Validators.required],
-        typeName: [type],
-        min: [""],
-        max: [""],
-        value: [""]
+        id: [''],
+        name: ['', Validators.required],
+        type: [type],
+        using: [true],
+        sortIndex: [''],
+        value: [''],
+        min: [''],
+        max: [''],
+        custom: [true],
+        possibleValues: [[]],
+        label: [''],
+        rows: [1],
+        fullLine: [false]
       })
     );
-
-
-
   }
 
   EditProperty(index) {
-    (this.formGroupWorkpackTemplate.get('properties') as FormArray)
+    (this.formGroupWorkpackTemplate.get("properties") as FormArray)
       .at(index)
       .get('editing')
       .setValue(true);
   }
 
   StopEditing(index) {
-    (this.formGroupWorkpackTemplate.get('properties') as FormArray)
+    (this.formGroupWorkpackTemplate.get("properties") as FormArray)
       .at(index)
       .get('editing')
       .setValue(false);
   }
 
-  DeleteProperty(index) {
+  ClosePropertiesPanel() {
+    (this.formGroupWorkpackTemplate.get("properties") as FormArray)
+      .controls
+      .forEach((propCtrl) => {
+        propCtrl.get('editing').setValue(false);
+      });
+    this.viewOptions.propertiesPanelOpenState = false;
+  }
 
-    let prop = (this.formGroupWorkpackTemplate.get('properties') as FormArray).at(index);
+  DeleteProperty(index, type) {
+    let props = (this.formGroupWorkpackTemplate.get("properties") as FormArray);
+    let prop = props.at(index);
 
-    if (prop.get('id').value != '') {
+    if (prop.value.id != '') {
       prop.get('toDelete').setValue(true);
     }
     else {
-      // control refers to your formarray
-      const control = <FormArray>this.formGroupWorkpackTemplate.controls['properties'];
       // remove the chosen row
-      control.removeAt(index);
+      props.removeAt(index);
     }
   }
 
-  SetTrimmedNameAndfullName(value: String){
-    this.workpackTemplate.name = this.useful.GetTrimmedName(value);
-    this.workpackTemplate.fullName = this.useful.GetfullName(this.workpackTemplate.name);
-  }
-
   onSubmit(){
-    this.workpackTemplate.name = this.formGroupWorkpackTemplate.value.name.trim();
-    this.workpackTemplate.fullName = this.formGroupWorkpackTemplate.value.fullName.trim();
-    this.formGroupWorkpackTemplate.get('properties').value.forEach(formProp => {
-      if(formProp.toDelete){
-        // ToDo: Delete the property
+    this.workpackTemplate.id = (this.workpackTemplate.id == 'new') ? '' : this.workpackTemplate.id;
+    this.workpackTemplate.name = this.formGroupWorkpackTemplate.get('name').value.trim();
+    while (this.workpackTemplate.properties.length > 0) {
+      this.workpackTemplate.properties.pop();
+    }
+    this.formGroupWorkpackTemplate.get('properties').value.forEach(property => {
+      console.log(property);
+      if(property.toDelete){
+        //this.workpackDataService.DeleteProperty(property.id);
       }
       else{
-        this.workpackTemplate.properties.push({
-          'id': formProp.id,
-          'max': formProp.max,
-          'min': formProp.min,
-          'value': formProp.value,
-          'name': formProp.name,
-          'typeName': formProp.typeName,
-        });
+        let newProperty = new PropertyProfile();
+        newProperty.id = (property.id == 'new') ? '' : property.id;
+        newProperty.custom = property.custom;
+        newProperty.max = property.max;
+        newProperty.min = property.min;
+        newProperty.name = property.name;
+        newProperty.possibleValues = property.possibleValues;
+        newProperty.sortIndex = property.sortIndex;
+        newProperty.type = property.type;
+        newProperty.using = property.using;
+        newProperty.value = property.value;
+        newProperty.label = property.label;
+        newProperty.rows = property.rows;
+        newProperty.fullLine = property.fullLine;
+        this.workpackTemplate.properties.push(newProperty);
       }
     });
 
@@ -319,6 +372,7 @@ export class WorkpackTemplateComponent implements OnInit {
         break;
       }
       case 'new2workpacktemplate': {
+        this.viewOptions = this.route.snapshot.data.workpacktemplate;
         this.subscriptions.push(
           this.workpackDataService.GetWorkpackTemplateById(this.viewOptions.arrIds[0])
           .subscribe(parentWPT => {

@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { Subscription, Observable } from 'rxjs';
 import { Office } from '../../model/office';
-import { Useful } from '../../useful';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
@@ -20,7 +19,6 @@ export class OfficeAdminComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private breadcrumbService: BreadcrumbService,
-    private useful: Useful,
     private router: Router) { }
 
   nameFormControl = new FormControl('', [
@@ -38,7 +36,9 @@ export class OfficeAdminComponent implements OnInit {
   breadcrumbTrail: Breadcrumb[] = [];
   schemaTemplatesPanelOpenState: Boolean = true;
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
     this.action = this.route.snapshot.paramMap.get('action');
     this.officeId = this.route.snapshot.paramMap.get('id');
@@ -47,6 +47,7 @@ export class OfficeAdminComponent implements OnInit {
         this.office = o;
       })
     );
+    //Update path traveled by the user
     this.subscriptions.push(
       this.breadcrumbService.breadcrumbTrail.subscribe(trail => {
         this.breadcrumbTrail = trail;
@@ -54,6 +55,11 @@ export class OfficeAdminComponent implements OnInit {
     );
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Schema Template
+  //
+  //Identification Parameter: id
+  //
   DeleteSchemaTemplate(id: string) {
     this.schemaDataService.GetSchemaTemplateById(id).subscribe(schemaTemplate2delete => {
       if (schemaTemplate2delete.workpackTemplates.length > 0) {
@@ -69,6 +75,9 @@ export class OfficeAdminComponent implements OnInit {
     });
   }
 
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();

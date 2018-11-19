@@ -8,9 +8,10 @@
 
     <!-- Edit/View Panel -->
     <mat-expansion-panel 
+      class="property-panel"
       [expanded]="viewOptions.propertiesPanelOpenState"
       (opened)="viewOptions.propertiesPanelOpenState = true"
-      (closed)="viewOptions.propertiesPanelOpenState = false">
+      (closed)="ClosePropertiesPanel()">
       <mat-expansion-panel-header>
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
@@ -20,106 +21,143 @@
         class="form-container">
         <mat-form-field>
           <input matInput
-            type="text"      
+            type="text"
+            md-maxlength=20    
             formControlName="name"
             placeholder={{translate.name|translate:use}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
-          <span translate>Name is</span> 
-          <strong translate>required</strong>
+          <span translate>Name must be from 3 to 20 characteres long</span> 
         </mat-error>
-        <mat-form-field>
-          <input matInput 
-            type="text" 
-            formControlName="fullName"
-            placeholder={{translate.fullname|translate:use}}/>
-        </mat-form-field>
-        
         <div class="container-fluid cards" formArrayName="properties">
           <div class="row property-row">
-            <div [class]="(property.editing) ? 'property-card-box property-full-width' : 'property-card-box'"    
-              *ngFor="let property of formGroupWorkpackTemplate['controls'].properties['controls']; let i=index;">
+            <div [class]="(property.get('editing').value) ? 'property-card-box property-full-width' : 'property-card-box'"    
+              *ngFor="let property of formGroupWorkpackTemplate.controls.properties.controls; let i=index;">
               <mat-expansion-panel 
-                [formGroupName]="i"
+                [formGroup]="property"
                 class="property-card row"
                 [expanded]="property.get('editing').value"
-                (opened)="EditProperty(i)"
+                (opened)="EditProperty(i, property.get('type').value)"
                 (closed)="StopEditing(i)"
-                *ngIf="!property.get('toDelete').value">
+                *ngIf="!property.toDelete">
                 <mat-expansion-panel-header class="property-header">
                   <mat-panel-title class="property-name">
                     <div class="property-logo-mat-icon" 
-                        *ngIf="GetPropertyLogo(property.get('typeName').value).source == 'mat-icon'">
+                        *ngIf="GetPropertyLogo(property.get('type').value).source == 'mat-icon'">
                         <mat-icon 
-                          fontSet="{{GetPropertyLogo(property.get('typeName').value).set}}" 
-                          fontIcon="{{GetPropertyLogo(property.get('typeName').value).icon}}"></mat-icon>
+                          fontSet="{{GetPropertyLogo(property.get('type').value).set}}" 
+                          fontIcon="{{GetPropertyLogo(property.get('type').value).icon}}"></mat-icon>
                     </div>
                     <div class="property-logo-font" 
-                        *ngIf="GetPropertyLogo(property.get('typeName').value).source == 'font'">
-                      {{GetPropertyLogo(property.get('typeName').value).icon}}
+                        *ngIf="GetPropertyLogo(property.get('type').value).source == 'font'">
+                      {{GetPropertyLogo(property.get('type').value).icon}}
                     </div>
                     <div class="property-title">
                       {{property.get('name').value}}
                     </div>
+                    <mat-slide-toggle
+                      (click)="$event.stopPropagation()"
+                      [color]="color"
+                      class="toggle-property"
+                      formControlName="using"></mat-slide-toggle>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="card-content">
-                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
-                    <mat-form-field 
-                      class="form-field">
+                <div class="card-content"
+                      fxLayout="{{(property.value.editing) ? 'row wrap' : 'column wrap'}}"
+                      fxLayoutAlign="left"
+                      fxLayoutGap="10px">
+                  <div>
+                    <mat-form-field>
                       <input matInput
                         type="text"
                         placeholder={{translate.name|translate:use}}
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
-                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
-                    <mat-form-field 
-                      class="form-field">
+                  <div >
+                    <mat-form-field >
                       <input matInput
                         type="text"
-                        placeholder={{translate.minimum|translate:use}}
-                        formControlName="min"
-                        value=""/>
+                        placeholder={{translate.label|translate:use}}
+                        formControlName="label"/>
                     </mat-form-field>
                   </div>
-                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
-                    <mat-form-field 
-                      class="form-field">
+                  <div >
+                    <mat-form-field class="number-field">
                       <input matInput
-                        type="text" 
+                        type="number"
+                        placeholder={{translate.sortIndex|translate:use}}
+                        formControlName="sortIndex"/>
+                    </mat-form-field>
+                  </div>
+                  <div *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
+                    <mat-form-field class="number-field">
+                      <input matInput
+                        type="number"
+                        placeholder={{translate.minimum|translate:use}}
+                        formControlName="min"/>
+                    </mat-form-field>
+                  </div>
+                  <div *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
+                    <mat-form-field class="number-field">
+                      <input matInput
+                        type="number" 
                         placeholder={{translate.maximum|translate:use}}
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
-                  <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+                  <div 
+                    class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
+                    *ngIf="property.get('type').value == 'Selection'">
                     <mat-form-field 
                       class="form-field">
+                      <input matInput 
+                        type="text"
+                        placeholder="Possible values"
+                        formControlName="possibleValues"/>
+                      <mat-hint>Use comma to separate the values. Empty means any.</mat-hint>
+                    </mat-form-field>
+                  </div>
+                  <div >
+                    <mat-form-field >
                       <input matInput
                         type="text"
-                        placeholder={{translate.defaultvalue|translate:use}}
+                        placeholder={{translate.defaultValue|translate:use}}
                         formControlName="value"/>
                     </mat-form-field>
                   </div>
-                  <div class="delete-button"> <div>
+                  <div *ngIf="property.get('type').value == 'TextArea'">
+                    <mat-form-field class="number-field">
+                      <input matInput
+                        type="number"
+                        placeholder={{translate.rows|translate:use}}
+                        formControlName="value"/>
+                    </mat-form-field>
+                  </div>
+                  <div *ngIf="property.value.custom" class="delete-button"> 
                     <button mat-button 
                       (click)="DeleteProperty(i)">
                       <mat-icon fontSet="fas" fontIcon="fa-trash-alt"></mat-icon>
                     </button>
-                  </div></div>
+                  </div>
                 </div>
               </mat-expansion-panel>
             </div>
           </div>
         </div>
-        <button mat-raised-button class="add-property-button dropleft card-setting" id="dropdownAddPropertyButton" data-toggle="dropdown">
+
+        <!-- ADD PROPERTY BUTTON -->
+        <button mat-raised-button 
+                class="add-property-button dropleft card-setting" 
+                id="dropdownAddPropertyButton" 
+                data-toggle="dropdown">
           <span translate>Add Property</span>
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
           <div class="dropdown-menu" aria-labelledby="dropdownAddPropertyButton">
             <a *ngFor="let pType of propertyTypes"
                 class="dropdown-item"
-                (click)="AddProperty(pType.typeName)"
-                [innerHTML]="pType.typeName"
+                (click)="AddProperty(pType)"
+                [innerHTML]="pType"
                 translate></a>
           </div>
         </button>
@@ -132,8 +170,7 @@
                 <span translate>Save</span>
             </button>
           </div>
-        </div>        
-
+        </div>   
 
       </form>
     </mat-expansion-panel>

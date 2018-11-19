@@ -19,7 +19,7 @@
     "Reuse:" : "Reutilizar:",
     "property-template works!" : "Propriedades-modelo de trabalho!",
     "Name" : "Nome",
-    "Full name" : "Nome Curto",
+    "FullName" : "Nome Completo",
     "Address" : "Endereço",
     "Cost" : "Custo",
     "Measure" : "Medida",
@@ -29,10 +29,17 @@
     "StatusList" : "Lista de Status",
     "Text" : "Texto",
     "TextList" : "Lista de Texto",
+    "SortIndex" : "Índice de ordenação",
+    "Rows": "Linhas",
     "Minimum" : "Mínimo",
     "Maximum" : "Máximo",
-    "Default value" : "Valor padrão",
+    "DefaultValue" : "Valor padrão",
     "Saved successfully" : "Salvo com sucesso",
     "en" : "Inglês",
-    "pt-BR" : "Português BR"
+    "pt-BR" : "Português BR",
+    "My profile" : "Meu perfil",
+    "Account settings" : "Configurações da conta",
+    "Log out" : "Sair",
+    "English" : "Inglês",
+    "Português BR" : "Português BR"
 }
