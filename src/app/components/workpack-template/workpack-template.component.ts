@@ -147,7 +147,10 @@ export class WorkpackTemplateComponent implements OnInit {
             min: [property.min],
             max: [property.max],
             custom: [property.custom],
-            possibleValues: [property.possibleValues]
+            possibleValues: [property.possibleValues],
+            label: [property.label],
+            rows: [property.rows],
+            fullLine: [property.fullLine]
           })
         );
       });
@@ -183,7 +186,10 @@ export class WorkpackTemplateComponent implements OnInit {
       (this.workpackTemplate.properties[foundIndex].sortIndex != prop.sortIndex) ||
       (this.workpackTemplate.properties[foundIndex].type != prop.type) ||
       (this.workpackTemplate.properties[foundIndex].using != prop.using) ||
-      (this.workpackTemplate.properties[foundIndex].value != prop.value)
+      (this.workpackTemplate.properties[foundIndex].value != prop.value) ||
+      (this.workpackTemplate.properties[foundIndex].label != prop.label) ||
+      (this.workpackTemplate.properties[foundIndex].rows != prop.rows) ||
+      (this.workpackTemplate.properties[foundIndex].fullLine != prop.fullLine)
     );
   }
 
@@ -246,12 +252,12 @@ export class WorkpackTemplateComponent implements OnInit {
       type:String;
       target: {source: String, set: String, icon: String};
     }[] = [
-      {'type':'Number',     'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-hashtag'}},
+      {'type':'Number',     'target':{'source': 'font',    'set': '',   'icon': '.0'}},
       {'type':'Text',       'target':{'source': 'font',    'set': '',   'icon': 'T'}},
-      {'type':'Cost',       'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-dollar-sign'}},
+      {'type':'Currency',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-dollar-sign'}},
       {'type':'Measure',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-tachometer-alt'}},
-      {'type':'TextList',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-list'}},
-      {'type':'Address',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-envelope'}},
+      {'type':'TextArea',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-align-justify'}},
+      {'type':'Integer',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-hashtag'}},
       {'type':'Email',      'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-at'}},
       {'type':'NumberList', 'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-sort-numeric-down'}},
       {'type':'Date',       'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-calendar'}},
@@ -276,7 +282,10 @@ export class WorkpackTemplateComponent implements OnInit {
         min: [''],
         max: [''],
         custom: [true],
-        possibleValues: [[]]
+        possibleValues: [[]],
+        label: [''],
+        rows: [1],
+        fullLine: [false]
       })
     );
   }
@@ -288,24 +297,32 @@ export class WorkpackTemplateComponent implements OnInit {
       .setValue(true);
   }
 
-  StopEditing(index, type) {
+  StopEditing(index) {
     (this.formGroupWorkpackTemplate.get("properties") as FormArray)
       .at(index)
       .get('editing')
       .setValue(false);
   }
 
-  DeleteProperty(index, type) {
-    let item = (this.formGroupWorkpackTemplate.get("properties") as FormArray).at(index);
+  ClosePropertiesPanel() {
+    (this.formGroupWorkpackTemplate.get("properties") as FormArray)
+      .controls
+      .forEach((propCtrl) => {
+        propCtrl.get('editing').setValue(false);
+      });
+    this.viewOptions.propertiesPanelOpenState = false;
+  }
 
-    if (item.get('property').get('id').value != '') {
-      item.get('property').get('toDelete').setValue(true);
+  DeleteProperty(index, type) {
+    let props = (this.formGroupWorkpackTemplate.get("properties") as FormArray);
+    let prop = props.at(index);
+
+    if (prop.value.id != '') {
+      prop.get('toDelete').setValue(true);
     }
     else {
-      // control refers to your formarray
-      const control = <FormArray>this.formGroupWorkpackTemplate.controls['properties'];
       // remove the chosen row
-      control.removeAt(index);
+      props.removeAt(index);
     }
   }
 
@@ -318,7 +335,7 @@ export class WorkpackTemplateComponent implements OnInit {
     this.formGroupWorkpackTemplate.get('properties').value.forEach(property => {
       console.log(property);
       if(property.toDelete){
-        // this.propertyDataService.DeleteProperty(formProp.id);
+        //this.workpackDataService.DeleteProperty(property.id);
       }
       else{
         let newProperty = new PropertyProfile();
@@ -332,15 +349,15 @@ export class WorkpackTemplateComponent implements OnInit {
         newProperty.type = property.type;
         newProperty.using = property.using;
         newProperty.value = property.value;
+        newProperty.label = property.label;
+        newProperty.rows = property.rows;
+        newProperty.fullLine = property.fullLine;
         this.workpackTemplate.properties.push(newProperty);
       }
     });
 
     switch (this.viewOptions.action) {
       case 'new2schematemplate': {
-        while (this.schemaTemplate.workpackTemplates.length > 0){
-          this.schemaTemplate.workpackTemplates.pop();
-        }
         this.schemaTemplate.workpackTemplates.push(this.workpackTemplate);
         this.subscriptions.push(
           this.schemaDataService
@@ -355,12 +372,10 @@ export class WorkpackTemplateComponent implements OnInit {
         break;
       }
       case 'new2workpacktemplate': {
+        this.viewOptions = this.route.snapshot.data.workpacktemplate;
         this.subscriptions.push(
           this.workpackDataService.GetWorkpackTemplateById(this.viewOptions.arrIds[0])
           .subscribe(parentWPT => {
-            while (parentWPT.components.length > 0){
-              parentWPT.components.pop();
-            }
             parentWPT.components.push(this.workpackTemplate);
             this.subscriptions.push(
               this.workpackDataService

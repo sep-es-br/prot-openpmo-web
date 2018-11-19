@@ -1,8 +1,10 @@
 export class TranslateConstants {
     name: string = 'Name';
-    fullname: string = 'Full name';
+    label: string = 'Label';
+    fullName: string = 'FullName';
     minimum: string = 'Minimum';
     maximum: string = 'Maximum';
-    defaultvalue: string = 'Default value';
+    defaultValue: string = 'DefaultValue';
     sortIndex: string = 'SortIndex';
+    rows: string = 'Rows';
 }

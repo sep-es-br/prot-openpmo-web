@@ -104,7 +104,7 @@ export class WorkpackComponent implements OnInit {
   }
 
   //Load property form
-  LoadFormControls() {
+  LoadFormControls_() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.CleanPropertiesFormArray();
     this.workpack.properties
@@ -118,6 +118,27 @@ export class WorkpackComponent implements OnInit {
           name: [property.name],
           value: [property.value],
           profile: [property.profile]
+        })
+      );
+    });
+  }
+
+  //Load property form
+  LoadFormControls() {
+    this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
+    this.CleanPropertiesFormArray();
+    this.workpack.template.properties
+      .sort((a,b) => {
+        return (a.sortIndex < b.sortIndex) ? -1 : 1;
+      })
+      .forEach(property => {
+        let foundProperty = this.workpack.properties.find(p => (p.profile.id == property.id));
+      (this.formGroupWorkpack.get('properties') as FormArray).push(
+        this.fb.group({
+          id: [(foundProperty !== undefined) ? foundProperty.id : ''],
+          name: [property.name],
+          value: [(foundProperty !== undefined) ? foundProperty.value : ''],
+          profile: [property]
         })
       );
     });
