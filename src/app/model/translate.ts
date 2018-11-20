@@ -1,10 +1,15 @@
 export class TranslateConstants {
     name: string = 'Name';
-    fullname: string = 'Full name';
+    label: string = 'Label';
+    fullName: string = 'FullName';
     minimum: string = 'Minimum';
     maximum: string = 'Maximum';
-    defaultvalue: string = 'Default value';
+    defaultValue: string = 'DefaultValue';
     sortIndex: string = 'SortIndex';
+<<<<<<< HEAD
     exclusionschema: string = 'Sorry, you can not delete this schema because it is not empty.';
     exclusionsureschema: string = 'Are you sure to delete';
+=======
+    rows: string = 'Rows';
+>>>>>>> daab381f012332d13a2901d77cf6fd9860df00db
 }

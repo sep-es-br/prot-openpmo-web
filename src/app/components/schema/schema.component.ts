@@ -145,10 +145,6 @@ export class SchemaComponent implements OnInit {
         this.officeDataService
         .UpdateOffice(this.office)
         .subscribe(
-          ret => {
-            this.router.navigate(['./office/edit/' + this.office.id]);
-          },
-          error => Observable.throw(error),
           () => {
             this.router.navigate(['./office/edit/' + this.office.id]); 
           }

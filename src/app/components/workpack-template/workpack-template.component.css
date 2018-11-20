@@ -96,6 +96,10 @@
     width: 100%;
 }
 
+.number-field {
+    width: 50px!important;
+}
+
 .minimum-width {
     display: flex;
     width: 80px!important;
@@ -110,4 +114,8 @@
     float: right;
     margin-left: 20px;
     margin-top: 6px;
+}
+
+.property-panel{
+    overflow: visible;
 }

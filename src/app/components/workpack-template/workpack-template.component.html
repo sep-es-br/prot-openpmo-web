@@ -8,9 +8,10 @@
 
     <!-- Edit/View Panel -->
     <mat-expansion-panel 
+      class="property-panel"
       [expanded]="viewOptions.propertiesPanelOpenState"
       (opened)="viewOptions.propertiesPanelOpenState = true"
-      (closed)="viewOptions.propertiesPanelOpenState = false">
+      (closed)="ClosePropertiesPanel()">
       <mat-expansion-panel-header>
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
@@ -20,13 +21,13 @@
         class="form-container">
         <mat-form-field>
           <input matInput
-            type="text"      
+            type="text"
+            md-maxlength=20    
             formControlName="name"
             placeholder={{translate.name|translate:use}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
-          <span translate>Name is</span> 
-          <strong translate> required</strong>
+          <span translate>Name must be from 3 to 20 characteres long</span> 
         </mat-error>
         <div class="container-fluid cards" formArrayName="properties">
           <div class="row property-row">
@@ -35,13 +36,14 @@
               <!-- Properties -->
               <app-wpt-properties 
               [class]="(property.get('editing').value) ? 'property-card-box property-full-width' : 'property-card-box'"
-              *ngFor="let property of properties; let i=index;">
+              *ngFor="let property of formGroupWorkpackTemplate.controls.properties.controls; let i=index;">
               </app-wpt-properties>
 
             </div>
           </div>
         </div>
-        
+
+        <!-- ADD PROPERTY BUTTON -->
         <button mat-raised-button 
                 class="add-property-button dropleft card-setting" 
                 id="dropdownAddPropertyButton" 
@@ -65,8 +67,7 @@
                 <span translate>Save</span>
             </button>
           </div>
-        </div>        
-
+        </div>   
 
       </form>
     </mat-expansion-panel>
