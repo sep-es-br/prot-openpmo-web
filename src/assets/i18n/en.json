@@ -40,5 +40,7 @@
     "Account settings" : "Account settings",
     "Log out" : "Log out",
     "English" : "English",
-    "Português BR" : "Português BR"
+    "Português BR" : "Português BR",
+    "Sorry, you can not delete this schema because it is not empty." : "Sorry, you can not delete this schema because it is not empty.",
+    "Are you sure to delete" : "Are you sure to delete "
 }

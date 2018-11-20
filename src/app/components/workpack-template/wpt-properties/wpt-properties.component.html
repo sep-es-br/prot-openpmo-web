@@ -1,0 +1,119 @@
+<mat-expansion-panel 
+  [formGroup]="property"
+  class="property-card row"
+  [expanded]="property.get('editing').value"
+  (opened)="EditProperty(i, property.get('type').value)"
+  (closed)="StopEditing(i)"
+  *ngIf="!property.toDelete">
+
+  <mat-expansion-panel-header class="property-header">
+    <mat-panel-title class="property-name">
+      <div class="property-logo-mat-icon" 
+           *ngIf="GetPropertyLogo(property.get('type').value).source == 'mat-icon'">
+          <mat-icon fontSet="{{GetPropertyLogo(property.get('type').value).set}}" 
+                    fontIcon="{{GetPropertyLogo(property.get('type').value).icon}}">
+          </mat-icon>
+      </div>
+      <div class="property-logo-font" 
+           *ngIf="GetPropertyLogo(property.get('type').value).source == 'font'">
+        {{GetPropertyLogo(property.get('type').value).icon}}
+      </div>
+      <div class="property-title">
+        {{property.get('name').value}}
+      </div>
+      <mat-slide-toggle
+        (click)="$event.stopPropagation()"
+        [color]="color"
+        class="toggle-property"
+        formControlName="using">
+      </mat-slide-toggle>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <!-- Name -->
+  <div class="card-content">
+    <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+      <mat-form-field 
+        class="form-field">
+        <input 
+          matInput
+          type="text"
+          placeholder={{translate.name|translate:use}}
+          formControlName="name"/>
+      </mat-form-field>
+    </div>
+
+    <!-- Sort Index -->
+    <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+      <mat-form-field 
+        class="form-field">
+        <input 
+          matInput
+            type="number"
+            placeholder={{translate.sortIndex|translate:use}}
+            formControlName="sortIndex"/>
+      </mat-form-field>
+    </div>
+
+    <!-- Minimum -->
+    <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
+         *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
+      <mat-form-field 
+        class="form-field">
+        <input 
+          matInput
+          type="number"
+          placeholder={{translate.minimum|translate:use}}
+          formControlName="min"/>
+      </mat-form-field>
+    </div>
+
+    <!-- Maximum -->
+    <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
+         *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
+      <mat-form-field 
+        class="form-field">
+        <input 
+          matInput
+          type="number" 
+          placeholder={{translate.maximum|translate:use}}
+          formControlName="max"/>
+      </mat-form-field>
+    </div>
+
+    <!-- Possible Values -->
+    <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
+         *ngIf="property.get('type').value == 'Selection'">
+      <mat-form-field 
+        class="form-field">
+        <input 
+          matInput 
+          type="text"
+          placeholder="Possible values"
+          formControlName="possibleValues"/>
+        <mat-hint>Use comma to separate the values. Empty means any.</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!-- Default Value -->
+    <div class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}">
+      <mat-form-field 
+        class="form-field">
+        <input 
+          matInput
+          type="text"
+          placeholder={{translate.defaultvalue|translate:use}}
+          formControlName="value"/>
+      </mat-form-field>
+    </div>
+
+    <div class="delete-button"> 
+      <div>
+        <button mat-button (click)="DeleteProperty(i)">
+          <mat-icon fontSet="fas" fontIcon="fa-trash-alt"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+</mat-expansion-panel>

@@ -40,5 +40,7 @@
     "Account settings" : "Configurações da conta",
     "Log out" : "Sair",
     "English" : "Inglês",
-    "Português BR" : "Português BR"
+    "Português BR" : "Português BR",
+    "Sorry, you can not delete this schema because it is not empty." : "Desculpe, você não pode excluir um esquema não vazio.",
+    "Are you sure to delete" : "Você tem certeza que quer deletar "
 }
