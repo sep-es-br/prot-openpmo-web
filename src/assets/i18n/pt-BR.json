@@ -20,15 +20,13 @@
     "property-template works!" : "Propriedades-modelo de trabalho!",
     "Name" : "Nome",
     "FullName" : "Nome Completo",
-    "Address" : "Endereço",
-    "Cost" : "Custo",
-    "Measure" : "Medida",
+    "Currency" : "Moeda",
+    "Date" : "Data",
+    "Integer" : "Inteiro",
     "Number" : "Número",
-    "NumberList" : "Lista Numérica",
-    "Status" : "Status",
-    "StatusList" : "Lista de Status",
+    "Selection" : "Seleção",
     "Text" : "Texto",
-    "TextList" : "Lista de Texto",
+    "TextArea" : "Área de Texto",
     "SortIndex" : "Índice de ordenação",
     "Rows": "Linhas",
     "Minimum" : "Mínimo",
@@ -43,5 +41,6 @@
     "English" : "Inglês",
     "Português BR" : "Português BR",
     "Sorry, you can not delete this schema because it is not empty." : "Desculpe, você não pode excluir um esquema não vazio.",
-    "Are you sure to delete" : "Você tem certeza que quer deletar "
+    "Are you sure to delete" : "Você tem certeza que quer deletar ",
+    "Name must be from 3 to 20 characteres long" : "O nome deve conter entre 3 a 20 caracteres"
 }

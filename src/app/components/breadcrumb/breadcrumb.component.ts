@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter  } from '@angular/core';
 import { Breadcrumb, BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { map } from 'rxjs/operators';
 
@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.css']
 })
+
 export class BreadcrumbComponent implements OnInit {
 
   breadcrumbTrail: Breadcrumb[] = [];

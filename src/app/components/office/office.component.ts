@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Office } from '../../model/office';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
@@ -7,6 +7,8 @@ import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcr
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { TranslateConstants } from '../../model/translate';
+import { AppComponent } from '../../app.component';
+
 
 @Component({
   selector: 'app-office',
@@ -131,6 +133,7 @@ export class OfficeComponent implements OnInit {
     );
   }
 
+  @Input() lang;
   ////////////////////////////////////////////////////////////////////////
   //EXCLUSION MODULE - Schema
   //

@@ -10,9 +10,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 
 export class WptPropertiesComponent implements OnInit {
-  constructor(){}
-  
+    
   // @Input() properties:  any[];
+
+  constructor(){}
   
   ngOnInit() {}
   

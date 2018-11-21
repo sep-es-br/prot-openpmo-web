@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent implements OnInit {
   title = 'openpmo-web';
   lang : string = "en";
+  name2:string;
 
   constructor(private translate: TranslateService){
     translate.setDefaultLang('en');
@@ -33,12 +34,15 @@ export class AppComponent implements OnInit {
   //    Text html or ngFor:        Example: <span translate> text </span>
   //    By the translation model:  {{ translate.<id> | translate:use }}  -  import { TranslateConstants } from 'app/model/translate';
   //
+  
   switchLanguage(language: string) {
     this.translate.use(language);
     this.lang = language;    
   }
-
+ 
 }
+
+
 
  
 
