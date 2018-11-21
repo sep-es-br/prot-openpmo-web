@@ -6,6 +6,8 @@ import { Office } from '../../model/office';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-office-admin',
@@ -19,7 +21,8 @@ export class OfficeAdminComponent implements OnInit {
     private officeDataService: OfficeDataService,
     private schemaDataService: SchemaDataService,
     private breadcrumbService: BreadcrumbService,
-    private router: Router) { }
+    private router: Router,
+    public dialog: MatDialog) { }
 
   nameFormControl = new FormControl('', [
     Validators.required
@@ -63,13 +66,38 @@ export class OfficeAdminComponent implements OnInit {
   DeleteSchemaTemplate(id: string) {
     this.schemaDataService.GetSchemaTemplateById(id).subscribe(schemaTemplate2delete => {
       if (schemaTemplate2delete.workpackTemplates.length > 0) {
-        alert("Sorry, you can not delete this schema because it is not empty.")
-      }
-      else if(confirm("Are you sure to delete " + schemaTemplate2delete.name + "?")) {
-        this.schemaDataService.DeleteSchemaTemplate(id).subscribe(
-          () => {
-            this.officeDataService.QueryOfficeById(this.office.id).subscribe(res => res);
+        this.dialog.open(MessageDialogComponent, { 
+          data: {
+            title: "Warning",
+            message: "Sorry, you can not delete a plan structure that contains nested workpack models.",
+            action: "OK"
           }
+        });
+      }
+      else {
+        this.subscriptions.push(
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Attention",
+              message: "Are you sure to delete " + schemaTemplate2delete.name + "?",
+              action: "YES_NO"
+            }
+          })
+          .afterClosed()
+          .subscribe(res => {
+            if (res == "YES") {
+              this.subscriptions.push(
+                this.schemaDataService.DeleteSchemaTemplate(id).subscribe(
+                  () => {
+                    this.subscriptions
+                    .push(
+                      this.officeDataService.QueryOfficeById(this.office.id)
+                      .subscribe(o => o));
+                  }
+                )                      
+              );
+            }
+          })
         );
       }
     });

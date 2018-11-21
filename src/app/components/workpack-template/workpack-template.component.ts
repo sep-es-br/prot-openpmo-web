@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Office } from '../../model/office';
 import { SchemaTemplate } from '../../model/schema-template';
 import { WorkpackTemplate } from '../../model/workpack-template';
@@ -12,6 +12,8 @@ import { ViewOptions } from '../../model/view-options';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { PropertyProfile } from '../../model/property-profile';
 import { TranslateConstants } from '../../model/translate';
+import { MessageDialogComponent, DialogData } from '../message-dialog/message-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-workpack-template',
@@ -32,8 +34,8 @@ export class WorkpackTemplateComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private router: Router,
     private crumbService: BreadcrumbService,
-    private fb: FormBuilder) {
-    }
+    private fb: FormBuilder,
+    public dialog: MatDialog) {}
 
   //Constants for translate
   translate = new TranslateConstants();
@@ -334,6 +336,7 @@ export class WorkpackTemplateComponent implements OnInit {
     }
     this.formGroupWorkpackTemplate.get('properties').value.forEach(property => {
       console.log(property);
+      property.possibleValues = property.possibleValues.toString().split(',');
       if(property.toDelete){
         //this.workpackDataService.DeleteProperty(property.id);
       }
@@ -412,23 +415,42 @@ export class WorkpackTemplateComponent implements OnInit {
   }
 
   DeleteWorkpackTemplate(id: string) {
-    this.subscriptions
-    .push(
-      this.workpackDataService
-      .GetWorkpackTemplateById(id)
+    this.subscriptions.push(
+      this.workpackDataService.GetWorkpackTemplateById(id)
       .subscribe(workpackTemplate2delete => {
         if (workpackTemplate2delete.components.length > 0) {
-          alert("Sorry, you can not delete " + 
-                workpackTemplate2delete.name + 
-                " because it contains workpacks.")
-        }
-        else if(confirm("Are you sure you want to delete " + workpackTemplate2delete.name + "?")) {
-          this.workpackDataService.DeleteWorkpackTemplate(id).subscribe(
-            () => {
-              this.subscriptions
-              .push(this.workpackDataService.QueryWorkpackTemplateById(this.workpackTemplate.id)
-                .subscribe(wpt => wpt));
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Warning",
+              message: "Sorry, you can not delete a workpack model that contains nested workpack models.",
+              action: "OK"
             }
+          });
+        }
+        else {
+          this.subscriptions.push(
+            this.dialog.open(MessageDialogComponent, { 
+              data: {
+                title: "Attention",
+                message: "Are you sure you want to delete " + workpackTemplate2delete.name + "?",
+                action: "YES_NO"
+              }
+            })
+            .afterClosed()
+            .subscribe(res => {
+              if (res == "YES") {
+                this.subscriptions.push(
+                  this.workpackDataService.DeleteWorkpackTemplate(id).subscribe(
+                    () => {
+                      this.subscriptions
+                      .push(
+                        this.workpackDataService.QueryWorkpackTemplateById(this.workpackTemplate.id)
+                        .subscribe(wpt => wpt));
+                    }
+                  )                      
+                );
+              }
+            })
           );
         }
       })

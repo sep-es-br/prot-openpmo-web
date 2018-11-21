@@ -10,6 +10,8 @@ import { SchemaDataService } from '../../services/data/schema/schema-data.servic
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { TranslateConstants } from '../../model/translate';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-schema',
@@ -24,7 +26,9 @@ export class SchemaComponent implements OnInit {
     private schemaDataService: SchemaDataService,
     private workpackDataService: WorkpackDataService,
     private router: Router,
-    private crumbService: BreadcrumbService, private fb: FormBuilder ) {}
+    private crumbService: BreadcrumbService, 
+    private fb: FormBuilder,
+    public dialog: MatDialog ) {}
 
   //Constants for translate
   translate = new TranslateConstants();
@@ -182,17 +186,38 @@ export class SchemaComponent implements OnInit {
       .GetWorkpackById(id)
       .subscribe(workpack2delete => {
         if (workpack2delete.components.length > 0) {
-          alert("Sorry, you can not delete this workpack because it is not empty.")
-        }
-        else if(confirm("Are you sure to delete " + workpack2delete.name + "?")) {
-          this.workpackDataService.DeleteWorkpack(id).subscribe(
-            () => {
-              this.subscriptions
-              .push(
-                this.schemaDataService.QuerySchemaById(this.schema.id)
-                .subscribe(res => res)
-              );
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Warning",
+              message: "Sorry, you can not delete a workpack that contains nested workpacks.",
+              action: "OK"
             }
+          });
+        }
+        else {
+          this.subscriptions.push(
+            this.dialog.open(MessageDialogComponent, { 
+              data: {
+                title: "Attention",
+                message: "Are you sure you want to delete " + workpack2delete.name + "?",
+                action: "YES_NO"
+              }
+            })
+            .afterClosed()
+            .subscribe(res => {
+              if (res == "YES") {
+                this.subscriptions.push(
+                  this.workpackDataService.DeleteWorkpack(id).subscribe(
+                    () => {
+                      this.subscriptions
+                      .push(
+                        this.schemaDataService.QuerySchemaById(this.schema.id)
+                        .subscribe(wpt => wpt));
+                    }
+                  )                      
+                );
+              }
+            })
           );
         }
       })

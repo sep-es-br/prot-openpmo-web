@@ -14,10 +14,6 @@
     margin-top: 10px;
 }
 
-.property-card-box {
-    padding: 5px;
-}
-
 .property-full-width {
     width: 100%;
 }
@@ -103,11 +99,6 @@
 .minimum-width {
     display: flex;
     width: 80px!important;
-}
-
-.property-row {
-    margin-right: -20px;
-    margin-left: -20px;
 }
 
 .toggle-property{

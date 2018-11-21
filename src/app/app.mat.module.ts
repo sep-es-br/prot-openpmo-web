@@ -42,7 +42,7 @@ import 'hammerjs';
     MatCardModule,
     MatMenuModule,
     MatExpansionModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   exports: [ 
     MatFormFieldModule,
@@ -63,12 +63,13 @@ import 'hammerjs';
     MatCardModule,
     MatMenuModule,
     MatExpansionModule,
-    MatProgressBarModule  ]
+    MatProgressBarModule,
+  ]
 })
 
 export class AppMatModule {
   constructor(
-    public matIconRegistry: MatIconRegistry) {
+    public matIconRegistry: MatIconRegistry ) {
     matIconRegistry.registerFontClassAlias('fontawesome', 'fas');
   }
 }

@@ -14,6 +14,10 @@ import { SchemaDataService } from '../../services/data/schema/schema-data.servic
 import { TranslateConstants } from '../../model/translate';
 import { PropertyProfile } from 'src/app/model/property-profile';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { isNullOrUndefined } from 'util';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { Property } from 'src/app/model/property';
 
 @Component({
   selector: 'app-workpack',
@@ -29,7 +33,8 @@ export class WorkpackComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private router: Router, 
     private crumbService: BreadcrumbService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    public dialog: MatDialog) {}
 
   //Constants for translate
   translate = new TranslateConstants();
@@ -104,26 +109,6 @@ export class WorkpackComponent implements OnInit {
   }
 
   //Load property form
-  LoadFormControls_() {
-    this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
-    this.CleanPropertiesFormArray();
-    this.workpack.properties
-      .sort((a,b) => {
-        return (a.profile.sortIndex < b.profile.sortIndex) ? -1 : 1;
-      })
-      .forEach(property => {
-      (this.formGroupWorkpack.get('properties') as FormArray).push(
-        this.fb.group({
-          id: [property.id],
-          name: [property.name],
-          value: [property.value],
-          profile: [property.profile]
-        })
-      );
-    });
-  }
-
-  //Load property form
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.CleanPropertiesFormArray();
@@ -144,12 +129,24 @@ export class WorkpackComponent implements OnInit {
     });
   }
 
+  ConvertToNumber(val: String): Number {
+    let num = Number(val);
+    return (num == NaN) ? 0 : num;
+  }
+
   //Identify changes made by the user
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
+    if (val.properties.length != this.workpack.properties.length) return true;
     let changed = false;
-    val.properties.forEach((prop, i) => {
-      if (prop.value != this.workpack.properties[i].value) changed = true;
+    val.properties.forEach((cntrlProp) => {
+      let propIndex = this.workpack.properties.findIndex(p => (p.id == cntrlProp.id));
+      if (propIndex == -1) {
+        changed = true;
+      }
+      else if (cntrlProp.value != this.workpack.properties[propIndex].value) {
+        changed = true;;
+      }
     });
     return changed;
   }
@@ -183,8 +180,19 @@ export class WorkpackComponent implements OnInit {
     this.workpack.template = this.workpackTemplate;
     this.formGroupWorkpack.value.properties.forEach(prop => {
       let property = this.workpack.properties.find(p => (p.profile.id == prop.profile.id));
-      property.value = prop.value;
-      property.name = property.profile.name;
+      if (isNullOrUndefined(property)) {
+        property = {
+          id: '',
+          name: prop.name,
+          value: prop.value,
+          profile: prop.profile
+        };
+        this.workpack.properties.push(property)
+      }
+      else {
+        property.value = prop.value;
+        property.name = property.profile.name;
+      }
     });
     
     switch (this.viewOptions.action) {
@@ -266,15 +274,38 @@ export class WorkpackComponent implements OnInit {
       .GetWorkpackById(id)
       .subscribe(workpack2delete => {
         if (workpack2delete.components.length > 0) {
-          alert("Sorry, you can not delete " + workpack2delete.name + " because it is not empty.")
-        }
-        else if(confirm("Are you sure you want to delete " + workpack2delete.name + "?")) {
-          this.workpackDataService.DeleteWorkpack(id).subscribe(
-            () => {
-              this.subscriptions
-              .push(this.workpackDataService.QueryWorkpackById(this.workpack.id)
-                .subscribe(wp => wp));
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Warning",
+              message: "Sorry, you can not delete a workpack that contains nested workpacks.",
+              action: "OK"
             }
+          });
+        }
+        else {
+          this.subscriptions.push(
+            this.dialog.open(MessageDialogComponent, { 
+              data: {
+                title: "Attention",
+                message: "Are you sure you want to delete " + workpack2delete.name + "?",
+                action: "YES_NO"
+              }
+            })
+            .afterClosed()
+            .subscribe(res => {
+              if (res == "YES") {
+                this.subscriptions.push(
+                  this.workpackDataService.DeleteWorkpack(id).subscribe(
+                    () => {
+                      this.subscriptions
+                      .push(
+                        this.workpackDataService.QueryWorkpackById(this.workpack.id)
+                        .subscribe(wpt => wpt));
+                    }
+                  )                      
+                );
+              }
+            })
           );
         }
       })

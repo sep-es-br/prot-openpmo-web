@@ -9,6 +9,8 @@ import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SchemaDataService } from '../../services/data/schema/schema-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { TranslateConstants } from '../../model/translate';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-schema-template',
@@ -24,7 +26,8 @@ export class SchemaTemplateComponent implements OnInit {
     private workpackDataService: WorkpackDataService,
     private router: Router,
     private crumbService: BreadcrumbService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    public dialog: MatDialog) {}
 
   //Constants for translate
   translate = new TranslateConstants();
@@ -166,14 +169,40 @@ export class SchemaTemplateComponent implements OnInit {
       .GetWorkpackTemplateById(id)
       .subscribe(workpackTemplate2delete => {
         if (workpackTemplate2delete.components.length > 0) {
-          alert("Sorry, you can not delete " + workpackTemplate2delete.name + " because it is not empty.")
-        }
-        else if(confirm("Are you sure to delete " + workpackTemplate2delete.name + "?")) {
-          this.workpackDataService.DeleteWorkpackTemplate(id).subscribe(
-            () => {
-              this.schemaDataService.QuerySchemaTemplateById(this.schemaTemplate.id).subscribe(res => res);
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Warning",
+              message: "Sorry, you can not delete a workpack model that contains nested workpack models.",
+              action: "OK"
             }
+          });
+        }
+        else {
+          this.subscriptions.push(
+            this.dialog.open(MessageDialogComponent, { 
+              data: {
+                title: "Attention",
+                message: "Are you sure you want to delete " + workpackTemplate2delete.name + "?",
+                action: "YES_NO"
+              }
+            })
+            .afterClosed()
+            .subscribe(res => {
+              if (res == "YES") {
+                this.subscriptions.push(
+                  this.workpackDataService.DeleteWorkpackTemplate(id).subscribe(
+                    () => {
+                      this.subscriptions
+                      .push(
+                        this.schemaDataService.QuerySchemaTemplateById(this.schemaTemplate.id)
+                        .subscribe(st => st));
+                    }
+                  )                      
+                );
+              }
+            })
           );
+
         }
       })
     );

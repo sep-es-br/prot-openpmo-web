@@ -29,13 +29,13 @@
         <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
           <span translate>Name must be from 3 to 20 characteres long</span> 
         </mat-error>
-        <div class="container-fluid cards" formArrayName="properties">
-          <div class="row property-row">
-            <div [class]="(property.get('editing').value) ? 'property-card-box property-full-width' : 'property-card-box'"    
+        <div class="containerX" formArrayName="properties">
+          <div class="box" fxflex fxlayout="row">
+            <div [class]="(property.get('editing').value) ? 'property-profile-card-box property-full-width' : 'property-profile-card-box'"    
               *ngFor="let property of formGroupWorkpackTemplate.controls.properties.controls; let i=index;">
-              <mat-expansion-panel 
+              <mat-expansion-panel  fxflex
                 [formGroup]="property"
-                class="property-card row"
+                class="property-card"
                 [expanded]="property.get('editing').value"
                 (opened)="EditProperty(i, property.get('type').value)"
                 (closed)="StopEditing(i)"
@@ -65,7 +65,9 @@
                 <div class="card-content"
                       fxLayout="{{(property.value.editing) ? 'row wrap' : 'column wrap'}}"
                       fxLayoutAlign="left"
-                      fxLayoutGap="10px">
+                      fxLayoutGap="20px">
+                  
+                  <!-- Name -->
                   <div>
                     <mat-form-field>
                       <input matInput
@@ -74,6 +76,8 @@
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
+
+                  <!-- Label -->
                   <div >
                     <mat-form-field >
                       <input matInput
@@ -82,6 +86,8 @@
                         formControlName="label"/>
                     </mat-form-field>
                   </div>
+
+                  <!-- Sort index -->
                   <div >
                     <mat-form-field class="number-field">
                       <input matInput
@@ -90,6 +96,8 @@
                         formControlName="sortIndex"/>
                     </mat-form-field>
                   </div>
+
+                 <!-- Minimum -->
                   <div *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
                     <mat-form-field class="number-field">
                       <input matInput
@@ -98,6 +106,8 @@
                         formControlName="min"/>
                     </mat-form-field>
                   </div>
+
+                 <!-- Maximum-->
                   <div *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
                     <mat-form-field class="number-field">
                       <input matInput
@@ -106,6 +116,8 @@
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
+
+                 <!-- Possible values -->
                   <div 
                     class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
                     *ngIf="property.get('type').value == 'Selection'">
@@ -118,7 +130,9 @@
                       <mat-hint>Use comma to separate the values. Empty means any.</mat-hint>
                     </mat-form-field>
                   </div>
-                  <div >
+
+                 <!-- Value -->
+                 <div>
                     <mat-form-field >
                       <input matInput
                         type="text"
@@ -126,19 +140,22 @@
                         formControlName="value"/>
                     </mat-form-field>
                   </div>
+
+                 <!-- Rows -->
                   <div *ngIf="property.get('type').value == 'TextArea'">
                     <mat-form-field class="number-field">
                       <input matInput
-                        type="number"
+                        type="number" step="any"
                         placeholder={{translate.rows|translate:use}}
-                        formControlName="value"/>
+                        formControlName="rows"/>
                     </mat-form-field>
                   </div>
-                  <div *ngIf="property.value.custom" class="delete-button"> 
-                    <button mat-button 
-                      (click)="DeleteProperty(i)">
-                      <mat-icon fontSet="fas" fontIcon="fa-trash-alt"></mat-icon>
-                    </button>
+
+                 <!-- Full Line -->
+                  <div class="full-line-checkbox">
+                    <mat-checkbox
+                      color="primary"
+                      formControlName="fullLine">Full line</mat-checkbox>
                   </div>
                 </div>
               </mat-expansion-panel>

@@ -265,3 +265,39 @@ button, a, div {
     top: 60px;
 }
 
+.property-container {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.property-profile-row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.property-row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.property-profile-card-box {
+    padding: 5px;
+    float: left;
+}
+
+.property-card-box {
+    padding: 5px;
+    float: left;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-line-checkbox {
+    margin-top: 20px;
+}
+
+.full-line-checkbox div {
+    margin-right: 3px;
+}

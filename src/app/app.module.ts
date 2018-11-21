@@ -33,6 +33,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { CommonModule } from '@angular/common';
+import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
 
 @NgModule({
   declarations: [
@@ -46,8 +48,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     WorkpackTemplateComponent,
     BreadcrumbComponent,
     SanitizeHtmlPipe,
-    ProgressComponent
+    ProgressComponent,
+    MessageDialogComponent
   ],
+  entryComponents: [MessageDialogComponent],
   imports: [
     BrowserModule,
     FlexLayoutModule,
@@ -56,6 +60,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
     NgPipesModule,
     TranslateModule.forRoot({
       loader: {
