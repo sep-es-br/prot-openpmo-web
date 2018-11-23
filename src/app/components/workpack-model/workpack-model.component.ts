@@ -159,7 +159,6 @@ export class WorkpackModelComponent implements OnInit {
       });
 
     }
-    console.log('this.formGroupWorkpackModel', this.formGroupWorkpackModel);
   }
 
 
@@ -337,7 +336,6 @@ export class WorkpackModelComponent implements OnInit {
       this.workpackModel.propertyProfiles.pop();
     }
     this.formGroupWorkpackModel.get('propertyProfiles').value.forEach(pProfile => {
-      console.log(pProfile);
       pProfile.possibleValues = pProfile.possibleValues.toString().split(',');
       
       let newPropertyProfile = new PropertyProfile();
