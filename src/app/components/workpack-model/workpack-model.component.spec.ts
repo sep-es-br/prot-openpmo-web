@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkpackTemplateComponent } from './workpack-template.component';
+import { WorkpackModelComponent } from './workpack-model.component';
 
-describe('WorkpackTemplateComponent', () => {
-  let component: WorkpackTemplateComponent;
-  let fixture: ComponentFixture<WorkpackTemplateComponent>;
+describe('WorkpackModelComponent', () => {
+  let component: WorkpackModelComponent;
+  let fixture: ComponentFixture<WorkpackModelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WorkpackTemplateComponent ]
+      declarations: [ WorkpackModelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WorkpackTemplateComponent);
+    fixture = TestBed.createComponent(WorkpackModelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

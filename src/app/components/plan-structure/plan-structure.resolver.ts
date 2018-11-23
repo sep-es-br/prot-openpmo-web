@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
-import { SchemaDataService } from 'src/app/services/data/schema/schema-data.service';
+import { PlanDataService } from 'src/app/services/data/plan/plan-data.service';
 
 @Injectable()
-export class SchemaTemplateResolver implements Resolve<void> {
+export class PlanStructureResolver implements Resolve<void> {
 
-  constructor(private schemaDataService: SchemaDataService,
+  constructor(private PlanDataService: PlanDataService,
               private crumbService: BreadcrumbService) {}
   id: String;
   action: String;
@@ -17,11 +17,11 @@ export class SchemaTemplateResolver implements Resolve<void> {
     this.action = route.paramMap.get('action');
     this.id = route.paramMap.get('id');
 
-    this.schemaDataService.CleanSchemaTemplate();
+    this.PlanDataService.CleanPlanStructure();
 
     if (this.action == "edit") {
-      this.schemaDataService.QuerySchemaTemplateById(this.id).subscribe(st => {
-        this.crumbService.SetCurrentSchemaTemplate(st);
+      this.PlanDataService.QueryPlanStructureById(this.id).subscribe(ps => {
+        this.crumbService.SetCurrentPlanStructure(ps);
       });
     }
   }

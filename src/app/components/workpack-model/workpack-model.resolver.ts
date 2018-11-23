@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ViewOptions } from '../../model/view-options';
-import { WorkpackTemplate } from '../../model/workpack-template';
+import { WorkpackModel } from '../../model/workpack-model';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
-import { SchemaDataService } from 'src/app/services/data/schema/schema-data.service';
+import { PlanDataService } from 'src/app/services/data/plan/plan-data.service';
 
 @Injectable()
-export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
+export class WorkpackModelResolver implements Resolve<ViewOptions> {
 
-  constructor(private schemaDataService: SchemaDataService,
+  constructor(private PlanDataService: PlanDataService,
               private workpackDataService: WorkpackDataService,
               private crumbService: BreadcrumbService) {}
   id: String;
@@ -22,38 +22,38 @@ export class WorkpackTemplateResolver implements Resolve<ViewOptions> {
     this.workpackDataService.QueryPropertyTypes().subscribe(res => res);
  
     switch (this.viewOptions.action) {
-      case 'new2schematemplate': {
-        this.schemaDataService.QuerySchemaTemplateById(this.id).subscribe(res => res);
-        this.workpackDataService.CleanWorkpackTemplate();
+      case 'new2planstructure': {
+        this.PlanDataService.QueryPlanStructureById(this.id).subscribe(res => res);
+        this.workpackDataService.CleanWorkpackModel();
         this.viewOptions.propertiesPanelOpenState = true;
         this.viewOptions.workpacksPanelOpenState = false;
-        this.viewOptions.title = 'New Workpack Template';
+        this.viewOptions.title = 'New Workpack Model';
         this.viewOptions.arrIds.push(this.id);
-        let newWorkpackTemplate = new WorkpackTemplate();
-        this.workpackDataService.QueryDefaultWorkpackTemplate().subscribe(newWPT => {
+        let newWorkpackModel = new WorkpackModel();
+        this.workpackDataService.QueryDefaultWorkpackModel().subscribe(newWPT => {
           newWPT.id = 'new';
-          this.crumbService.SetCurrentWorkpackTemplate(newWPT);
+          this.crumbService.SetCurrentWorkpackModel(newWPT);
         });
         break;
       }
-      case 'new2workpacktemplate': {
-        this.workpackDataService.CleanWorkpackTemplate();
+      case 'new2workpackmodel': {
+        this.workpackDataService.CleanWorkpackModel();
         this.viewOptions.propertiesPanelOpenState = true;
         this.viewOptions.workpacksPanelOpenState = false;
-        this.viewOptions.title = 'New Workpack Template';
+        this.viewOptions.title = 'New Workpack Model';
         this.viewOptions.arrIds.push(this.id);
 
-        this.workpackDataService.QueryDefaultWorkpackTemplate().subscribe(newWPT => {
+        this.workpackDataService.QueryDefaultWorkpackModel().subscribe(newWPT => {
           newWPT.id = 'new';
-          this.crumbService.SetCurrentWorkpackTemplate(newWPT);
+          this.crumbService.SetCurrentWorkpackModel(newWPT);
         });
         break;        
       }
       case 'edit': {
-        this.workpackDataService.QueryWorkpackTemplateTree(this.id);
-        this.workpackDataService.QueryWorkpackTemplateById(this.id).subscribe(wpt => {
-          this.viewOptions.title = wpt.name;
-          this.crumbService.SetCurrentWorkpackTemplate(wpt);
+        this.workpackDataService.QueryWorkpackModelTree(this.id);
+        this.workpackDataService.QueryWorkpackModelById(this.id).subscribe(wpm => {
+          this.viewOptions.title = wpm.name;
+          this.crumbService.SetCurrentWorkpackModel(wpm);
         });
         this.viewOptions.propertiesPanelOpenState = false;
         this.viewOptions.workpacksPanelOpenState = true;

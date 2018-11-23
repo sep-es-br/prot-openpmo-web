@@ -13,4 +13,5 @@ export class PropertyProfile {
     label: string = '';
     rows: Number = 1;
     fullLine: Boolean = false;
+    toDelete: Boolean = false;
 }

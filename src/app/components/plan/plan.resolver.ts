@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
-import { Schema } from '../../model/schema';
-import { SchemaDataService } from 'src/app/services/data/schema/schema-data.service';
+import { Plan } from '../../model/plan';
+import { PlanDataService } from 'src/app/services/data/plan/plan-data.service';
 
 @Injectable()
-export class SchemaResolver implements Resolve<void> {
+export class PlanResolver implements Resolve<void> {
 
-  constructor(private schemaDataService: SchemaDataService,
+  constructor(private PlanDataService: PlanDataService,
               private breadcrumbService: BreadcrumbService) {}
   id: String;
   action: String;
@@ -17,28 +17,28 @@ export class SchemaResolver implements Resolve<void> {
   resolve(route: ActivatedRouteSnapshot) {
     this.action = route.paramMap.get('action');
 
-    this.schemaDataService.CleanSchema();
+    this.PlanDataService.CleanPlan();
 
     let arrIds = route.paramMap.get('id').split('&');
     this.id = arrIds[0];
     if (arrIds.length > 1) {
-      this.schemaDataService
-      .QuerySchemaTemplateById(arrIds[1])
-      .subscribe(st => {
+      this.PlanDataService
+      .QueryPlanStructureById(arrIds[1])
+      .subscribe(ps => {
         switch (this.action) {
           case "edit": {
-            this.schemaDataService.QuerySchemaById(this.id)
+            this.PlanDataService.QueryPlanById(this.id)
               .subscribe(s => {
-                this.breadcrumbService.SetCurrentSchema(s);
+                this.breadcrumbService.SetCurrentPlan(s);
               }
             );
             break;
           }
           case "new": {
-            let newSchema = new Schema();
-            newSchema.id = 'new';
-            newSchema.template = st;
-            this.breadcrumbService.SetCurrentSchema(newSchema);
+            let newPlan = new Plan();
+            newPlan.id = 'new';
+            newPlan.structure = ps;
+            this.breadcrumbService.SetCurrentPlan(newPlan);
           }
         }
       })

@@ -110,3 +110,19 @@
 .property-panel{
     overflow: visible;
 }
+
+.property-type-title {
+    display: inline-block;
+    color: gray;
+    margin-left: 5px;
+    font-weight: normal;
+    font-size: smaller;
+}
+
+.profile-checkbox {
+    margin-top: 20px;
+}
+
+.profile-checkbox div {
+    margin-right: 3px;
+}

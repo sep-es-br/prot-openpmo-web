@@ -3,14 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { Subscription } from 'rxjs';
 import { Office } from '../../model/office';
-import { Schema } from '../../model/schema';
+import { Plan } from '../../model/plan';
 import { Workpack } from '../../model/workpack';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
-import { WorkpackTemplate } from '../../model/workpack-template';
+import { WorkpackModel } from '../../model/workpack-model';
 import { ViewOptions } from '../../model/view-options';
 import { FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
-import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { TranslateConstants } from '../../model/translate';
 import { PropertyProfile } from 'src/app/model/property-profile';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -29,7 +29,7 @@ export class WorkpackComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
-    private schemaDataService: SchemaDataService,
+    private PlanDataService: PlanDataService,
     private workpackDataService: WorkpackDataService,
     private router: Router, 
     private crumbService: BreadcrumbService,
@@ -41,15 +41,15 @@ export class WorkpackComponent implements OnInit {
 
   formGroupWorkpack = this.fb.group({
     id: [''],
-    name: ['', Validators.required],
+    name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
     properties: this.fb.array([])
   });
      
   subscriptions: Subscription[] = [];
   office: Office = new Office();
-  schema: Schema = new Schema();
+  plan: Plan = new Plan();
   workpack: Workpack = new Workpack();
-  workpackTemplate: WorkpackTemplate = new WorkpackTemplate();
+  workpackModel: WorkpackModel = new WorkpackModel();
   id: String;
   viewOptions: ViewOptions;
   SaveButtonBottomPosition: String;
@@ -62,8 +62,8 @@ export class WorkpackComponent implements OnInit {
     this.viewOptions = this.route.snapshot.data.workpack;
     
     this.subscriptions.push(
-      this.workpackDataService.workpackTemplate.subscribe(wt => {
-        this.workpackTemplate = wt;
+      this.workpackDataService.workpackModel.subscribe(wm => {
+        this.workpackModel = wm;
       })
     );
     
@@ -72,15 +72,13 @@ export class WorkpackComponent implements OnInit {
         this.workpack = wp;
         if (this.workpack.id != '') {
           this.LoadFormControls();
-          console.log('formcontrol', this.formGroupWorkpack);
-          console.log('wp', this.workpack);
         }
       })
     );
 
     this.subscriptions.push(
-      this.schemaDataService.schema.subscribe(s => {
-        this.schema = s;
+      this.PlanDataService.plan.subscribe(s => {
+        this.plan = s;
       })
     );
 
@@ -112,18 +110,19 @@ export class WorkpackComponent implements OnInit {
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.CleanPropertiesFormArray();
-    this.workpack.template.properties
+    this.workpack.model.propertyProfiles
       .sort((a,b) => {
         return (a.sortIndex < b.sortIndex) ? -1 : 1;
       })
-      .forEach(property => {
-        let foundProperty = this.workpack.properties.find(p => (p.profile.id == property.id));
+      .forEach(pProfile => {
+        let foundProperty = this.workpack.properties.find(p => (p.profile.id == pProfile.id));
       (this.formGroupWorkpack.get('properties') as FormArray).push(
         this.fb.group({
           id: [(foundProperty !== undefined) ? foundProperty.id : ''],
-          name: [property.name],
-          value: [(foundProperty !== undefined) ? foundProperty.value : ''],
-          profile: [property]
+          name: [pProfile.name],
+          value: [(foundProperty !== undefined) ? foundProperty.value : '',
+                  (pProfile.required) ? Validators.required : ''],
+          profile: [pProfile]
         })
       );
     });
@@ -177,7 +176,7 @@ export class WorkpackComponent implements OnInit {
   //
   onSubmit(){
     this.workpack.name = this.formGroupWorkpack.value.name.trim();
-    this.workpack.template = this.workpackTemplate;
+    this.workpack.model = this.workpackModel;
     this.formGroupWorkpack.value.properties.forEach(prop => {
       let property = this.workpack.properties.find(p => (p.profile.id == prop.profile.id));
       if (isNullOrUndefined(property)) {
@@ -196,19 +195,19 @@ export class WorkpackComponent implements OnInit {
     });
     
     switch (this.viewOptions.action) {
-      case 'new2schema': {
+      case 'new2Plan': {
         this.workpack.id = '';
-        this.schema.workpacks.push(this.workpack);
+        this.plan.workpacks.push(this.workpack);
         this.subscriptions.push(
-          this.schemaDataService
-          .UpdateSchema(this.schema)
+          this.PlanDataService
+          .UpdatePlan(this.plan)
           .subscribe(
             () => {
               this.viewOptions.action = 'edit';
               this.router.navigate([
-                './schema/' + this.viewOptions.action + 
-                '/' + this.schema.id +
-                '&' + this.schema.template.id]);
+                './plan/' + this.viewOptions.action + 
+                '/' + this.plan.id +
+                '&' + this.plan.structure.id]);
             }
           )
         );
@@ -229,7 +228,7 @@ export class WorkpackComponent implements OnInit {
                   this.router.navigate([
                     './workpack/'+ this.viewOptions.action + 
                     '/' + parentWP.id +
-                    '&' + parentWP.template.id]);
+                    '&' + parentWP.model.id]);
                 }
               )
             );
@@ -246,7 +245,7 @@ export class WorkpackComponent implements OnInit {
               .UpdateWorkpack(this.workpack)
               .subscribe(
                 wp => {
-                  this.workpackTemplate = wp.template;
+                  this.workpackModel = wp.model;
                   this.LoadFormControls();
                   this.ShowMessage();
                   window.setTimeout(
@@ -300,7 +299,7 @@ export class WorkpackComponent implements OnInit {
                       this.subscriptions
                       .push(
                         this.workpackDataService.QueryWorkpackById(this.workpack.id)
-                        .subscribe(wpt => wpt));
+                        .subscribe(wpm => wpm));
                     }
                   )                      
                 );

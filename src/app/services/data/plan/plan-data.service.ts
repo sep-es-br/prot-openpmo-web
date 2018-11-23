@@ -3,31 +3,31 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Office } from '../../../model/office';
-import { Schema } from '../../../model/schema';
-import { SchemaTemplate } from '../../../model/schema-template';
+import { Plan } from '../../../model/plan';
+import { PlanStructure } from '../../../model/plan-structure';
 import { environment } from 'src/environments/environment';
 import { SpinnerService } from '../../spinner/spinner.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SchemaDataService {
+export class PlanDataService {
  
-  // Observable property for the array of schemas
-  private $schemas = new BehaviorSubject<Schema[]>([]);
-  schemas = this.$schemas.asObservable();
+  // Observable property for the array of plans
+  private $plans = new BehaviorSubject<Plan[]>([]);
+  plans = this.$plans.asObservable();
 
-  // Observable property for the selected schema
-  private $schema = new BehaviorSubject<Schema>(new Schema);
-  schema = this.$schema.asObservable();
+  // Observable property for the selected plan
+  private $plan = new BehaviorSubject<Plan>(new Plan);
+  plan = this.$plan.asObservable();
 
-  // Observable property for the array of schema templates
-  private $schemaTemplates = new BehaviorSubject<SchemaTemplate[]>([]);
-  schemaTemplates = this.$schemaTemplates.asObservable();
+  // Observable property for the array of plan structures
+  private $planStructures = new BehaviorSubject<PlanStructure[]>([]);
+  planStructures = this.$planStructures.asObservable();
 
-  // Observable property for the selected workpack template
-  private $schemaTemplate = new BehaviorSubject<SchemaTemplate>(new SchemaTemplate);
-  schemaTemplate = this.$schemaTemplate.asObservable();
+  // Observable property for the selected workpack model
+  private $planStructure = new BehaviorSubject<PlanStructure>(new PlanStructure);
+  planStructure = this.$planStructure.asObservable();
 
   private baseURL = environment.databaseHost;
   
@@ -39,30 +39,30 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http to query a Schema by id
+  // Run the GET http to query a Plan by id
   //
   // Parameters: 
   //    id: The id of the Schmea to be retrieved
   //
   // Return: none
   //
-  QuerySchemaById(id: String): Observable<Schema> {
-    const pathURL = environment.schemaAPI + id;
+  QueryPlanById(id: String): Observable<Plan> {
+    const pathURL = environment.PlanAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
 //    this.spinnerService.ShowSpinner();
     return this.http.get(URL)
     .pipe(
-      map<any, Schema>(
+      map<any, Plan>(
         (res,err) => {
-          this.$schema.next(res as Schema);
+          this.$plan.next(res as Plan);
           this.spinnerService.HideSpinner();
-          return res as Schema;
+          return res as Plan;
         }
       ),
       catchError(
         (err) => {
           console.log(err);
-          return new Observable<Schema>();
+          return new Observable<Plan>();
         }
       )
     );
@@ -74,22 +74,22 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http ro request a Schema by id
+  // Run the GET http ro request a Plan by id
   //
   // Parameters: 
   //    id: The id of the Schmea to be retrieved
   //
-  // Return: An observable to the schema
+  // Return: An observable to the plan
   //
-  GetSchemaById(id: String): Observable<Schema> {
-    const pathURL = environment.schemaAPI + id;
+  GetPlanById(id: String): Observable<Plan> {
+    const pathURL = environment.PlanAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     if (id == '') {
       return null;
     }
     else {
       this.spinnerService.ShowSpinner();
-      return this.http.get(URL).pipe(map<any, Schema>(res => {
+      return this.http.get(URL).pipe(map<any, Plan>(res => {
         this.spinnerService.HideSpinner();
         return res;
       }));
@@ -100,26 +100,26 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a POST http save a Schema
+  // Run a POST http save a Plan
   //
   // Parameters: 
-  //    schema: The Schema object to save
+  //    plan: The Plan object to save
   //
   // Return: error if something went wrong
   //
-  SaveSchema(schema: Schema, parentOffice: Office): Observable<Schema> {
-    const pathURL = environment.schemaAPI;
+  SavePlan(plan: Plan, parentOffice: Office): Observable<Plan> {
+    const pathURL = environment.PlanAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + parentOffice;
     this.spinnerService.ShowSpinner();
     return this.http.post(
       URL, 
-      JSON.stringify(schema), 
+      JSON.stringify(plan), 
       {
         headers: {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Schema>(res => {
+    ).pipe(map<any, Plan>(res => {
       this.spinnerService.HideSpinner();
       return res;
     }));
@@ -127,27 +127,27 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a PUT http to update a Schema
+  // Run a PUT http to update a Plan
   //
   // Parameters: 
-  //    schema: The Schema object to update
+  //    plan: The Plan object to update
   //
   // Return: error if something went wrong
   //
-  UpdateSchema(schema: Schema): Observable<Schema> {
-    const pathURL = environment.schemaAPI;
-    const URL = this.baseURL + this.basePathURL + pathURL + schema.id;
+  UpdatePlan(plan: Plan): Observable<Plan> {
+    const pathURL = environment.PlanAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL + plan.id;
     
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(schema), 
+      JSON.stringify(plan), 
       {
         headers: {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Schema>(res => {
+    ).pipe(map<any, Plan>(res => {
       this.spinnerService.HideSpinner();
       return res;
     }));
@@ -157,15 +157,15 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a DELETE http to delete a Schema
+  // Run a DELETE http to delete a Plan
   //
   // Parameters: 
-  //    id: The id of the Schema to delete
+  //    id: The id of the Plan to delete
   //
   // Return: error if something went wrong
   //
-  DeleteSchema(id: String): Observable<any> {
-    const pathURL = environment.schemaAPI;
+  DeletePlan(id: String): Observable<any> {
+    const pathURL = environment.PlanAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
     return this.http.delete(URL).pipe(map<any, any>(res => {
@@ -176,50 +176,50 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request to query a Schema Template by id
+  // Run the GET http request to query a Plan Structure by id
   //
   // Parameters: 
-  //    id: The id of the Schema Template to retrieve
+  //    id: The id of the Plan Structure to retrieve
   //
   // Return: none
   //
-  QuerySchemaTemplateById(id: String): Observable<SchemaTemplate> {
-    const pathURL = environment.schemaTemplateAPI + id;
+  QueryPlanStructureById(id: String): Observable<PlanStructure> {
+    const pathURL = environment.planStructureAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
     return this.http
       .get(URL)
-      .pipe(map<any,SchemaTemplate>(res => {
-        this.$schemaTemplate.next(res as SchemaTemplate);
+      .pipe(map<any,PlanStructure>(res => {
+        this.$planStructure.next(res as PlanStructure);
         this.spinnerService.HideSpinner();
-        return res as SchemaTemplate;
+        return res as PlanStructure;
       }));
   }
 
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a PUT http to update a Schema Template
+  // Run a PUT http to update a Plan Structure
   //
   // Parameters: 
-  //    schema: The Schema Template object to update
+  //    plan: The Plan Structure object to update
   //
   // Return: error if something went wrong
   //
-  UpdateSchemaTemplate(schemaTemplate: SchemaTemplate): Observable<SchemaTemplate> {
-    const pathURL = environment.schemaTemplateAPI;
-    const URL = this.baseURL + this.basePathURL + pathURL + schemaTemplate.id;
+  UpdatePlanStructure(planStructure: PlanStructure): Observable<PlanStructure> {
+    const pathURL = environment.planStructureAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL + planStructure.id;
 
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(schemaTemplate), 
+      JSON.stringify(planStructure), 
       {
         headers: {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, SchemaTemplate>(res => {
+    ).pipe(map<any, PlanStructure>(res => {
       this.spinnerService.HideSpinner();
       return res;
     }));
@@ -229,15 +229,15 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a DELETE http to delete a Schema Template
+  // Run a DELETE http to delete a Plan Structure
   //
   // Parameters: 
-  //    id: The id of the Schema Template to delete
+  //    id: The id of the Plan Structure to delete
   //
   // Return: error if something went wrong
   //
-  DeleteSchemaTemplate(id: String): Observable<any> {
-    const pathURL = environment.schemaTemplateAPI;
+  DeletePlanStructure(id: String): Observable<any> {
+    const pathURL = environment.planStructureAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
     return this.http.delete(URL).pipe(map<any, any>(res => {
@@ -248,18 +248,18 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http ro request a Schema Template by id
+  // Run the GET http ro request a Plan Structure by id
   //
   // Parameters: 
-  //    id: The id of the Schema Template to be retrieved
+  //    id: The id of the Plan Structure to be retrieved
   //
-  // Return: An observable to the schema template
+  // Return: An observable to the plan structure
   //
-  GetSchemaTemplateById(id: String): Observable<SchemaTemplate> {
-    const pathURL = environment.schemaTemplateAPI + id;
+  GetPlanStructureById(id: String): Observable<PlanStructure> {
+    const pathURL = environment.planStructureAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any, SchemaTemplate>(res => {
+    return this.http.get(URL).pipe(map<any, PlanStructure>(res => {
       this.spinnerService.HideSpinner();
       return res;
     }));
@@ -267,26 +267,26 @@ export class SchemaDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Clean the Schema Observable
+  // Clean the Plan Observable
   //
   // Parameters: none
   //
   // Return: none
   //
-  CleanSchema() {
-    this.$schema.next(new Schema);
+  CleanPlan() {
+    this.$plan.next(new Plan);
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Clean the Schema Template Observable
+  // Clean the Plan Structure Observable
   //
   // Parameters: none
   //
   // Return: none
   //
-  CleanSchemaTemplate() {
-    this.$schemaTemplate.next(new SchemaTemplate);
+  CleanPlanStructure() {
+    this.$planStructure.next(new PlanStructure);
   }
 
 }

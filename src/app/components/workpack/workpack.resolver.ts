@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ViewOptions } from '../../model/view-options';
-import { WorkpackTemplate } from '../../model/workpack-template';
+import { WorkpackModel } from '../../model/workpack-model';
 import { Workpack } from '../../model/workpack';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
-import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { PlanDataService } from '../../services/data/plan/plan-data.service';
 
 @Injectable()
 export class WorkpackResolver implements Resolve<ViewOptions> {
 
-  constructor(private schemaDataService: SchemaDataService,
+  constructor(private PlanDataService: PlanDataService,
               private workpackDataService: WorkpackDataService,
               private crumbService: BreadcrumbService) {}
   id: String;
-  templateId: String;
+  modelId: String;
   viewOptions: ViewOptions = new ViewOptions();
-  workpackTemplate: WorkpackTemplate;
+  workpackModel: WorkpackModel;
     
   resolve(route: ActivatedRouteSnapshot) {
     this.viewOptions.action = route.paramMap.get('action');
@@ -24,22 +24,22 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
     this.id = this.viewOptions.arrIds[0];
 
     if (this.viewOptions.arrIds.length > 1) {
-      this.templateId = this.viewOptions.arrIds[1];
+      this.modelId = this.viewOptions.arrIds[1];
         this.workpackDataService
-          .QueryWorkpackTemplateById(this.templateId)
-          .subscribe(wpt => {
+          .QueryWorkpackModelById(this.modelId)
+          .subscribe(wpm => {
             switch (this.viewOptions.action) {
-              case 'new2schema': {
-                this.schemaDataService.QuerySchemaById(this.id).subscribe(res => res);
+              case 'new2Plan': {
+                this.PlanDataService.QueryPlanById(this.id).subscribe(res => res);
                 this.workpackDataService.CleanWorkpack();
                 this.viewOptions.propertiesPanelOpenState = true;
                 this.viewOptions.workpacksPanelOpenState = false;
-                this.viewOptions.title = 'New ' + wpt.name;
+                this.viewOptions.title = 'New ' + wpm.name;
                 let newWorkpack = new Workpack();
                 newWorkpack.id = 'new';
-                newWorkpack.template = wpt;
+                newWorkpack.model = wpm;
                 newWorkpack.name = '';
-                wpt.properties.forEach(pProfile => {
+                wpm.propertyProfiles.forEach(pProfile => {
                   newWorkpack.properties.push({
                     id: '',
                     name: pProfile.name,
@@ -54,14 +54,14 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
               }
               case 'new2workpack': {
                 this.workpackDataService.CleanWorkpack();
-                this.viewOptions.title = 'New ' + wpt.name;
+                this.viewOptions.title = 'New ' + wpm.name;
                 this.viewOptions.propertiesPanelOpenState = true;
                 this.viewOptions.workpacksPanelOpenState = false;
                 let newWorkpack = new Workpack();
                 newWorkpack.id = 'new';
-                newWorkpack.template = wpt;
+                newWorkpack.model = wpm;
                 newWorkpack.name = '';
-                wpt.properties.forEach(pProfile => {
+                wpm.propertyProfiles.forEach(pProfile => {
                   newWorkpack.properties.push({
                     id: '',
                     name: pProfile.name,

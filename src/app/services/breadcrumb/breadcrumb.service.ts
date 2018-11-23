@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Office } from '../../model/office';
-import { Schema } from '../../model/schema';
+import { Plan } from '../../model/plan';
 import { Workpack } from '../../model/workpack';
 import { CookieService } from 'ngx-cookie-service';
-import { SchemaTemplate } from '../../model/schema-template';
-import { WorkpackTemplate } from '../../model/workpack-template';
+import { PlanStructure } from '../../model/plan-structure';
+import { WorkpackModel } from '../../model/workpack-model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class Breadcrumb {
   label: String = '';
   route: String = '';
   id: String = '';
-  templateId: String = '';
+  modelId: String = '';
   action: String = '';
   active: Boolean = false; 
 }
@@ -29,21 +29,21 @@ export class BreadcrumbService {
   private $office = new BehaviorSubject<Office>(new Office);
   office = this.$office.asObservable();
 
-  // Observable to the last schema
-  private $schema = new BehaviorSubject<Schema>(new Schema);
-  schema = this.$schema.asObservable();
+  // Observable to the last plan
+  private $plan = new BehaviorSubject<Plan>(new Plan);
+  plan = this.$plan.asObservable();
 
-  // Observable to the last schema template
-  private $schemaTemplate = new BehaviorSubject<SchemaTemplate>(new SchemaTemplate);
-  schemaTemplate = this.$schemaTemplate.asObservable();
+  // Observable to the last plan structure
+  private $planStructure = new BehaviorSubject<PlanStructure>(new PlanStructure);
+  planStructure = this.$planStructure.asObservable();
 
   // Observable to the last workpack
   private $workpack = new BehaviorSubject<Workpack>(new Workpack);
   workpack = this.$workpack.asObservable();
 
-  // Observable to the last workpack template
-  private $workpackTemplate = new BehaviorSubject<WorkpackTemplate>(new WorkpackTemplate);
-  workpackTemplate = this.$workpackTemplate.asObservable();
+  // Observable to the last workpack model
+  private $workpackModel = new BehaviorSubject<WorkpackModel>(new WorkpackModel);
+  workpackModel = this.$workpackModel.asObservable();
 
   constructor(private cookie: CookieService) {
     if (cookie.check('breadcrumb')) {
@@ -93,15 +93,15 @@ export class BreadcrumbService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Set the curruent Workpack Template
+  // Set the curruent Workpack Model
   //
   // Parameters: workpack to set
   //
   // Return: none
   //
-  SetCurrentWorkpackTemplate(workpackTemplate: WorkpackTemplate) {
-    this.$workpackTemplate.next(workpackTemplate);
-    this.UpdateBreadcrumb(workpackTemplate, 'workpacktemplate');
+  SetCurrentWorkpackModel(workpackModel: WorkpackModel) {
+    this.$workpackModel.next(workpackModel);
+    this.UpdateBreadcrumb(workpackModel, 'workpackmodel');
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -118,64 +118,64 @@ export class BreadcrumbService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Clean the Workpack Template Observable
+  // Clean the Workpack Model Observable
   //
   // Parameters: none
   //
   // Return: none
   //
-  CleanWorkpackTemplate() {
-    this.$workpackTemplate.next(new WorkpackTemplate);
+  CleanWorkpackModel() {
+    this.$workpackModel.next(new WorkpackModel);
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Clean the Schema Observable
+  // Clean the Plan Observable
   //
   // Parameters: none
   //
   // Return: none
   //
-  CleanSchema() {
-    this.$schema.next(new Schema);
+  CleanPlan() {
+    this.$plan.next(new Plan);
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Clean the Schema Template Observable
+  // Clean the Plan Structure Observable
   //
   // Parameters: none
   //
   // Return: none
   //
-  CleanSchemaTemplate() {
-    this.$schemaTemplate.next(new SchemaTemplate);
+  CleanPlanStructure() {
+    this.$planStructure.next(new PlanStructure);
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Set the curruent Schema
+  // Set the curruent Plan
   //
-  // Parameters: schema to set
+  // Parameters: plan to set
   //
   // Return: none
   //
-  SetCurrentSchema(schema: Schema) {
-    this.$schema.next(schema);
-    this.UpdateBreadcrumb(schema, 'schema');
+  SetCurrentPlan(plan: Plan) {
+    this.$plan.next(plan);
+    this.UpdateBreadcrumb(plan, 'plan');
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Set the curruent Schema Template
+  // Set the curruent Plan Structure
   //
-  // Parameters: schema template to set
+  // Parameters: plan structure to set
   //
   // Return: none
   //
-  SetCurrentSchemaTemplate(schemaTemplate: SchemaTemplate) {
-    this.$schemaTemplate.next(schemaTemplate);
-    this.UpdateBreadcrumb(schemaTemplate, 'schematemplate');
+  SetCurrentPlanStructure(planStructure: PlanStructure) {
+    this.$planStructure.next(planStructure);
+    this.UpdateBreadcrumb(planStructure, 'planstructure');
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -221,44 +221,51 @@ export class BreadcrumbService {
       let index = this.$breadcrumbTrail.getValue().findIndex(crumb => crumb.id === node.id);
       if (index == -1) {
         let crumb = new Breadcrumb();
-        let templateName = '';
+        let modelName = '';
         crumb.action = 'edit';
         crumb.active = false;
         crumb.route = route;
         switch (route) {
           case 'office': {
-            crumb.templateId = '';
-            templateName = 'office';
+            crumb.modelId = '';
+            modelName = 'office';
             crumb.label = node.name;
             break;
           }
           case 'officeadmin': {
-            crumb.templateId = '';
+            crumb.modelId = '';
             crumb.label = node.name + " Administration"
-            templateName = 'office';
+            modelName = 'officeadmin';
             break;
           }
-          case 'schematemplate': {
-            crumb.templateId = '';
-            templateName = 'schema template';
+          case 'planstructure': {
+            crumb.modelId = '';
+            modelName = 'planstructure';
             crumb.label = node.name;
             break;
           }
-          case 'workpacktemplate': {
-            crumb.templateId = '';
-            templateName = 'workpack template';
+          case 'workpackmodel': {
+            crumb.modelId = '';
+            modelName = 'workpackmodel';
             crumb.label = node.name;
             break;
           }
-          default:{
-            crumb.templateId = '&' + node.template.id;
-            templateName = node.template.name;
+          case 'workpack':{
+            crumb.modelId = '&' + node.model.id;
+            modelName = node.model.name;
             crumb.label = node.name;
+            break;
+          }
+          case 'plan':{
+            crumb.modelId = '&' + node.structure.id;
+            modelName = node.structure.name;
+            crumb.label = node.name;
+            break;
           }
         }
         if (node.id == 'new') {
           crumb.id = 'new';
-          crumb.label = 'New ' + templateName;
+          crumb.label = 'New ' + modelName;
           crumb.action = 'new';
         }
         else {

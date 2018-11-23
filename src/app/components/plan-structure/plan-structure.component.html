@@ -2,7 +2,7 @@
     <span translate>Saved successfully</span>
 </div>
 
-<div class="main-title">{{title|translate:user}} {{(action == 'new')? '' : schemaTemplate.name}}</div>
+<div class="main-title">{{title|translate:user}} {{(action == 'new')? '' : planStructure.name}}</div>
 <div class="container-form"> 
   <mat-accordion >
     <mat-expansion-panel 
@@ -13,7 +13,7 @@
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
-        [formGroup]="formGroupSchemaTemplate"
+        [formGroup]="formGroupPlanStructure"
         (ngSubmit)="onSubmit()"
         class="form-container">
         <mat-form-field>
@@ -23,7 +23,7 @@
             placeholder={{translate.name|translate:use}}
             required/>
         </mat-form-field>
-        <mat-error *ngIf="formGroupSchemaTemplate.controls['name'].invalid && formGroupSchemaTemplate.controls['name'].touched">
+        <mat-error *ngIf="formGroupPlanStructure.controls['name'].invalid && formGroupPlanStructure.controls['name'].touched">
             <span translate>Name is</span> <strong translate>required</strong>
         </mat-error>
         <mat-form-field>
@@ -45,28 +45,28 @@
       </form>
     </mat-expansion-panel>
 
-    <!-- Workpack Templates Panel -->
+    <!-- Workpack Models Panel -->
     <mat-expansion-panel
       *ngIf="action != 'new'"
-      [expanded]="workpackTemplatesPanelOpenState"
-      (opened)="workpackTemplatesPanelOpenState = true"
-      (closed)="workpackTemplatesPanelOpenState = false">
+      [expanded]="workpackModelsPanelOpenState"
+      (opened)="workpackModelsPanelOpenState = true"
+      (closed)="workpackModelsPanelOpenState = false">
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title translate>Workpack Templates</mat-panel-title>
+        <mat-panel-title translate>Workpack Models</mat-panel-title>
       </mat-expansion-panel-header>
 
       <!-- Body -->
       <div class="container-fluid cards">
         <div class="row">
-          <mat-card class="card card-style" *ngFor="let workpackTemplate of schemaTemplate.workpackTemplates">
+          <mat-card class="card card-style" *ngFor="let workpackModel of planStructure.workpackModels">
             <div class="card-image">
               <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a  class="dropdown-item"
-                (click)="DeleteWorkpackTemplate(workpackTemplate.id)"
-                routerLink="/schematemplate/edit/{{schemaTemplate.id}}" 
+                (click)="DeleteWorkpackModel(workpackModel.id)"
+                routerLink="/planstructure/edit/{{planStructure.id}}" 
                 routerLinkActive="active" translate>Delete</a>
               </div>
             </div>
@@ -74,7 +74,7 @@
               <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
             </div>
             <mat-card-title class="title-card">
-              <a routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" routerLinkActive="active">{{workpackTemplate.name}}</a>
+              <a routerLink="/workpackmodel/edit/{{workpackModel.id}}" routerLinkActive="active">{{workpackModel.name}}</a>
             </mat-card-title>
             <div class="card-manager">
               <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
@@ -83,7 +83,7 @@
 
           <mat-card class="card new-card card-style">
             <div class="card-image-new" 
-              routerLink="/workpacktemplate/new2schematemplate/{{schemaTemplate.id}}" 
+              routerLink="/workpackmodel/new2planstructure/{{planStructure.id}}" 
               routerLinkActive="active">
               <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
             </div>

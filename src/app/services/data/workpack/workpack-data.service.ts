@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Workpack } from '../../../model/workpack';
-import { WorkpackTemplate } from '../../../model/workpack-template';
+import { WorkpackModel } from '../../../model/workpack-model';
 import { environment } from 'src/environments/environment';
 import { SpinnerService } from '../../spinner/spinner.service';
 
@@ -27,17 +27,17 @@ export class WorkpackDataService {
   private $workpack = new BehaviorSubject<Workpack>(new Workpack);
   workpack = this.$workpack.asObservable();
 
-  // Observable property for the array of workpack templates
-  private $workpackTemplates = new BehaviorSubject<WorkpackTemplate[]>([]);
-  workpackTemplates = this.$workpackTemplates.asObservable();
+  // Observable property for the array of workpack models
+  private $workpackModels = new BehaviorSubject<WorkpackModel[]>([]);
+  workpackModels = this.$workpackModels.asObservable();
 
-  // Observable property for the selected workpack template
-  private $workpackTemplate = new BehaviorSubject<WorkpackTemplate>(new WorkpackTemplate);
-  workpackTemplate = this.$workpackTemplate.asObservable();
+  // Observable property for the selected workpack model
+  private $workpackModel = new BehaviorSubject<WorkpackModel>(new WorkpackModel);
+  workpackModel = this.$workpackModel.asObservable();
 
-  // Observable property for the full tree on selected workpack template
-  private $workpackTemplateTree = new BehaviorSubject<WorkpackTemplate>(new WorkpackTemplate);
-  workpackTemplateTree = this.$workpackTemplateTree.asObservable();
+  // Observable property for the full tree on selected workpack model
+  private $workpackModelTree = new BehaviorSubject<WorkpackModel>(new WorkpackModel);
+  workpackModelTree = this.$workpackModelTree.asObservable();
 
   // Observable property for the list of property types available
   private $propertyTypes = new BehaviorSubject<String[]>([]);
@@ -57,7 +57,7 @@ export class WorkpackDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request to query a Schema by id
+  // Run the GET http request to query a Plan by id
   //
   // Parameters: 
   //    id: The id of the Schmea to be retrieved
@@ -173,46 +173,46 @@ export class WorkpackDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request to query a Workpack Template by id
+  // Run the GET http request to query a Workpack Model by id
   //
   // Parameters: 
-  //    id: The id of the Workpack Template to be retrieved
+  //    id: The id of the Workpack Model to be retrieved
   //
-  // Return: An Observable to the Workpack Template
+  // Return: An Observable to the Workpack Model
   //
-  QueryWorkpackTemplateById(id: String): Observable<WorkpackTemplate> {
-    const pathURL = environment.workpackTemplateAPI + id;
+  QueryWorkpackModelById(id: String): Observable<WorkpackModel> {
+    const pathURL = environment.workpackModelAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
     return this
             .http
             .get(URL)
-            .pipe(map<any, WorkpackTemplate>(res => {
-              this.$workpackTemplate.next(res as WorkpackTemplate);
+            .pipe(map<any, WorkpackModel>(res => {
+              this.$workpackModel.next(res as WorkpackModel);
               this.spinnerService.HideSpinner();
-              return res as WorkpackTemplate;
+              return res as WorkpackModel;
             }));
   }
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request to query a tree of Workpack Templates 
+  // Run the GET http request to query a tree of Workpack Models 
   //  and its siblings
   //
   // Parameters: 
-  //    id: The id of the root Workpack Template
+  //    id: The id of the root Workpack Model
   //
-  // Return: An Observable to the root Workpack Template
+  // Return: An Observable to the root Workpack Model
   //
-  QueryWorkpackTemplateTree(id: String){
-    const pathURL = environment.workpackTemplateAPI + environment.treeResource + id;
+  QueryWorkpackModelTree(id: String){
+    const pathURL = environment.workpackModelAPI + environment.treeResource + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
     this
       .http
       .get(URL)
       .subscribe(res => {
-        this.$workpackTemplateTree.next(res as WorkpackTemplate);
+        this.$workpackModelTree.next(res as WorkpackModel);
         this.spinnerService.HideSpinner();
       });
   }
@@ -227,7 +227,7 @@ export class WorkpackDataService {
   // Return: Observable to the property types list
   //
   QueryPropertyTypes(): Observable<String[]> {
-    const pathURL = environment.workpackTemplateAPI + environment.propertyTypesResource;
+    const pathURL = environment.workpackModelAPI + environment.propertyTypesResource;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
     return this.http.get(URL).pipe(map<any,String[]>(res => {
@@ -241,18 +241,18 @@ export class WorkpackDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request to query a Workpack Template by id
+  // Run the GET http request to query a Workpack Model by id
   //
   // Parameters: 
-  //    id: The id of the Workpack Template to be retrieved
+  //    id: The id of the Workpack Model to be retrieved
   //
-  // Return: An Observable Workpack Template retrieved
+  // Return: An Observable Workpack Model retrieved
   //
-  GetWorkpackTemplateById(id: String): Observable<WorkpackTemplate> {
-    const pathURL = environment.workpackTemplateAPI + id;
+  GetWorkpackModelById(id: String): Observable<WorkpackModel> {
+    const pathURL = environment.workpackModelAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any, WorkpackTemplate>(res => {
+    return this.http.get(URL).pipe(map<any, WorkpackModel>(res => {
       this.spinnerService.HideSpinner();
       return res;
     }));
@@ -261,19 +261,19 @@ export class WorkpackDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run the GET http request to get a Workpack Template with default values
+  // Run the GET http request to get a Workpack Model with default values
   //
   // Parameters: none
   //
-  // Return: An Observable to the Workpack Template retrieved
+  // Return: An Observable to the Workpack Model retrieved
   //
-  QueryDefaultWorkpackTemplate(): Observable<WorkpackTemplate> {
+  QueryDefaultWorkpackModel(): Observable<WorkpackModel> {
  
-    const pathURL = environment.workpackTemplateAPI + environment.defaultResource;
+    const pathURL = environment.workpackModelAPI + environment.defaultResource;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any, WorkpackTemplate>(res => {
-      this.$workpackTemplate.next(res as WorkpackTemplate);
+    return this.http.get(URL).pipe(map<any, WorkpackModel>(res => {
+      this.$workpackModel.next(res as WorkpackModel);
       this.spinnerService.HideSpinner();
       return res;
     }));
@@ -282,29 +282,29 @@ export class WorkpackDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a PUT http to update a Workpack Template
+  // Run a PUT http to update a Workpack Model
   //
   // Parameters: 
-  //    schema: The Workpack Template object to update
+  //    plan: The Workpack Model object to update
   //
   // Return: error if something went wrong
   //
-  UpdateWorkpackTemplate(workpackTemplate: WorkpackTemplate): Observable<WorkpackTemplate> {
-    const pathURL = environment.workpackTemplateAPI;
-    const URL = this.baseURL + this.basePathURL + pathURL + workpackTemplate.id;
+  UpdateWorkpackModel(workpackModel: WorkpackModel): Observable<WorkpackModel> {
+    const pathURL = environment.workpackModelAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL + workpackModel.id;
 
-    //this.propertyDataService.UpdateProperties(workpackTemplate.properties);
+    //this.propertyDataService.UpdateProperties(workpackModel.properties);
 
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(workpackTemplate), 
+      JSON.stringify(workpackModel), 
       {
         headers: {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, WorkpackTemplate>(res => {
+    ).pipe(map<any, WorkpackModel>(res => {
       this.spinnerService.HideSpinner();
       return res;
     }));
@@ -313,15 +313,15 @@ export class WorkpackDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Run a DELETE http to delete a Workpack Template
+  // Run a DELETE http to delete a Workpack Model
   //
   // Parameters: 
-  //    id: The id of the Workpack Template to delete
+  //    id: The id of the Workpack Model to delete
   //
   // Return: error if something went wrong
   //
-  DeleteWorkpackTemplate(id: String): Observable<any> {
-    const pathURL = environment.workpackTemplateAPI;
+  DeleteWorkpackModel(id: String): Observable<any> {
+    const pathURL = environment.workpackModelAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
     return this.http.delete(URL).pipe(map<any, any>(res => {
@@ -344,14 +344,14 @@ export class WorkpackDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
-  // Clean the Workpack Template Observable
+  // Clean the Workpack Model Observable
   //
   // Parameters: none
   //
   // Return: none
   //
-  CleanWorkpackTemplate() {
-    this.$workpackTemplate.next(new WorkpackTemplate);
+  CleanWorkpackModel() {
+    this.$workpackModel.next(new WorkpackModel);
   }
 
 
@@ -370,11 +370,11 @@ export class WorkpackDataService {
     panel.showChildren = ((action == 'children') || (action == 'detail'));
 
     switch (panel.action) {
-      case 'new2schema': {
+      case 'new2Plan': {
         panel.title = 'New';
         break;
       }
-      case 'new2schematemplate': {
+      case 'new2Planmodel': {
         panel.title = 'New';
         break;
       }
@@ -386,8 +386,8 @@ export class WorkpackDataService {
         panel.title = 'New';
         break;
       }
-      case 'new2workpacktemplate': {
-        panel.title = 'New Workpack Template';
+      case 'new2workpackModel': {
+        panel.title = 'New Workpack Model';
         break;
       }
     }

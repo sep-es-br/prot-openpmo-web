@@ -1,53 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { Subscription, Observable } from 'rxjs';
+import { Plan } from '../../model/plan';
 import { Office } from '../../model/office';
-import { SchemaTemplate } from '../../model/schema-template';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
+import { PlanStructure } from '../../model/plan-structure';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
-import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
+import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { TranslateConstants } from '../../model/translate';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-schema-template',
-  templateUrl: './schema-template.component.html',
-  styleUrls: ['./schema-template.component.css']
+  selector: 'app-plan',
+  templateUrl: './plan.component.html',
+  styleUrls: ['./plan.component.css']
 })
-export class SchemaTemplateComponent implements OnInit {
+export class PlanComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
-    private schemaDataService: SchemaDataService,
+    private PlanDataService: PlanDataService,
     private workpackDataService: WorkpackDataService,
     private router: Router,
-    private crumbService: BreadcrumbService,
+    private crumbService: BreadcrumbService, 
     private fb: FormBuilder,
-    public dialog: MatDialog) {}
+    public dialog: MatDialog ) {}
 
   //Constants for translate
   translate = new TranslateConstants();
 
-  formGroupSchemaTemplate = this.fb.group({
-    name: ['', Validators.required],
-    fullName: ['']
-  });
-  
   subscriptions: Subscription[] = [];
   office: Office = new Office();
-  schemaTemplate: SchemaTemplate = new SchemaTemplate();
+  plan: Plan = new Plan();
+  planStructure: PlanStructure = new PlanStructure();
+  PlanId: String = '';
+  planStructureId: String = '';
   action: String;
   title: String;
   showForm: Boolean;
   showChildren: Boolean;
   propertiesPanelOpenState: Boolean = false;
-  workpackTemplatesPanelOpenState: Boolean = true;
+  workpacksPanelOpenState: Boolean = true;
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
+
+  formGroupPlan = this.fb.group({
+    name: ['', Validators.required],
+    fullName: ['']
+  });
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
@@ -56,14 +60,24 @@ export class SchemaTemplateComponent implements OnInit {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
       this.propertiesPanelOpenState = true;
-      this.workpackTemplatesPanelOpenState = false;
-    }     
-
+      this.workpacksPanelOpenState = false;
+    } 
+    let arrIds = this.route.snapshot.paramMap.get('id').split('&');
+    this.PlanId = arrIds[0];
+    
     this.subscriptions.push(
-      this.schemaDataService.schemaTemplate.subscribe(st => {
-        this.schemaTemplate = st;
-        this.formGroupSchemaTemplate.controls['name'].setValue(this.schemaTemplate.name);
-        this.formGroupSchemaTemplate.controls['fullName'].setValue(this.schemaTemplate.fullName);
+      this.PlanDataService.planStructure.subscribe(ps => {
+        this.planStructure = ps;
+      })
+    );
+    
+    this.subscriptions.push(
+      this.PlanDataService.plan.subscribe(s =>{
+        this.plan = s;
+        this.formGroupPlan.controls['name'].setValue(this.plan.name);
+        this.formGroupPlan.controls['fullName'].setValue(this.plan.fullName);
+        this.HideSaveButton();     
+
       })
     );
 
@@ -73,21 +87,26 @@ export class SchemaTemplateComponent implements OnInit {
       })
     );
 
-    this.formGroupSchemaTemplate.statusChanges.subscribe(status => {
-        return (status == 'VALID' && this.UserChangedSomething(this.formGroupSchemaTemplate.value)) 
-                ? this.ShowSaveButton() 
-                : this.HideSaveButton();
+    if (this.action == 'new') {
+      this.PlanDataService.planStructure.subscribe(ps => {
+        this.plan.structure = ps;
+      });
+    }
+
+    this.formGroupPlan.statusChanges.subscribe(status => {
+      return (status == 'VALID' && this.UserChangedSomething(this.formGroupPlan.value)) 
+      ? this.ShowSaveButton() 
+      : this.HideSaveButton();
     });
 
-    this.HideMessage();
-
+    this.HideMessage(); 
   }
 
   //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
-    if (val.name != this.schemaTemplate.name) return true;
-    if (val.fullName != this.schemaTemplate.fullName) return true;
-  }
+    if (val.name != this.plan.name) return true;
+    if (val.fullName != this.plan.fullName) return true;
+  }  
 
   //Start - Save Button Interaction
   ShowSaveButton(){
@@ -111,7 +130,9 @@ export class SchemaTemplateComponent implements OnInit {
   //Panel definition dariables
   SetPanels(action: String) {
     this.action = action;
-    this.title = (action == 'new') ? 'New Schema Template' : '';
+    this.title = (action == 'new') ? 'New' : '';
+    this.showForm = ((action != 'children') && (action.slice(0,6) != 'delete'));
+    this.showChildren = (action != 'edit')
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -120,37 +141,33 @@ export class SchemaTemplateComponent implements OnInit {
   // Export the information to be saved to the database after pressing the save button
   //
   onSubmit(){
-    this.schemaTemplate.name = this.formGroupSchemaTemplate.value.name.trim();
-    this.schemaTemplate.fullName = this.formGroupSchemaTemplate.value.fullName.trim();
+    this.plan.name = this.formGroupPlan.value.name.trim();
+    this.plan.fullName = this.formGroupPlan.value.fullName.trim();
     if (this.action == 'new') {
-      this.office.schemaTemplates.push(this.schemaTemplate);
+      this.office.plans.push(this.plan);
       this.subscriptions.push(
         this.officeDataService
         .UpdateOffice(this.office)
         .subscribe(
-          ret => {
-            this.router.navigate(['./officeadmin/edit/' + this.office.id]);
-          },
-          error => Observable.throw(error),
           () => {
-            this.router.navigate(['./officeadmin/edit/' + this.office.id]); 
+            this.router.navigate(['./office/edit/' + this.office.id]); 
           }
         )
       );
     }
     else {
       this.subscriptions.push(
-        this.schemaDataService
-        .UpdateSchemaTemplate(this.schemaTemplate)
+        this.PlanDataService
+        .UpdatePlan(this.plan)
         .subscribe(
-          st => {
-            this.schemaTemplate = st;
+          s => {
+            this.plan = s;
             this.HideSaveButton();
             this.ShowMessage();
             window.setTimeout(
-              () => {this.HideMessage();}, 
-              3000);
-            this.crumbService.SetCurrentSchemaTemplate(st);
+             () => {this.HideMessage();}, 
+             3000);
+            this.crumbService.SetCurrentPlan(s);
           }
         )
       );
@@ -158,21 +175,21 @@ export class SchemaTemplateComponent implements OnInit {
   }
 
   ////////////////////////////////////////////////////////////////////////
-  //EXCLUSION MODULE - Workpack Template
+  //EXCLUSION MODULE - Workpack
   //
   //Identification Parameter: id
   //
-  DeleteWorkpackTemplate(id: string) {
+  DeleteWorkpack(id: string) {
     this.subscriptions
     .push(
       this.workpackDataService
-      .GetWorkpackTemplateById(id)
-      .subscribe(workpackTemplate2delete => {
-        if (workpackTemplate2delete.components.length > 0) {
+      .GetWorkpackById(id)
+      .subscribe(workpack2delete => {
+        if (workpack2delete.components.length > 0) {
           this.dialog.open(MessageDialogComponent, { 
             data: {
               title: "Warning",
-              message: "Sorry, you can not delete a workpack model that contains nested workpack models.",
+              message: "Sorry, you can not delete a workpack that contains nested workpacks.",
               action: "OK"
             }
           });
@@ -182,7 +199,7 @@ export class SchemaTemplateComponent implements OnInit {
             this.dialog.open(MessageDialogComponent, { 
               data: {
                 title: "Attention",
-                message: "Are you sure you want to delete " + workpackTemplate2delete.name + "?",
+                message: "Are you sure you want to delete " + workpack2delete.name + "?",
                 action: "YES_NO"
               }
             })
@@ -190,19 +207,18 @@ export class SchemaTemplateComponent implements OnInit {
             .subscribe(res => {
               if (res == "YES") {
                 this.subscriptions.push(
-                  this.workpackDataService.DeleteWorkpackTemplate(id).subscribe(
+                  this.workpackDataService.DeleteWorkpack(id).subscribe(
                     () => {
                       this.subscriptions
                       .push(
-                        this.schemaDataService.QuerySchemaTemplateById(this.schemaTemplate.id)
-                        .subscribe(st => st));
+                        this.PlanDataService.QueryPlanById(this.plan.id)
+                        .subscribe(wpm => wpm));
                     }
                   )                      
                 );
               }
             })
           );
-
         }
       })
     );
@@ -212,7 +228,7 @@ export class SchemaTemplateComponent implements OnInit {
   // END OF PAGE
   // Suspension of signatures when closing the page
   ngOnDestroy() {
-    this.crumbService.CleanSchemaTemplate();
+    this.crumbService.CleanPlan();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });

@@ -1,4 +1,4 @@
-import { WorkpackTemplate } from "./workpack-template";
+import { WorkpackModel } from "./workpack-model";
 import { Property } from "./property";
 
 export class Workpack {
@@ -6,5 +6,5 @@ export class Workpack {
     name: String = "";
     properties: Property[] = [];
     components: Workpack[] = [];
-    template: WorkpackTemplate = new WorkpackTemplate();
+    model: WorkpackModel = new WorkpackModel();
 }

@@ -21,36 +21,41 @@
         fxLayoutGap.xs="0">
         <div class="row property-row">
           <div class="property-card-box" >
+           
+            <!-- Name -->
             <mat-form-field>
               <input matInput
                 type="text"      
                 formControlName="name"
-                requiered
+                [required]="true"
                 placeholder={{translate.name|translate:use}}/>
             </mat-form-field>
             <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
-              <span translate>Name is </span> <strong translate>required</strong>
+              <span translate>Name must be from 3 to 20 characteres long</span>
             </mat-error>
           </div>
           <div *ngFor="let property of formGroupWorkpack.controls.properties.controls; let i=index;"
             [class]="(property.value.profile.fullLine) ? 'full-width' : ''">
             <div *ngIf="property.value.profile.using"
               [class]="(property.value.profile.fullLine) ? 'property-card-box full-width' : 'property-card-box'" >
+              
               <!-- Text type -->
               <mat-form-field *ngIf="property.value.profile.type == 'Text'"
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property" >
                 <input matInput
+                  [required]="'property.value.profile.required'"
                   type="text"      
                   formControlName="value"
                   placeholder="{{property.value.profile.label}}"/>
               </mat-form-field>
               
               <!-- Textarea type -->
-              <mat-form-field *ngIf="property.value.profile.type == 'TextArea'"
+              <mat-form-field *ngIf="property.value.profile.type == 'Text area'"
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <textarea matInput
+                  [required]="'property.value.profile.required'"
                   rows="{{property.value.profile.rows}}"
                   formControlName="value"
                   placeholder="{{property.value.profile.label}}"></textarea>
@@ -61,6 +66,7 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <input matInput
+                  [required]="'property.value.profile.required'"
                   type="number"      
                   formControlName="value"
                   placeholder="{{property.value.profile.label}}"/>
@@ -71,7 +77,9 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <input matInput
-                  type="number" step="any"  
+                  [required]="'property.value.profile.required'"
+                  type="number" 
+                  step="any"
                   formControlName="value"
                   [value]="ConvertToNumber(property.value.value)" 
                   placeholder="{{property.value.profile.label}}"/>
@@ -82,6 +90,7 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <input matInput 
+                  [required]="'property.value.profile.required'"  
                   [matDatepicker]="picker" 
                   placeholder="{{property.value.profile.label}}"
                   formControlName="value">
@@ -95,7 +104,8 @@
                 [formGroup]="property">
                 <mat-select 
                   placeholder="{{property.value.profile.label}}"
-                  formControlName="value">
+                  formControlName="value"
+                  [required]="'property.value.profile.required'">
                   <mat-option 
                     *ngFor="let pValue of property.value.profile.possibleValues" 
                     [value]="pValue">
@@ -103,6 +113,12 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+
+              <!-- Error message -->
+              <mat-error *ngIf="property.invalid && property.touched">
+                <span>{{property.value.profile.label}}</span><strong translate> is required</strong>
+              </mat-error>
+
             </div>
           </div>
         </div>
@@ -121,7 +137,7 @@
 
     <!-- Workpacks Panel -->
     <mat-expansion-panel
-      *ngIf="viewOptions.action == 'edit'"
+      *ngIf="(viewOptions.action == 'edit') && (workpackModel.components.length > 0)"
       [expanded]="viewOptions.workpacksPanelOpenState"
       (opened)="viewOptions.workpacksPanelOpenState = true"
       (closed)="viewOptions.workpacksPanelOpenState = false">
@@ -141,7 +157,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a  class="dropdown-item"
                       (click)="DeleteWorkpack(component.id)"
-                      routerLink="/workpack/edit/{{workpack.id}}&{{workpack.template.id}}" 
+                      routerLink="/workpack/edit/{{workpack.id}}&{{workpack.model.id}}" 
                       routerLinkActive="active" translate>Delete</a>
                 </div>
               </div>
@@ -149,7 +165,7 @@
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
               </div>
               <mat-card-title class="title-card">
-                <a routerLink="/workpack/edit/{{component.id}}&{{component.template?.id}}" routerLinkActive="active">{{component.name}}</a>
+                <a routerLink="/workpack/edit/{{component.id}}&{{component.model?.id}}" routerLinkActive="active">{{component.name}}</a>
               </mat-card-title>
               <div class="card-manager">
                 <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
@@ -160,10 +176,10 @@
               <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
                   <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a *ngFor="let template of workpackTemplate.components" 
+                    <a *ngFor="let model of workpackModel.components" 
                         class="dropdown-item" 
-                        routerLink="/workpack/new2workpack/{{workpack.id}}&{{template.id}}" 
-                        routerLinkActive="active">{{template.name}}</a>
+                        routerLink="/workpack/new2workpack/{{workpack.id}}&{{model.id}}" 
+                        routerLinkActive="active">{{model.name}}</a>
                   </div>
               </div>
             </mat-card>

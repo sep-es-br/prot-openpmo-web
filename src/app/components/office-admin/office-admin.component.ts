@@ -5,7 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Office } from '../../model/office';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators } from '@angular/forms';
-import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
@@ -19,7 +19,7 @@ export class OfficeAdminComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
-    private schemaDataService: SchemaDataService,
+    private PlanDataService: PlanDataService,
     private breadcrumbService: BreadcrumbService,
     private router: Router,
     public dialog: MatDialog) { }
@@ -37,7 +37,7 @@ export class OfficeAdminComponent implements OnInit {
   officeId: String;
   action: String;
   breadcrumbTrail: Breadcrumb[] = [];
-  schemaTemplatesPanelOpenState: Boolean = true;
+  planStructuresPanelOpenState: Boolean = true;
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
@@ -59,13 +59,13 @@ export class OfficeAdminComponent implements OnInit {
   }
 
   ////////////////////////////////////////////////////////////////////////
-  //EXCLUSION MODULE - Schema Template
+  //EXCLUSION MODULE - Plan Structure
   //
   //Identification Parameter: id
   //
-  DeleteSchemaTemplate(id: string) {
-    this.schemaDataService.GetSchemaTemplateById(id).subscribe(schemaTemplate2delete => {
-      if (schemaTemplate2delete.workpackTemplates.length > 0) {
+  DeletePlanStructure(id: string) {
+    this.PlanDataService.GetPlanStructureById(id).subscribe(planStructure2delete => {
+      if (planStructure2delete.workpackModels.length > 0) {
         this.dialog.open(MessageDialogComponent, { 
           data: {
             title: "Warning",
@@ -79,7 +79,7 @@ export class OfficeAdminComponent implements OnInit {
           this.dialog.open(MessageDialogComponent, { 
             data: {
               title: "Attention",
-              message: "Are you sure to delete " + schemaTemplate2delete.name + "?",
+              message: "Are you sure to delete " + planStructure2delete.name + "?",
               action: "YES_NO"
             }
           })
@@ -87,7 +87,7 @@ export class OfficeAdminComponent implements OnInit {
           .subscribe(res => {
             if (res == "YES") {
               this.subscriptions.push(
-                this.schemaDataService.DeleteSchemaTemplate(id).subscribe(
+                this.PlanDataService.DeletePlanStructure(id).subscribe(
                   () => {
                     this.subscriptions
                     .push(
