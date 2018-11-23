@@ -205,16 +205,16 @@ export class WorkpackDataService {
   // Return: An Observable to the root Workpack Model
   //
   QueryWorkpackModelTree(id: String){
-    const pathURL = environment.workpackModelAPI + environment.treeResource + id;
-    const URL = this.baseURL + this.basePathURL + pathURL;
-    this.spinnerService.ShowSpinner();
-    this
-      .http
-      .get(URL)
-      .subscribe(res => {
-        this.$workpackModelTree.next(res as WorkpackModel);
-        this.spinnerService.HideSpinner();
-      });
+    // const pathURL = environment.workpackModelAPI + environment.treeResource + id;
+    // const URL = this.baseURL + this.basePathURL + pathURL;
+    // this.spinnerService.ShowSpinner();
+    // this
+    //   .http
+    //   .get(URL)
+    //   .subscribe(res => {
+    //     this.$workpackModelTree.next(res as WorkpackModel);
+    //     this.spinnerService.HideSpinner();
+    //   });
   }
 
 
