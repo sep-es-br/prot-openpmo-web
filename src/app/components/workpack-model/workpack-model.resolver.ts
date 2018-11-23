@@ -41,6 +41,7 @@ export class WorkpackModelResolver implements Resolve<ViewOptions> {
         this.viewOptions.propertiesPanelOpenState = true;
         this.viewOptions.workpacksPanelOpenState = false;
         this.viewOptions.title = 'New Workpack Model';
+        this.viewOptions.arrIds = [];
         this.viewOptions.arrIds.push(this.id);
 
         this.workpackDataService.QueryDefaultWorkpackModel().subscribe(newWPT => {
