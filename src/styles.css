@@ -94,7 +94,7 @@ button, a, div {
     margin-right: 6px;
 }
 
-.template-card-image{
+.model-card-image{
     background-color: #E6E7E8;
     height: 50px;
     width: 64px;
@@ -117,14 +117,14 @@ button, a, div {
     color: #00a1dd;
 }
 
-.template-card-title{
+.model-card-title{
     float: left;
     margin-left: 10px;
     text-decoration: none;
     font-weight: bold;
 }
 
-.template-card-title a{
+.model-card-title a{
     color: #777777;
 }
 
@@ -284,3 +284,33 @@ button, a, div {
     background-color: #afafaf;
     float: right;
 } */
+.property-container {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.property-profile-row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.property-row {
+    margin-right: 0px;
+    margin-left: 0px;
+    width: 100%;
+}
+
+.property-profile-card-box {
+    padding: 5px;
+    float: left;
+}
+
+.property-card-box {
+    padding: 5px;
+    float: left;
+}
+
+.full-width {
+    width: 100%;
+}
+

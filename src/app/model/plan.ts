@@ -1,10 +1,10 @@
 import { Workpack } from "./workpack";
-import { SchemaTemplate } from "./schema-template";
+import { PlanStructure } from "./plan-structure";
 
-export class Schema {
+export class Plan {
     id: String = '';
     name: String = '';
     fullName: String = '';
     workpacks: Workpack[] = [];
-    template: SchemaTemplate = new SchemaTemplate();
+    structure: PlanStructure = new PlanStructure();
 }

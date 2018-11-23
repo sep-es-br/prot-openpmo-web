@@ -16,7 +16,7 @@
         <mat-panel-title translate>Properties</mat-panel-title>
       </mat-expansion-panel-header>
       <form 
-        [formGroup]="formGroupWorkpackTemplate" 
+        [formGroup]="formGroupWorkpackModel" 
         (ngSubmit)="onSubmit()"
         class="form-container">
         <mat-form-field>
@@ -26,34 +26,37 @@
             formControlName="name"
             placeholder={{translate.name|translate:use}}/>
         </mat-form-field>
-        <mat-error *ngIf="formGroupWorkpackTemplate.controls['name'].invalid && formGroupWorkpackTemplate.controls['name'].touched">
+        <mat-error *ngIf="formGroupWorkpackModel.controls['name'].invalid && formGroupWorkpackModel.controls['name'].touched">
           <span translate>Name must be from 3 to 20 characteres long</span> 
         </mat-error>
-        <div class="container-fluid cards" formArrayName="properties">
-          <div class="row property-row">
-            <div [class]="(property.get('editing').value) ? 'property-card-box property-full-width' : 'property-card-box'"    
-              *ngFor="let property of formGroupWorkpackTemplate.controls.properties.controls; let i=index;">
-              <mat-expansion-panel 
-                [formGroup]="property"
-                class="property-card row"
-                [expanded]="property.get('editing').value"
-                (opened)="EditProperty(i, property.get('type').value)"
+        <div class="containerX" formArrayName="propertyProfiles">
+          <div class="box" fxflex fxlayout="row">
+            <div [class]="(pProfile.value.editing) ? 'property-profile-card-box property-full-width' : 'property-profile-card-box'"    
+              *ngFor="let pProfile of formGroupWorkpackModel.controls.propertyProfiles.controls; let i=index;">
+              <mat-expansion-panel  fxflex
+                [formGroup]="pProfile"
+                class="property-card"
+                [expanded]="pProfile.value.editing"
+                (opened)="EditProperty(i, pProfile.value.type)"
                 (closed)="StopEditing(i)"
-                *ngIf="!property.toDelete">
+                *ngIf="!pProfile.toDelete">
                 <mat-expansion-panel-header class="property-header">
                   <mat-panel-title class="property-name">
                     <div class="property-logo-mat-icon" 
-                        *ngIf="GetPropertyLogo(property.get('type').value).source == 'mat-icon'">
+                        *ngIf="GetPropertyLogo(pProfile.value.type).source == 'mat-icon'">
                         <mat-icon 
-                          fontSet="{{GetPropertyLogo(property.get('type').value).set}}" 
-                          fontIcon="{{GetPropertyLogo(property.get('type').value).icon}}"></mat-icon>
+                          fontSet="{{GetPropertyLogo(pProfile.value.type).set}}" 
+                          fontIcon="{{GetPropertyLogo(pProfile.value.type).icon}}"></mat-icon>
                     </div>
                     <div class="property-logo-font" 
-                        *ngIf="GetPropertyLogo(property.get('type').value).source == 'font'">
-                      {{GetPropertyLogo(property.get('type').value).icon}}
+                        *ngIf="GetPropertyLogo(pProfile.value.type).source == 'font'">
+                      {{GetPropertyLogo(pProfile.value.type).icon}}
                     </div>
                     <div class="property-title">
-                      {{property.get('name').value}}
+                      {{pProfile.value.name}}
+                    </div>
+                    <div class="property-type-title" *ngIf="pProfile.value.editing">
+                      ({{pProfile.value.type}})
                     </div>
                     <mat-slide-toggle
                       (click)="$event.stopPropagation()"
@@ -63,9 +66,11 @@
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="card-content"
-                      fxLayout="{{(property.value.editing) ? 'row wrap' : 'column wrap'}}"
+                      fxLayout="{{(pProfile.value.editing) ? 'row wrap' : 'column wrap'}}"
                       fxLayoutAlign="left"
-                      fxLayoutGap="10px">
+                      fxLayoutGap="20px">
+                  
+                  <!-- Name -->
                   <div>
                     <mat-form-field>
                       <input matInput
@@ -74,6 +79,8 @@
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
+
+                  <!-- Label -->
                   <div >
                     <mat-form-field >
                       <input matInput
@@ -82,6 +89,8 @@
                         formControlName="label"/>
                     </mat-form-field>
                   </div>
+
+                  <!-- Sort index -->
                   <div >
                     <mat-form-field class="number-field">
                       <input matInput
@@ -90,7 +99,9 @@
                         formControlName="sortIndex"/>
                     </mat-form-field>
                   </div>
-                  <div *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
+
+                 <!-- Minimum -->
+                  <div *ngIf="pProfile.value.type == 'Number' || pProfile.value.type == 'Text'">
                     <mat-form-field class="number-field">
                       <input matInput
                         type="number"
@@ -98,7 +109,9 @@
                         formControlName="min"/>
                     </mat-form-field>
                   </div>
-                  <div *ngIf="property.get('type').value == 'Number' || property.get('type').value == 'Text'">
+
+                 <!-- Maximum-->
+                  <div *ngIf="pProfile.value.type == 'Number' || pProfile.value.type == 'Text'">
                     <mat-form-field class="number-field">
                       <input matInput
                         type="number" 
@@ -106,9 +119,11 @@
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
+
+                 <!-- Possible values -->
                   <div 
-                    class="{{(property.get('editing').value) ? 'textInput' : 'minimum-width'}}"
-                    *ngIf="property.get('type').value == 'Selection'">
+                    class="{{(pProfile.value.editing) ? 'textInput' : 'minimum-width'}}"
+                    *ngIf="pProfile.value.type == 'Selection'">
                     <mat-form-field 
                       class="form-field">
                       <input matInput 
@@ -118,7 +133,9 @@
                       <mat-hint>Use comma to separate the values. Empty means any.</mat-hint>
                     </mat-form-field>
                   </div>
-                  <div >
+
+                 <!-- Value -->
+                 <div>
                     <mat-form-field >
                       <input matInput
                         type="text"
@@ -126,23 +143,42 @@
                         formControlName="value"/>
                     </mat-form-field>
                   </div>
-                  <div *ngIf="property.get('type').value == 'TextArea'">
+
+                 <!-- Rows -->
+                  <div *ngIf="pProfile.value.type == 'Text area'">
                     <mat-form-field class="number-field">
                       <input matInput
-                        type="number"
+                        type="number" step="any"
                         placeholder={{translate.rows|translate:use}}
-                        formControlName="value"/>
+                        formControlName="rows"/>
                     </mat-form-field>
                   </div>
-                  <div *ngIf="property.value.custom" class="delete-button"> 
-                    <button mat-button 
-                      (click)="DeleteProperty(i)">
-                      <mat-icon fontSet="fas" fontIcon="fa-trash-alt"></mat-icon>
+
+                  <!-- Full Line -->
+                  <div class="profile-checkbox">
+                    <mat-checkbox
+                      color="primary"
+                      formControlName="fullLine">Full line</mat-checkbox>
+                  </div>
+
+                  <!-- Required -->
+                  <div class="profile-checkbox">
+                    <mat-checkbox
+                      color="primary"
+                      formControlName="required">Required</mat-checkbox>
+                  </div>
+
+                  <!-- Delete button -->
+                  <div class="delete-button">
+                    <button mat-button>
+                      <mat-icon fontSet="fas" fontIcon="fa-trash"></mat-icon>                    
                     </button>
                   </div>
+
                 </div>
               </mat-expansion-panel>
             </div>
+
           </div>
         </div>
 
@@ -156,7 +192,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdownAddPropertyButton">
             <a *ngFor="let pType of propertyTypes"
                 class="dropdown-item"
-                (click)="AddProperty(pType)"
+                (click)="AddPropertyProfile(pType)"
                 [innerHTML]="pType"
                 translate></a>
           </div>
@@ -175,7 +211,7 @@
       </form>
     </mat-expansion-panel>
 
-    <!-- Workpack Templates Panel -->
+    <!-- Workpack Models Panel -->
     <mat-expansion-panel
       *ngIf="viewOptions.action == 'edit'"
       [expanded]="viewOptions.workpacksPanelOpenState"
@@ -184,27 +220,27 @@
       
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title translate>Workpack Templates</mat-panel-title>
+        <mat-panel-title translate>Workpack Models</mat-panel-title>
       </mat-expansion-panel-header>
 
         <!-- Body -->
         <div class="container-fluid cards">
           <div class="row">
 
-            <mat-card class="card card-style" *ngFor="let component of workpackTemplate.components">
+            <mat-card class="card card-style" *ngFor="let component of workpackModel.components">
                 <div class="card-image">
                   <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" 
-                    (click)="DeleteWorkpackTemplate(component.id)"
-                    routerLink="/workpacktemplate/edit/{{workpackTemplate.id}}" translate>Delete</a>
+                    (click)="DeleteWorkpackModel(component.id)"
+                    routerLink="/workpackmodel/edit/{{workpackModel.id}}" translate>Delete</a>
                   </div>
                 </div>
                 <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
                   <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                 </div>
                 <mat-card-title class="title-card">
-                  <a routerLink="/workpacktemplate/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
+                  <a routerLink="/workpackmodel/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
                 </mat-card-title>
                 <div class="card-manager">
                   <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
@@ -216,13 +252,13 @@
                 <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a  class="dropdown-item" 
-                  routerLink="/workpacktemplate/new2workpacktemplate/{{workpackTemplate.id}}" 
+                  routerLink="/workpackmodel/new2workpackmodel/{{workpackModel.id}}" 
                   routerLinkActive="active" translate>New</a>
                   <div class="dropdown-item not-a-link disabled" translate>Reuse:</div>
-                  <a *ngFor="let template of flatTree"
+                  <a *ngFor="let model of flatTree"
                   class="dropdown-item"
-                  (click)="ReuseTemplate(template.id)"
-                  [innerHTML]="template.label"></a>
+                  (click)="ReuseModel(model.id)"
+                  [innerHTML]="model.label"></a>
                 </div>
               </div>
             </mat-card>

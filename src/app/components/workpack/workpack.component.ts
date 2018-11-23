@@ -3,17 +3,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { Subscription } from 'rxjs';
 import { Office } from '../../model/office';
-import { Schema } from '../../model/schema';
+import { Plan } from '../../model/plan';
 import { Workpack } from '../../model/workpack';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
-import { WorkpackTemplate } from '../../model/workpack-template';
+import { WorkpackModel } from '../../model/workpack-model';
 import { ViewOptions } from '../../model/view-options';
 import { FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
-import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { TranslateConstants } from '../../model/translate';
 import { PropertyProfile } from 'src/app/model/property-profile';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { isNullOrUndefined } from 'util';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { Property } from 'src/app/model/property';
 
 @Component({
   selector: 'app-workpack',
@@ -25,26 +29,27 @@ export class WorkpackComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
-    private schemaDataService: SchemaDataService,
+    private PlanDataService: PlanDataService,
     private workpackDataService: WorkpackDataService,
     private router: Router, 
     private crumbService: BreadcrumbService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    public dialog: MatDialog) {}
 
   //Constants for translate
   translate = new TranslateConstants();
 
   formGroupWorkpack = this.fb.group({
     id: [''],
-    name: ['', Validators.required],
+    name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
     properties: this.fb.array([])
   });
      
   subscriptions: Subscription[] = [];
   office: Office = new Office();
-  schema: Schema = new Schema();
+  plan: Plan = new Plan();
   workpack: Workpack = new Workpack();
-  workpackTemplate: WorkpackTemplate = new WorkpackTemplate();
+  workpackModel: WorkpackModel = new WorkpackModel();
   id: String;
   viewOptions: ViewOptions;
   SaveButtonBottomPosition: String;
@@ -57,8 +62,8 @@ export class WorkpackComponent implements OnInit {
     this.viewOptions = this.route.snapshot.data.workpack;
     
     this.subscriptions.push(
-      this.workpackDataService.workpackTemplate.subscribe(wt => {
-        this.workpackTemplate = wt;
+      this.workpackDataService.workpackModel.subscribe(wm => {
+        this.workpackModel = wm;
       })
     );
     
@@ -67,15 +72,13 @@ export class WorkpackComponent implements OnInit {
         this.workpack = wp;
         if (this.workpack.id != '') {
           this.LoadFormControls();
-          console.log('formcontrol', this.formGroupWorkpack);
-          console.log('wp', this.workpack);
         }
       })
     );
 
     this.subscriptions.push(
-      this.schemaDataService.schema.subscribe(s => {
-        this.schema = s;
+      this.PlanDataService.plan.subscribe(s => {
+        this.plan = s;
       })
     );
 
@@ -104,52 +107,45 @@ export class WorkpackComponent implements OnInit {
   }
 
   //Load property form
-  LoadFormControls_() {
+  LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.CleanPropertiesFormArray();
-    this.workpack.properties
+    this.workpack.model.propertyProfiles
       .sort((a,b) => {
-        return (a.profile.sortIndex < b.profile.sortIndex) ? -1 : 1;
+        return (a.sortIndex < b.sortIndex) ? -1 : 1;
       })
-      .forEach(property => {
+      .forEach(pProfile => {
+        let foundProperty = this.workpack.properties.find(p => (p.profile.id == pProfile.id));
       (this.formGroupWorkpack.get('properties') as FormArray).push(
         this.fb.group({
-          id: [property.id],
-          name: [property.name],
-          value: [property.value],
-          profile: [property.profile]
+          id: [(foundProperty !== undefined) ? foundProperty.id : ''],
+          name: [pProfile.name],
+          value: [(foundProperty !== undefined) ? foundProperty.value : '',
+                  (pProfile.required) ? Validators.required : ''],
+          profile: [pProfile]
         })
       );
     });
   }
 
-  //Load property form
-  LoadFormControls() {
-    this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
-    this.CleanPropertiesFormArray();
-    this.workpack.template.properties
-      .sort((a,b) => {
-        return (a.sortIndex < b.sortIndex) ? -1 : 1;
-      })
-      .forEach(property => {
-        let foundProperty = this.workpack.properties.find(p => (p.profile.id == property.id));
-      (this.formGroupWorkpack.get('properties') as FormArray).push(
-        this.fb.group({
-          id: [(foundProperty !== undefined) ? foundProperty.id : ''],
-          name: [property.name],
-          value: [(foundProperty !== undefined) ? foundProperty.value : ''],
-          profile: [property]
-        })
-      );
-    });
+  ConvertToNumber(val: String): Number {
+    let num = Number(val);
+    return (num == NaN) ? 0 : num;
   }
 
   //Identify changes made by the user
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
+    if (val.properties.length != this.workpack.properties.length) return true;
     let changed = false;
-    val.properties.forEach((prop, i) => {
-      if (prop.value != this.workpack.properties[i].value) changed = true;
+    val.properties.forEach((cntrlProp) => {
+      let propIndex = this.workpack.properties.findIndex(p => (p.id == cntrlProp.id));
+      if (propIndex == -1) {
+        changed = true;
+      }
+      else if (cntrlProp.value != this.workpack.properties[propIndex].value) {
+        changed = true;;
+      }
     });
     return changed;
   }
@@ -180,27 +176,38 @@ export class WorkpackComponent implements OnInit {
   //
   onSubmit(){
     this.workpack.name = this.formGroupWorkpack.value.name.trim();
-    this.workpack.template = this.workpackTemplate;
+    this.workpack.model = this.workpackModel;
     this.formGroupWorkpack.value.properties.forEach(prop => {
       let property = this.workpack.properties.find(p => (p.profile.id == prop.profile.id));
-      property.value = prop.value;
-      property.name = property.profile.name;
+      if (isNullOrUndefined(property)) {
+        property = {
+          id: '',
+          name: prop.name,
+          value: prop.value,
+          profile: prop.profile
+        };
+        this.workpack.properties.push(property)
+      }
+      else {
+        property.value = prop.value;
+        property.name = property.profile.name;
+      }
     });
     
     switch (this.viewOptions.action) {
-      case 'new2schema': {
+      case 'new2Plan': {
         this.workpack.id = '';
-        this.schema.workpacks.push(this.workpack);
+        this.plan.workpacks.push(this.workpack);
         this.subscriptions.push(
-          this.schemaDataService
-          .UpdateSchema(this.schema)
+          this.PlanDataService
+          .UpdatePlan(this.plan)
           .subscribe(
             () => {
               this.viewOptions.action = 'edit';
               this.router.navigate([
-                './schema/' + this.viewOptions.action + 
-                '/' + this.schema.id +
-                '&' + this.schema.template.id]);
+                './plan/' + this.viewOptions.action + 
+                '/' + this.plan.id +
+                '&' + this.plan.structure.id]);
             }
           )
         );
@@ -221,7 +228,7 @@ export class WorkpackComponent implements OnInit {
                   this.router.navigate([
                     './workpack/'+ this.viewOptions.action + 
                     '/' + parentWP.id +
-                    '&' + parentWP.template.id]);
+                    '&' + parentWP.model.id]);
                 }
               )
             );
@@ -238,7 +245,7 @@ export class WorkpackComponent implements OnInit {
               .UpdateWorkpack(this.workpack)
               .subscribe(
                 wp => {
-                  this.workpackTemplate = wp.template;
+                  this.workpackModel = wp.model;
                   this.LoadFormControls();
                   this.ShowMessage();
                   window.setTimeout(
@@ -266,15 +273,38 @@ export class WorkpackComponent implements OnInit {
       .GetWorkpackById(id)
       .subscribe(workpack2delete => {
         if (workpack2delete.components.length > 0) {
-          alert("Sorry, you can not delete " + workpack2delete.name + " because it is not empty.")
-        }
-        else if(confirm("Are you sure you want to delete " + workpack2delete.name + "?")) {
-          this.workpackDataService.DeleteWorkpack(id).subscribe(
-            () => {
-              this.subscriptions
-              .push(this.workpackDataService.QueryWorkpackById(this.workpack.id)
-                .subscribe(wp => wp));
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Warning",
+              message: "Sorry, you can not delete a workpack that contains nested workpacks.",
+              action: "OK"
             }
+          });
+        }
+        else {
+          this.subscriptions.push(
+            this.dialog.open(MessageDialogComponent, { 
+              data: {
+                title: "Attention",
+                message: "Are you sure you want to delete " + workpack2delete.name + "?",
+                action: "YES_NO"
+              }
+            })
+            .afterClosed()
+            .subscribe(res => {
+              if (res == "YES") {
+                this.subscriptions.push(
+                  this.workpackDataService.DeleteWorkpack(id).subscribe(
+                    () => {
+                      this.subscriptions
+                      .push(
+                        this.workpackDataService.QueryWorkpackById(this.workpack.id)
+                        .subscribe(wpm => wpm));
+                    }
+                  )                      
+                );
+              }
+            })
           );
         }
       })

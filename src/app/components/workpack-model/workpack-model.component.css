@@ -14,10 +14,6 @@
     margin-top: 10px;
 }
 
-.property-card-box {
-    padding: 5px;
-}
-
 .property-full-width {
     width: 100%;
 }
@@ -105,11 +101,6 @@
     width: 80px!important;
 }
 
-.property-row {
-    margin-right: -20px;
-    margin-left: -20px;
-}
-
 .toggle-property{
     float: right;
     margin-left: 20px;
@@ -118,4 +109,20 @@
 
 .property-panel{
     overflow: visible;
+}
+
+.property-type-title {
+    display: inline-block;
+    color: gray;
+    margin-left: 5px;
+    font-weight: normal;
+    font-size: smaller;
+}
+
+.profile-checkbox {
+    margin-top: 20px;
+}
+
+.profile-checkbox div {
+    margin-right: 3px;
 }

@@ -4,7 +4,7 @@
           <li *ngFor="let crumb of breadcrumbTrail; let i = index"
               class="breadcrumb-item"
               [ngClass]="{active: crumb.active}">
-              <a  routerLink="/{{crumb.route}}/{{crumb.action}}/{{crumb.id}}{{crumb.templateId}}" 
+              <a  routerLink="/{{crumb.route}}/{{crumb.action}}/{{crumb.id}}{{crumb.modelId}}" 
                     routerLinkActive="active" 
                     aria-current="page"
                     (click)="GoTo(i)">

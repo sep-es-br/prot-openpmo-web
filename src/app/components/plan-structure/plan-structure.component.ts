@@ -3,46 +3,49 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { Subscription, Observable } from 'rxjs';
 import { Office } from '../../model/office';
-import { SchemaTemplate } from '../../model/schema-template';
+import { PlanStructure } from '../../model/plan-structure';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
-import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { TranslateConstants } from '../../model/translate';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-schema-template',
-  templateUrl: './schema-template.component.html',
-  styleUrls: ['./schema-template.component.css']
+  selector: 'app-plan-structure',
+  templateUrl: './plan-structure.component.html',
+  styleUrls: ['./plan-structure.component.css']
 })
-export class SchemaTemplateComponent implements OnInit {
+export class PlanStructureComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
-    private schemaDataService: SchemaDataService,
+    private PlanDataService: PlanDataService,
     private workpackDataService: WorkpackDataService,
     private router: Router,
     private crumbService: BreadcrumbService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder,
+    public dialog: MatDialog) {}
 
   //Constants for translate
   translate = new TranslateConstants();
 
-  formGroupSchemaTemplate = this.fb.group({
+  formGroupPlanStructure = this.fb.group({
     name: ['', Validators.required],
     fullName: ['']
   });
   
   subscriptions: Subscription[] = [];
   office: Office = new Office();
-  schemaTemplate: SchemaTemplate = new SchemaTemplate();
+  planStructure: PlanStructure = new PlanStructure();
   action: String;
   title: String;
   showForm: Boolean;
   showChildren: Boolean;
   propertiesPanelOpenState: Boolean = false;
-  workpackTemplatesPanelOpenState: Boolean = true;
+  workpackModelsPanelOpenState: Boolean = true;
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
@@ -53,14 +56,14 @@ export class SchemaTemplateComponent implements OnInit {
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
       this.propertiesPanelOpenState = true;
-      this.workpackTemplatesPanelOpenState = false;
+      this.workpackModelsPanelOpenState = false;
     }     
 
     this.subscriptions.push(
-      this.schemaDataService.schemaTemplate.subscribe(st => {
-        this.schemaTemplate = st;
-        this.formGroupSchemaTemplate.controls['name'].setValue(this.schemaTemplate.name);
-        this.formGroupSchemaTemplate.controls['fullName'].setValue(this.schemaTemplate.fullName);
+      this.PlanDataService.planStructure.subscribe(ps => {
+        this.planStructure = ps;
+        this.formGroupPlanStructure.controls['name'].setValue(this.planStructure.name);
+        this.formGroupPlanStructure.controls['fullName'].setValue(this.planStructure.fullName);
       })
     );
 
@@ -70,8 +73,8 @@ export class SchemaTemplateComponent implements OnInit {
       })
     );
 
-    this.formGroupSchemaTemplate.statusChanges.subscribe(status => {
-        return (status == 'VALID' && this.UserChangedSomething(this.formGroupSchemaTemplate.value)) 
+    this.formGroupPlanStructure.statusChanges.subscribe(status => {
+        return (status == 'VALID' && this.UserChangedSomething(this.formGroupPlanStructure.value)) 
                 ? this.ShowSaveButton() 
                 : this.HideSaveButton();
     });
@@ -82,8 +85,8 @@ export class SchemaTemplateComponent implements OnInit {
 
   //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
-    if (val.name != this.schemaTemplate.name) return true;
-    if (val.fullName != this.schemaTemplate.fullName) return true;
+    if (val.name != this.planStructure.name) return true;
+    if (val.fullName != this.planStructure.fullName) return true;
   }
 
   //Start - Save Button Interaction
@@ -108,7 +111,7 @@ export class SchemaTemplateComponent implements OnInit {
   //Panel definition dariables
   SetPanels(action: String) {
     this.action = action;
-    this.title = (action == 'new') ? 'New Schema Template' : '';
+    this.title = (action == 'new') ? 'New Plan Structure' : '';
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -117,10 +120,10 @@ export class SchemaTemplateComponent implements OnInit {
   // Export the information to be saved to the database after pressing the save button
   //
   onSubmit(){
-    this.schemaTemplate.name = this.formGroupSchemaTemplate.value.name.trim();
-    this.schemaTemplate.fullName = this.formGroupSchemaTemplate.value.fullName.trim();
+    this.planStructure.name = this.formGroupPlanStructure.value.name.trim();
+    this.planStructure.fullName = this.formGroupPlanStructure.value.fullName.trim();
     if (this.action == 'new') {
-      this.office.schemaTemplates.push(this.schemaTemplate);
+      this.office.planStructures.push(this.planStructure);
       this.subscriptions.push(
         this.officeDataService
         .UpdateOffice(this.office)
@@ -137,17 +140,17 @@ export class SchemaTemplateComponent implements OnInit {
     }
     else {
       this.subscriptions.push(
-        this.schemaDataService
-        .UpdateSchemaTemplate(this.schemaTemplate)
+        this.PlanDataService
+        .UpdatePlanStructure(this.planStructure)
         .subscribe(
-          st => {
-            this.schemaTemplate = st;
+          ps => {
+            this.planStructure = ps;
             this.HideSaveButton();
             this.ShowMessage();
             window.setTimeout(
               () => {this.HideMessage();}, 
               3000);
-            this.crumbService.SetCurrentSchemaTemplate(st);
+            this.crumbService.SetCurrentPlanStructure(ps);
           }
         )
       );
@@ -155,25 +158,51 @@ export class SchemaTemplateComponent implements OnInit {
   }
 
   ////////////////////////////////////////////////////////////////////////
-  //EXCLUSION MODULE - Workpack Template
+  //EXCLUSION MODULE - Workpack Model
   //
   //Identification Parameter: id
   //
-  DeleteWorkpackTemplate(id: string) {
+  DeleteWorkpackModel(id: string) {
     this.subscriptions
     .push(
       this.workpackDataService
-      .GetWorkpackTemplateById(id)
-      .subscribe(workpackTemplate2delete => {
-        if (workpackTemplate2delete.components.length > 0) {
-          alert("Sorry, you can not delete " + workpackTemplate2delete.name + " because it is not empty.")
-        }
-        else if(confirm("Are you sure to delete " + workpackTemplate2delete.name + "?")) {
-          this.workpackDataService.DeleteWorkpackTemplate(id).subscribe(
-            () => {
-              this.schemaDataService.QuerySchemaTemplateById(this.schemaTemplate.id).subscribe(res => res);
+      .GetWorkpackModelById(id)
+      .subscribe(workpackModel2delete => {
+        if (workpackModel2delete.components.length > 0) {
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Warning",
+              message: "Sorry, you can not delete a workpack model that contains nested workpack models.",
+              action: "OK"
             }
+          });
+        }
+        else {
+          this.subscriptions.push(
+            this.dialog.open(MessageDialogComponent, { 
+              data: {
+                title: "Attention",
+                message: "Are you sure you want to delete " + workpackModel2delete.name + "?",
+                action: "YES_NO"
+              }
+            })
+            .afterClosed()
+            .subscribe(res => {
+              if (res == "YES") {
+                this.subscriptions.push(
+                  this.workpackDataService.DeleteWorkpackModel(id).subscribe(
+                    () => {
+                      this.subscriptions
+                      .push(
+                        this.PlanDataService.QueryPlanStructureById(this.planStructure.id)
+                        .subscribe(ps => ps));
+                    }
+                  )                      
+                );
+              }
+            })
           );
+
         }
       })
     );
@@ -183,7 +212,7 @@ export class SchemaTemplateComponent implements OnInit {
   // END OF PAGE
   // Suspension of signatures when closing the page
   ngOnDestroy() {
-    this.crumbService.CleanSchemaTemplate();
+    this.crumbService.CleanPlanStructure();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
