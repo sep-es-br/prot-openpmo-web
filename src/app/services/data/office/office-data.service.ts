@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { Office } from '../../../model/office';
 import { environment } from 'src/environments/environment';
 import { SpinnerService } from '../../spinner/spinner.service';
+import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
+import { MatDialog } from '@angular/material';
 
 
 @Injectable({
@@ -25,8 +27,26 @@ export class OfficeDataService {
   private basePathURL = environment.baseAPIPath;
 
   constructor(private http: HttpClient, 
-              private spinnerService: SpinnerService) {
+              private spinnerService: SpinnerService,
+              public dialog: MatDialog) {
   }
+
+  ///////////////////////////////////////////////////////////////////////
+  //
+  // Show an error message in a modal dialog box
+  // 
+  // Return: none
+  // 
+  ShowErrorMessagee(error){
+    this.dialog.open(MessageDialogComponent, { 
+      data: {
+        title: error.statusText,
+        message: error.message,
+        action: "OK"
+      }
+    });    
+  }
+
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -38,10 +58,16 @@ export class OfficeDataService {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    this.http.get(URL).subscribe(res => {
-      this.$offices.next(res as Office[]);
-      this.spinnerService.HideSpinner();
-    });
+    this.http.get(URL).subscribe(
+      (res) => {
+        this.$offices.next(res as Office[]);
+        this.spinnerService.HideSpinner();
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -60,11 +86,17 @@ export class OfficeDataService {
     return this
             .http
             .get(URL)
-            .pipe(map<any, Office>(res => {
-              this.$office.next(res as Office);
-              this.spinnerService.HideSpinner();
-              return res as Office;
-            }));
+            .pipe(map<any, Office>(
+              (res) => {
+                this.$office.next(res as Office);
+                this.spinnerService.HideSpinner();
+                return res as Office;
+              },
+              (error) => {
+                this.spinnerService.HideSpinner();
+                this.ShowErrorMessagee(error);
+              }
+            ));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -84,10 +116,16 @@ export class OfficeDataService {
     }
     else {
       this.spinnerService.ShowSpinner();
-      return this.http.get(URL).pipe(map<any,Office>(res => {
-        this.spinnerService.HideSpinner();
-        return res;
-      }));
+      return this.http.get(URL).pipe(map<any,Office>(
+        (res) => {
+          this.spinnerService.HideSpinner();
+          return res;
+        },
+        (error) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(error);
+        }
+      ));
     }
   }
 
@@ -112,10 +150,16 @@ export class OfficeDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Office>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    ).pipe(map<any, Office>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -139,10 +183,16 @@ export class OfficeDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Office>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    ).pipe(map<any, Office>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -158,10 +208,16 @@ export class OfficeDataService {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
-    return this.http.delete(URL).pipe(map<any, any>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    return this.http.delete(URL).pipe(map<any, any>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
   ////////////////////////////////////////////////////////////////////////

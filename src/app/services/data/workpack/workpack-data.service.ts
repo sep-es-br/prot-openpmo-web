@@ -6,6 +6,8 @@ import { Workpack } from '../../../model/workpack';
 import { WorkpackModel } from '../../../model/workpack-model';
 import { environment } from 'src/environments/environment';
 import { SpinnerService } from '../../spinner/spinner.service';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 
 export class Panel {
   action: String = '';
@@ -52,8 +54,26 @@ export class WorkpackDataService {
   private basePathURL = environment.baseAPIPath;
 
   constructor(private http: HttpClient, 
-              private spinnerService: SpinnerService) {
+              private spinnerService: SpinnerService,
+              public dialog: MatDialog) {
   }
+
+  ///////////////////////////////////////////////////////////////////////
+  //
+  // Show an error message in a modal dialog box
+  // 
+  // Return: none
+  // 
+  ShowErrorMessagee(error){
+    this.dialog.open(MessageDialogComponent, { 
+      data: {
+        title: error.statusText,
+        message: error.message,
+        action: "OK"
+      }
+    });    
+  }  
+
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -71,14 +91,20 @@ export class WorkpackDataService {
     return this
             .http
             .get(URL)
-            .pipe(map<any, Workpack>(res => {
-              if (res.properties[0] == undefined) {
-                res.properties = [];
+            .pipe(map<any, Workpack>(
+              (res) => {
+                if (res.properties[0] == undefined) {
+                  res.properties = [];
+                }
+                this.$workpack.next(res as Workpack);
+                this.spinnerService.HideSpinner();
+                return res as Workpack;
+              },
+              (error) => {
+                this.spinnerService.HideSpinner();
+                this.ShowErrorMessagee(error);
               }
-              this.$workpack.next(res as Workpack);
-              this.spinnerService.HideSpinner();
-              return res as Workpack;
-            }));
+            ));
   }
 
 
@@ -99,13 +125,19 @@ export class WorkpackDataService {
     }
     else {
       this.spinnerService.ShowSpinner();
-      return this.http.get(URL).pipe(map<any,Workpack>(res =>{
-        if (res.properties[0] == undefined) {
-          res.properties = [];
+      return this.http.get(URL).pipe(map<any,Workpack>(
+        (res) =>{
+          if (res.properties[0] == undefined) {
+            res.properties = [];
+          }
+          this.spinnerService.HideSpinner();
+          return res;
+        },
+        (error) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(error);
         }
-        this.spinnerService.HideSpinner();
-        return res;
-      }));
+      ));
     }
   }
 
@@ -145,10 +177,16 @@ export class WorkpackDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Workpack>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    ).pipe(map<any, Workpack>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
 
@@ -165,10 +203,16 @@ export class WorkpackDataService {
     const pathURL = environment.workpackAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
-    return this.http.delete(URL).pipe(map<any, any>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    return this.http.delete(URL).pipe(map<any, any>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -187,11 +231,17 @@ export class WorkpackDataService {
     return this
             .http
             .get(URL)
-            .pipe(map<any, WorkpackModel>(res => {
-              this.$workpackModel.next(res as WorkpackModel);
-              this.spinnerService.HideSpinner();
-              return res as WorkpackModel;
-            }));
+            .pipe(map<any, WorkpackModel>(
+              (res) => {
+                this.$workpackModel.next(res as WorkpackModel);
+                this.spinnerService.HideSpinner();
+                return res as WorkpackModel;
+              },
+              (error) => {
+                this.spinnerService.HideSpinner();
+                this.ShowErrorMessagee(error);
+              }
+            ));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -211,10 +261,16 @@ export class WorkpackDataService {
     // this
     //   .http
     //   .get(URL)
-    //   .subscribe(res => {
-    //     this.$workpackModelTree.next(res as WorkpackModel);
-    //     this.spinnerService.HideSpinner();
-    //   });
+    //   .subscribe(
+    //     (res) => {
+    //       this.$workpackModelTree.next(res as WorkpackModel);
+    //       this.spinnerService.HideSpinner();
+    //     },
+    //     (error) => {
+    //       this.spinnerService.HideSpinner();
+    //       this.ShowErrorMessagee(error);
+    //     }
+    //   );
   }
 
 
@@ -230,13 +286,19 @@ export class WorkpackDataService {
     const pathURL = environment.workpackModelAPI + environment.propertyTypesResource;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any,String[]>(res => {
-      if (res.length > 0) {
-        this.$propertyTypes.next(res as String[]);
+    return this.http.get(URL).pipe(map<any,String[]>(
+      (res) => {
+        if (res.length > 0) {
+          this.$propertyTypes.next(res as String[]);
+        }
+        this.spinnerService.HideSpinner();
+        return res as String[];
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
       }
-      this.spinnerService.HideSpinner();
-      return res as String[];
-    }));
+    ));
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -252,10 +314,16 @@ export class WorkpackDataService {
     const pathURL = environment.workpackModelAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any, WorkpackModel>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    return this.http.get(URL).pipe(map<any, WorkpackModel>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
 
@@ -272,11 +340,17 @@ export class WorkpackDataService {
     const pathURL = environment.workpackModelAPI + environment.defaultResource;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any, WorkpackModel>(res => {
-      this.$workpackModel.next(res as WorkpackModel);
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    return this.http.get(URL).pipe(map<any, WorkpackModel>(
+      (res) => {
+        this.$workpackModel.next(res as WorkpackModel);
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
 
@@ -304,10 +378,16 @@ export class WorkpackDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, WorkpackModel>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    ).pipe(map<any, WorkpackModel>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
 
@@ -324,10 +404,16 @@ export class WorkpackDataService {
     const pathURL = environment.workpackModelAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
-    return this.http.delete(URL).pipe(map<any, any>(res => {
-      this.spinnerService.HideSpinner();
-      return res;
-    }));
+    return this.http.delete(URL).pipe(map<any, any>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    ));
   }
 
   ////////////////////////////////////////////////////////////////////////
