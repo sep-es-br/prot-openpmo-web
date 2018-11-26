@@ -10,6 +10,7 @@ export class AppComponent implements OnInit {
   title = 'openpmo-web';
   lang : string = "en";
   name2:string;
+  mask:string;
 
   constructor(private translate: TranslateService){
     translate.setDefaultLang('en');
