@@ -1,0 +1,128 @@
+.not-a-link {
+    cursor: default!important;
+}
+
+.propertytype-selection {
+    flex: none;
+}
+
+/* .save-button {
+    margin-top: 20px;
+} */
+
+.add-property-button {
+    margin-top: 10px;
+}
+
+.property-full-width {
+    width: 100%;
+}
+
+.property-header {
+    margin-left: 0px;
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
+.type-in-parentesis {
+    margin-left: 5px;
+}
+
+.property-name {
+    display: inline-block;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.delete-button {
+    color: gray;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 6px!important;
+    display: contents;
+    text-align: right;
+}
+
+.property-logo-mat-icon {
+    display: inline-block;
+    font-size: 19px;
+    color: gray;
+    margin-right: 5px;
+    font-weight: bold;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    min-width: 30px;
+    min-height: 30px;
+    text-align: center;
+}
+
+.property-logo-font {
+    display: inline-block;
+    font-size: 22px;
+    color: gray;
+    margin-right: 5px;
+    font-weight: bold;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    min-width: 30px;
+    min-height: 30px;
+    text-align: center;
+    padding-top: 4px;
+}
+
+.property-title {
+    display: inline-block;
+    color: gray;
+}
+
+.card-content{
+    margin-top: 16px;
+    margin-left: -12px;
+    margin-right: -12px;
+}
+
+.textInput{
+    width: 240px;
+    display: inline-block;
+}
+
+.form-field {
+    width: 100%;
+}
+
+.number-field {
+    width: 50px!important;
+}
+
+.minimum-width {
+    display: flex;
+    width: 80px!important;
+}
+
+.toggle-property{
+    float: right;
+    margin-left: 20px;
+    margin-top: 6px;
+}
+
+.property-panel{
+    overflow: visible;
+}
+
+.property-type-title {
+    display: inline-block;
+    color: gray;
+    margin-left: 5px;
+    font-weight: normal;
+    font-size: smaller;
+}
+
+.profile-checkbox {
+    margin-top: 20px;
+}
+
+.profile-checkbox div {
+    margin-right: 3px;
+}

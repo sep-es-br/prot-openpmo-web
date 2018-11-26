@@ -3,31 +3,31 @@
 
 <div class="page-container">
   <mat-accordion >
-    <!-- Planning Schemas Panel -->
+    <!-- Planning plans Panel -->
     <mat-expansion-panel
-      [expanded]="schemaTemplatesPanelOpenState"
-      (opened)="schemaTemplatesPanelOpenState = true"
-      (closed)="schemaTemplatesPanelOpenState = false">
+      [expanded]="planStructuresPanelOpenState"
+      (opened)="planStructuresPanelOpenState = true"
+      (closed)="planStructuresPanelOpenState = false">
 
       <!-- Header -->
       <mat-expansion-panel-header>
-        <mat-panel-title translate>Schema Templates</mat-panel-title>
+        <mat-panel-title translate>Plan Structures</mat-panel-title>
       </mat-expansion-panel-header>
 
       <!-- Body -->
       <div class="container-fluid cards">
         <div class="row">
 
-          <mat-card class="card card-style" *ngFor="let schemaTemplate of office.schemaTemplates"> 
+          <mat-card class="card card-style" *ngFor="let planStructure of office.planStructures"> 
             <div class="dropleft card-setting" data-toggle="dropdown">
               <mat-icon fontSet="fa" fontIcon="fa-bars" id="dropdownMenuButton"></mat-icon>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" (click)="DeleteSchemaTemplate(schemaTemplate.id)" translate>Delete</a>
+                <a class="dropdown-item" (click)="DeletePlanStructure(planStructure.id)" translate>Delete</a>
               </div>
             </div>
             <mat-card-title class="title-card">
-              <a  routerLink="/schematemplate/edit/{{schemaTemplate.id}}" 
-              routerLinkActive="active">{{schemaTemplate.name}}</a>
+              <a  routerLink="/planstructure/edit/{{planStructure.id}}" 
+              routerLinkActive="active">{{planStructure.name}}</a>
             </mat-card-title>
             <mat-card-content class="img-card">
               <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>
@@ -36,7 +36,7 @@
 
           <mat-card class="card card-style new-card">
             <div class="card-image-new" 
-              routerLink="/schematemplate/new/{{office.id}}" 
+              routerLink="/planstructure/new/{{office.id}}" 
               routerLinkActive="active">
             <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
             </div>

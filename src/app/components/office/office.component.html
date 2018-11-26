@@ -34,6 +34,10 @@
             placeholder={{translate.fullName|translate:use}}/>
         </mat-form-field>
 
+        <div class="id-container-properties">
+          <span>ID: 005</span>
+        </div>
+
         <!-- SAVE BUTTON -->
         <div class="footer-button"
             [style.bottom]="SaveButtonBottomPosition">
@@ -47,12 +51,12 @@
       </form>
     </mat-expansion-panel>
     
-    <!-- Planning Schemas Panel -->
+    <!-- Planning plans Panel -->
     <mat-expansion-panel
       *ngIf="action != 'new'"
-      [expanded]="schemasPanelOpenState"
-      (opened)="schemasPanelOpenState = true"
-      (closed)="schemasPanelOpenState = false">
+      [expanded]="PlansPanelOpenState"
+      (opened)="PlansPanelOpenState = true"
+      (closed)="PlansPanelOpenState = false">
       
       <!-- Header -->
       <mat-expansion-panel-header>
@@ -62,16 +66,16 @@
         <!-- Body -->
         <div class="container-fluid cards">
           <div class="row">
-            <mat-card class="card card-style" *ngFor="let schema of office.schemas">
+            <mat-card class="card card-style" *ngFor="let plan of office.plans">
               <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" (click)="DeleteSchema(schema.id)" translate>Delete</a>
+                  <a class="dropdown-item" (click)="DeletePlan(plan.id)" translate>Delete</a>
                 </div>
               </div>
               <mat-card-title class="title-card">
-                <a  routerLink="/schema/edit/{{schema.id}}&{{schema.template?.id}}" 
-                routerLinkActive="active">{{schema.name}}</a>
+                <a  routerLink="/plan/edit/{{plan.id}}&{{plan.structure?.id}}" 
+                routerLinkActive="active">{{plan.name}}</a>
               </mat-card-title>
               <mat-card-content class="img-card">
                 <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>   
@@ -79,14 +83,14 @@
             </mat-card>
 
             <mat-card class="card card-style new-card">
-              <div *ngIf="office.schemaTemplates.length > 0">
+              <div *ngIf="office.planStructures.length > 0">
                 <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
                   <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a *ngFor="let template of office.schemaTemplates" 
+                    <a *ngFor="let model of office.planStructures" 
                     class="dropdown-item" 
-                    routerLink="/schema/new/{{office.id}}&{{template.id}}" 
-                    routerLinkActive="active">{{template.name}}</a>
+                    routerLink="/plan/new/{{office.id}}&{{model.id}}" 
+                    routerLinkActive="active">{{model.name}}</a>
                   </div>
                 </div>
               </div>

@@ -4,9 +4,8 @@
     <div class="container-fluid topo">
 
         <!--PROJECT NAME-->
-        <div class="logo" routerLink="">
-            <mat-icon fontSet="fas" fontIcon="fa-list" aria-hidden="true"></mat-icon>
-            <span>OpenPMO</span>
+        <div class="logo">
+            <img class="logo-top" src="../assets/images/Logo.png">
         </div>
 
         <!-- OLD BUTTON USER
@@ -15,39 +14,67 @@
         </div>-->
         
         <!--BUTTON USER-->
-        <button class="config" mat-icon-button [matMenuTriggerFor]="menu">
+        <button class="user" mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
         </button>
-        <mat-menu #menu="matMenu">
-            <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages">{{lang|translate:use}}</button>
+            
+        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+
+            <button class="UserButton" mat-menu-item>
+                <mat-icon fontSet="fas" fontIcon="fa-user" aria-hidden="true"></mat-icon>
+                <span>My profile</span>
+            </button>
+
+            <button class="UserButton" mat-menu-item>
+                <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
+                <span>Account settings</span>
+            </button>
+
+            <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages">
+                <mat-icon fontSet="fa" fontIcon="fa-flag" aria-hidden="true"></mat-icon>
+                {{lang|translate:use}}
+            </button>
+
+            <button class="UserButton line" mat-menu-item>
+                <mat-icon style="color: brown;" fontSet="fas" fontIcon="fa-sign-out-alt" aria-hidden="true"></mat-icon>
+                <span class="log-out">Log Out</span>
+            </button>
+
         </mat-menu>
+
         <mat-menu #languages="matMenu">
-            <button class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>English</button>
-            <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>Português BR</button>
+            <button  class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>
+                <!-- <i class="icon-flag-br icon-positin"></i> -->
+                <span class="margin-language">English</span>
+            </button>
+            <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>
+                <!-- <i class="icon-flag-br icon-positin"></i> -->
+                <span class="margin-language">Português BR</span>
+            </button>
         </mat-menu>
         
         <!--BUTTON CONFIG-->
-        <div class="config">
+        <!-- <div class="config">
             <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-        </div>
+        </div> -->
 
     </div>
 
     <!--PROGRESS BAR-->
-    <!-- <app-progress></app-progress>
+    <app-progress></app-progress>
     <div class="progress-bar">
         <div [ngClass]="{hideProgress: !spinnerOn}">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </div>
-    </div> -->
+    </div>
 
     <app-breadcrumb></app-breadcrumb>
 
-    <div class="container-fluid panel">
+    <!-- <div class="container-fluid panel">
         <div class="filter">
             <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
         </div>
-    </div>
+    </div> -->
 
     <router-outlet></router-outlet>
 

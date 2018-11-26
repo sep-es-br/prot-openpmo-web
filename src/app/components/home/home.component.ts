@@ -77,10 +77,10 @@ export class HomeComponent implements OnInit {
   deleteOffice(id: string) {
 
     let officeToDelete = this.offices.find(o => o.id === id);
-    if (officeToDelete.schemas.length > 0) {
-      alert('Sorry, you can not delete this office because it is has schemas.')
-    } else if (officeToDelete.schemaTemplates.length > 0) {
-      alert('Sorry, you can not delete this office because it is has schema templates.')
+    if (officeToDelete.plans.length > 0) {
+      alert('Sorry, you can not delete this office because it is has plans.')
+    } else if (officeToDelete.planStructures.length > 0) {
+      alert('Sorry, you can not delete this office because it is has plan structures.')
     } else if(confirm('Are you sure to delete the office ' + officeToDelete.name + '?')) {
       this.officeDataService.DeleteOffice(id).subscribe(
         () => {

@@ -5,10 +5,10 @@ import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
-import { SchemaDataService } from '../../services/data/schema/schema-data.service';
+import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { TranslateConstants } from '../../model/translate';
-import { AppComponent } from '../../app.component';
-
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 @Component({
   selector: 'app-office',
@@ -19,11 +19,12 @@ export class OfficeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
-    private schemaDataService: SchemaDataService,
+    private PlanDataService: PlanDataService,
     private breadcrumbService: BreadcrumbService,
     private router: Router,
     private crumbService: BreadcrumbService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    public dialog: MatDialog) { }
 
   //Constants for translate
   translate = new TranslateConstants();
@@ -39,7 +40,7 @@ export class OfficeComponent implements OnInit {
   action: String;
   breadcrumbTrail: Breadcrumb[] = [];
   propertiesPanelOpenState: Boolean = false;
-  schemasPanelOpenState: Boolean = true;
+  PlansPanelOpenState: Boolean = true;
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
@@ -50,7 +51,7 @@ export class OfficeComponent implements OnInit {
     this.action = this.route.snapshot.paramMap.get('action');
     if (this.action == 'new') {
       this.propertiesPanelOpenState = true;
-      this.schemasPanelOpenState = false;
+      this.PlansPanelOpenState = false;
     } 
     this.officeId = this.route.snapshot.paramMap.get('id');
     this.subscriptions.push(
@@ -135,21 +136,45 @@ export class OfficeComponent implements OnInit {
 
   @Input() lang;
   ////////////////////////////////////////////////////////////////////////
-  //EXCLUSION MODULE - Schema
+  //EXCLUSION MODULE - Plan
   //
   //Identification Parameter: id
   //
-  DeleteSchema(id: string) {
-    this.schemaDataService.GetSchemaById(id).subscribe(schema2delete => {
-      if (schema2delete.workpacks.length > 0) {
-        alert("Sorry, you can not delete this schema because it is not empty.")
-      }
-      else if(confirm("Are you sure to delete " + schema2delete.name + "?")) {
-        this.schemaDataService.DeleteSchema(id).subscribe(
-          () => {
-            this.officeDataService.QueryOfficeById(this.office.id);
-            this.router.navigate (['./office/' + this.action + '/' + this.office.id]);
+  DeletePlan(id: string) {
+    this.PlanDataService.GetPlanById(id).subscribe(Plan2delete => {
+      if (Plan2delete.workpacks.length > 0) {
+        this.dialog.open(MessageDialogComponent, { 
+          data: {
+            title: "Warning",
+            message: "Sorry, you can not delete a plan that contains nested workpacks.",
+            action: "OK"
           }
+        });
+      }
+      else {
+        this.subscriptions.push(
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: "Attention",
+              message: "Are you sure to delete " + Plan2delete.name + "?",
+              action: "YES_NO"
+            }
+          })
+          .afterClosed()
+          .subscribe(res => {
+            if (res == "YES") {
+              this.subscriptions.push(
+                this.PlanDataService.DeletePlan(id).subscribe(
+                  () => {
+                    this.subscriptions
+                    .push(
+                      this.officeDataService.QueryOfficeById(this.office.id)
+                      .subscribe(o => o));
+                  }
+                )                      
+              );
+            }
+          })
         );
       }
     });

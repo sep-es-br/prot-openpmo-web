@@ -2,17 +2,17 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { OfficeComponent } from './components/office/office.component';
-import { SchemaComponent } from './components/schema/schema.component';
+import { PlanComponent } from './components/plan/plan.component';
 import { WorkpackComponent } from './components/workpack/workpack.component';
 import { WorkpackResolver } from './components/workpack/workpack.resolver';
 import { OfficeAdminComponent } from './components/office-admin/office-admin.component';
-import { SchemaTemplateComponent } from './components/schema-template/schema-template.component';
-import { WorkpackTemplateComponent } from './components/workpack-template/workpack-template.component';
-import { WorkpackTemplateResolver } from './components/workpack-template/workpack-template.resolver';
-import { SchemaResolver } from './components/schema/schema.resolver';
+import { PlanStructureComponent } from './components/plan-structure/plan-structure.component';
+import { WorkpackModelComponent } from './components/workpack-model/workpack-model.component';
+import { WorkpackModelResolver } from './components/workpack-model/workpack-model.resolver';
+import { PlanResolver } from './components/plan/plan.resolver';
 import { OfficeResolver } from './components/office/office.resolver';
 import { OfficeAdminResolver } from './components/office-admin/office-admin.resolver';
-import { SchemaTemplateResolver } from './components/schema-template/schema-template.resolver';
+import { PlanStructureResolver } from './components/plan-structure/plan-structure.resolver';
 
 ////////////////////////////////////////////////////////////////////////
 // ROUTES DEFINITION:
@@ -34,10 +34,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'schema/:action/:id',
-    component: SchemaComponent,
+    path: 'plan/:action/:id',
+    component: PlanComponent,
     resolve: {      
-      schema: SchemaResolver
+      plan: PlanResolver
     }
   },
   {
@@ -56,18 +56,18 @@ const routes: Routes = [
     }
   },
   {
-    path: 'schematemplate/:action/:id',
-    component: SchemaTemplateComponent,
+    path: 'planstructure/:action/:id',
+    component: PlanStructureComponent,
     resolve: {      
-      schematemplate: SchemaTemplateResolver
+      planstructure: PlanStructureResolver
     },
     runGuardsAndResolvers: 'always'
   },
   {
-    path: 'workpacktemplate/:action/:id',
-    component: WorkpackTemplateComponent,
+    path: 'workpackmodel/:action/:id',
+    component: WorkpackModelComponent,
     resolve: {
-      workpacktemplate: WorkpackTemplateResolver
+      workpackmodel: WorkpackModelResolver
     },
     runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   }
