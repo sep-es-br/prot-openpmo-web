@@ -33,6 +33,10 @@
             placeholder={{translate.fullName|translate:use}}/>
         </mat-form-field>
 
+        <div class="id-container-properties">
+          <span>ID: {{plan.id}}</span>
+        </div>              
+
         <!-- SAVE BUTTON -->
         <div class="footer-button"
             [style.bottom]="SaveButtonBottomPosition">
@@ -77,16 +81,19 @@
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
               </div>
               <mat-card-title class="subtitle-card">
-                Projeto Estruturante
+                {{workpack.model.name}}
               </mat-card-title>
               <mat-card-title class="title-card">
                 <a  routerLink="/workpack/edit/{{workpack.id}}&{{workpack.model?.id}}" 
                     routerLinkActive="active">{{workpack.name}}</a>
               </mat-card-title>
+            
               <div class="card-manager">
                 <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
               </div>
-              
+              <div class="id-container-properties">
+                <span>ID: {{workpack.id}}</span>
+              </div>           
           </mat-card>
 
           <mat-card class="card new-card card-style">
