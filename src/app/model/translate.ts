@@ -9,4 +9,6 @@ export class TranslateConstants {
     exclusionschema: string = 'Sorry, you can not delete this schema because it is not empty.';
     exclusionsureschema: string = 'Are you sure to delete';
     rows: string = 'Rows';
+
+    
 }

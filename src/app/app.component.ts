@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { LocaleService } from './services/locale/locale-service.service';
+import { LocaleConfig } from './model/locale-config';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +11,19 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent implements OnInit {
   title = 'openpmo-web';
   lang : string = "en";
-  name2:string;
-  mask:string;
+  localeConfig: LocaleConfig = new LocaleConfig();
 
-  constructor(private translate: TranslateService){
+  constructor(private translate: TranslateService, private localeService: LocaleService){
     translate.setDefaultLang('en');
+    this.localeService.SetLocaleConfig('en');
   }
 
   ngOnInit() {
+    // this.localeService.localeConfig.subscribe(
+    //   (conf) => {
+    //     this.localeConfig = conf;
+    //   }
+    // );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -38,7 +45,8 @@ export class AppComponent implements OnInit {
   
   switchLanguage(language: string) {
     this.translate.use(language);
-    this.lang = language;    
+    this.lang = language;   
+    this.localeService.SetLocaleConfig(language);
   }
  
 }

@@ -35,6 +35,20 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from '@angular/common';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
+import { NgxMaskModule } from 'ngx-mask';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+import { LocaleService } from './services/locale/locale-service.service';
+ 
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+    align: "right",
+    allowNegative: true,
+    decimal: ",",
+    precision: 2,
+    prefix: "R$ ",
+    suffix: "",
+    thousands: "."
+};
 
 @NgModule({
   declarations: [
@@ -62,6 +76,8 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
     ReactiveFormsModule,
     CommonModule,
     NgPipesModule,
+    CurrencyMaskModule,
+    NgxMaskModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -74,7 +90,8 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
     OfficeDataService,
     PlanDataService,
     WorkpackDataService,
-    BreadcrumbService,
+    BreadcrumbService,    
+    LocaleService,
     CookieService,
     WorkpackResolver,
     PlanResolver,
@@ -82,7 +99,8 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
     OfficeResolver,
     OfficeAdminResolver,
     WorkpackModelResolver,
-    HttpClient
+    HttpClient,
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
   ],
   bootstrap: [AppComponent]
 })
