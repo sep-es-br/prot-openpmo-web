@@ -121,6 +121,9 @@
 
             </div>
           </div>
+          <div class="id-container-properties">
+            <span>ID: {{workpack.id}}</span>
+          </div>      
         </div>
 
         <!-- SAVE BUTTON -->
@@ -165,7 +168,7 @@
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
               </div>
               <mat-card-title class="subtitle-card">
-                Ação
+                {{component.model.name}}
               </mat-card-title>
               <mat-card-title class="title-card">
                 <a routerLink="/workpack/edit/{{component.id}}&{{component.model?.id}}" routerLinkActive="active">{{component.name}}</a>
@@ -173,6 +176,9 @@
               <div class="card-manager">
                 <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
               </div>
+              <div class="id-container-properties">
+                <span>ID: {{component.id}}</span>
+              </div>                    
             </mat-card>
 
           <mat-card class="card new-card card-style">

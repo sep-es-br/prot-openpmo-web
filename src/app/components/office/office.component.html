@@ -35,7 +35,7 @@
         </mat-form-field>
 
         <div class="id-container-properties">
-          <span>ID: 005</span>
+          <span>ID: {{office.id}}</span>
         </div>
 
         <!-- SAVE BUTTON -->
@@ -78,7 +78,10 @@
                 routerLinkActive="active">{{plan.name}}</a>
               </mat-card-title>
               <mat-card-content class="img-card">
-                <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>   
+                <mat-icon fontSet="fas" fontIcon="fa-project-diagram"></mat-icon>
+                <div class="id-container-properties">
+                  <span>ID: {{plan.id}}</span>
+                </div>
               </mat-card-content>
             </mat-card>
 

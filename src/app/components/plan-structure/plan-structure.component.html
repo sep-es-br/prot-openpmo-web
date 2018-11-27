@@ -32,6 +32,9 @@
             formControlName="fullName"
             placeholder={{translate.fullName|translate:use}}/>
         </mat-form-field>
+        <div class="id-container-properties">
+          <span>ID: {{planStructure.id}}</span>
+        </div>        
 
         <!-- SAVE BUTTON -->
         <div class="footer-button"
@@ -76,6 +79,9 @@
             <mat-card-title class="title-card">
               <a routerLink="/workpackmodel/edit/{{workpackModel.id}}" routerLinkActive="active">{{workpackModel.name}}</a>
             </mat-card-title>
+            <div class="id-container-properties">
+              <span>ID: {{workpackModel.id}}</span>
+            </div> 
           </mat-card>
 
           <mat-card class="card new-card card-style">
