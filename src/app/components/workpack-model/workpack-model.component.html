@@ -2,7 +2,7 @@
     <span translate>Saved successfully</span>
 </div>
 
-<div class="main-title">{{viewOptions.title|translate:use}}</div>
+<div class="main-title">{{viewOptions.title|translate}}</div>
 <div class="container-form">
   <mat-accordion >
 
@@ -24,7 +24,7 @@
             type="text"
             md-maxlength=20    
             formControlName="name"
-            placeholder={{translate.name|translate:use}}/>
+            placeholder={{translate.name|translate}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackModel.controls['name'].invalid && formGroupWorkpackModel.controls['name'].touched">
           <span translate>Name must be from 3 to 20 characteres long</span> 
@@ -32,7 +32,7 @@
         <div class="containerX" formArrayName="propertyProfiles">
           <div class="box" fxflex fxlayout="row">
             <div [class]="(pProfile.value.editing) ? 'property-profile-card-box property-full-width' : 'property-profile-card-box'"    
-              *ngFor="let pProfile of formGroupWorkpackModel.controls.propertyProfiles.controls; let i=index;">
+              *ngFor="let pProfile of formGroupWorkpackModel['controls'].propertyProfiles['controls']; let i=index;">
               <mat-expansion-panel  fxflex
                 [formGroup]="pProfile"
                 class="property-card"
