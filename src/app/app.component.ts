@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     this.lang = language;   
     this.localeService.SetLocaleConfig(language);
   }
- 
+  
 }
 
 

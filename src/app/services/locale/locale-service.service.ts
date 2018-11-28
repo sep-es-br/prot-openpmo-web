@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export class LocaleService {
 
-  // Observable property for the array of offices
+  // Observable property for the array of localeConfig
   private $localeConfig = new BehaviorSubject<LocaleConfig>(new LocaleConfig);
   localeConfig = this.$localeConfig.asObservable();
 
@@ -23,15 +23,17 @@ export class LocaleService {
   // 
   SetLocaleConfig(locale:string){
     switch (locale){
+
       case 'en':{
         this.$localeConfig.next(EN_CONFIG);
         break;
       }
 
-      case 'pt-br':{
+      case 'pt-BR':{
         this.$localeConfig.next(PT_BR_CONFIG);
         break;
       }
+      
     }
   }
 

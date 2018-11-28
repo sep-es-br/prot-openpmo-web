@@ -6,9 +6,10 @@ import { Subscription, Observable } from 'rxjs';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
-import { TranslateConstants } from '../../model/translate';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { LocaleService } from '../../services/locale/locale-service.service';
+import { LocaleConfig } from '../../model/locale-config';
 
 @Component({
   selector: 'app-office',
@@ -16,6 +17,9 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
   styleUrls: ['./office.component.css']
 })
 export class OfficeComponent implements OnInit {
+
+  localeConfig: LocaleConfig = new LocaleConfig();
+
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
@@ -24,10 +28,8 @@ export class OfficeComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
-    public dialog: MatDialog) { }
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    public dialog: MatDialog,
+    private localeService: LocaleService) { }
   
   formGroupOffice = this.fb.group({
     name: ['', Validators.required],
@@ -48,6 +50,13 @@ export class OfficeComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+    //Translate Service
+    this.localeService.localeConfig.subscribe(
+      (conf) => {
+        this.localeConfig = conf;
+      }
+    ); 
+    
     this.action = this.route.snapshot.paramMap.get('action');
     if (this.action == 'new') {
       this.propertiesPanelOpenState = true;

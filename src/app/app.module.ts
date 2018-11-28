@@ -5,9 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppMatModule } from './app.mat.module';
 import { AppComponent } from './app.component';
 import { OfficeDataService } from './services/data/office/office-data.service';
-
 import { AppRoutingModule } from './/app-routing.module';
-
 import { WorkpackResolver } from './components/workpack/workpack.resolver';
 import { WorkpackModelResolver } from './components/workpack-model/workpack-model.resolver';
 import { NgPipesModule } from 'ngx-pipes';
@@ -30,7 +28,6 @@ import { PlanDataService } from './services/data/plan/plan-data.service';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 import { ProgressComponent } from './components/progress/progress.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from '@angular/common';

@@ -14,10 +14,10 @@
 
                     <!-- Show the path traveled by the user in the upper area of ​​the screen -->
                     <span *ngIf="((i > 0) && (i < breadcrumbTrail.length - 1))">
-                        {{crumb.label|translate:user}}
+                        {{crumb.label | translate}}
                     </span>
                     <span *ngIf="((i > 0) && (i == breadcrumbTrail.length - 1))" disabled>
-                        {{crumb.label|translate:user}}
+                        {{crumb.label | translate}}
                     </span>
                     
             </a>

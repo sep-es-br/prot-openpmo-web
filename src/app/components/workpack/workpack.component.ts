@@ -11,13 +11,14 @@ import { ViewOptions } from '../../model/view-options';
 import { FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
-import { TranslateConstants } from '../../model/translate';
 import { PropertyProfile } from 'src/app/model/property-profile';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { Property } from 'src/app/model/property';
+import { LocaleService } from '../../services/locale/locale-service.service';
+import { LocaleConfig } from '../../model/locale-config';
 
 @Component({
   selector: 'app-workpack',
@@ -25,6 +26,8 @@ import { Property } from 'src/app/model/property';
   styleUrls: ['./workpack.component.css']
 })
 export class WorkpackComponent implements OnInit {
+
+  localeConfig: LocaleConfig = new LocaleConfig();
 
   constructor(
     private route: ActivatedRoute,
@@ -34,10 +37,8 @@ export class WorkpackComponent implements OnInit {
     private router: Router, 
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
-    public dialog: MatDialog) {}
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    public dialog: MatDialog,
+    private localeService: LocaleService) {}
 
   formGroupWorkpack = this.fb.group({
     id: [''],
@@ -59,6 +60,14 @@ export class WorkpackComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.localeService.localeConfig.subscribe(
+      (conf) => {
+        this.localeConfig = conf;
+      }
+    ); 
+
     this.viewOptions = this.route.snapshot.data.workpack;
     
     this.subscriptions.push(

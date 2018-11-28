@@ -9,9 +9,10 @@ import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
-import { TranslateConstants } from '../../model/translate';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { LocaleService } from '../../services/locale/locale-service.service';
+import { LocaleConfig } from '../../model/locale-config';
 
 @Component({
   selector: 'app-plan',
@@ -19,6 +20,8 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
   styleUrls: ['./plan.component.css']
 })
 export class PlanComponent implements OnInit {
+
+  localeConfig: LocaleConfig = new LocaleConfig();
 
   constructor(
     private route: ActivatedRoute,
@@ -28,10 +31,8 @@ export class PlanComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService, 
     private fb: FormBuilder,
-    public dialog: MatDialog ) {}
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    public dialog: MatDialog,
+    private localeService: LocaleService) {}
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -57,6 +58,13 @@ export class PlanComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+    //Translate Service
+    this.localeService.localeConfig.subscribe(
+      (conf) => {
+        this.localeConfig = conf;
+      }
+    ); 
+
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
       this.propertiesPanelOpenState = true;

@@ -21,7 +21,7 @@
           <input matInput
             type="text"      
             formControlName="name"
-            placeholder={{translate.name|translate:use}}
+            placeholder={{localeConfig.name}}
             required/> 
         </mat-form-field>
       <mat-error *ngIf="formGroupOffice.controls['name'].invalid && formGroupOffice.controls['name'].touched">
@@ -31,7 +31,7 @@
           <input matInput 
             type="text" 
             formControlName="fullName"
-            placeholder={{translate.fullName|translate:use}}/>
+            placeholder={{localeConfig.fullName}}/>
         </mat-form-field>
 
         <div class="id-container-properties">

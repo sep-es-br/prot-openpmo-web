@@ -11,9 +11,10 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { ViewOptions } from '../../model/view-options';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { PropertyProfile } from '../../model/property-profile';
-import { TranslateConstants } from '../../model/translate';
 import { MessageDialogComponent, DialogData } from '../message-dialog/message-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { LocaleService } from '../../services/locale/locale-service.service';
+import { LocaleConfig } from '../../model/locale-config';
 
 @Component({
   selector: 'app-workpack-model',
@@ -27,6 +28,8 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 export class WorkpackModelComponent implements OnInit {
 
+  localeConfig: LocaleConfig = new LocaleConfig();
+
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
@@ -35,10 +38,8 @@ export class WorkpackModelComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
-    public dialog: MatDialog) {}
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    public dialog: MatDialog,
+    private localeService: LocaleService) {}
 
   formGroupWorkpackModel = this.fb.group({
     id: [''],
@@ -66,6 +67,12 @@ export class WorkpackModelComponent implements OnInit {
   MessageRightPosition: String;
 
   ngOnInit() {
+    //Translate Service
+    this.localeService.localeConfig.subscribe(
+      (conf) => {
+        this.localeConfig = conf;
+      }
+    ); 
 
     this.viewOptions = this.route.snapshot.data.workpackmodel;
 

@@ -2,7 +2,7 @@
     <span translate>Saved successfully</span>
 </div>
 
-<div class="main-title">{{viewOptions.title|translate:use}}</div>
+<div class="main-title">{{viewOptions.title|translate}}</div>
 <div class="container-form">
   <mat-accordion >
 
@@ -24,7 +24,7 @@
             type="text"
             md-maxlength=20    
             formControlName="name"
-            placeholder={{translate.name|translate:use}}/>
+            placeholder={{localeConfig.name}}/>
         </mat-form-field>
         <mat-error *ngIf="formGroupWorkpackModel.controls['name'].invalid && formGroupWorkpackModel.controls['name'].touched">
           <span translate>Name must be from 3 to 20 characteres long</span> 
@@ -63,10 +63,10 @@
                       {{GetPropertyLogo(pProfile.value.type).icon}}
                     </div>
                     <div class="property-title">
-                      {{pProfile.value.name}}
+                      {{pProfile.value.name | translate}}
                     </div>
                     <div class="property-type-title" *ngIf="pProfile.value.editing">
-                      ({{pProfile.value.type}})
+                      ({{pProfile.value.type | translate}})
                     </div>
                     <mat-slide-toggle
                       (click)="$event.stopPropagation()"
@@ -85,7 +85,7 @@
                     <mat-form-field>
                       <input matInput
                         type="text"
-                        placeholder={{translate.name|translate:use}}
+                        placeholder={{localeConfig.name}}
                         formControlName="name"/>
                     </mat-form-field>
                   </div>
@@ -95,7 +95,7 @@
                     <mat-form-field >
                       <input matInput
                         type="text"
-                        placeholder={{translate.label|translate:use}}
+                        placeholder={{localeConfig.label}}
                         formControlName="label"/>
                     </mat-form-field>
                   </div>
@@ -105,7 +105,7 @@
                     <mat-form-field class="number-field">
                       <input matInput
                         type="number"
-                        placeholder={{translate.sortIndex|translate:use}}
+                        placeholder={{localeConfig.sortIndex}}
                         formControlName="sortIndex"/>
                     </mat-form-field>
                   </div>
@@ -115,7 +115,7 @@
                     <mat-form-field class="number-field">
                       <input matInput
                         type="number"
-                        placeholder={{translate.minimum|translate:use}}
+                        placeholder={{localeConfig.minimum}}
                         formControlName="min"/>
                     </mat-form-field>
                   </div>
@@ -125,7 +125,7 @@
                     <mat-form-field class="number-field">
                       <input matInput
                         type="number" 
-                        placeholder={{translate.maximum|translate:use}}
+                        placeholder={{localeConfig.maximum}}
                         formControlName="max"/>
                     </mat-form-field>
                   </div>
@@ -136,30 +136,41 @@
                     *ngIf="pProfile.value.type == 'Selection'">
                     <mat-form-field 
                       class="form-field">
-                      <input matInput 
+                      <input matInput
                         type="text"
-                        placeholder="Possible values"
+                        placeholder={{localeConfig.possiblevalues}}
                         formControlName="possibleValues"/>
-                      <mat-hint>Use comma to separate the values. Empty means any.</mat-hint>
+                      <mat-hint translate>Use comma to separate the values. Empty means any.</mat-hint>
                     </mat-form-field>
                   </div>
 
                  <!-- Value -->
-                 <div>
+                 <div *ngIf="pProfile.value.type != 'Currency'">
                     <mat-form-field >
                       <input matInput
                         type="text"
-                        placeholder={{translate.defaultValue|translate:use}}
+                        placeholder={{localeConfig.defaultValue}}
                         formControlName="value"/>
                     </mat-form-field>
                   </div>
+
+                  <!-- Currency value -->
+                 <div *ngIf="pProfile.value.type == 'Currency'">
+                  <mat-form-field >
+                    <input matInput
+                      type="text"
+                      placeholder={{localeConfig.defaultValue}}
+                      formControlName="value"
+                      input currencyMask [options]="localeConfig.currencyMask"/>
+                  </mat-form-field>
+                </div>
 
                  <!-- Rows -->
                   <div *ngIf="pProfile.value.type == 'Text area'">
                     <mat-form-field class="number-field">
                       <input matInput
                         type="number" step="any"
-                        placeholder={{translate.rows|translate:use}}
+                        placeholder={{localeConfig.rows}}
                         formControlName="rows"/>
                     </mat-form-field>
                   </div>
@@ -168,14 +179,18 @@
                   <div class="profile-checkbox">
                     <mat-checkbox
                       color="primary"
-                      formControlName="fullLine">Full line</mat-checkbox>
+                      formControlName="fullLine">
+                      <span translate>Full line</span>
+                    </mat-checkbox>
                   </div>
 
                   <!-- Required -->
                   <div class="profile-checkbox">
                     <mat-checkbox
                       color="primary"
-                      formControlName="required">Required</mat-checkbox>
+                      formControlName="required">
+                      <span translate>Required</span>
+                    </mat-checkbox>
                   </div>
 
                   <!-- Delete button -->
