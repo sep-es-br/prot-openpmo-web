@@ -28,11 +28,7 @@
                 type="text"      
                 formControlName="name"
                 [required]="true"
-<<<<<<< HEAD
                 placeholder={{localeConfig.name}}/>
-=======
-                placeholder={{translate.name|translate}}/>
->>>>>>> b600eedb1b50deb0c11cad214baf2e40e8dbcf9d
             </mat-form-field>
             <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
               <span translate>Name must be from 3 to 20 characteres long</span>
