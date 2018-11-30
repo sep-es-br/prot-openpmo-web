@@ -42,7 +42,7 @@
         <div class="containerX" formArrayName="propertyProfiles">
           <div class="box" fxflex fxlayout="row">
             <div [class]="(pProfile.value.editing) ? 'property-profile-card-box property-full-width' : 'property-profile-card-box'"    
-              *ngFor="let pProfile of formGroupWorkpackModel.controls.propertyProfiles.controls; let i=index;">
+              *ngFor="let pProfile of formGroupWorkpackModel['controls'].propertyProfiles['controls']; let i=index;">
               <mat-expansion-panel  fxflex
                 [formGroup]="pProfile"
                 class="property-card"

@@ -32,7 +32,7 @@
 
             <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages">
                 <mat-icon fontSet="fa" fontIcon="fa-flag" aria-hidden="true"></mat-icon>
-                {{lang|translate:use}}
+                {{lang|translate}}
             </button>
 
             <button class="UserButton line" mat-menu-item>
@@ -62,11 +62,6 @@
 
     <!--PROGRESS BAR-->
     <app-progress></app-progress>
-    <div class="progress-bar">
-        <div [ngClass]="{hideProgress: !spinnerOn}">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </div>
-    </div>
 
     <app-breadcrumb></app-breadcrumb>
 

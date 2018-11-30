@@ -1,9 +1,13 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+<<<<<<< HEAD
 import { LocaleService } from './services/locale/locale-service.service';
 import { LocaleConfig } from './model/locale-config';
 import { DateAdapter } from '@angular/material/core';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
+=======
+import { TranslateConstants } from '../app/model/translate';
+>>>>>>> b600eedb1b50deb0c11cad214baf2e40e8dbcf9d
 
 @Component({
   selector: 'app-root',

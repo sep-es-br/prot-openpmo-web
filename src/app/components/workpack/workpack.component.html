@@ -28,13 +28,17 @@
                 type="text"      
                 formControlName="name"
                 [required]="true"
+<<<<<<< HEAD
                 placeholder={{localeConfig.name}}/>
+=======
+                placeholder={{translate.name|translate}}/>
+>>>>>>> b600eedb1b50deb0c11cad214baf2e40e8dbcf9d
             </mat-form-field>
             <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
               <span translate>Name must be from 3 to 20 characteres long</span>
             </mat-error>
           </div>
-          <div *ngFor="let property of formGroupWorkpack.controls.properties.controls; let i=index;"
+          <div *ngFor="let property of formGroupWorkpack['controls'].properties['controls']; let i=index;"
             [class]="(property.value.profile.fullLine) ? 'full-width' : ''">
             <div *ngIf="property.value.profile.using"
               [class]="(property.value.profile.fullLine) ? 'property-card-box full-width' : 'property-card-box'" >
