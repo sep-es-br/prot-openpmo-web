@@ -19,6 +19,7 @@ import {  MatFormFieldModule,
           MatMenuModule,
           MatProgressBarModule,
           MatIconRegistry } from '@angular/material';
+          
 import 'hammerjs';
 
 @NgModule({

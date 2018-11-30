@@ -8,6 +8,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-office-admin',
@@ -22,7 +23,8 @@ export class OfficeAdminComponent implements OnInit {
     private PlanDataService: PlanDataService,
     private breadcrumbService: BreadcrumbService,
     private router: Router,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private localeDialog: AppComponent ) { }
 
   nameFormControl = new FormControl('', [
     Validators.required
@@ -68,8 +70,8 @@ export class OfficeAdminComponent implements OnInit {
       if (planStructure2delete.workpackModels.length > 0) {
         this.dialog.open(MessageDialogComponent, { 
           data: {
-            title: "Warning",
-            message: "Sorry, you can not delete a plan structure that contains nested workpack models.",
+            title: this.localeDialog.localeTranslate("Warning"),
+            message: this.localeDialog.localeTranslate("SorryOfficeAdmin"),
             action: "OK"
           }
         });
@@ -78,9 +80,9 @@ export class OfficeAdminComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Attention",
-              message: "Are you sure to delete " + planStructure2delete.name + "?",
-              action: "YES_NO"
+              title: this.localeDialog.localeTranslate("Attention"),
+              message: this.localeDialog.localeTranslate("Assurance") + planStructure2delete.name + "?",
+              action: this.localeDialog.localeTranslate("YES_NO")
             }
           })
           .afterClosed()

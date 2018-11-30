@@ -295,7 +295,7 @@ export class WorkpackComponent implements OnInit {
             this.dialog.open(MessageDialogComponent, { 
               data: {
                 title: "Attention",
-                message: "Are you sure you want to delete " + workpack2delete.name + "?",
+                message: "Are you sure you want to delete aqui " + workpack2delete.name + "?",
                 action: "YES_NO"
               }
             })

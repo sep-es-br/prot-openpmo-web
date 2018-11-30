@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
+import { AppComponent } from 'src/app/app.component';
 
 export interface Tile {
   color: string;
@@ -34,7 +35,8 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
-    private breadcrumbService: BreadcrumbService ) {
+    private breadcrumbService: BreadcrumbService,
+    private localeDialog: AppComponent ) {
   }
 
   private items = [];
@@ -78,10 +80,10 @@ export class HomeComponent implements OnInit {
 
     let officeToDelete = this.offices.find(o => o.id === id);
     if (officeToDelete.plans.length > 0) {
-      alert('Sorry, you can not delete this office because it is has plans.')
+      alert(this.localeDialog.localeTranslate("SorryHome_1"))
     } else if (officeToDelete.planStructures.length > 0) {
-      alert('Sorry, you can not delete this office because it is has plan structures.')
-    } else if(confirm('Are you sure to delete the office ' + officeToDelete.name + '?')) {
+      alert(this.localeDialog.localeTranslate("SorryHome_2"))
+    } else if(confirm(this.localeDialog.localeTranslate("AssuranceHome") + officeToDelete.name + '?')) {
       this.officeDataService.DeleteOffice(id).subscribe(
         () => {
           this.officeDataService.QueryOffices();

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { LocaleService } from '../../services/locale/locale-service.service';
 import { LocaleConfig } from '../../model/locale-config';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-office',
@@ -29,7 +30,8 @@ export class OfficeComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private localeService: LocaleService) { }
+    private localeService: LocaleService,
+    private localeDialog: AppComponent) { }
   
   formGroupOffice = this.fb.group({
     name: ['', Validators.required],
@@ -50,6 +52,7 @@ export class OfficeComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+
     //Translate Service
     this.localeService.localeConfig.subscribe(
       (conf) => {
@@ -154,8 +157,8 @@ export class OfficeComponent implements OnInit {
       if (Plan2delete.workpacks.length > 0) {
         this.dialog.open(MessageDialogComponent, { 
           data: {
-            title: "Warning",
-            message: "Sorry, you can not delete a plan that contains nested workpacks.",
+            title: this.localeDialog.localeTranslate("Warning"),
+            message: this.localeDialog.localeTranslate("SorryOffice"),
             action: "OK"
           }
         });
@@ -164,9 +167,9 @@ export class OfficeComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Attention",
-              message: "Are you sure to delete " + Plan2delete.name + "?",
-              action: "YES_NO"
+              title: this.localeDialog.localeTranslate("Attention"),
+              message: this.localeDialog.localeTranslate("Assurance") + Plan2delete.name + "?",
+              action: this.localeDialog.localeTranslate("YES_NO")
             }
           })
           .afterClosed()

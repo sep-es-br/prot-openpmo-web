@@ -36,6 +36,8 @@ import { NgxMaskModule } from 'ngx-mask';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
 import { LocaleService } from './services/locale/locale-service.service';
+import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
  
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
@@ -97,6 +99,9 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     OfficeAdminResolver,
     WorkpackModelResolver,
     HttpClient,
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
   ],
   bootstrap: [AppComponent]
