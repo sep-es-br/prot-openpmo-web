@@ -24,7 +24,7 @@
     "New Workpack Template" : "",
     "New workpack template" : "",
     "property-template works!" : "",
-    "Português BR" : "",
+    "Portuguese BR" : "",
     "New Plan Structure" : "",
     "New Workpack Model" : "",
     "New workpack model" : "",
@@ -77,5 +77,6 @@
     "Cancelled" : "",
     "Stopped" : "",
     "Active" : "",
-    "new" : ""    
+    "new" : "",
+    "Log Out" : ""
 }

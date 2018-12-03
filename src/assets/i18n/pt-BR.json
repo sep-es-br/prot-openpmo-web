@@ -39,7 +39,7 @@
     "Account settings" : "Configurações da conta",
     "Log out" : "Sair",
     "English" : "Inglês",
-    "Português BR" : "Português BR",
+    "Portuguese BR" : "Português BR",
     "Sorry, you can not delete this schema because it is not empty." : "Desculpe, você não pode excluir um esquema não vazio.",
     "Are you sure to delete" : "Você tem certeza que quer deletar",
     "Name must be from 3 to 20 characteres long" : "O nome deve conter entre 3 a 20 caracteres",
@@ -67,5 +67,6 @@
     "Cancelled" : "Cancelado",
     "Stopped" : "Parado",
     "Active" : "Ativo",
-    "new" : "novo"
+    "new" : "novo",
+    "Log Out" : "Sair"
 }

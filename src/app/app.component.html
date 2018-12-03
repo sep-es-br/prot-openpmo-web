@@ -4,7 +4,7 @@
     <div class="container-fluid topo">
 
         <!--PROJECT NAME-->
-        <div class="logo">
+        <div routerLink="" class="logo">
             <img class="logo-top" src="../assets/images/Logo.png">
         </div>
 
@@ -22,12 +22,12 @@
 
             <button class="UserButton" mat-menu-item>
                 <mat-icon fontSet="fas" fontIcon="fa-user" aria-hidden="true"></mat-icon>
-                <span>My profile</span>
+                <span translate>My profile</span>
             </button>
 
             <button class="UserButton" mat-menu-item>
                 <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-                <span>Account settings</span>
+                <span translate>Account settings</span>
             </button>
 
             <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages">
@@ -37,7 +37,7 @@
 
             <button class="UserButton line" mat-menu-item>
                 <mat-icon style="color: brown;" fontSet="fas" fontIcon="fa-sign-out-alt" aria-hidden="true"></mat-icon>
-                <span class="log-out">Log Out</span>
+                <span class="log-out" translate>Log Out</span>
             </button>
 
         </mat-menu>
@@ -45,11 +45,11 @@
         <mat-menu #languages="matMenu">
             <button  class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>
                 <!-- <i class="icon-flag-br icon-positin"></i> -->
-                <span class="margin-language">English</span>
+                <span class="margin-language" translate>English</span>
             </button>
             <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>
                 <!-- <i class="icon-flag-br icon-positin"></i> -->
-                <span class="margin-language">Português BR</span>
+                <span class="margin-language" translate>Portuguese BR</span>
             </button>
         </mat-menu>
         
