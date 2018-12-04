@@ -35,6 +35,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from '@angular/common';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
+import { PeopleComponent } from './components/admin/people/people.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { MessageDialogComponent } from './components/message-dialog/message-dial
     BreadcrumbComponent,
     SanitizeHtmlPipe,
     ProgressComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
+    PeopleComponent
   ],
   entryComponents: [MessageDialogComponent],
   imports: [

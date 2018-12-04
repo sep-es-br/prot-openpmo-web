@@ -13,6 +13,7 @@ import { PlanResolver } from './components/plan/plan.resolver';
 import { OfficeResolver } from './components/office/office.resolver';
 import { OfficeAdminResolver } from './components/office-admin/office-admin.resolver';
 import { PlanStructureResolver } from './components/plan-structure/plan-structure.resolver';
+import { PeopleComponent } from './components/admin/people/people.component';
 
 ////////////////////////////////////////////////////////////////////////
 // ROUTES DEFINITION:
@@ -70,7 +71,11 @@ const routes: Routes = [
       workpackmodel: WorkpackModelResolver
     },
     runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-  }
+  },  
+  {
+    path: 'people',
+    component: PeopleComponent
+  },
 ];
 
 @NgModule({
