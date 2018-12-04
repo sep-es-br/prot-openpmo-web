@@ -1,0 +1,112 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  <span translate>Saved successfully</span>
+</div>
+<div class="main-title" translate>{{(paramId == 'new') ? 'New organization' : org?.name}}</div>
+<div class="panel-container">
+
+  <mat-accordion >
+    <!-- Properties Panel -->
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title translate>Organization data</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        [formGroup]="formGroupOrg"
+        (ngSubmit)="onSubmit()" 
+        class="form-container property-container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0"> 
+        
+        <div class="row property-row">
+
+          <!-- Sector -->
+          <div class="property-card-box" >
+            <mat-form-field>
+              <mat-select 
+                placeholder="Sector"
+                formControlName="sector">
+                <mat-option value="Public">Public</mat-option>
+                <mat-option value="Private">Private</mat-option>
+                <mat-option value="Third">Third</mat-option>
+              </mat-select>
+            </mat-form-field>    
+          </div>      
+
+          <!-- Business name-->
+          <div class="property-card-box" >
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="name"
+                placeholder="Business name"
+                required/> 
+            </mat-form-field>
+            <mat-error *ngIf="formGroupOrg.controls['name'].invalid && formGroupOrg.controls['name'].touched">
+              <span translate>Name is </span> <strong translate>required</strong>
+            </mat-error>
+          </div>
+
+          <!-- Phone -->
+          <div class="property-card-box" >
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="phone"
+                placeholder="Phone"/> 
+            </mat-form-field>
+          </div>          
+            
+          <!-- Social name-->
+          <div class="full-width">
+            <div class="property-card-box full-width">
+              <mat-form-field class="full-width">
+                <input matInput 
+                  type="text" 
+                  formControlName="fullName"
+                  placeholder="Social name"
+                  required/>
+              </mat-form-field>
+              <mat-error *ngIf="formGroupOrg.controls['fullName'].invalid && formGroupOrg.controls['fullName'].touched">
+                <span translate>Full name is </span> <strong translate>required</strong>
+              </mat-error>
+            </div>
+          </div>
+
+          <!-- Address-->
+          <div class="full-width">
+            <div class="property-card-box full-width">
+              <mat-form-field class="full-width">
+                <input matInput 
+                  type="text" 
+                  formControlName="address"
+                  placeholder="Address"/>
+              </mat-form-field>
+            </div>
+          </div>  
+          
+        </div>
+  
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
+          </div>
+        </div>        
+      </form>
+      
+      <div class="id-container-properties" *ngIf="org?.id != null">
+        <span>ID: {{org?.id}}</span>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -36,6 +36,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from '@angular/common';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
 import { PeopleComponent } from './components/admin/people/people.component';
+import { PersonComponent } from './components/admin/people/person/person.component';
+import { OrgComponent } from './components/admin/orgs/org/org.component';
+import { OrgsComponent } from './components/admin/orgs/orgs.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import { PeopleComponent } from './components/admin/people/people.component';
     SanitizeHtmlPipe,
     ProgressComponent,
     MessageDialogComponent,
-    PeopleComponent
+    PeopleComponent,
+    PersonComponent,
+    OrgsComponent,
+    OrgComponent,
   ],
   entryComponents: [MessageDialogComponent],
   imports: [

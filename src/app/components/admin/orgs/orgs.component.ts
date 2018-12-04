@@ -1,52 +1,52 @@
 import { Component, OnInit } from '@angular/core';
-import { Person } from 'src/app/model/person';
+import { Org } from 'src/app/model/org';
 import { Subscription } from 'rxjs';
-import { PersonDataService } from 'src/app/services/data/person/person-data.service';
+import { OrgDataService } from 'src/app/services/data/org/org-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
 
 @Component({
-  selector: 'app-people',
-  templateUrl: './people.component.html',
-  styleUrls: ['./people.component.css']
+  selector: 'app-orgs',
+  templateUrl: './orgs.component.html',
+  styleUrls: ['./orgs.component.css']
 })
-export class PeopleComponent implements OnInit {
+export class OrgsComponent implements OnInit {
 
   constructor(
-    private personDataService: PersonDataService, 
+    private orgDataService: OrgDataService, 
     public dialog: MatDialog) { }
 
-  people: Person[] = [];
+  orgs: Org[] = [];
   private subscriptions: Subscription[] = [];
 
 
   ngOnInit() {
     this.subscriptions.push(
-      this.personDataService.people.subscribe(p => {
-        this.people = p;
+      this.orgDataService.orgs.subscribe(p => {
+        this.orgs = p;
         //this.UpdateBreadcrumb();
       })
     );    
 
-    this.personDataService.QueryPeople();
+    this.orgDataService.QueryOrgs();
 
-    console.log('people', this.people);
+    console.log('orgs', this.orgs);
   }
 
 
   ////////////////////////////////////////////////////////////////////////
-  //EXCLUSION MODULE - Person
+  //EXCLUSION MODULE - Org
   //
   //Identification Parameter: id
   //
-  RemovePerson(id: string) {
+  RemoveOrg(id: string) {
     this.subscriptions.push(
-      this.personDataService.GetPersonById(id).subscribe(person2delete => {
+      this.orgDataService.GetOrgById(id).subscribe(org2delete => {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
               title: "Attention",
-              message: "Are you sure to remove " + person2delete.name + "?",
+              message: "Are you sure to remove " + org2delete.name + "?",
               action: "YES_NO"
             }
           })
@@ -54,9 +54,9 @@ export class PeopleComponent implements OnInit {
           .subscribe(res => {
             if (res == "YES") {
               this.subscriptions.push(
-                this.personDataService.RemovePerson(id).subscribe(
+                this.orgDataService.RemoveOrg(id).subscribe(
                   () => {
-                    this.personDataService.QueryPeople();
+                    this.orgDataService.QueryOrgs();
                   }
                 )                      
               );

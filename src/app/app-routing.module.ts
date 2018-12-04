@@ -14,6 +14,9 @@ import { OfficeResolver } from './components/office/office.resolver';
 import { OfficeAdminResolver } from './components/office-admin/office-admin.resolver';
 import { PlanStructureResolver } from './components/plan-structure/plan-structure.resolver';
 import { PeopleComponent } from './components/admin/people/people.component';
+import { PersonComponent } from './components/admin/people/person/person.component';
+import { OrgsComponent } from './components/admin/orgs/orgs.component';
+import { OrgComponent } from './components/admin/orgs/org/org.component';
 
 ////////////////////////////////////////////////////////////////////////
 // ROUTES DEFINITION:
@@ -75,6 +78,18 @@ const routes: Routes = [
   {
     path: 'people',
     component: PeopleComponent
+  },
+  {
+    path: 'person/:id',
+    component: PersonComponent
+  },
+  {
+    path: 'orgs',
+    component: OrgsComponent
+  },
+  {
+    path: 'org/:id',
+    component: OrgComponent
   },
 ];
 

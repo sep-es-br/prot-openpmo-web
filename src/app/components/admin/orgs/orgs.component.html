@@ -1,9 +1,9 @@
-<!-- people-list.html -->
+<!-- orgs-list.html -->
 <div class="page-container">
   <div class="container-fluid cards">
     <div class="row">
       <!-- CARD PEOPLE -->
-      <mat-card class="card card-style" *ngFor="let person of people">
+      <mat-card class="card card-style" *ngFor="let org of orgs">
         
         <div class="setting-container">
         <span class="card-setting" mat-icon-button [matMenuTriggerFor]="menu">
@@ -15,17 +15,17 @@
         <mat-menu #menu="matMenu" [overlapTrigger]="false">
           
           <button mat-menu-item>
-            <span (click)="RemovePerson(person.id)" translate>Remove</span>
+            <span (click)="RemoveOrg(org.id)" translate>Remove</span>
           </button>
 
           <button mat-menu-item>
-            <span routerLink="/person/{{person.id}}" routerLinkActive="active" href="#" translate>Edit</span>
+            <span routerLink="/org/{{org.id}}" routerLinkActive="active" href="#" translate>Edit</span>
           </button>
 
         </mat-menu>
 
         <mat-card-title class="title-card">
-          <a routerLink="/person/{{person.id}}" routerLinkActive="active">{{person.name}}</a>
+          <a routerLink="/org/{{org.id}}" routerLinkActive="active">{{org.name}}</a>
         </mat-card-title>
         
         <mat-card-content class="img-card">
@@ -33,11 +33,11 @@
         </mat-card-content>
         
         <div class="id-container-card">
-          <span>ID: {{person.id}}</span>
+          <span>ID: {{org.id}}</span>
         </div>
       </mat-card>
 
-      <mat-card class="card new-card card-style" routerLink="/person/new" routerLinkActive="active">
+      <mat-card class="card new-card card-style" routerLink="/org/new" routerLinkActive="active">
         <div class="card-image-new">
           <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
         </div>

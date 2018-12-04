@@ -1,6 +1,7 @@
-export class Person {
-    id: String = "";
-    name: String = "";
-    fullName: String = "";
+import { Actor } from "./actor";
+
+export class Person extends Actor {
     userName: String = "";
+    email: String = "";
+    authentication: String = "";
 }
