@@ -22,7 +22,9 @@ export const environment = {
   treeResource: 'tree/',
   defaultResource: 'default/',
   modelResource: 'model/',
-  propertyTypesResource: 'listpropertytypes/'
+  propertyTypesResource: 'listpropertytypes/',
+  personAPI: 'person/',
+  orgAPI: 'organization/'
 };
 
 /*

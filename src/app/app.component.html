@@ -54,10 +54,24 @@
         </mat-menu>
         
         <!--BUTTON CONFIG-->
-        <!-- <div class="config">
+        <button class="settings" mat-icon-button [matMenuTriggerFor]="menusettings">
             <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-        </div> -->
+        </button>
 
+        <mat-menu #menusettings="matMenu" [overlapTrigger]="false">
+
+            <button class="settingsButton" mat-menu-item>
+                <mat-icon fontSet="fas" fontIcon="fa-users" aria-hidden="true"></mat-icon>
+                <span routerLink="/people" routerLinkActive="active">People</span>
+            </button>
+
+            <button class="settingsButton" mat-menu-item>
+                <mat-icon fontSet="fa" fontIcon="fa-building" aria-hidden="true"></mat-icon>
+                <span routerLink="/orgs" routerLinkActive="active">Organizations</span>
+            </button>
+
+        </mat-menu>
+       
     </div>
 
     <!--PROGRESS BAR-->

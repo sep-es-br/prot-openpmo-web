@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { AppComponent } from 'src/app/app.component';
+import { MatDialog } from '@angular/material';
+import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 
 export interface Tile {
   color: string;
@@ -36,7 +38,8 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
     private breadcrumbService: BreadcrumbService,
-    private localeDialog: AppComponent ) {
+    private localeDialog: AppComponent,
+    public dialog: MatDialog ) {
   }
 
   private items = [];
@@ -80,15 +83,41 @@ export class HomeComponent implements OnInit {
 
     let officeToDelete = this.offices.find(o => o.id === id);
     if (officeToDelete.plans.length > 0) {
-      alert(this.localeDialog.localeTranslate("SorryHome_1"))
-    } else if (officeToDelete.planStructures.length > 0) {
-      alert(this.localeDialog.localeTranslate("SorryHome_2"))
-    } else if(confirm(this.localeDialog.localeTranslate("AssuranceHome") + officeToDelete.name + '?')) {
-      this.officeDataService.DeleteOffice(id).subscribe(
-        () => {
-          this.officeDataService.QueryOffices();
-          this.router.navigate (['./']);
+      this.dialog.open(MessageDialogComponent, { 
+        data: {
+          title: "Warning",
+          message: "Sorry, you can not delete an office containing nested plans.",
+          action: "OK"
         }
+      });      
+    } else if (officeToDelete.planStructures.length > 0) {
+      this.dialog.open(MessageDialogComponent, { 
+        data: {
+          title: "Warning",
+          message: "Sorry, you can not delete an office containing assigned plan structures.",
+          action: "OK"
+        }
+      });      
+    } 
+    else {
+      this.subscriptions.push(
+        this.dialog.open(MessageDialogComponent, { 
+          data: {
+            title: "Attention",
+            message: "Are you sure to delete " + officeToDelete.name + "?",
+            action: "YES_NO"
+          }
+        })
+        .afterClosed()
+        .subscribe(res => {
+          if (res == "YES") {
+            this.subscriptions.push(
+              this.officeDataService.DeleteOffice(id).subscribe(
+                () => this.officeDataService.QueryOffices()
+              )
+            );
+          }
+        })
       );
     }
   }

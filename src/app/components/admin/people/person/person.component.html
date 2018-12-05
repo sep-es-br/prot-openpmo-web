@@ -1,0 +1,109 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  <span translate>Saved successfully</span>
+</div>
+<div class="main-title" translate>{{(paramId == 'new') ? 'New person' : person?.name}}</div>
+<div class="panel-container">
+
+  <mat-accordion >
+    <!-- Properties Panel -->
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title translate>Personal data</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        [formGroup]="formGroupPerson"
+        (ngSubmit)="onSubmit()" 
+        class="form-container property-container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0"> 
+        
+        <div class="row property-row">
+          
+          <!-- Full name-->
+          <div class="full-width">
+            <div class="property-card-box full-width">
+              <mat-form-field class="full-width">
+                <input matInput 
+                  type="text" 
+                  formControlName="fullName"
+                  placeholder={{translate.fullName|translate}}
+                  required/>
+              </mat-form-field>
+              <mat-error *ngIf="formGroupPerson.controls['fullName'].invalid && formGroupPerson.controls['fullName'].touched">
+                <span translate>Full name is </span> <strong translate>required</strong>
+              </mat-error>
+            </div>
+          </div>
+          
+          <!-- Display name-->
+          <div class="property-card-box" >
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="name"
+                placeholder="Display name"
+                required/> 
+            </mat-form-field>
+            <mat-error *ngIf="formGroupPerson.controls['name'].invalid && formGroupPerson.controls['name'].touched">
+              <span translate>Name is </span> <strong translate>required</strong>
+            </mat-error>
+          </div>
+
+          <!-- Phone-->
+          <div class="property-card-box" >
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="phone"
+                placeholder="Phone"/> 
+            </mat-form-field>
+          </div>
+
+          <!-- User name-->
+          <div class="property-card-box" >
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="userName"
+                placeholder="User name"/> 
+            </mat-form-field>
+          </div>
+
+          <!-- Address -->
+          <div class="full-width">
+            <div class="property-card-box full-width">
+              <mat-form-field class="full-width">
+                <input matInput 
+                  type="text" 
+                  formControlName="address"
+                  placeholder="Address"/>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+  
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
+          </div>
+        </div>        
+      </form>
+      
+      <div class="id-container-properties">
+        <span>ID: {{person?.id}}</span>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -34,18 +34,23 @@
     cursor: pointer;
 }
 
+.settings{
+    float: right;
+    font-size: 22px;
+    color: white;
+    line-height: 40px;
+}
+
+.settings i:hover{
+    color: rgba(255, 255, 255, 0.774);
+    cursor: pointer;
+}
+
 .panel{
     height: 27px;
     margin-top: 0;
     padding-right: 50px;
     padding-left: 50px;
-}
-
-.config{
-    float: right;
-    font-size: 25px;
-    color: white;
-    line-height: 50px;
 }
 
 /* .UserButton{

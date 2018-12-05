@@ -38,7 +38,11 @@ import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/
 import { LocaleService } from './services/locale/locale-service.service';
 import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
- 
+import { PeopleComponent } from './components/admin/people/people.component';
+import { PersonComponent } from './components/admin/people/person/person.component';
+import { OrgComponent } from './components/admin/orgs/org/org.component';
+import { OrgsComponent } from './components/admin/orgs/orgs.component';
+
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
     allowNegative: true,
@@ -63,6 +67,10 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     SanitizeHtmlPipe,
     ProgressComponent,
     MessageDialogComponent,
+    PeopleComponent,
+    PersonComponent,
+    OrgsComponent,
+    OrgComponent,
   ],
   entryComponents: [MessageDialogComponent],
   imports: [
