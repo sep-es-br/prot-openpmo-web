@@ -246,7 +246,7 @@ export class BreadcrumbService {
           }
           case 'workpackmodel': {
             crumb.modelId = '';
-            modelName = 'workpackmodel';
+            modelName = 'workpack model';
             crumb.label = node.name;
             break;
           }

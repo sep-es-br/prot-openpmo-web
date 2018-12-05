@@ -20,11 +20,11 @@ export class AppComponent implements OnInit {
                 private localeService: LocaleService, 
                 private adapter: DateAdapter<any> ) {
     translate.setDefaultLang('en');
-    this.localeService.SetLocaleConfig('en');
   }
 
   ngOnInit() {
     this.adapter.setLocale('en');
+    this.localeService.SetLocaleConfig('en');
   }
 
   ////////////////////////////////////////////////////////////////////////

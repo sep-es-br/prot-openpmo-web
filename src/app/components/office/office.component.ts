@@ -9,7 +9,7 @@ import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { LocaleService } from '../../services/locale/locale-service.service';
-import { LocaleConfig } from '../../model/locale-config';
+import { LocaleConfig, Mensage } from '../../model/locale-config';
 import { AppComponent } from 'src/app/app.component';
 
 @Component({
@@ -20,6 +20,7 @@ import { AppComponent } from 'src/app/app.component';
 export class OfficeComponent implements OnInit {
 
   localeConfig: LocaleConfig = new LocaleConfig();
+  mensage: Mensage = new Mensage();
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +36,8 @@ export class OfficeComponent implements OnInit {
   
   formGroupOffice = this.fb.group({
     name: ['', Validators.required],
-    fullName: ['']
+    fullName: [''],
+    locale: [this.localeConfig]
   });
   
   subscriptions: Subscription[] = [];
@@ -57,6 +59,11 @@ export class OfficeComponent implements OnInit {
     this.localeService.localeConfig.subscribe(
       (conf) => {
         this.localeConfig = conf;
+      }
+    ); 
+    this.localeService.mensage.subscribe(
+      (conf2) => {
+        this.mensage = conf2;
       }
     ); 
     
@@ -90,7 +97,6 @@ export class OfficeComponent implements OnInit {
       })
     );
   }
-
   
   //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
@@ -158,7 +164,7 @@ export class OfficeComponent implements OnInit {
         this.dialog.open(MessageDialogComponent, { 
           data: {
             title: this.localeDialog.localeTranslate("Warning"),
-            message: this.localeDialog.localeTranslate("SorryOffice"),
+            message: this.localeService.GetMensage('Name'),
             action: "OK"
           }
         });

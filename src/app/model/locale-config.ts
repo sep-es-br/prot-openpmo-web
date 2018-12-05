@@ -6,6 +6,9 @@ export class LocaleConfig {
         decimal: ''
     }
 }
+export class Mensage {
+
+}
 
 export const PT_BR_CONFIG = {
     currencyMask: {

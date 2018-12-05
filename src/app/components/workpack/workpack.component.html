@@ -77,11 +77,11 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <input matInput
+                  input currencyMask [options]="localeConfig.currencyMask"
                   [required]="'property.value.profile.required'"
-                  type="number" 
+                  type="text" 
                   step="any"
                   formControlName="value"
-                  [value]="ConvertToNumber(property.value.value)" 
                   placeholder="{{property.value.profile.label|translate}}"/>
               </mat-form-field>
 

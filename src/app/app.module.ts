@@ -62,7 +62,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     BreadcrumbComponent,
     SanitizeHtmlPipe,
     ProgressComponent,
-    MessageDialogComponent
+    MessageDialogComponent,
   ],
   entryComponents: [MessageDialogComponent],
   imports: [
@@ -113,3 +113,4 @@ export class AppModule {
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
+

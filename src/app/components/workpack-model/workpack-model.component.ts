@@ -168,7 +168,6 @@ export class WorkpackModelComponent implements OnInit {
     }
   }
 
-
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpackModel.name) return true;
     if (val.propertyProfiles.length != this.workpackModel.propertyProfiles.length) return true;
