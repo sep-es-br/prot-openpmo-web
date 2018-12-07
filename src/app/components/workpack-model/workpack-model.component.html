@@ -79,8 +79,8 @@
                       fxLayout="{{(pProfile.value.editing) ? 'row wrap' : 'column wrap'}}"
                       fxLayoutAlign="left"
                       fxLayoutGap="20px">
-                  
-                  <!-- Name -->
+
+                  <!--Name-->
                   <div>
                     <mat-form-field>
                       <input matInput
@@ -110,7 +110,7 @@
                     </mat-form-field>
                   </div>
 
-                 <!-- Minimum -->
+                  <!-- Minimum -->
                   <div *ngIf="pProfile.value.type == 'Number' || pProfile.value.type == 'Text'">
                     <mat-form-field class="number-field">
                       <input matInput
@@ -120,7 +120,7 @@
                     </mat-form-field>
                   </div>
 
-                 <!-- Maximum-->
+                  <!-- Maximum-->
                   <div *ngIf="pProfile.value.type == 'Number' || pProfile.value.type == 'Text'">
                     <mat-form-field class="number-field">
                       <input matInput
@@ -130,7 +130,7 @@
                     </mat-form-field>
                   </div>
 
-                 <!-- Possible values -->
+                  <!-- Possible values -->
                   <div 
                     class="{{(pProfile.value.editing) ? 'textInput' : 'minimum-width'}}"
                     *ngIf="pProfile.value.type == 'Selection'">
@@ -144,8 +144,8 @@
                     </mat-form-field>
                   </div>
 
-                 <!-- Value -->
-                 <div *ngIf="pProfile.value.type != 'Currency'">
+                  <!-- Value -->
+                  <div *ngIf="pProfile.value.type != 'Currency'">
                     <mat-form-field >
                       <input matInput
                         type="text"
@@ -155,7 +155,7 @@
                   </div>
 
                   <!-- Currency value -->
-                 <div *ngIf="pProfile.value.type == 'Currency'">
+                  <div *ngIf="pProfile.value.type == 'Currency'">
                   <mat-form-field >
                     <input matInput
                       type="text"
@@ -165,7 +165,7 @@
                   </mat-form-field>
                 </div>
 
-                 <!-- Rows -->
+                  <!-- Rows -->
                   <div *ngIf="pProfile.value.type == 'Text area'">
                     <mat-form-field class="number-field">
                       <input matInput

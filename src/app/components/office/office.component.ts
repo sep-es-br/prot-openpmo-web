@@ -9,8 +9,6 @@ import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { LocaleService } from '../../services/locale/locale-service.service';
-import { LocaleConfig, Mensage } from '../../model/locale-config';
-import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-office',
@@ -19,8 +17,7 @@ import { AppComponent } from 'src/app/app.component';
 })
 export class OfficeComponent implements OnInit {
 
-  localeConfig: LocaleConfig = new LocaleConfig();
-  mensage: Mensage = new Mensage();
+  localeConfig: Object = new Object();
 
   constructor(
     private route: ActivatedRoute,
@@ -31,8 +28,7 @@ export class OfficeComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private localeService: LocaleService,
-    private localeDialog: AppComponent) { }
+    private localeService: LocaleService) { }
   
   formGroupOffice = this.fb.group({
     name: ['', Validators.required],
@@ -56,16 +52,20 @@ export class OfficeComponent implements OnInit {
   ngOnInit() {
 
     //Translate Service
-    this.localeService.localeConfig.subscribe(
-      (conf) => {
-        this.localeConfig = conf;
-      }
-    ); 
-    this.localeService.mensage.subscribe(
-      (conf2) => {
-        this.mensage = conf2;
-      }
-    ); 
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    );
+    //currencyMask: Object = new Object();
+    // this.subscriptions.push(
+    //   this.localeService.currencyMask.subscribe(
+    //     (mask) => {
+    //       this.currencyMask = mask;
+    //     }
+    //   )
+    // );
     
     this.action = this.route.snapshot.paramMap.get('action');
     if (this.action == 'new') {
@@ -163,8 +163,8 @@ export class OfficeComponent implements OnInit {
       if (Plan2delete.workpacks.length > 0) {
         this.dialog.open(MessageDialogComponent, { 
           data: {
-            title: this.localeDialog.localeTranslate("Warning"),
-            message: this.localeService.GetMensage('Name'),
+            title: this.localeConfig["Warning"],
+            message: this.localeConfig['Sorry, you can not delete a plan that contains nested workpacks.'],
             action: "OK"
           }
         });
@@ -173,9 +173,9 @@ export class OfficeComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: this.localeDialog.localeTranslate("Attention"),
-              message: this.localeDialog.localeTranslate("Assurance") + Plan2delete.name + "?",
-              action: this.localeDialog.localeTranslate("YES_NO")
+              title: this.localeConfig["Attention"],
+              message: this.localeConfig["Are you sure to delete"] + Plan2delete.name + "?",
+              action: this.localeConfig["YES_NO"]
             }
           })
           .afterClosed()

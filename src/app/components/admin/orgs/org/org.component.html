@@ -29,11 +29,11 @@
           <div class="property-card-box" >
             <mat-form-field>
               <mat-select 
-                placeholder="Sector"
+                placeholder={{localeConfig.sector}}
                 formControlName="sector">
-                <mat-option value="Public">Public</mat-option>
-                <mat-option value="Private">Private</mat-option>
-                <mat-option value="Third">Third</mat-option>
+                <mat-option value="Public"><span translate>Public</span></mat-option>
+                <mat-option value="Private"><span translate>Private</span></mat-option>
+                <mat-option value="Third"><span translate>Third</span></mat-option>
               </mat-select>
             </mat-form-field>    
           </div>      
@@ -44,7 +44,7 @@
               <input matInput
                 type="text"      
                 formControlName="name"
-                placeholder="Business name"
+                placeholder={{localeConfig.businessname}}
                 required/> 
             </mat-form-field>
             <mat-error *ngIf="formGroupOrg.controls['name'].invalid && formGroupOrg.controls['name'].touched">
@@ -58,7 +58,8 @@
               <input matInput
                 type="text"      
                 formControlName="phone"
-                placeholder="Phone"/> 
+                placeholder={{localeConfig.phone}} 
+                mask={{localeConfig.phoneMask}}/>
             </mat-form-field>
           </div>          
             
@@ -69,11 +70,11 @@
                 <input matInput 
                   type="text" 
                   formControlName="fullName"
-                  placeholder="Social name"
+                  placeholder={{localeConfig.socialname}}
                   required/>
               </mat-form-field>
               <mat-error *ngIf="formGroupOrg.controls['fullName'].invalid && formGroupOrg.controls['fullName'].touched">
-                <span translate>Full name is </span> <strong translate>required</strong>
+                <span translate>Full name is</span> <strong translate>required</strong>
               </mat-error>
             </div>
           </div>
@@ -85,7 +86,7 @@
                 <input matInput 
                   type="text" 
                   formControlName="address"
-                  placeholder="Address"/>
+                  placeholder={{localeConfig.address}}/>
               </mat-form-field>
             </div>
           </div>  

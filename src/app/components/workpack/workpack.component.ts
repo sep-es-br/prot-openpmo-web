@@ -18,7 +18,6 @@ import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { Property } from 'src/app/model/property';
 import { LocaleService } from '../../services/locale/locale-service.service';
-import { LocaleConfig } from '../../model/locale-config';
 
 @Component({
   selector: 'app-workpack',
@@ -27,7 +26,7 @@ import { LocaleConfig } from '../../model/locale-config';
 })
 export class WorkpackComponent implements OnInit {
 
-  localeConfig: LocaleConfig = new LocaleConfig();
+  localeConfig: Object = new Object();
 
   constructor(
     private route: ActivatedRoute,
@@ -62,10 +61,11 @@ export class WorkpackComponent implements OnInit {
   ngOnInit() {
 
     //Translate Service
-    this.localeService.localeConfig.subscribe(
-      (conf) => {
-        this.localeConfig = conf;
-      }
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
     ); 
 
     this.viewOptions = this.route.snapshot.data.workpack;
@@ -284,8 +284,8 @@ export class WorkpackComponent implements OnInit {
         if (workpack2delete.components.length > 0) {
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Warning",
-              message: "Sorry, you can not delete a workpack that contains nested workpacks.",
+              title: this.localeConfig['Warning'],
+              message: this.localeConfig['Sorry, you can not delete a workpack that contains nested workpacks.'],
               action: "OK"
             }
           });
@@ -294,9 +294,9 @@ export class WorkpackComponent implements OnInit {
           this.subscriptions.push(
             this.dialog.open(MessageDialogComponent, { 
               data: {
-                title: "Attention",
-                message: "Are you sure you want to delete aqui " + workpack2delete.name + "?",
-                action: "YES_NO"
+                title: this.localeConfig['Attention'],
+                message: this.localeConfig['Are you sure you want to delete'] + workpack2delete.name + "?",
+                action: this.localeConfig['YES_NO']
               }
             })
             .afterClosed()

@@ -8,7 +8,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
-import { AppComponent } from 'src/app/app.component';
+import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
   selector: 'app-office-admin',
@@ -17,6 +17,8 @@ import { AppComponent } from 'src/app/app.component';
 })
 export class OfficeAdminComponent implements OnInit {
 
+  localeConfig: Object = new Object();
+
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
@@ -24,7 +26,7 @@ export class OfficeAdminComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private router: Router,
     public dialog: MatDialog,
-    private localeDialog: AppComponent ) { }
+    private localeService: LocaleService, ) { }
 
   nameFormControl = new FormControl('', [
     Validators.required
@@ -45,6 +47,15 @@ export class OfficeAdminComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe (config => {        
+          this.localeConfig = config;
+        }
+      )
+    ); 
+    
     this.action = this.route.snapshot.paramMap.get('action');
     this.officeId = this.route.snapshot.paramMap.get('id');
     this.subscriptions.push(
@@ -69,9 +80,9 @@ export class OfficeAdminComponent implements OnInit {
     this.PlanDataService.GetPlanStructureById(id).subscribe(planStructure2delete => {
       if (planStructure2delete.workpackModels.length > 0) {
         this.dialog.open(MessageDialogComponent, { 
-          data: {
-            title: this.localeDialog.localeTranslate("Warning"),
-            message: this.localeDialog.localeTranslate("SorryOfficeAdmin"),
+          data: { 
+            title: this.localeConfig['Warning'],
+            message: this.localeConfig['Sorry, you can not delete a plan structure that contains nested workpack models.'],
             action: "OK"
           }
         });
@@ -80,9 +91,9 @@ export class OfficeAdminComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: this.localeDialog.localeTranslate("Attention"),
-              message: this.localeDialog.localeTranslate("Assurance") + planStructure2delete.name + "?",
-              action: this.localeDialog.localeTranslate("YES_NO")
+              title: this.localeConfig['Attention'],
+              message: this.localeConfig['Are you sure to delete'] + planStructure2delete.name + "?",
+              action: this.localeConfig['YES_NO']
             }
           })
           .afterClosed()

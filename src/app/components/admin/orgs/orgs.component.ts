@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { OrgDataService } from 'src/app/services/data/org/org-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
+import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
   selector: 'app-orgs',
@@ -12,15 +13,30 @@ import { MessageDialogComponent } from '../../message-dialog/message-dialog.comp
 })
 export class OrgsComponent implements OnInit {
 
+  localeConfig: Object = new Object();
+
   constructor(
-    private orgDataService: OrgDataService, 
+    private orgDataService: OrgDataService,
+    private localeService: LocaleService,
     public dialog: MatDialog) { }
 
   orgs: Org[] = [];
   private subscriptions: Subscription[] = [];
 
 
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
+    
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
+
     this.subscriptions.push(
       this.orgDataService.orgs.subscribe(p => {
         this.orgs = p;
@@ -45,9 +61,9 @@ export class OrgsComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Attention",
-              message: "Are you sure to remove " + org2delete.name + "?",
-              action: "YES_NO"
+              title: this.localeConfig["Attention"],
+              message: this.localeConfig["Are you sure to remove"] + org2delete.name + "?",
+              action: this.localeConfig["YES_NO"],
             }
           })
           .afterClosed()

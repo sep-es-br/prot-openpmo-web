@@ -4,9 +4,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Person } from 'src/app/model/person';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateConstants } from 'src/app/model/translate';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { MatDialog } from '@angular/material';
+import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
   selector: 'app-person',
@@ -15,15 +15,15 @@ import { MatDialog } from '@angular/material';
 })
 export class PersonComponent implements OnInit {
 
+  localeConfig: Object = new Object();
+  
   constructor(
     private personDataService: PersonDataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private localeService: LocaleService,
     private router: Router
   ) { }
-
-  //Constants for translate
-  translate = new TranslateConstants();
 
   formGroupPerson = this.fb.group({
     name: ['', Validators.required],
@@ -40,8 +40,19 @@ export class PersonComponent implements OnInit {
   MessageRightPosition: String;
   propertiesPanelOpenState: Boolean = true;
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
+
     this.paramId = this.route.snapshot.paramMap.get('id');
 
     if (this.paramId == 'new') {

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { PersonDataService } from 'src/app/services/data/person/person-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
+import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
   selector: 'app-people',
@@ -12,15 +13,29 @@ import { MessageDialogComponent } from '../../message-dialog/message-dialog.comp
 })
 export class PeopleComponent implements OnInit {
 
+  localeConfig: Object = new Object();
+  
   constructor(
     private personDataService: PersonDataService, 
+    private localeService: LocaleService,
     public dialog: MatDialog) { }
 
   people: Person[] = [];
   private subscriptions: Subscription[] = [];
 
-
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
+
     this.subscriptions.push(
       this.personDataService.people.subscribe(p => {
         this.people = p;
@@ -45,9 +60,9 @@ export class PeopleComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Attention",
-              message: "Are you sure to remove " + person2delete.name + "?",
-              action: "YES_NO"
+              title: this.localeConfig['Attention'],
+              message: this.localeConfig['Are you sure to remove'] + person2delete.name + "?",
+              action: this.localeConfig['YES_NO']
             }
           })
           .afterClosed()

@@ -7,6 +7,7 @@ import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcr
 import { AppComponent } from 'src/app/app.component';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 export interface Tile {
   color: string;
@@ -33,13 +34,16 @@ export class HomeComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   private breadcrumbTrail: Breadcrumb[] = [];
 
+  localeConfig: Object = new Object();
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
     private breadcrumbService: BreadcrumbService,
     private localeDialog: AppComponent,
-    public dialog: MatDialog ) {
+    public dialog: MatDialog,
+    private localeService: LocaleService, ) {
   }
 
   private items = [];
@@ -48,6 +52,15 @@ export class HomeComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
+
     this.subscriptions.push(
       this.officeDataService.offices.subscribe(o => {
         this.offices = o;
@@ -85,16 +98,16 @@ export class HomeComponent implements OnInit {
     if (officeToDelete.plans.length > 0) {
       this.dialog.open(MessageDialogComponent, { 
         data: {
-          title: "Warning",
-          message: "Sorry, you can not delete an office containing nested plans.",
+          title: this.localeConfig['Warning'],
+          message: this.localeConfig['Sorry, you can not delete an office containing nested plans.'], 
           action: "OK"
         }
       });      
     } else if (officeToDelete.planStructures.length > 0) {
       this.dialog.open(MessageDialogComponent, { 
         data: {
-          title: "Warning",
-          message: "Sorry, you can not delete an office containing assigned plan structures.",
+          title: this.localeConfig['Warning'],
+          message: this.localeConfig['Sorry, you can not delete an office containing assigned plan structures.'],
           action: "OK"
         }
       });      
@@ -103,9 +116,9 @@ export class HomeComponent implements OnInit {
       this.subscriptions.push(
         this.dialog.open(MessageDialogComponent, { 
           data: {
-            title: "Attention",
-            message: "Are you sure to delete " + officeToDelete.name + "?",
-            action: "YES_NO"
+            title: this.localeConfig['Attention'],
+            message: this.localeConfig['Are you sure to delete'] + officeToDelete.name + "?",
+            action: this.localeConfig['YES_NO'] 
           }
         })
         .afterClosed()
