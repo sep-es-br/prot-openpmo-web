@@ -1,5 +1,5 @@
 {
-        "===COMMENT_0===" : "Line 3 to 77: Terms present in the components. Direct translation by ngx-translate",
+        "===COMMENT_0===" : "Line 3 to 79: Terms present in the components. Direct translation by ngx-translate",
     "Delete" : "Delete",
     "Admin" : "Admin",
     "New office" : "New office",
@@ -78,7 +78,7 @@
     "New organization" : "New organization",
     "Full name is" : "Full name is ",
 
-        "===COMMENT_1===" : "Line 80 to 92: Messages shown to the user in dialog boxes when trying to delete something.",
+        "===COMMENT_1===" : "Line 82 to 94: Messages shown to the user in dialog boxes when trying to delete something.",
     "Attention" : "Attention",
     "YES_NO" : "YES_NO",
     "Warning" : "Warning",
@@ -93,7 +93,7 @@
     "Are you sure you want to delete" : "Are you sure you want to delete ",
     "Are you sure to delete" : "Are you sure to delete ",
 
-        "===COMMENT_2===" : "Line 95 to 98: Masks",
+        "===COMMENT_2===" : "Line 97 to 102: Masks",
     "currencyMask" : {
         "decimal": ".",
         "thousands": ",",
@@ -101,7 +101,7 @@
     },
     "phoneMask" : "(000) 000 0000",
 
-        "===COMMENT_3===" : "Line 102 to 112: Terms present in the templates. Translation made by observable object variable.",
+        "===COMMENT_3===" : "Line 105 to 122: Terms present in the templates. Translation made by observable object variable.",
     "name" : "Name",
     "label" : "Label",
     "fullName" : "FullName",

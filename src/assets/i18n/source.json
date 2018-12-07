@@ -1,5 +1,5 @@
 {
-        "===COMMENT_0===" : "",
+        "===COMMENT_0===" : "Line to : Terms present in the components. Direct translation by ngx-translate",
     "Account settings" : "",
     "Add Property" : "",
     "Admin" : "",
@@ -88,7 +88,7 @@
     "New organization" : "",
     "Full name is" : "",
 
-        "===COMMENT_1===" : "",
+        "===COMMENT_1===" : "Line to : Messages shown to the user in dialog boxes when trying to delete something.",
     "Attention" : "",
     "Are you sure to remove " : "",
     "YES_NO" : "",
@@ -103,7 +103,7 @@
     "Are you sure you want to delete " : "",
     "Sorry, you can not delete a workpack model that contains nested workpack models." : "",
 
-        "===COMMENT_2===" : "",
+        "===COMMENT_2===" : "Line to : Masks",
     "currencyMask" : {
         "decimal": "",
         "thousands": "",
@@ -111,7 +111,7 @@
     },
     "phoneMask" : "",
 
-        "===COMMENT_3===" : "",
+        "===COMMENT_3===" : "Line to : Terms present in the templates. Translation made by observable object variable.",
     "name" : "",
     "label" : "",
     "fullName" : "",
