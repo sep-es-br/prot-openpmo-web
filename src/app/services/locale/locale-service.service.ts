@@ -1,5 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
-import { NgSwitchCase } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,9 +13,9 @@ export class LocaleService {
   private $localeConfig = new BehaviorSubject<Object>(new Object);
   localeConfig = this.$localeConfig.asObservable();
    
-  private dialogs:any;
+  private languagePack : any;
 
-  constructor(private httpClient:HttpClient) {
+  constructor ( private httpClient : HttpClient ) {
     this.SetLocaleConfig('en');    
    }
 
@@ -26,11 +25,11 @@ export class LocaleService {
   // 
   // Return: none
   // 
-  SetLocaleConfig(locale:string) {
+  SetLocaleConfig ( locale : string ) {
 
     this.httpClient.get('../../../assets/i18n/' + locale + '.json').subscribe (data => {
-      this.dialogs = data;
-      this.$localeConfig.next(this.dialogs);
+      this.languagePack = data;
+      this.$localeConfig.next(this.languagePack);
     });
   }
 
