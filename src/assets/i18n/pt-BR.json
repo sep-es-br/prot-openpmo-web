@@ -1,5 +1,9 @@
 {
-        "===COMMENT_0===" : "Linha 3 a 79: Termos presentes nos componentes. Tradução direta por ngx-translate",
+        "===CONFIG LANGUAGE===" : "Lista de traduções de gatilhos de linguagem",
+    "English" : "Inglês",
+    "Portuguese BR" : "Português BR",
+
+        "===TEMPLATE_TRANSLATION===" : "Termos presentes nos componentes. Tradução direta por ngx-translate",
     "Delete" : "Excluir",
     "Admin" : "Admin",
     "New office" : "Novo escritório",
@@ -34,13 +38,9 @@
     "Maximum" : "Máximo",
     "DefaultValue" : "Valor padrão",
     "Saved successfully" : "Salvo com sucesso",
-    "en" : "Inglês",
-    "pt-BR" : "Português BR",
     "My profile" : "Meu perfil",
     "Account settings" : "Configurações da conta",
     "Log out" : "Sair",
-    "English" : "Inglês",
-    "Portuguese BR" : "Português BR",
     "Name must be from 3 to 20 characteres long" : "O nome deve conter entre 3 a 20 caracteres",
     "Use comma to separate the values. Empty means any." : "Use vírgula para separar os valores. Vazio significa qualquer.",
     "Cancel" : "Cancelar",
@@ -78,7 +78,7 @@
     "New organization" : "Nova organização",
     "Full name is" : "Nome completo ",
 
-        "===COMMENT_1===" : "Linha 82 a 94: Mensagens mostradas ao usuário em caixas de diálogo ao tentar excluir alguma coisa.",
+        "===MENSSAGES===" : "Mensagens mostradas ao usuário em caixas de diálogo ao tentar excluir alguma coisa.",
     "Attention" : "Atenção",
     "YES_NO" : "SIM_NÃO ",
     "Warning" : "Aviso",
@@ -93,15 +93,15 @@
     "Are you sure you want to delete" : "Tem certeza de que deseja excluir ",
     "Are you sure to remove" : "Você tem certeza que quer remover ",
 
-        "===COMMENT_2===" : "Linha 97 a 102: máscaras",
+        "===MASKS===" : "Máscaras",
     "currencyMask" : {
         "decimal": ",",
         "thousands": ".",
         "prefix": "R$ "
     },
-    "phoneMask" : "(00) 0000 00000",
+    "phoneMask" : "(00) 0000 00009",
 
-        "===COMMENT_3===" : "Linha 105 a 122: Termos presentes nos modelos. Tradução feita pela variável objeto observável.",
+        "===TEMPLATE_OBSERVABLE===" : "Termos presentes nos modelos. Tradução feita pela variável objeto observável.",
     "name" : "Nome",
     "label" : "Rótulo",
     "fullName" : "Nome Completo",

@@ -43,13 +43,14 @@
         </mat-menu>
 
         <mat-menu #languages="matMenu">
-            <button  class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>
+            <button 
+                class="UserButton" 
+                (click)="switchLanguage(item)" 
+                mat-menu-item 
+                translate 
+                *ngFor="let item of languages_list">
                 <!-- <i class="icon-flag-br icon-positin"></i> -->
-                <span class="margin-language" translate>English</span>
-            </button>
-            <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>
-                <!-- <i class="icon-flag-br icon-positin"></i> -->
-                <span class="margin-language" translate>Portuguese BR</span>
+                <span class="margin-language" translate>{{item}}</span>
             </button>
         </mat-menu>
         

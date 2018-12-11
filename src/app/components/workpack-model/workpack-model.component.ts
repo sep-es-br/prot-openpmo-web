@@ -116,7 +116,6 @@ export class WorkpackModelComponent implements OnInit {
       })
     );
 
-
     this.subscriptions.push(    
       this.formGroupWorkpackModel.statusChanges.subscribe((status) => {
         if (this.workpackModel.propertyProfiles === undefined) return this.HideSaveButton();
