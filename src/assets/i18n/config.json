@@ -1,5 +1,5 @@
 {
-    "===CONFIG MENU LANGUAGE===" : "Enter the language name in the array: languages and the location key in object: id_locale",
+        "===CONFIG MENU LANGUAGE===" : "Type the language name in the array 'languages' ​​and the name of the file in the object 'id_locale'",
 
     "languages":["English", "Portuguese BR"],
     

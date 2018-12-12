@@ -13,9 +13,9 @@ import { HttpClient } from '@angular/common/http';
 
 export class AppComponent implements OnInit {
   title = 'openpmo-web';
-  lang : string = "English";
-  languages_list = [];
-  id_locale_list: any;
+  lang: string = "English";
+  languages_list:[] = [];
+  key_locale: object;
 
   //localeTrigger: Object = new Object();
 
@@ -30,9 +30,9 @@ export class AppComponent implements OnInit {
     this.adapter.setLocale('en');
     this.localeService.SetLocaleConfig('en');
 
-    this.httpClient.get('../assets/i18n/config.json').subscribe (pack => {
-      this.languages_list = pack['languages'];
-      this.id_locale_list = pack['id_locale'];
+    this.httpClient.get('../assets/i18n/config.json').subscribe (config => {
+      this.languages_list = config['languages'];
+      this.key_locale = config['id_locale'];
     });
   }
 
@@ -40,23 +40,24 @@ export class AppComponent implements OnInit {
   // TRANSLATE MODULE - LIBRARY:
   //
   // Parameters:
-  //    id_locale_list:      receives language parameter: (en, pt-BR, ...)
+  //    language             receives language parameter: (English, Portuguese BR, ...)
   //  
   // Variables: 
   //    lang:                modifies interface in app.component.html - standard:'English'
+  //    key_locale:          save the location keys: (en, pt-BR, ...)
   //
   // Data source:            src/assets/i18n
   //
   // Use to translate:
   //    Variables or arrays:                        {{ <variable> | translate:use }}
   //    Text html or ngFor:                         Example: <span translate> text </span>
-  //    Other translations, use observable object:  localeConfig.<id found in ./i18n/source.json>
+  //    Other translations, use observable object:  localeConfig.<id found in src/assets/i18n/source.json>
   //
   switchLanguage( language : string ) {
     this.lang = language; //Variable visible to the user by the template
-    this.translate.use( this.id_locale_list[ language ]); //ngx library
-    this.localeService.SetLocaleConfig( this.id_locale_list[ language ]); //Defining locale for translation service
-    this.adapter.setLocale( this.id_locale_list[ language ]); //Local setting for date mask
+    this.translate.use( this.key_locale[ language ]); //ngx library
+    this.localeService.SetLocaleConfig( this.key_locale[ language ]); //Defining locale for translation service
+    this.adapter.setLocale( this.key_locale[ language ]); //Local setting for date mask
   };
 
 } 

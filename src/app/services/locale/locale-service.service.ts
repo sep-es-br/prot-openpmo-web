@@ -17,9 +17,6 @@ export class LocaleService {
   // Observable property for the array of localeConfig
   private $localeConfig = new BehaviorSubject<Object>(new Object);
   localeConfig = this.$localeConfig.asObservable();
-
-  private $localeTrigger = new BehaviorSubject<String[]>(new Array);
-  localeTrigger = this.$localeTrigger.asObservable();
    
   private languagePack : any;
 
@@ -31,15 +28,9 @@ export class LocaleService {
   SetLocaleConfig ( locale : string ) {
 
     this.httpClient.get('../../../assets/i18n/' + locale + '.json').subscribe (data => {
-      this.languagePack = data;
+      this.languagePack = data['Data_for_LocaleService'];
       this.$localeConfig.next(this.languagePack);
     });
-
-    this.httpClient.get('../../../assets/i18n/trigger_locale.json').subscribe (pack => {
-      this.$localeTrigger.next(pack['languages']);      
-    });
-    
-
   }
 
 }
