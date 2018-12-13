@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateConstants } from 'src/app/model/translate';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { MatDialog } from '@angular/material';
+import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 
 @Component({
   selector: 'app-person',
@@ -19,7 +20,8 @@ export class PersonComponent implements OnInit {
     private personDataService: PersonDataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private breadCrumbService: BreadcrumbService
   ) { }
 
   //Constants for translate
@@ -40,18 +42,19 @@ export class PersonComponent implements OnInit {
   MessageRightPosition: String;
   propertiesPanelOpenState: Boolean = true;
 
-
   ngOnInit() {
     this.paramId = this.route.snapshot.paramMap.get('id');
 
     if (this.paramId == 'new') {
       this.person = new Person;
+      this.breadCrumbService.UpdateBreadcrumb({id: "new", name: "New person"}, 'person');
     }
     else if (!isNaN(parseInt(this.paramId))) {
       this.subscriptions.push(
         this.personDataService.QueryPersonById(this.paramId).subscribe(
           (res) => {
             this.person = res as Person;
+            this.breadCrumbService.UpdateBreadcrumb(this.person, 'person');
             this.LoadFormControls();
           }
         )
@@ -129,7 +132,7 @@ export class PersonComponent implements OnInit {
           .subscribe(
             () => {
               this.router.navigate([
-                './people/']);
+                './person']);
             }
           )
         );
@@ -141,7 +144,7 @@ export class PersonComponent implements OnInit {
             .subscribe(
               () => {
                 this.router.navigate([
-                  './people/']);
+                  './person']);
               }
             )
         );

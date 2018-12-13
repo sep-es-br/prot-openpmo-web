@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { SpinnerService } from '../../spinner/spinner.service';
 import { MatDialog } from '@angular/material';
 import { Org } from 'src/app/model/org';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { AuthClientHttp } from 'src/app/security/auth-client-http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrgDataService {
 
-  constructor(private http: HttpClient, 
+  constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
               public dialog: MatDialog) {
   }  
@@ -87,17 +87,20 @@ export class OrgDataService {
     return this
             .http
             .get(URL)
-            .pipe(map<any, Org>(
+            .pipe(map<Org, any>(
               (res) => {
                 this.$org.next(res as Org);
                 this.spinnerService.HideSpinner();
                 return res as Org;
-              },
-              (error) => {
-                this.spinnerService.HideSpinner();
-                this.ShowErrorMessagee(error);
-              }
-            ));
+              }),
+              catchError(
+                (err) => {
+                  this.spinnerService.HideSpinner();
+                  this.ShowErrorMessagee(err);
+                  return err;
+                }
+              )
+            );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -109,7 +112,7 @@ export class OrgDataService {
   //
   // Return: Observable to the org found
   //
-  GetOrgById(id: String) {
+  GetOrgById(id: String): Observable<Org> {
     const pathURL = environment.orgAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     if (id == '') {
@@ -117,16 +120,19 @@ export class OrgDataService {
     }
     else {
       this.spinnerService.ShowSpinner();
-      return this.http.get(URL).pipe(map<any,Org>(
+      return this.http.get(URL).pipe(map<Org, any>(
         (res) => {
           this.spinnerService.HideSpinner();
           return res as Org;
-        },
-        (error) => {
-          this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(error);
-        }
-      ));
+        }),
+        catchError(
+          (err) => {
+            this.spinnerService.HideSpinner();
+            this.ShowErrorMessagee(err);
+            return err;
+          }
+        )
+      );
     }
   }
 
@@ -151,16 +157,20 @@ export class OrgDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Org>(
+    ).pipe(map<Org, any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$org.next(res);
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -184,16 +194,20 @@ export class OrgDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Org>(
+    ).pipe(map<Org, any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$org.next(res);
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -205,20 +219,23 @@ export class OrgDataService {
   //
   // Return: error if something went wrong
   //
-  RemoveOrg(id: String): Observable<any> {
+  RemoveOrg(id: String): Observable<Org> {
     const pathURL = environment.orgAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
-    return this.http.delete(URL).pipe(map<any, any>(
+    return this.http.delete(URL).pipe(map<Org, any>(
       (res) => {
         this.spinnerService.HideSpinner();
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////

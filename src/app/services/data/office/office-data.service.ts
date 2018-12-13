@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Office } from '../../../model/office';
 import { environment } from 'src/environments/environment';
 import { SpinnerService } from '../../spinner/spinner.service';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { MatDialog } from '@angular/material';
+import { AuthClientHttp } from 'src/app/security/auth-client-http';
 
 
 @Injectable({
@@ -26,7 +26,7 @@ export class OfficeDataService {
   
   private basePathURL = environment.baseAPIPath;
 
-  constructor(private http: HttpClient, 
+  constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
               public dialog: MatDialog) {
   }
@@ -86,17 +86,20 @@ export class OfficeDataService {
     return this
             .http
             .get(URL)
-            .pipe(map<any, Office>(
+            .pipe(map<Office, any>(
               (res) => {
                 this.$office.next(res as Office);
                 this.spinnerService.HideSpinner();
                 return res as Office;
-              },
-              (error) => {
-                this.spinnerService.HideSpinner();
-                this.ShowErrorMessagee(error);
-              }
-            ));
+              }),
+              catchError(
+                (err) => {
+                  this.spinnerService.HideSpinner();
+                  this.ShowErrorMessagee(err);
+                  return err;
+                }
+              )
+            );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -116,16 +119,19 @@ export class OfficeDataService {
     }
     else {
       this.spinnerService.ShowSpinner();
-      return this.http.get(URL).pipe(map<any,Office>(
+      return this.http.get(URL).pipe(map<Office, any>(
         (res) => {
           this.spinnerService.HideSpinner();
           return res;
-        },
-        (error) => {
-          this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(error);
-        }
-      ));
+        }),
+        catchError(
+          (err) => {
+            this.spinnerService.HideSpinner();
+            this.ShowErrorMessagee(err);
+            return err;
+          }
+        )
+      );
     }
   }
 
@@ -150,16 +156,20 @@ export class OfficeDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Office>(
+    ).pipe(map<Office, any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$office.next(res);
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -183,16 +193,20 @@ export class OfficeDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Office>(
+    ).pipe(map<Office, any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$office.next(res);
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -204,20 +218,23 @@ export class OfficeDataService {
   //
   // Return: error if something went wrong
   //
-  DeleteOffice(id: String): Observable<any> {
+  DeleteOffice(id: String): Observable<Office> {
     const pathURL = environment.officeAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
-    return this.http.delete(URL).pipe(map<any, any>(
+    return this.http.delete(URL).pipe(map<Office, any>(
       (res) => {
         this.spinnerService.HideSpinner();
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,105 @@
+<div class="main-title">New Stakeholder</div>
+<div class="container-form">
+  <mat-accordion >
+
+    <!-- Edit/View Panel -->
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title translate>Properties</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="formGroup"
+        class="form-container property-container row"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0">
+
+            <!-- Role -->
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="name"
+                [required]="true"
+                placeholder="Role"/>
+            </mat-form-field>
+            <!-- <mat-error *ngIf="roleName.invalid && roleName.touched">
+              <span translate>Role must be from 3 to 20 characteres long</span>
+            </mat-error> -->
+
+            <!-- Search field -->
+            <mat-form-field class="example-full-width">
+              <input 
+                type="text" 
+                placeholder="Search a person"
+                aria-label="Number" 
+                formControlName="actorName"
+                matInput [matAutocomplete]="auto">
+              <mat-autocomplete autoActiveFirstOption 
+                #auto="matAutocomplete">
+                <mat-option 
+                  *ngFor="let personFound of peopleSearched" 
+                  [value]="personFound.name"
+                  (onSelectionChange)="UpdatePersonControl(personFound)">
+                  {{personFound.fullName}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>            
+
+            <!-- Actor Full Name -->
+            <mat-form-field class="full-width">
+              <input matInput
+                type="text"      
+                formControlName="actorFullName"
+                placeholder="Full name"
+                readonly/>
+            </mat-form-field>
+
+            <!-- Actor Address -->
+            <mat-form-field  class="full-width">
+              <input matInput
+                type="text"      
+                formControlName="actorAddress"
+                placeholder="Address"
+                readonly/>
+            </mat-form-field>
+    
+            <!-- Actor Phone number -->
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="actorPhone"
+                placeholder="Phone number"
+                readonly/>
+            </mat-form-field>
+
+            <!-- Actor Email -->
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="actorEmail"
+                placeholder="Email"
+                readonly/>
+            </mat-form-field>
+
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button 
+              class="save-button" mat-button><span translate>Save</span></button>
+          </div>
+        </div>        
+
+      </form>
+      <div class="id-container-properties">
+        <span>ID: {{role.id}}</span>
+      </div>         
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

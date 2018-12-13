@@ -3,5 +3,6 @@ export class ViewOptions {
     title: String = '';
     arrIds: String[] = [];
     propertiesPanelOpenState: Boolean = false;
-    workpacksPanelOpenState: Boolean = true;
+    workpacksPanelOpenState: Boolean = false;
+    stakeholdersPanelOpenState: Boolean = false;
 }

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { PersonDataService } from 'src/app/services/data/person/person-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
+import { BreadcrumbService, Breadcrumb } from 'src/app/services/breadcrumb/breadcrumb.service';
 
 @Component({
   selector: 'app-people',
@@ -14,20 +15,24 @@ export class PeopleComponent implements OnInit {
 
   constructor(
     private personDataService: PersonDataService, 
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private breadCrumbService: BreadcrumbService) {}
 
   people: Person[] = [];
   private subscriptions: Subscription[] = [];
 
-
   ngOnInit() {
+    this.breadCrumbService.GoTo(0);
+    
     this.subscriptions.push(
       this.personDataService.people.subscribe(p => {
         this.people = p;
-        //this.UpdateBreadcrumb();
+        this.breadCrumbService.UpdateBreadcrumb({ name: "People administration" }, 'person');
       })
-    );    
-
+    );
+    
+    
+    
     this.personDataService.QueryPeople();
 
     console.log('people', this.people);

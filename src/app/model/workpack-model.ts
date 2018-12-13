@@ -1,8 +1,9 @@
 import { PropertyProfile } from "./property-profile";
 
 export class WorkpackModel {
-    id: String = "";
+    id: String = null;
     name: String = "";
     components: WorkpackModel[] = [];
     propertyProfiles: PropertyProfile[] = [];
+    manageStakeholders: Boolean = true;
 }

@@ -1,90 +1,98 @@
 <!-- app.component.html -->
+
 <div class="background-page">
+
+    <app-login *ngIf="IsNullOrUndefined(jwtPayload)"></app-login>
     
-    <div class="container-fluid topo">
+    <div *ngIf="!IsNullOrUndefined(jwtPayload)">
 
-        <!--PROJECT NAME-->
-        <div class="logo">
-            <img class="logo-top" src="../assets/images/Logo.png">
-        </div>
+        <div class="container-fluid topo">
 
-        <!-- OLD BUTTON USER
-        <div class="user">
-            <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
-        </div>-->
-        
-        <!--BUTTON USER-->
-        <button class="user" mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
-        </button>
+            <!--PROJECT NAME-->
+            <div class="logo">
+                <img class="logo-top" src="../assets/images/Logo.png">
+            </div>
+
+            <!-- OLD BUTTON USER
+            <div class="user">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
+            </div>-->
             
-        <mat-menu #menu="matMenu" [overlapTrigger]="false">
-
-            <button class="UserButton" mat-menu-item>
-                <mat-icon fontSet="fas" fontIcon="fa-user" aria-hidden="true"></mat-icon>
-                <span>My profile</span>
+            <!--BUTTON USER-->
+            <button class="user" mat-icon-button [matMenuTriggerFor]="menu" 
+                    matTooltip={{jwtPayload?.name}}({{jwtPayload?.user_name}})>
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
             </button>
+                
+            <mat-menu #menu="matMenu" [overlapTrigger]="false">
 
-            <button class="UserButton" mat-menu-item>
+                <button class="UserButton" mat-menu-item>
+                    <mat-icon fontSet="fas" fontIcon="fa-user" aria-hidden="true"></mat-icon>
+                    <span>My profile</span>
+                </button>
+
+                <button class="UserButton" mat-menu-item>
+                    <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
+                    <span>Account settings</span>
+                </button>
+
+                <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages">
+                    <mat-icon fontSet="fa" fontIcon="fa-flag" aria-hidden="true"></mat-icon>
+                    {{lang|translate}}
+                </button>
+
+                <button class="UserButton line" mat-menu-item>
+                    <mat-icon style="color: brown;" fontSet="fas" fontIcon="fa-sign-out-alt" aria-hidden="true"></mat-icon>
+                    <span class="log-out">Log Out</span>
+                </button>
+
+            </mat-menu>
+
+            <mat-menu #languages="matMenu">
+                <button  class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>
+                    <!-- <i class="icon-flag-br icon-positin"></i> -->
+                    <span class="margin-language">English</span>
+                </button>
+                <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>
+                    <!-- <i class="icon-flag-br icon-positin"></i> -->
+                    <span class="margin-language">Português BR</span>
+                </button>
+            </mat-menu>
+            
+            <!--BUTTON CONFIG-->
+            <button class="settings" mat-icon-button [matMenuTriggerFor]="menusettings">
                 <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-                <span>Account settings</span>
             </button>
 
-            <button class="UserButton" mat-menu-item [matMenuTriggerFor]="languages">
-                <mat-icon fontSet="fa" fontIcon="fa-flag" aria-hidden="true"></mat-icon>
-                {{lang|translate}}
-            </button>
+            <mat-menu #menusettings="matMenu" [overlapTrigger]="false">
 
-            <button class="UserButton line" mat-menu-item>
-                <mat-icon style="color: brown;" fontSet="fas" fontIcon="fa-sign-out-alt" aria-hidden="true"></mat-icon>
-                <span class="log-out">Log Out</span>
-            </button>
+                <button class="settingsButton" mat-menu-item>
+                    <mat-icon fontSet="fas" fontIcon="fa-users" aria-hidden="true"></mat-icon>
+                    <span routerLink="/person" routerLinkActive="active">People</span>
+                </button>
 
-        </mat-menu>
+                <button class="settingsButton" mat-menu-item>
+                    <mat-icon fontSet="fa" fontIcon="fa-building" aria-hidden="true"></mat-icon>
+                    <span routerLink="/org" routerLinkActive="active">Organizations</span>
+                </button>
 
-        <mat-menu #languages="matMenu">
-            <button  class="UserButton" (click)="switchLanguage('en')" mat-menu-item translate>
-                <!-- <i class="icon-flag-br icon-positin"></i> -->
-                <span class="margin-language">English</span>
-            </button>
-            <button class="UserButton" (click)="switchLanguage('pt-BR')" mat-menu-item translate>
-                <!-- <i class="icon-flag-br icon-positin"></i> -->
-                <span class="margin-language">Português BR</span>
-            </button>
-        </mat-menu>
+            </mat-menu>
         
-        <!--BUTTON CONFIG-->
-        <button class="settings" mat-icon-button [matMenuTriggerFor]="menusettings">
-            <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-        </button>
-
-        <mat-menu #menusettings="matMenu" [overlapTrigger]="false">
-
-            <button class="settingsButton" mat-menu-item>
-                <mat-icon fontSet="fas" fontIcon="fa-users" aria-hidden="true"></mat-icon>
-                <span routerLink="/people" routerLinkActive="active">People</span>
-            </button>
-
-            <button class="settingsButton" mat-menu-item>
-                <mat-icon fontSet="fa" fontIcon="fa-building" aria-hidden="true"></mat-icon>
-                <span routerLink="/orgs" routerLinkActive="active">Organizations</span>
-            </button>
-
-        </mat-menu>
-       
-    </div>
-
-    <!--PROGRESS BAR-->
-    <app-progress></app-progress>
-
-    <app-breadcrumb></app-breadcrumb>
-
-    <!-- <div class="container-fluid panel">
-        <div class="filter">
-            <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
         </div>
-    </div> -->
 
-    <router-outlet></router-outlet>
+        <!--PROGRESS BAR-->
+        <app-progress></app-progress>
+
+        <app-breadcrumb></app-breadcrumb>
+
+        <!-- <div class="container-fluid panel">
+            <div class="filter">
+                <mat-icon fontSet="fa" fontIcon="fa-filter" aria-hidden="true"></mat-icon>
+            </div>
+        </div> -->
+
+        <router-outlet></router-outlet>
+
+    </div>
 
 </div>

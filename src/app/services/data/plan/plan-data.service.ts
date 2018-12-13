@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Office } from '../../../model/office';
@@ -9,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { SpinnerService } from '../../spinner/spinner.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
+import { AuthClientHttp } from 'src/app/security/auth-client-http';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class PlanDataService {
   
   private basePathURL = environment.baseAPIPath;
 
-  constructor(private http: HttpClient, 
+  constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
               public dialog: MatDialog) {
   }
@@ -70,15 +70,18 @@ export class PlanDataService {
     const URL = this.baseURL + this.basePathURL + pathURL;
     return this.http.get(URL)
     .pipe(
-      map<any, Plan>(
+      map<Plan, any>(
         (res) => {
           this.$plan.next(res as Plan);
           this.spinnerService.HideSpinner();
           return res as Plan;
-        },
-        (error) => {
+        }
+      ),
+      catchError(
+        (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(error);
+          this.ShowErrorMessagee(err);
+          return err;
         }
       )
     );
@@ -101,16 +104,19 @@ export class PlanDataService {
     }
     else {
       this.spinnerService.ShowSpinner();
-      return this.http.get(URL).pipe(map<any, Plan>(
+      return this.http.get(URL).pipe(map<Plan, any>(
         (res) => {
           this.spinnerService.HideSpinner();
           return res;
-        },
-        (error) => {
-          this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(error);
-        }
-      ));
+        }),
+        catchError(
+          (err) => {
+            this.spinnerService.HideSpinner();
+            this.ShowErrorMessagee(err);
+            return err;
+          }
+        )
+      );
     }
   }
 
@@ -137,16 +143,20 @@ export class PlanDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Plan>(
+    ).pipe(map<Plan, any>(
       (res) => {
         this.spinnerService.HideSpinner();
-        return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+        this.$plan.next(res);
+        return this.plan;
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -171,16 +181,23 @@ export class PlanDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Plan>(
-      (res) => {
-        this.spinnerService.HideSpinner();
-        return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+    )
+    .pipe(
+      map<Plan, any>(
+        (res) => {
+          this.spinnerService.HideSpinner();
+          this.$plan.next(res as Plan)
+          return this.plan;
+        }
+      ),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
 
@@ -202,12 +219,15 @@ export class PlanDataService {
       (res) => {
         this.spinnerService.HideSpinner();
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -225,17 +245,20 @@ export class PlanDataService {
     this.spinnerService.ShowSpinner();
     return this.http
       .get(URL)
-      .pipe(map<any,PlanStructure>(
+      .pipe(map<PlanStructure, any>(
         (res) => {
           this.$planStructure.next(res as PlanStructure);
           this.spinnerService.HideSpinner();
           return res as PlanStructure;
-        },
-        (error) => {
-          this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(error);
-        }
-      ));
+        }),
+        catchError(
+          (err) => {
+            this.spinnerService.HideSpinner();
+            this.ShowErrorMessagee(err);
+            return err;
+          }
+        )
+      );
   }
 
 
@@ -261,16 +284,20 @@ export class PlanDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, PlanStructure>(
+    ).pipe(map<PlanStructure, any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$planStructure.next(res);
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
 
@@ -284,20 +311,23 @@ export class PlanDataService {
   //
   // Return: error if something went wrong
   //
-  DeletePlanStructure(id: String): Observable<any> {
+  DeletePlanStructure(id: String): Observable<PlanStructure> {
     const pathURL = environment.planStructureAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
-    return this.http.delete(URL).pipe(map<any, any>(
+    return this.http.delete(URL).pipe(map<PlanStructure, any>(
       (res) => {
         this.spinnerService.HideSpinner();
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -313,16 +343,19 @@ export class PlanDataService {
     const pathURL = environment.planStructureAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
-    return this.http.get(URL).pipe(map<any, PlanStructure>(
+    return this.http.get(URL).pipe(map<PlanStructure, any>(
       (res) => {
         this.spinnerService.HideSpinner();
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////

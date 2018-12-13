@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { SpinnerService } from '../../spinner/spinner.service';
 import { MatDialog } from '@angular/material';
 import { Person } from 'src/app/model/person';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { AuthClientHttp } from 'src/app/security/auth-client-http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonDataService {
 
-  constructor(private http: HttpClient, 
+  constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
               public dialog: MatDialog) {
   }  
@@ -73,6 +73,32 @@ export class PersonDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
+  // Run a GET http request for the list of People that has a given string
+  // in the name or full name
+  // 
+  // Parameter: 
+  //    name: string containing a scrap of the name being searched 
+  //
+  // Return: none
+  // 
+  QueryPeoplByName(nameScrap: string){
+    const pathURL = environment.personAPI + environment.personLikeResource;
+    const URL = this.baseURL + this.basePathURL + pathURL + nameScrap;
+    this.spinnerService.ShowSpinner();
+    this.http.get(URL).subscribe(
+      (res) => {
+        this.$people.next(res as Person[]);
+        this.spinnerService.HideSpinner();
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.ShowErrorMessagee(error);
+      }
+    );
+  }  
+
+  ////////////////////////////////////////////////////////////////////////
+  //
   // Run a GET http request to query a Person by its id
   //
   // Parameters: 
@@ -87,17 +113,20 @@ export class PersonDataService {
     return this
             .http
             .get(URL)
-            .pipe(map<any, Person>(
+            .pipe(map<Person, any>(
               (res) => {
                 this.$person.next(res as Person);
                 this.spinnerService.HideSpinner();
                 return res as Person;
-              },
-              (error) => {
-                this.spinnerService.HideSpinner();
-                this.ShowErrorMessagee(error);
-              }
-            ));
+              }),
+              catchError(
+                (err) => {
+                  this.spinnerService.HideSpinner();
+                  this.ShowErrorMessagee(err);
+                  return err;
+                }
+              )
+            );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -109,7 +138,7 @@ export class PersonDataService {
   //
   // Return: Observable to the person found
   //
-  GetPersonById(id: String) {
+  GetPersonById(id: String): Observable<Person> {
     const pathURL = environment.personAPI + id;
     const URL = this.baseURL + this.basePathURL + pathURL;
     if (id == '') {
@@ -117,16 +146,19 @@ export class PersonDataService {
     }
     else {
       this.spinnerService.ShowSpinner();
-      return this.http.get(URL).pipe(map<any,Person>(
+      return this.http.get(URL).pipe(map<Person, any>(
         (res) => {
           this.spinnerService.HideSpinner();
-          return res as Person;
-        },
-        (error) => {
-          this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(error);
-        }
-      ));
+          return res;
+        }),
+        catchError(
+          (err) => {
+            this.spinnerService.HideSpinner();
+            this.ShowErrorMessagee(err);
+            return err;
+          }
+        )
+      );
     }
   }
 
@@ -151,16 +183,20 @@ export class PersonDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Person>(
+    ).pipe(map<Person,any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$person.next(res);
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -184,16 +220,20 @@ export class PersonDataService {
           'Content-Type': 'application/json'
         }
       }
-    ).pipe(map<any, Person>(
+    ).pipe(map<Person, any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$person.next(res);
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -205,20 +245,23 @@ export class PersonDataService {
   //
   // Return: error if something went wrong
   //
-  RemovePerson(id: String): Observable<any> {
+  RemovePerson(id: String): Observable<Person> {
     const pathURL = environment.personAPI;
     const URL = this.baseURL + this.basePathURL + pathURL + id;
     this.spinnerService.ShowSpinner();
-    return this.http.delete(URL).pipe(map<any, any>(
+    return this.http.delete(URL).pipe(map<Person, any>(
       (res) => {
         this.spinnerService.HideSpinner();
         return res;
-      },
-      (error) => {
-        this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
-      }
-    ));
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.ShowErrorMessagee(err);
+          return err;
+        }
+      )
+    );
   }
 
   ////////////////////////////////////////////////////////////////////////

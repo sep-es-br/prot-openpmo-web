@@ -17,6 +17,9 @@ import { PeopleComponent } from './components/admin/people/people.component';
 import { PersonComponent } from './components/admin/people/person/person.component';
 import { OrgsComponent } from './components/admin/orgs/orgs.component';
 import { OrgComponent } from './components/admin/orgs/org/org.component';
+import { PersonRoleComponent } from './components/workpack/person-role/person-role.component';
+import { LoginComponent } from './components/login/login.component';
+//import { LoginComponent } from './security/login/login.component';
 
 ////////////////////////////////////////////////////////////////////////
 // ROUTES DEFINITION:
@@ -30,6 +33,10 @@ const routes: Routes = [
     path: '',
     component: HomeComponent
   },
+  // {
+  //   path: 'login',
+  //   component: LoginComponent
+  // },
   {
     path: 'office/:action/:id',
     component: OfficeComponent,
@@ -51,6 +58,10 @@ const routes: Routes = [
       workpack: WorkpackResolver
     },
     runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+  },
+  {
+    path: 'workpack/:wpid/personrole/:id',
+    component: PersonRoleComponent
   },
   {
     path: 'officeadmin/:action/:id',
@@ -76,7 +87,7 @@ const routes: Routes = [
     runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   },  
   {
-    path: 'people',
+    path: 'person',
     component: PeopleComponent
   },
   {
@@ -84,7 +95,7 @@ const routes: Routes = [
     component: PersonComponent
   },
   {
-    path: 'orgs',
+    path: 'org',
     component: OrgsComponent
   },
   {

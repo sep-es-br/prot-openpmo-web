@@ -10,6 +10,7 @@ import {  MatFormFieldModule,
           MatIconModule, 
           MatDialogModule, 
           MatTreeModule,
+          MatTooltipModule,
           MatProgressSpinnerModule,
           MatRadioModule,
           MatSelectModule,
@@ -18,7 +19,8 @@ import {  MatFormFieldModule,
           MatCardModule,
           MatMenuModule,
           MatProgressBarModule,
-          MatIconRegistry } from '@angular/material';
+          MatIconRegistry, 
+          MatAutocompleteModule} from '@angular/material';
 import 'hammerjs';
 
 @NgModule({
@@ -34,6 +36,7 @@ import 'hammerjs';
     MatIconModule,
     MatDialogModule,
     MatTreeModule,
+    MatTooltipModule,
     MatRadioModule,
     MatSelectModule,
     MatProgressSpinnerModule,
@@ -43,6 +46,7 @@ import 'hammerjs';
     MatMenuModule,
     MatExpansionModule,
     MatProgressBarModule,
+    MatAutocompleteModule,
   ],
   exports: [ 
     MatFormFieldModule,
@@ -55,6 +59,7 @@ import 'hammerjs';
     MatIconModule,
     MatDialogModule,
     MatTreeModule,
+    MatTooltipModule,
     MatRadioModule,
     MatSelectModule,
     MatProgressSpinnerModule,
@@ -64,6 +69,7 @@ import 'hammerjs';
     MatMenuModule,
     MatExpansionModule,
     MatProgressBarModule,
+    MatAutocompleteModule,
   ]
 })
 

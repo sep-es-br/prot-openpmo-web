@@ -39,6 +39,11 @@ import { PeopleComponent } from './components/admin/people/people.component';
 import { PersonComponent } from './components/admin/people/person/person.component';
 import { OrgComponent } from './components/admin/orgs/org/org.component';
 import { OrgsComponent } from './components/admin/orgs/orgs.component';
+import { PersonRoleComponent } from './components/workpack/person-role/person-role.component';
+import { SecurityModule } from './security/security.module';
+import { LoginComponent } from './components/login/login.component';
+import { AuthService } from './security/auth.service';
+import { AuthClientHttp } from './security/auth-client-http';
 
 @NgModule({
   declarations: [
@@ -58,6 +63,8 @@ import { OrgsComponent } from './components/admin/orgs/orgs.component';
     PersonComponent,
     OrgsComponent,
     OrgComponent,
+    PersonRoleComponent,
+    LoginComponent
   ],
   entryComponents: [MessageDialogComponent],
   imports: [
@@ -76,7 +83,8 @@ import { OrgsComponent } from './components/admin/orgs/orgs.component';
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    SecurityModule
   ],
   providers: [
     OfficeDataService,
@@ -90,7 +98,9 @@ import { OrgsComponent } from './components/admin/orgs/orgs.component';
     OfficeResolver,
     OfficeAdminResolver,
     WorkpackModelResolver,
-    HttpClient
+    SecurityModule,
+    AuthService,
+    AuthClientHttp
   ],
   bootstrap: [AppComponent]
 })

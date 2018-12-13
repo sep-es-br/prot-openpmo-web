@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { OrgDataService } from 'src/app/services/data/org/org-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
+import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 
 @Component({
   selector: 'app-orgs',
@@ -14,17 +15,19 @@ export class OrgsComponent implements OnInit {
 
   constructor(
     private orgDataService: OrgDataService, 
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private breadCrumbService: BreadcrumbService) { }
 
   orgs: Org[] = [];
   private subscriptions: Subscription[] = [];
 
 
   ngOnInit() {
+    this.breadCrumbService.GoTo(0);
     this.subscriptions.push(
       this.orgDataService.orgs.subscribe(p => {
         this.orgs = p;
-        //this.UpdateBreadcrumb();
+        this.breadCrumbService.UpdateBreadcrumb({ name: "Organizations administration" }, 'org');
       })
     );    
 

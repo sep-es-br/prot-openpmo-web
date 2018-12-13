@@ -292,8 +292,8 @@ button, a, div {
     float: right;
 } */
 .property-container {
-    padding-right: 10px;
-    padding-left: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .property-profile-row {
@@ -313,7 +313,6 @@ button, a, div {
 }
 
 .property-card-box {
-    padding: 5px;
     float: left;
 }
 

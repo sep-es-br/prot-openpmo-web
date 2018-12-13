@@ -18,6 +18,8 @@ import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { Property } from 'src/app/model/property';
+import { Role, ActorType } from 'src/app/model/role';
+import { RoleDataService } from 'src/app/services/data/role/role-data.service';
 
 @Component({
   selector: 'app-workpack',
@@ -34,7 +36,8 @@ export class WorkpackComponent implements OnInit {
     private router: Router, 
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
-    public dialog: MatDialog) {}
+    private dialog: MatDialog,
+    private roleDataService: RoleDataService) {}
 
   //Constants for translate
   translate = new TranslateConstants();
@@ -54,6 +57,14 @@ export class WorkpackComponent implements OnInit {
   viewOptions: ViewOptions;
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
+  wpRoles: Role[] = [];
+
+  actorTypes = ActorType;
+  
+  ActorTypeKeys() : Array<string> {
+    var keys = Object.keys(ActorType);
+    return keys;
+  }
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
@@ -71,6 +82,13 @@ export class WorkpackComponent implements OnInit {
       this.workpackDataService.workpack.subscribe(wp =>{
         this.workpack = wp;
         if (this.workpack.id != '') {
+          this.subscriptions.push(
+            this.roleDataService.GetAllRoles().subscribe(
+              res => {
+                this.wpRoles = res.filter((role)=>(role.scope.id == this.workpack.id));
+              }
+            )
+          );
           this.LoadFormControls();
         }
       })
@@ -196,7 +214,7 @@ export class WorkpackComponent implements OnInit {
     
     switch (this.viewOptions.action) {
       case 'new2Plan': {
-        this.workpack.id = '';
+        this.workpack.id = null;
         this.plan.workpacks.push(this.workpack);
         this.subscriptions.push(
           this.PlanDataService
@@ -217,7 +235,7 @@ export class WorkpackComponent implements OnInit {
         this.subscriptions.push(
           this.workpackDataService.GetWorkpackById(this.crumbService.GetBeforeLast(1).id)
           .subscribe(parentWP => {
-            this.workpack.id = '';
+            this.workpack.id = null;
             parentWP.components.push(this.workpack);
             this.subscriptions.push(
               this.workpackDataService
