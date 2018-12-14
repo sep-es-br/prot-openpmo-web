@@ -1,5 +1,5 @@
 export class PropertyProfile {
-    id: String = '';
+    id: String = null;
     type: String = '';
     using: Boolean = true;
     sortIndex: Number = 0;

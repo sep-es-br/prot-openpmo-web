@@ -13,7 +13,7 @@
       <form
         [formGroup]="formGroupWorkpack" 
         (ngSubmit)="onSubmit()"
-        class="form-container property-container"
+        class="form-container property-container row"
         fxLayout
         fxLayout.xs="column"
         fxLayoutAlign="left"
@@ -136,7 +136,72 @@
         </div>        
 
       </form>
+      <div class="id-container-properties">
+        <span>ID: {{workpack.id}}</span>
+      </div>      
+
     </mat-expansion-panel>
+
+    <!-- Stakeholders Panel -->
+    <mat-expansion-panel
+      *ngIf="(viewOptions.action == 'edit')"
+      [expanded]="viewOptions.stakeholdersPanelOpenState"
+      (opened)="viewOptions.stakeholdersPanelOpenState = true"
+      (closed)="viewOptions.stakeholdersPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title translate>Stakeholders</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <div class="container-fluid cards">
+        <div class="row">
+
+          <mat-card class="card card-style" *ngFor="let role of wpRoles">
+              <div class="card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-user"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a  class="dropdown-item"
+                      (click)="DeleteRole(role.id)"
+                      routerLink="/workpack/edit/{{workpack.id}}&{{workpack.model.id}}" 
+                      routerLinkActive="active" translate>Disconnect</a>
+                </div>
+              </div>
+              <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+              </div>
+              <mat-card-title class="subtitle-card">
+                {{role.name}}
+              </mat-card-title>
+              <mat-card-title class="title-card">
+                <!--a routerLink="/workpack/edit/{{component.id}}&{{component.model?.id}}" routerLinkActive="active"-->{{role.actor?.name}}<!--/a-->
+              </mat-card-title>
+              <div class="card-manager">
+                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+              </div>
+              <div class="id-container-properties">
+                <span>ID: {{role.id}}</span>
+              </div>                    
+            </mat-card>
+
+          <mat-card class="card new-card card-style">
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let key of ActorTypeKeys()" 
+                        class="dropdown-item"
+                        routerLink="/workpack/{{workpack.id}}/{{key}}role/new" 
+                        routerLinkActive="active">{{actorTypes[key]}}</a>
+                  </div>
+              </div>
+            </mat-card>
+          </div>
+      </div>
+  
+    </mat-expansion-panel>
+
+
 
     <!-- Workpacks Panel -->
     <mat-expansion-panel

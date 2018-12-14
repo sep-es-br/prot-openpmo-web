@@ -1,5 +1,9 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from './security/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { LoginComponent } from './components/login/login.component'
 import { LocaleService } from './services/locale/locale-service.service';
 import { DateAdapter } from '@angular/material/core';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
@@ -21,14 +25,28 @@ export class AppComponent implements OnInit {
 
   //localeTrigger: Object = new Object();
 
+  jwt: any;
+  jwtPayload: any;
+
+  loadLogin: Boolean = false;
+
+  subscriptions: Subscription[] = [];
+
   constructor ( private translate: TranslateService, 
                 private localeService: LocaleService, 
+                private authService: AuthService,
                 private adapter: DateAdapter<any>,
-                private httpClient : HttpClient ) {
+                private httpClient : HttpClient,
+                private route: ActivatedRoute ) {
     translate.setDefaultLang('en');
   }
 
+
   ngOnInit() {
+    this.jwtPayload = this.authService.GetTokenPayload();
+    this.authService.jwtPayload.subscribe(pl => {
+      this.jwtPayload = pl;
+    });
     this.adapter.setLocale('en');
     this.localeService.SetLocaleConfig('en');
 
@@ -63,11 +81,21 @@ export class AppComponent implements OnInit {
     this.adapter.setLocale( this.key_locale[ language ]); //Local setting for date mask
   };
 
-} 
+
+  IsNullOrUndefined<T>(obj: T | null | undefined): obj is null | undefined {
+    return typeof obj === "undefined" || obj === null;  
+  }
 
 
-
-
+  ////////////////////////////////////////////////////////////////////////
+  // END OF PAGE
+  // Suspension of signatures when closing the page
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+  }
+}
 
  
 

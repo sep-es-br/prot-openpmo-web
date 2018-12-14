@@ -6,6 +6,7 @@ import { Org } from 'src/app/model/org';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { MatDialog } from '@angular/material';
+import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class OrgComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private breadCrumbService: BreadcrumbService,
     private localeService: LocaleService
   ) { }
 
@@ -55,12 +57,14 @@ export class OrgComponent implements OnInit {
 
     if (this.paramId == 'new') {
       this.org = new Org;
+      this.breadCrumbService.UpdateBreadcrumb({id: "new", name: "New organization"}, 'org');
     }
     else if (!isNaN(parseInt(this.paramId))) {
       this.subscriptions.push(
         this.orgDataService.QueryOrgById(this.paramId).subscribe(
           (res) => {
             this.org = res as Org;
+            this.breadCrumbService.UpdateBreadcrumb(this.org, 'org');
             this.LoadFormControls();
           }
         )

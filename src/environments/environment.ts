@@ -4,8 +4,12 @@
 
 export const environment = {
   production: false,
+  tokenWhitelistedDomains: [ /localhost:8080/, /localhost:4200/ ],
+  tokenBlacklistedRoutes: [/\/oauth\/token/],
   databaseHost: 'http://localhost:4200/',
   baseAPIPath: 'api/',
+  oauthAPI: 'oauth/',
+  tokenResource: 'token',
   officeAPI: 'office/',
   PlanAPI: 'plan/',
   listPlansFunction: 'listplans/',
@@ -24,7 +28,11 @@ export const environment = {
   modelResource: 'model/',
   propertyTypesResource: 'listpropertytypes/',
   personAPI: 'person/',
-  orgAPI: 'organization/'
+  personLikeResource: 'like/',
+  orgAPI: 'organization/',
+  roleAPI: 'role/',
+  byScopeIdResource: 'scope/',
+  byActorIdResource: 'actor/',
 };
 
 /*

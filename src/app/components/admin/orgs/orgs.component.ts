@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { OrgDataService } from 'src/app/services/data/org/org-data.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
+import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class OrgsComponent implements OnInit {
   localeConfig: Object = new Object();
 
   constructor(
+    private breadCrumbService: BreadcrumbService,
     private orgDataService: OrgDataService,
     private localeService: LocaleService,
     public dialog: MatDialog) { }
@@ -28,6 +30,7 @@ export class OrgsComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+    this.breadCrumbService.GoTo(0);
     
     //Translate Service
     this.subscriptions.push(
@@ -40,7 +43,7 @@ export class OrgsComponent implements OnInit {
     this.subscriptions.push(
       this.orgDataService.orgs.subscribe(p => {
         this.orgs = p;
-        //this.UpdateBreadcrumb();
+        this.breadCrumbService.UpdateBreadcrumb({ name: "Organizations administration" }, 'org');
       })
     );    
 

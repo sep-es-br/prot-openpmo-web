@@ -1,0 +1,30 @@
+<div class="outer">
+  <div class="middle">
+    
+    <div class="inners-box">
+
+      <div class="inner logo">
+        <img class="logo" src="../assets/images/logo_blue.png">
+      </div>
+      
+      <div class="inner">
+        <mat-form-field class="example-full-width">
+          <input matInput type="text" placeholder="User" [(ngModel)]="user">
+        </mat-form-field>
+      </div>
+      
+      <div class="inner">
+        <mat-form-field class="example-full-width">
+          <input matInput type="password" placeholder="Password" [(ngModel)]="password">
+        </mat-form-field>
+      </div>
+      
+      <div class="inner go-button">
+        <button (click)="onSubmit()"
+          class="save-button" mat-button><span translate>Login</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -6,6 +6,7 @@ import { Person } from 'src/app/model/person';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { MatDialog } from '@angular/material';
+import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
@@ -21,8 +22,9 @@ export class PersonComponent implements OnInit {
     private personDataService: PersonDataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private localeService: LocaleService,
-    private router: Router
+    private router: Router,
+    private breadCrumbService: BreadcrumbService,
+    private localeService: LocaleService
   ) { }
 
   formGroupPerson = this.fb.group({
@@ -57,12 +59,14 @@ export class PersonComponent implements OnInit {
 
     if (this.paramId == 'new') {
       this.person = new Person;
+      this.breadCrumbService.UpdateBreadcrumb({id: "new", name: "New person"}, 'person');
     }
     else if (!isNaN(parseInt(this.paramId))) {
       this.subscriptions.push(
         this.personDataService.QueryPersonById(this.paramId).subscribe(
           (res) => {
             this.person = res as Person;
+            this.breadCrumbService.UpdateBreadcrumb(this.person, 'person');
             this.LoadFormControls();
           }
         )
@@ -140,7 +144,7 @@ export class PersonComponent implements OnInit {
           .subscribe(
             () => {
               this.router.navigate([
-                './people/']);
+                './person']);
             }
           )
         );
@@ -152,7 +156,7 @@ export class PersonComponent implements OnInit {
             .subscribe(
               () => {
                 this.router.navigate([
-                  './people/']);
+                  './person']);
               }
             )
         );

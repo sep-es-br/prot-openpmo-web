@@ -262,6 +262,20 @@ export class BreadcrumbService {
             crumb.label = node.name;
             break;
           }
+          case 'person':{
+            crumb.modelId = '';
+            modelName = 'person';
+            crumb.label = node.name;
+            crumb.action = '';
+            break;
+          }
+          case 'org':{
+            crumb.modelId = '';
+            modelName = 'organization';
+            crumb.label = node.name;
+            crumb.action = '';
+            break;
+          }
         }
         if (node.id == 'new') {
           crumb.id = 'new';

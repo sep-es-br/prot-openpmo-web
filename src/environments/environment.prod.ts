@@ -1,5 +1,7 @@
 export const environment = {
   production: true,
+  tokenWhitelistedDomains: [ /localhost:8080/ ],
+  tokenBlacklistedRoutes: [/\/oauth\/token/],
   databaseHost: 'http://ss07.planejamento.es.gov.br/',
   baseAPIPath: 'api/',
   officeAPI: 'office/',
@@ -20,5 +22,9 @@ export const environment = {
   modelResource: 'model/',
   propertyTypesResource: 'listpropertytypes/',
   personAPI: 'person/',
-  orgAPI: 'organization/'
+  personLikeResource: 'like/',
+  orgAPI: 'organization/',
+  roleAPI: 'role/',
+  byScopeIdResource: 'scope/',
+  byActorIdResource: 'actor/',
 };
