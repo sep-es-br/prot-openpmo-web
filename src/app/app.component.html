@@ -48,7 +48,9 @@
                     (click)="switchLanguage(item)" 
                     mat-menu-item  
                     *ngFor="let item of languages_list">
-                <!-- <i class="icon-flag-br icon-positin"></i> -->
+                <i class="icon-flag-br icon-positin">
+                    <img class="logo-top" src={{icon_flag_locale[item]}}>
+                </i> 
                 <span class="margin-language" translate>{{item}}</span>
             </button>
         </mat-menu>

@@ -4,6 +4,7 @@ import { LocaleService } from './services/locale/locale-service.service';
 import { DateAdapter } from '@angular/material/core';
 import { validateHorizontalPosition } from '@angular/cdk/overlay';
 import { HttpClient } from '@angular/common/http';
+import { ConditionalExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,9 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit {
   title = 'openpmo-web';
   lang: string = "English";
-  languages_list:[] = [];
+  languages_list: [] = [];
   key_locale: object;
+  icon_flag_locale: object;
 
   //localeTrigger: Object = new Object();
 
@@ -32,7 +34,8 @@ export class AppComponent implements OnInit {
 
     this.httpClient.get('../assets/i18n/config.json').subscribe (config => {
       this.languages_list = config['languages'];
-      this.key_locale = config['id_locale'];
+      this.key_locale = config['key_locale'];
+      this.icon_flag_locale = config['icon_flag_locale'];
     });
   }
 
