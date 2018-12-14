@@ -32,7 +32,7 @@
                 <input matInput 
                   type="text" 
                   formControlName="fullName"
-                  placeholder={{translate.fullName|translate}}
+                  placeholder={{localeConfig.fullName}}
                   required/>
               </mat-form-field>
               <mat-error *ngIf="formGroupPerson.controls['fullName'].invalid && formGroupPerson.controls['fullName'].touched">
@@ -47,7 +47,7 @@
               <input matInput
                 type="text"      
                 formControlName="name"
-                placeholder="Display name"
+                placeholder={{localeConfig.displayname}}
                 required/> 
             </mat-form-field>
             <mat-error *ngIf="formGroupPerson.controls['name'].invalid && formGroupPerson.controls['name'].touched">
@@ -61,7 +61,8 @@
               <input matInput
                 type="text"      
                 formControlName="phone"
-                placeholder="Phone"/> 
+                placeholder={{localeConfig.phone}}
+                mask={{localeConfig.phoneMask}}/>
             </mat-form-field>
           </div>
 
@@ -71,7 +72,7 @@
               <input matInput
                 type="text"      
                 formControlName="userName"
-                placeholder="User name"/> 
+                placeholder={{localeConfig.username}}/> 
             </mat-form-field>
           </div>
 
@@ -82,7 +83,7 @@
                 <input matInput 
                   type="text" 
                   formControlName="address"
-                  placeholder="Address"/>
+                  placeholder={{localeConfig.address}}/>
               </mat-form-field>
             </div>
           </div>

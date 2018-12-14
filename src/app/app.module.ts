@@ -5,9 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppMatModule } from './app.mat.module';
 import { AppComponent } from './app.component';
 import { OfficeDataService } from './services/data/office/office-data.service';
-
 import { AppRoutingModule } from './/app-routing.module';
-
 import { WorkpackResolver } from './components/workpack/workpack.resolver';
 import { WorkpackModelResolver } from './components/workpack-model/workpack-model.resolver';
 import { NgPipesModule } from 'ngx-pipes';
@@ -30,11 +28,16 @@ import { PlanDataService } from './services/data/plan/plan-data.service';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
 import { ProgressComponent } from './components/progress/progress.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from '@angular/common';
 import { MessageDialogComponent } from './components/message-dialog/message-dialog.component';
+import { NgxMaskModule } from 'ngx-mask';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+import { LocaleService } from './services/locale/locale-service.service';
+import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { PeopleComponent } from './components/admin/people/people.component';
 import { PersonComponent } from './components/admin/people/person/person.component';
 import { OrgComponent } from './components/admin/orgs/org/org.component';
@@ -44,6 +47,16 @@ import { SecurityModule } from './security/security.module';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './security/auth.service';
 import { AuthClientHttp } from './security/auth-client-http';
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+    align: "right",
+    allowNegative: true,
+    decimal: ",",
+    precision: 2,
+    prefix: "R$ ",
+    suffix: "",
+    thousands: "."
+};
 
 @NgModule({
   declarations: [
@@ -77,6 +90,8 @@ import { AuthClientHttp } from './security/auth-client-http';
     ReactiveFormsModule,
     CommonModule,
     NgPipesModule,
+    CurrencyMaskModule,
+    NgxMaskModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -90,7 +105,8 @@ import { AuthClientHttp } from './security/auth-client-http';
     OfficeDataService,
     PlanDataService,
     WorkpackDataService,
-    BreadcrumbService,
+    BreadcrumbService,    
+    LocaleService,
     CookieService,
     WorkpackResolver,
     PlanResolver,
@@ -100,7 +116,11 @@ import { AuthClientHttp } from './security/auth-client-http';
     WorkpackModelResolver,
     SecurityModule,
     AuthService,
-    AuthClientHttp
+    AuthClientHttp,
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
   ],
   bootstrap: [AppComponent]
 })

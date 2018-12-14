@@ -1,0 +1,10 @@
+{
+        "===CONFIG MENU LANGUAGE===" : "Type the language name in the array 'languages' ​​and the name of the file in the object 'id_locale'",
+
+    "languages":["English", "Portuguese BR"],
+    
+    "id_locale" : {
+        "English" : "en",
+        "Portuguese BR" : "pt-BR"
+    }
+}

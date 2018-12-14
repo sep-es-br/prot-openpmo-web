@@ -8,9 +8,9 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
-import { TranslateConstants } from '../../model/translate';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { LocaleService } from '../../services/locale/locale-service.service';
 
 @Component({
   selector: 'app-plan-structure',
@@ -18,6 +18,8 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
   styleUrls: ['./plan-structure.component.css']
 })
 export class PlanStructureComponent implements OnInit {
+
+  localeConfig: Object = new Object();
 
   constructor(
     private route: ActivatedRoute,
@@ -27,10 +29,8 @@ export class PlanStructureComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
-    public dialog: MatDialog) {}
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    public dialog: MatDialog,
+    private localeService: LocaleService) {}
 
   formGroupPlanStructure = this.fb.group({
     name: ['', Validators.required],
@@ -53,6 +53,15 @@ export class PlanStructureComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    );
+
     this.SetPanels(this.route.snapshot.paramMap.get('action'));
     if (this.action == 'new') {
       this.propertiesPanelOpenState = true;
@@ -171,8 +180,8 @@ export class PlanStructureComponent implements OnInit {
         if (workpackModel2delete.components.length > 0) {
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Warning",
-              message: "Sorry, you can not delete a workpack model that contains nested workpack models.",
+              title: this.localeConfig['Warning'],
+              message: this.localeConfig['Sorry, you can not delete a workpack model that contains nested workpack models.'],
               action: "OK"
             }
           });
@@ -181,9 +190,9 @@ export class PlanStructureComponent implements OnInit {
           this.subscriptions.push(
             this.dialog.open(MessageDialogComponent, { 
               data: {
-                title: "Attention",
-                message: "Are you sure you want to delete " + workpackModel2delete.name + "?",
-                action: "YES_NO"
+                title: this.localeConfig['Attention'],
+                message: this.localeConfig['Are you sure you want to delete'] + workpackModel2delete.name + "?",
+                action: this.localeConfig['YES_NO'],              
               }
             })
             .afterClosed()

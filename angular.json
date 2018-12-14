@@ -50,54 +50,6 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
-            },
-
-            "production-en": {
-              "optimization": true,
-              "outputHashing": "all",
-              "outputPath": "dist/browser/en/",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "baseHref": "/en/",
-              "i18nFile": "src/locale/messages.en.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "en",
-              "i18nMissingTranslation": "error"
-            },
-
-            "production-pt-BR": {
-              "optimization": true,
-              "outputHashing": "all",
-              "outputPath": "dist/browser/pt-BR/",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "baseHref": "/pt-BR/",
-              "i18nFile": "src/locale/messages.pt-BR.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "pt-BR",
-              "i18nMissingTranslation": "error"
             }
 
           }
@@ -108,8 +60,6 @@
             "browserTarget": "openpmo-web:build"
           },
           "configurations": {
-            "en": {"browserTarget": "openpmo-web:build:production-en"},
-            "pt-BR": {"browserTarget": "openpmo-web:build:production-pt-BR"},
             "production": {
               "browserTarget": "openpmo-web:build:production"
             }

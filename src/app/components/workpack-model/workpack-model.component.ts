@@ -11,9 +11,9 @@ import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service'
 import { ViewOptions } from '../../model/view-options';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { PropertyProfile } from '../../model/property-profile';
-import { TranslateConstants } from '../../model/translate';
 import { MessageDialogComponent, DialogData } from '../message-dialog/message-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { LocaleService } from '../../services/locale/locale-service.service';
 
 @Component({
   selector: 'app-workpack-model',
@@ -27,6 +27,8 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 export class WorkpackModelComponent implements OnInit {
 
+  localeConfig: Object = new Object();
+
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
@@ -35,10 +37,8 @@ export class WorkpackModelComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
-    public dialog: MatDialog) {}
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    public dialog: MatDialog,
+    private localeService: LocaleService ) {}
 
   formGroupWorkpackModel = this.fb.group({
     id: [''],
@@ -46,7 +46,7 @@ export class WorkpackModelComponent implements OnInit {
     propertyProfiles: this.fb.array([]),
   });
 
-  color = 'primary';
+  color = 'primary';  
 
   subscriptions: Subscription[] = [];
   office: Office = new Office();
@@ -66,6 +66,14 @@ export class WorkpackModelComponent implements OnInit {
   MessageRightPosition: String;
 
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
 
     this.viewOptions = this.route.snapshot.data.workpackmodel;
 
@@ -107,7 +115,6 @@ export class WorkpackModelComponent implements OnInit {
         });
       })
     );
-
 
     this.subscriptions.push(    
       this.formGroupWorkpackModel.statusChanges.subscribe((status) => {
@@ -160,7 +167,6 @@ export class WorkpackModelComponent implements OnInit {
 
     }
   }
-
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpackModel.name) return true;
@@ -419,8 +425,8 @@ export class WorkpackModelComponent implements OnInit {
         if (workpackModel2delete.components.length > 0) {
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Warning",
-              message: "Sorry, you can not delete a workpack model that contains nested workpack models.",
+              title: this.localeConfig['Warning'],
+              message: this.localeConfig['Sorry, you can not delete a workpack model that contains nested workpack models.'],
               action: "OK"
             }
           });
@@ -429,9 +435,9 @@ export class WorkpackModelComponent implements OnInit {
           this.subscriptions.push(
             this.dialog.open(MessageDialogComponent, { 
               data: {
-                title: "Attention",
-                message: "Are you sure you want to delete " + workpackModel2delete.name + "?",
-                action: "YES_NO"
+                title: this.localeConfig['Attention'], 
+                message: this.localeConfig['Are you sure you want to delete'] + workpackModel2delete.name + "?",
+                action: this.localeConfig['YES_NO']
               }
             })
             .afterClosed()

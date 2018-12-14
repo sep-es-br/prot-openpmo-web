@@ -11,7 +11,7 @@
       (opened)="propertiesPanelOpenState = true"
       (closed)="propertiesPanelOpenState = false">
       <mat-expansion-panel-header>
-        <mat-panel-title translate>Properties</mat-panel-title>
+        <mat-panel-title translate>Properties</mat-panel-title> <span>sdd{{lang}}</span>
       </mat-expansion-panel-header>
       <form 
         [formGroup]="formGroupOffice"
@@ -21,7 +21,7 @@
           <input matInput
             type="text"      
             formControlName="name"
-            placeholder={{translate.name|translate}}
+            placeholder={{localeConfig.name}}
             required/> 
         </mat-form-field>
       <mat-error *ngIf="formGroupOffice.controls['name'].invalid && formGroupOffice.controls['name'].touched">
@@ -31,7 +31,7 @@
           <input matInput 
             type="text" 
             formControlName="fullName"
-            placeholder={{translate.fullName|translate}}/>
+            placeholder={{localeConfig.fullName}}/>
         </mat-form-field>
 
         <div class="id-container-properties">

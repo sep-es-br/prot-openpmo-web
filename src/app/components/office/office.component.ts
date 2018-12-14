@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Office } from '../../model/office';
 import { OfficeDataService } from '../../services/data/office/office-data.service';
 import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
@@ -6,9 +6,9 @@ import { Subscription, Observable } from 'rxjs';
 import { BreadcrumbService, Breadcrumb } from '../../services/breadcrumb/breadcrumb.service';
 import { FormControl, Validators, FormBuilder } from '@angular/forms';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
-import { TranslateConstants } from '../../model/translate';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
+import { LocaleService } from '../../services/locale/locale-service.service';
 
 @Component({
   selector: 'app-office',
@@ -16,6 +16,9 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
   styleUrls: ['./office.component.css']
 })
 export class OfficeComponent implements OnInit {
+
+  localeConfig: Object = new Object();
+
   constructor(
     private route: ActivatedRoute,
     private officeDataService: OfficeDataService,
@@ -24,14 +27,13 @@ export class OfficeComponent implements OnInit {
     private router: Router,
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
-    public dialog: MatDialog) { }
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    public dialog: MatDialog,
+    private localeService: LocaleService) { }
   
   formGroupOffice = this.fb.group({
     name: ['', Validators.required],
-    fullName: ['']
+    fullName: [''],
+    locale: [this.localeConfig]
   });
   
   subscriptions: Subscription[] = [];
@@ -48,6 +50,23 @@ export class OfficeComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    );
+    //currencyMask: Object = new Object();
+    // this.subscriptions.push(
+    //   this.localeService.currencyMask.subscribe(
+    //     (mask) => {
+    //       this.currencyMask = mask;
+    //     }
+    //   )
+    // );
+    
     this.action = this.route.snapshot.paramMap.get('action');
     if (this.action == 'new') {
       this.propertiesPanelOpenState = true;
@@ -78,7 +97,6 @@ export class OfficeComponent implements OnInit {
       })
     );
   }
-
   
   //Identify changes made by the user in 'name' or 'fullname'
   UserChangedSomething(val): Boolean {
@@ -134,6 +152,7 @@ export class OfficeComponent implements OnInit {
     );
   }
 
+  @Input() lang;
   ////////////////////////////////////////////////////////////////////////
   //EXCLUSION MODULE - Plan
   //
@@ -144,8 +163,8 @@ export class OfficeComponent implements OnInit {
       if (Plan2delete.workpacks.length > 0) {
         this.dialog.open(MessageDialogComponent, { 
           data: {
-            title: "Warning",
-            message: "Sorry, you can not delete a plan that contains nested workpacks.",
+            title: this.localeConfig["Warning"],
+            message: this.localeConfig['Sorry, you can not delete a plan that contains nested workpacks.'],
             action: "OK"
           }
         });
@@ -154,9 +173,9 @@ export class OfficeComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Attention",
-              message: "Are you sure to delete " + Plan2delete.name + "?",
-              action: "YES_NO"
+              title: this.localeConfig["Attention"],
+              message: this.localeConfig["Are you sure to delete"] + Plan2delete.name + "?",
+              action: this.localeConfig["YES_NO"]
             }
           })
           .afterClosed()

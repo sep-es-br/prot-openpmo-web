@@ -4,10 +4,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Org } from 'src/app/model/org';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateConstants } from 'src/app/model/translate';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { MatDialog } from '@angular/material';
 import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
+import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
   selector: 'app-org',
@@ -16,16 +16,16 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.servic
 })
 export class OrgComponent implements OnInit {
 
+  localeConfig: Object = new Object();
+
   constructor(
     private orgDataService: OrgDataService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private breadCrumbService: BreadcrumbService
+    private breadCrumbService: BreadcrumbService,
+    private localeService: LocaleService
   ) { }
-
-  //Constants for translate
-  translate = new TranslateConstants();
 
   formGroupOrg = this.fb.group({
     name: ['', Validators.required],
@@ -44,6 +44,15 @@ export class OrgComponent implements OnInit {
 
 
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
+
     this.paramId = this.route.snapshot.paramMap.get('id');
 
     if (this.paramId == 'new') {

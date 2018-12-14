@@ -5,6 +5,7 @@ import { PersonDataService } from 'src/app/services/data/person/person-data.serv
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from '../../message-dialog/message-dialog.component';
 import { BreadcrumbService, Breadcrumb } from 'src/app/services/breadcrumb/breadcrumb.service';
+import { LocaleService } from 'src/app/services/locale/locale-service.service';
 
 @Component({
   selector: 'app-people',
@@ -13,17 +14,32 @@ import { BreadcrumbService, Breadcrumb } from 'src/app/services/breadcrumb/bread
 })
 export class PeopleComponent implements OnInit {
 
+  localeConfig: Object = new Object();
+  
   constructor(
     private personDataService: PersonDataService, 
     public dialog: MatDialog,
-    private breadCrumbService: BreadcrumbService) {}
+    private breadCrumbService: BreadcrumbService,
+    private localeService: LocaleService) { }
 
   people: Person[] = [];
   private subscriptions: Subscription[] = [];
 
+  ////////////////////////////////////////////////////////////////////////
+  // TOP OF THE PAGE
+  // Prepare data before loading screen
+  
   ngOnInit() {
     this.breadCrumbService.GoTo(0);
     
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
+
     this.subscriptions.push(
       this.personDataService.people.subscribe(p => {
         this.people = p;
@@ -50,9 +66,9 @@ export class PeopleComponent implements OnInit {
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Attention",
-              message: "Are you sure to remove " + person2delete.name + "?",
-              action: "YES_NO"
+              title: this.localeConfig['Attention'],
+              message: this.localeConfig['Are you sure to remove'] + person2delete.name + "?",
+              action: this.localeConfig['YES_NO']
             }
           })
           .afterClosed()

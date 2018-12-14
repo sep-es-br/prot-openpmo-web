@@ -146,3 +146,12 @@
 .margin-language{
     margin-left: 27px;
 } */
+
+body {
+    margin: 2rem;
+  }
+  
+  input {
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }

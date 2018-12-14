@@ -2,7 +2,7 @@
     <span translate>Saved successfully</span>
 </div>
 
-<div class="main-title">{{title|translate}} {{(action == 'new')? '' : planStructure.name}}</div>
+<div class="main-title">{{title | translate}} {{(action == 'new')? '' : planStructure.name}}</div>
 <div class="container-form"> 
   <mat-accordion >
     <mat-expansion-panel 
@@ -20,7 +20,7 @@
           <input matInput
             type="text"      
             formControlName="name"
-            placeholder={{translate.name|translate}}
+            placeholder={{localeConfig.name}}
             required/>
         </mat-form-field>
         <mat-error *ngIf="formGroupPlanStructure.controls['name'].invalid && formGroupPlanStructure.controls['name'].touched">
@@ -30,7 +30,7 @@
           <input matInput 
             type="text" 
             formControlName="fullName"
-            placeholder={{translate.fullName|translate}}/>
+            placeholder={{localeConfig.fullName}}/>
         </mat-form-field>
         <div class="id-container-properties">
           <span>ID: {{planStructure.id}}</span>

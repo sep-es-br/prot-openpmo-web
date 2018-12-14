@@ -13,15 +13,9 @@
                 <img class="logo-top" src="../assets/images/Logo.png">
             </div>
 
-            <!-- OLD BUTTON USER
-            <div class="user">
-                <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
-            </div>-->
-            
-            <!--BUTTON USER-->
-            <button class="user" mat-icon-button [matMenuTriggerFor]="menu" 
-                    matTooltip={{jwtPayload?.name}}({{jwtPayload?.user_name}})>
-                <mat-icon fontSet="fa" fontIcon="fa-user-circle" aria-hidden="true"></mat-icon>
+            <button class="UserButton" mat-menu-item>
+                <mat-icon fontSet="fas" fontIcon="fa-user" aria-hidden="true"></mat-icon>
+                <span translate>My profile</span>
             </button>
                 
             <mat-menu #menu="matMenu" [overlapTrigger]="false">
@@ -62,21 +56,31 @@
             <!--BUTTON CONFIG-->
             <button class="settings" mat-icon-button [matMenuTriggerFor]="menusettings">
                 <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
+                <span translate>Account settings</span>
             </button>
 
             <mat-menu #menusettings="matMenu" [overlapTrigger]="false">
 
-                <button class="settingsButton" mat-menu-item>
-                    <mat-icon fontSet="fas" fontIcon="fa-users" aria-hidden="true"></mat-icon>
-                    <span routerLink="/person" routerLinkActive="active">People</span>
-                </button>
+            <button class="UserButton line" mat-menu-item>
+                <mat-icon style="color: brown;" fontSet="fas" fontIcon="fa-sign-out-alt" aria-hidden="true"></mat-icon>
+                <span class="log-out" translate>Log Out</span>
+            </button>
 
                 <button class="settingsButton" mat-menu-item>
                     <mat-icon fontSet="fa" fontIcon="fa-building" aria-hidden="true"></mat-icon>
                     <span routerLink="/org" routerLinkActive="active">Organizations</span>
                 </button>
 
-            </mat-menu>
+        <!--MENU LANGUAGE-->
+        <mat-menu #languages="matMenu">
+            <button class="UserButton" 
+                    (click)="switchLanguage(item)" 
+                    mat-menu-item  
+                    *ngFor="let item of languages_list">
+                <!-- <i class="icon-flag-br icon-positin"></i> -->
+                <span class="margin-language" translate>{{item}}</span>
+            </button>
+        </mat-menu>
         
         </div>
 

@@ -19,19 +19,21 @@
         fxLayoutAlign="left"
         fxLayoutGap="10px"
         fxLayoutGap.xs="0">
-
-          <!-- Name -->
-          <mat-form-field>
-            <input matInput
-              type="text"      
-              formControlName="name"
-              [required]="true"
-              placeholder={{translate.name|translate}}/>
-          </mat-form-field>
-          <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
-            <span translate>Name must be from 3 to 20 characteres long</span>
-          </mat-error>
-
+        <div class="row property-row">
+          <div class="property-card-box" >
+           
+            <!-- Name -->
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="name"
+                [required]="true"
+                placeholder={{localeConfig.name}}/>
+            </mat-form-field>
+            <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
+              <span translate>Name must be from 3 to 20 characteres long</span>
+            </mat-error>
+          </div>
           <div *ngFor="let property of formGroupWorkpack['controls'].properties['controls']; let i=index;"
             [class]="(property.value.profile.fullLine) ? 'full-width' : ''">
             <div *ngIf="property.value.profile.using"
@@ -45,7 +47,7 @@
                   [required]="'property.value.profile.required'"
                   type="text"      
                   formControlName="value"
-                  placeholder="{{property.value.profile.label}}"/>
+                  placeholder="{{property.value.profile.label|translate}}"/>
               </mat-form-field>
               
               <!-- Textarea type -->
@@ -56,7 +58,7 @@
                   [required]="'property.value.profile.required'"
                   rows="{{property.value.profile.rows}}"
                   formControlName="value"
-                  placeholder="{{property.value.profile.label}}"></textarea>
+                  placeholder="{{property.value.profile.label|translate}}"></textarea>
               </mat-form-field>
               
               <!-- Number type -->
@@ -67,7 +69,7 @@
                   [required]="'property.value.profile.required'"
                   type="number"      
                   formControlName="value"
-                  placeholder="{{property.value.profile.label}}"/>
+                  placeholder="{{property.value.profile.label|translate}}"/>
               </mat-form-field>
 
               <!-- Currency type -->
@@ -75,12 +77,12 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <input matInput
+                  input currencyMask [options]="localeConfig.currencyMask"
                   [required]="'property.value.profile.required'"
-                  type="number" 
+                  type="text" 
                   step="any"
                   formControlName="value"
-                  [value]="ConvertToNumber(property.value.value)" 
-                  placeholder="{{property.value.profile.label}}"/>
+                  placeholder="{{property.value.profile.label|translate}}"/>
               </mat-form-field>
 
               <!-- Date type -->
@@ -90,7 +92,7 @@
                 <input matInput 
                   [required]="'property.value.profile.required'"  
                   [matDatepicker]="picker" 
-                  placeholder="{{property.value.profile.label}}"
+                  placeholder="{{property.value.profile.label|translate}}"
                   formControlName="value">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
@@ -101,33 +103,37 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <mat-select 
-                  placeholder="{{property.value.profile.label}}"
+                  placeholder="{{property.value.profile.label|translate}}"
                   formControlName="value"
                   [required]="'property.value.profile.required'">
                   <mat-option 
                     *ngFor="let pValue of property.value.profile.possibleValues" 
                     [value]="pValue">
-                    {{pValue}}
+                    {{pValue | translate}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
 
               <!-- Error message -->
               <mat-error *ngIf="property.invalid && property.touched">
-                <span>{{property.value.profile.label}}</span><strong translate> is required</strong>
+                <span>{{property.value.profile.label | translate}}</span><strong translate>is required</strong>
               </mat-error>
 
             </div>
           </div>
+          <div class="id-container-properties">
+            <span>ID: {{workpack.id | translate}}</span>
+          </div>      
+        </div>
 
-          <!-- SAVE BUTTON -->
-          <div class="footer-button"
-              [style.bottom]="SaveButtonBottomPosition">
-            <div class="example-button-row">
-              <button 
-                class="save-button" mat-button><span translate>Save</span></button>
-            </div>
-          </div>        
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button 
+              class="save-button" mat-button><span translate>Save</span></button>
+          </div>
+        </div>        
 
       </form>
       <div class="id-container-properties">

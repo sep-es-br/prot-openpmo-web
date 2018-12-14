@@ -11,7 +11,6 @@ import { ViewOptions } from '../../model/view-options';
 import { FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
-import { TranslateConstants } from '../../model/translate';
 import { PropertyProfile } from 'src/app/model/property-profile';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { isNullOrUndefined } from 'util';
@@ -20,6 +19,7 @@ import { MessageDialogComponent } from '../message-dialog/message-dialog.compone
 import { Property } from 'src/app/model/property';
 import { Role, ActorType } from 'src/app/model/role';
 import { RoleDataService } from 'src/app/services/data/role/role-data.service';
+import { LocaleService } from '../../services/locale/locale-service.service';
 
 @Component({
   selector: 'app-workpack',
@@ -27,6 +27,8 @@ import { RoleDataService } from 'src/app/services/data/role/role-data.service';
   styleUrls: ['./workpack.component.css']
 })
 export class WorkpackComponent implements OnInit {
+
+  localeConfig: Object = new Object();
 
   constructor(
     private route: ActivatedRoute,
@@ -37,10 +39,8 @@ export class WorkpackComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private roleDataService: RoleDataService) {}
-
-  //Constants for translate
-  translate = new TranslateConstants();
+    private roleDataService: RoleDataService,
+    private localeService: LocaleService) {}
 
   formGroupWorkpack = this.fb.group({
     id: [''],
@@ -70,6 +70,15 @@ export class WorkpackComponent implements OnInit {
   // TOP OF THE PAGE
   // Prepare data before loading screen
   ngOnInit() {
+
+    //Translate Service
+    this.subscriptions.push(
+      this.localeService.localeConfig.subscribe(config => {
+          this.localeConfig = config;
+        }
+      )
+    ); 
+
     this.viewOptions = this.route.snapshot.data.workpack;
     
     this.subscriptions.push(
@@ -293,8 +302,8 @@ export class WorkpackComponent implements OnInit {
         if (workpack2delete.components.length > 0) {
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: "Warning",
-              message: "Sorry, you can not delete a workpack that contains nested workpacks.",
+              title: this.localeConfig['Warning'],
+              message: this.localeConfig['Sorry, you can not delete a workpack that contains nested workpacks.'],
               action: "OK"
             }
           });
@@ -303,9 +312,9 @@ export class WorkpackComponent implements OnInit {
           this.subscriptions.push(
             this.dialog.open(MessageDialogComponent, { 
               data: {
-                title: "Attention",
-                message: "Are you sure you want to delete " + workpack2delete.name + "?",
-                action: "YES_NO"
+                title: this.localeConfig['Attention'],
+                message: this.localeConfig['Are you sure you want to delete'] + workpack2delete.name + "?",
+                action: this.localeConfig['YES_NO']
               }
             })
             .afterClosed()
