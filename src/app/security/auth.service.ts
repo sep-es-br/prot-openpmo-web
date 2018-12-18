@@ -7,6 +7,7 @@ import 'rxjs';
 import { environment } from './../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { ErrorMessagingService } from '../services/error/error-messaging.service';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private jwtHelper: JwtHelperService,
-    private router: Router
+    private router: Router,
+    private errMessage: ErrorMessagingService
   ) {
     this.oauthTokenUrl = `${environment.databaseHost + environment.oauthAPI + environment.tokenResource}`;
     this.carregarToken();
@@ -40,6 +42,7 @@ export class AuthService {
       .catch(response => {
         if (response.status === 400) {
           if (response.error === 'invalid_grant') {
+            this.errMessage.ShowErrorMessage(response.error);
             return Promise.reject('Usuário ou senha inválida!');
           }
         }
@@ -63,9 +66,9 @@ export class AuthService {
         return Promise.resolve(null);
       })
       .catch(response => {
-        console.error('Erro ao renovar token.', response);
+        this.errMessage.ShowErrorMessage(response.error);
         this.limparAccessToken();
-        this.router.navigate(['/'])
+        this.router.navigate(['/']);
         return Promise.resolve(null);
       });
   }

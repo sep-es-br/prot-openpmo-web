@@ -47,6 +47,9 @@ import { SecurityModule } from './security/security.module';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './security/auth.service';
 import { AuthClientHttp } from './security/auth-client-http';
+import { Util } from './utils';
+import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
+import { ErrorMessagingService } from './services/error/error-messaging.service';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
@@ -77,6 +80,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     OrgsComponent,
     OrgComponent,
     PersonRoleComponent,
+    OrgRoleComponent,
     LoginComponent
   ],
   entryComponents: [MessageDialogComponent],
@@ -117,10 +121,12 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     SecurityModule,
     AuthService,
     AuthClientHttp,
-    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
+    { provide: MAT_DATE_LOCALE, useValue: 'ja-JP' },
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+    Util,
+    ErrorMessagingService
   ],
   bootstrap: [AppComponent]
 })

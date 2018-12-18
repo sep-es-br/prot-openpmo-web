@@ -37,17 +37,17 @@
         <mat-form-field class="example-full-width">
           <input 
             type="text" 
-            placeholder="Search a person"
+            placeholder="Search an organization"
             aria-label="Number" 
             formControlName="actorName"
             matInput [matAutocomplete]="auto">
           <mat-autocomplete autoActiveFirstOption 
             #auto="matAutocomplete">
             <mat-option 
-              *ngFor="let personFound of peopleSearched" 
-              [value]="personFound.name"
-              (onSelectionChange)="UpdatePersonControl(personFound)">
-              {{personFound.fullName}}
+              *ngFor="let orgFound of orgsSearched" 
+              [value]="orgFound.name"
+              (onSelectionChange)="UpdateOrgControl(orgFound)">
+              {{orgFound.fullName}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>            

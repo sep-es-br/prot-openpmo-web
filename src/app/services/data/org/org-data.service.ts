@@ -7,6 +7,8 @@ import { environment } from 'src/environments/environment';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { map, catchError } from 'rxjs/operators';
 import { AuthClientHttp } from 'src/app/security/auth-client-http';
+import { Util } from 'src/app/utils';
+import { ErrorMessagingService } from '../../error/error-messaging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,8 @@ export class OrgDataService {
 
   constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
-              public dialog: MatDialog) {
+              private errMessage: ErrorMessagingService,
+              private util: Util) {
   }  
 
   // Observable property for the array of organizations
@@ -29,25 +32,6 @@ export class OrgDataService {
   private baseURL = environment.databaseHost;
   
   private basePathURL = environment.baseAPIPath;
-
-
-
-  ///////////////////////////////////////////////////////////////////////
-  //
-  // Show an error message in a modal dialog box
-  // 
-  // Return: none
-  // 
-  ShowErrorMessagee(error){
-    this.dialog.open(MessageDialogComponent, { 
-      data: {
-        title: error.statusText,
-        message: error.message,
-        action: "OK"
-      }
-    });    
-  }
-
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -66,7 +50,7 @@ export class OrgDataService {
       },
       (error) => {
         this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
+        this.errMessage.ShowErrorMessage(error);
       }
     );
   }
@@ -96,7 +80,7 @@ export class OrgDataService {
               catchError(
                 (err) => {
                   this.spinnerService.HideSpinner();
-                  this.ShowErrorMessagee(err);
+                  this.errMessage.ShowErrorMessage(err);
                   return err;
                 }
               )
@@ -128,13 +112,39 @@ export class OrgDataService {
         catchError(
           (err) => {
             this.spinnerService.HideSpinner();
-            this.ShowErrorMessagee(err);
+            this.errMessage.ShowErrorMessage(err);
             return err;
           }
         )
       );
     }
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a GET http request for the list of Organizations that has a given string
+  // in the name or full name
+  // 
+  // Parameter: 
+  //    name: string containing a scrap of the name being searched 
+  //
+  // Return: none
+  // 
+  QueryOrgsByName(nameScrap: string){
+    const pathURL = environment.orgAPI + environment.likeResource;
+    const URL = this.baseURL + this.basePathURL + pathURL + nameScrap;
+    this.spinnerService.ShowSpinner();
+    this.http.get(URL).subscribe(
+      (res) => {
+        this.$orgs.next(res as Org[]);
+        this.spinnerService.HideSpinner();
+      },
+      (error) => {
+        this.spinnerService.HideSpinner();
+        this.errMessage.ShowErrorMessage(error);
+      }
+    );
+  }    
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -151,7 +161,7 @@ export class OrgDataService {
     this.spinnerService.ShowSpinner();
     return this.http.post(
       URL, 
-      JSON.stringify(org), 
+      this.util.JSONStringfyOmitNull(org), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -166,7 +176,7 @@ export class OrgDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -188,7 +198,7 @@ export class OrgDataService {
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(org), 
+      this.util.JSONStringfyOmitNull(org), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -203,7 +213,7 @@ export class OrgDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -231,7 +241,7 @@ export class OrgDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )

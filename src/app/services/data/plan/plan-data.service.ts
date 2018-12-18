@@ -9,6 +9,8 @@ import { SpinnerService } from '../../spinner/spinner.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { AuthClientHttp } from 'src/app/security/auth-client-http';
+import { Util } from 'src/app/utils';
+import { ErrorMessagingService } from '../../error/error-messaging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,24 +39,10 @@ export class PlanDataService {
 
   constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
-              public dialog: MatDialog) {
+              private errMessage: ErrorMessagingService,
+              private util: Util) {
   }
 
-  ///////////////////////////////////////////////////////////////////////
-  //
-  // Show an error message in a modal dialog box
-  // 
-  // Return: none
-  // 
-  ShowErrorMessagee(error){
-    this.dialog.open(MessageDialogComponent, { 
-      data: {
-        title: error.statusText,
-        message: error.message,
-        action: "OK"
-      }
-    });    
-  }  
 
   ////////////////////////////////////////////////////////////////////////
   //
@@ -80,7 +68,7 @@ export class PlanDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -112,7 +100,7 @@ export class PlanDataService {
         catchError(
           (err) => {
             this.spinnerService.HideSpinner();
-            this.ShowErrorMessagee(err);
+            this.errMessage.ShowErrorMessage(err);
             return err;
           }
         )
@@ -137,7 +125,7 @@ export class PlanDataService {
     this.spinnerService.ShowSpinner();
     return this.http.post(
       URL, 
-      JSON.stringify(plan), 
+      this.util.JSONStringfyOmitNull(plan), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -152,7 +140,7 @@ export class PlanDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -175,7 +163,7 @@ export class PlanDataService {
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(plan), 
+      this.util.JSONStringfyOmitNull(plan), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -193,7 +181,7 @@ export class PlanDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -223,7 +211,7 @@ export class PlanDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -254,7 +242,7 @@ export class PlanDataService {
         catchError(
           (err) => {
             this.spinnerService.HideSpinner();
-            this.ShowErrorMessagee(err);
+            this.errMessage.ShowErrorMessage(err);
             return err;
           }
         )
@@ -278,7 +266,7 @@ export class PlanDataService {
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(planStructure), 
+      this.util.JSONStringfyOmitNull(planStructure), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -293,7 +281,7 @@ export class PlanDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -323,7 +311,7 @@ export class PlanDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -351,7 +339,7 @@ export class PlanDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )

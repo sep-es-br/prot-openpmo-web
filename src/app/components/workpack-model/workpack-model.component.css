@@ -107,6 +107,11 @@
     margin-top: 6px;
 }
 
+.toggle-stakeholder {
+    float: right;
+    margin-left: 20px;
+}
+
 .property-panel{
     overflow: visible;
 }

@@ -35,7 +35,7 @@
                     {{lang|translate}}
                 </button>
     
-                <button class="UserButton line" mat-menu-item>
+                <button class="UserButton line" mat-menu-item (click)="Logout()">
                     <mat-icon style="color: brown;" fontSet="fas" fontIcon="fa-sign-out-alt" aria-hidden="true"></mat-icon>
                     <span class="log-out" translate>Log Out</span>
                 </button>
@@ -62,12 +62,12 @@
     
                 <button class="settingsButton" mat-menu-item>
                     <mat-icon fontSet="fas" fontIcon="fa-users" aria-hidden="true"></mat-icon>
-                    <span routerLink="/people" routerLinkActive="active">People</span>
+                    <span routerLink="/person" routerLinkActive="active">People</span>
                 </button>
     
                 <button class="settingsButton" mat-menu-item>
                     <mat-icon fontSet="fa" fontIcon="fa-building" aria-hidden="true"></mat-icon>
-                    <span routerLink="/orgs" routerLinkActive="active">Organizations</span>
+                    <span routerLink="/org" routerLinkActive="active">Organizations</span>
                 </button>
     
             </mat-menu>

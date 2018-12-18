@@ -32,7 +32,10 @@ export class PersonComponent implements OnInit {
     fullName: ['', Validators.required],
     address: [''],
     phone: [''],
-    userName: ['']
+    userName: [''],
+    resetPassword: [false],
+    newPassword:[''],
+    confirmNewPassword: ['']
   });
 
   subscriptions: Subscription[] = [];
@@ -75,7 +78,10 @@ export class PersonComponent implements OnInit {
 
     this.subscriptions.push(    
       this.formGroupPerson.statusChanges.subscribe((status) => {
-        return (status == 'VALID' && this.UserChangedSomething(this.formGroupPerson.value)) 
+        return (status == 'VALID' && 
+                this.UserChangedSomething(this.formGroupPerson.value) && 
+                this.PasswordIsOK()) 
+
                 ? this.ShowSaveButton() 
                 : this.HideSaveButton();
       })
@@ -84,13 +90,27 @@ export class PersonComponent implements OnInit {
 
   }
 
+  PasswordIsOK(): Boolean {
+    if (!this.formGroupPerson.value.resetPassword) {
+      this.formGroupPerson.controls['newPassword'].setValidators(null);
+      this.formGroupPerson.controls['confirmNewPassword'].setValidators(null);
+      return true;
+    }
+    else {
+      this.formGroupPerson.controls['newPassword'].setValidators(Validators.required);
+      this.formGroupPerson.controls['confirmNewPassword'].setValidators(Validators.required);
+      return (this.formGroupPerson.value.newPassword != '' &&
+              this.formGroupPerson.value.newPassword == this.formGroupPerson.value.confirmNewPassword)
+    }
+  }
+
   //Load property form
   LoadFormControls() {
-    this.formGroupPerson.controls['name'].setValue(this.person.name);
-    this.formGroupPerson.controls['fullName'].setValue(this.person.fullName);
-    this.formGroupPerson.controls['address'].setValue(this.person.address);
-    this.formGroupPerson.controls['phone'].setValue(this.person.phone);
-    this.formGroupPerson.controls['userName'].setValue(this.person.userName);
+    this.formGroupPerson.controls['name'].setValue("" + this.person.name);
+    this.formGroupPerson.controls['fullName'].setValue("" + this.person.fullName);
+    this.formGroupPerson.controls['address'].setValue("" + this.person.address);
+    this.formGroupPerson.controls['phone'].setValue("" + this.person.phone);
+    this.formGroupPerson.controls['userName'].setValue("" + this.person.userName);
   }
 
 
@@ -101,6 +121,7 @@ export class PersonComponent implements OnInit {
     if (val.address != this.person.address) return true;
     if (val.phone != this.person.phone) return true;
     if (val.userName != this.person.userName) return true;
+    if (val.resetPassword) return true;
     return false;
   }
 
@@ -134,6 +155,11 @@ export class PersonComponent implements OnInit {
     this.person.address = this.formGroupPerson.value.address.trim();
     this.person.phone = this.formGroupPerson.value.phone.trim();
     this.person.userName = this.formGroupPerson.value.userName.trim();
+    if (this.formGroupPerson.value.resetPassword && 
+        this.formGroupPerson.value.newPassword == this.formGroupPerson.value.confirmNewPassword &&
+        this.formGroupPerson.value.newPassword != '') {
+      this.person.password = this.formGroupPerson.value.newPassword;
+    }
     
     switch (this.paramId) {
       case 'new': {

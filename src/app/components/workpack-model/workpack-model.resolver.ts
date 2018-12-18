@@ -30,9 +30,9 @@ export class WorkpackModelResolver implements Resolve<ViewOptions> {
         this.viewOptions.title = 'New Workpack Model';
         this.viewOptions.arrIds.push(this.id);
         let newWorkpackModel = new WorkpackModel();
-        this.workpackDataService.QueryDefaultWorkpackModel().subscribe(newWPT => {
-          newWPT.id = 'new';
-          this.crumbService.SetCurrentWorkpackModel(newWPT);
+        this.workpackDataService.QueryDefaultWorkpackModel().subscribe(newWPM => {
+          newWPM.id = 'new';
+          this.crumbService.SetCurrentWorkpackModel(newWPM);
         });
         break;
       }
@@ -44,9 +44,9 @@ export class WorkpackModelResolver implements Resolve<ViewOptions> {
         this.viewOptions.arrIds = [];
         this.viewOptions.arrIds.push(this.id);
 
-        this.workpackDataService.QueryDefaultWorkpackModel().subscribe(newWPT => {
-          newWPT.id = 'new';
-          this.crumbService.SetCurrentWorkpackModel(newWPT);
+        this.workpackDataService.QueryDefaultWorkpackModel().subscribe(newWPM => {
+          newWPM.id = 'new';
+          this.crumbService.SetCurrentWorkpackModel(newWPM);
         });
         break;        
       }
