@@ -34,6 +34,7 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
                 this.workpackDataService.CleanWorkpack();
                 this.viewOptions.propertiesPanelOpenState = true;
                 this.viewOptions.workpacksPanelOpenState = false;
+                this.viewOptions.stakeholdersPanelOpenState = false;
                 this.viewOptions.title = 'New ' + wpm.name;
                 let newWorkpack = new Workpack();
                 newWorkpack.id = 'new';
@@ -57,6 +58,7 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
                 this.viewOptions.title = 'New ' + wpm.name;
                 this.viewOptions.propertiesPanelOpenState = true;
                 this.viewOptions.workpacksPanelOpenState = false;
+                this.viewOptions.stakeholdersPanelOpenState = false;
                 let newWorkpack = new Workpack();
                 newWorkpack.id = 'new';
                 newWorkpack.model = wpm;
@@ -79,9 +81,9 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
                   this.crumbService.SetCurrentWorkpack(wp);
                   this.viewOptions.title = wp.name;
                 });
-                this.viewOptions.propertiesPanelOpenState = false;
-                this.viewOptions.workpacksPanelOpenState = true;
-
+                this.viewOptions.propertiesPanelOpenState = true;
+                this.viewOptions.workpacksPanelOpenState = false;
+                this.viewOptions.stakeholdersPanelOpenState = false;
                 break;
               }
             }

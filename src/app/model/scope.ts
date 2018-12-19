@@ -4,5 +4,4 @@ export class Scope {
     id: String = null;
     name: String = "";
     fullName: String = "";
-    roles: Role[] = [];
 }

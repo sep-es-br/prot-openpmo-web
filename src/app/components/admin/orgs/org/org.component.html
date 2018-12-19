@@ -16,16 +16,15 @@
       <form 
         [formGroup]="formGroupOrg"
         (ngSubmit)="onSubmit()" 
-        class="form-container property-container"
+        class="form-container property-container row"
         fxLayout
         fxLayout.xs="column"
         fxLayoutAlign="left"
         fxLayoutGap="10px"
         fxLayoutGap.xs="0"> 
         
-        <div class="row property-row">
-
-          <!-- Sector -->
+        <!-- Sector -->
+        <div>
           <div class="property-card-box" >
             <mat-form-field>
               <mat-select 
@@ -37,8 +36,10 @@
               </mat-select>
             </mat-form-field>    
           </div>      
+        </div>
 
-          <!-- Business name-->
+        <!-- Business name-->
+        <div>
           <div class="property-card-box" >
             <mat-form-field>
               <input matInput
@@ -51,8 +52,38 @@
               <span translate>Name is </span> <strong translate>required</strong>
             </mat-error>
           </div>
+        </div>
 
-          <!-- Phone -->
+        <!-- Social name-->
+        <div class="full-width">
+          <div class="property-card-box full-width">
+            <mat-form-field class="full-width">
+              <input matInput 
+                type="text" 
+                formControlName="fullName"
+                placeholder={{localeConfig.socialname}}
+                required/>
+            </mat-form-field>
+            <mat-error *ngIf="formGroupOrg.controls['fullName'].invalid && formGroupOrg.controls['fullName'].touched">
+              <span translate>Full name is</span> <strong translate>required</strong>
+            </mat-error>
+          </div>
+        </div>
+
+        <!-- Address-->
+        <div class="full-width">
+          <div class="property-card-box full-width">
+            <mat-form-field class="full-width">
+              <input matInput 
+                type="text" 
+                formControlName="address"
+                placeholder={{localeConfig.address}}/>
+            </mat-form-field>
+          </div>
+        </div>  
+        
+        <!-- Phone -->
+        <div>
           <div class="property-card-box" >
             <mat-form-field>
               <input matInput
@@ -61,38 +92,9 @@
                 placeholder={{localeConfig.phone}} 
                 mask={{localeConfig.phoneMask}}/>
             </mat-form-field>
-          </div>          
-            
-          <!-- Social name-->
-          <div class="full-width">
-            <div class="property-card-box full-width">
-              <mat-form-field class="full-width">
-                <input matInput 
-                  type="text" 
-                  formControlName="fullName"
-                  placeholder={{localeConfig.socialname}}
-                  required/>
-              </mat-form-field>
-              <mat-error *ngIf="formGroupOrg.controls['fullName'].invalid && formGroupOrg.controls['fullName'].touched">
-                <span translate>Full name is</span> <strong translate>required</strong>
-              </mat-error>
-            </div>
           </div>
-
-          <!-- Address-->
-          <div class="full-width">
-            <div class="property-card-box full-width">
-              <mat-form-field class="full-width">
-                <input matInput 
-                  type="text" 
-                  formControlName="address"
-                  placeholder={{localeConfig.address}}/>
-              </mat-form-field>
-            </div>
-          </div>  
-          
-        </div>
-  
+        </div>          
+            
         <!-- SAVE BUTTON -->
         <div class="footer-button"
             [style.bottom]="SaveButtonBottomPosition">

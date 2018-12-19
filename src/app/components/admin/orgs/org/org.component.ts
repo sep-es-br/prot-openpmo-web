@@ -142,7 +142,7 @@ export class OrgComponent implements OnInit {
           .subscribe(
             () => {
               this.router.navigate([
-                './orgs/']);
+                './org']);
             }
           )
         );
@@ -154,7 +154,7 @@ export class OrgComponent implements OnInit {
             .subscribe(
               () => {
                 this.router.navigate([
-                  './orgs/']);
+                  './org']);
               }
             )
         );

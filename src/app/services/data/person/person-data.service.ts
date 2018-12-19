@@ -7,6 +7,8 @@ import { environment } from 'src/environments/environment';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { map, catchError } from 'rxjs/operators';
 import { AuthClientHttp } from 'src/app/security/auth-client-http';
+import { Util } from 'src/app/utils';
+import { ErrorMessagingService } from '../../error/error-messaging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,8 @@ export class PersonDataService {
 
   constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
-              public dialog: MatDialog) {
+              private errMessage: ErrorMessagingService,
+              private util: Util) {
   }  
 
   // Observable property for the array of offices
@@ -30,23 +33,6 @@ export class PersonDataService {
   
   private basePathURL = environment.baseAPIPath;
 
-
-
-  ///////////////////////////////////////////////////////////////////////
-  //
-  // Show an error message in a modal dialog box
-  // 
-  // Return: none
-  // 
-  ShowErrorMessagee(error){
-    this.dialog.open(MessageDialogComponent, { 
-      data: {
-        title: error.statusText,
-        message: error.message,
-        action: "OK"
-      }
-    });    
-  }
 
 
   ////////////////////////////////////////////////////////////////////////
@@ -66,7 +52,7 @@ export class PersonDataService {
       },
       (error) => {
         this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
+        this.errMessage.ShowErrorMessage(error);
       }
     );
   }
@@ -81,8 +67,8 @@ export class PersonDataService {
   //
   // Return: none
   // 
-  QueryPeoplByName(nameScrap: string){
-    const pathURL = environment.personAPI + environment.personLikeResource;
+  QueryPeopleByName(nameScrap: string){
+    const pathURL = environment.personAPI + environment.likeResource;
     const URL = this.baseURL + this.basePathURL + pathURL + nameScrap;
     this.spinnerService.ShowSpinner();
     this.http.get(URL).subscribe(
@@ -92,7 +78,7 @@ export class PersonDataService {
       },
       (error) => {
         this.spinnerService.HideSpinner();
-        this.ShowErrorMessagee(error);
+        this.errMessage.ShowErrorMessage(error);
       }
     );
   }  
@@ -122,7 +108,7 @@ export class PersonDataService {
               catchError(
                 (err) => {
                   this.spinnerService.HideSpinner();
-                  this.ShowErrorMessagee(err);
+                  this.errMessage.ShowErrorMessage(err);
                   return err;
                 }
               )
@@ -154,7 +140,7 @@ export class PersonDataService {
         catchError(
           (err) => {
             this.spinnerService.HideSpinner();
-            this.ShowErrorMessagee(err);
+            this.errMessage.ShowErrorMessage(err);
             return err;
           }
         )
@@ -177,7 +163,7 @@ export class PersonDataService {
     this.spinnerService.ShowSpinner();
     return this.http.post(
       URL, 
-      JSON.stringify(person), 
+      this.util.JSONStringfyOmitNull(person), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -192,7 +178,7 @@ export class PersonDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -214,7 +200,7 @@ export class PersonDataService {
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(person), 
+      this.util.JSONStringfyOmitNull(person), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -229,7 +215,7 @@ export class PersonDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -257,7 +243,7 @@ export class PersonDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )

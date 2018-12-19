@@ -6,5 +6,4 @@ export class Actor {
     fullName: String = "";
     phone: String = "";
     address: String = "";
-    roles: Role[] = []; 
 }

@@ -28,7 +28,7 @@ import { LocaleService } from '../../services/locale/locale-service.service';
 })
 export class WorkpackComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +54,7 @@ export class WorkpackComponent implements OnInit {
   workpack: Workpack = new Workpack();
   workpackModel: WorkpackModel = new WorkpackModel();
   id: String;
-  viewOptions: ViewOptions;
+  viewOptions: ViewOptions = new ViewOptions();
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
   wpRoles: Role[] = [];
@@ -337,6 +337,49 @@ export class WorkpackComponent implements OnInit {
       })
     );
   }
+
+  ////////////////////////////////////////////////////////////////////////
+  //EXCLUSION MODULE - Role
+  //
+  //Identification Parameter: role id
+  //
+  RemoveRole(id: string) {
+    this.subscriptions
+    .push(
+      this.roleDataService
+      .GetRoleById(id)
+      .subscribe(role2delete => {
+        const msg = `${this.localeConfig['Are you sure to remove']} ${role2delete.actor.name} ` +
+                    `${this.localeConfig['as stakeholder of this']} ${this.workpack.model.name}?`;
+        this.subscriptions.push(
+          this.dialog.open(MessageDialogComponent, { 
+            data: {
+              title: this.localeConfig['Attention'],
+              message:  msg,
+              action: this.localeConfig['YES_NO']
+            }
+          })
+          .afterClosed()
+          .subscribe(res => {
+            if (res == "YES") {
+              this.subscriptions.push(
+                this.roleDataService.RemoveRole(id).subscribe(
+                  () => {
+                    this.subscriptions
+                    .push(
+                      this.workpackDataService.QueryWorkpackById(this.workpack.id)
+                      .subscribe(wp => wp));
+                  }
+                )                      
+              );
+            }
+          })
+        );
+      })
+    );
+  }
+
+
 
   ////////////////////////////////////////////////////////////////////////
   // END OF PAGE

@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConditionalExpr } from '@angular/compiler';
 import { CookieService } from 'ngx-cookie-service';
 import { MenuComponent } from './menu/menu.component';
+import { LogoutService } from './security/logout.service';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
   constructor ( private translate: TranslateService, 
                 private localeService: LocaleService, 
                 private authService: AuthService,
+                private logout: LogoutService,
                 private adapter: DateAdapter<any>,
                 private httpClient : HttpClient,
                 private route: ActivatedRoute,
@@ -124,6 +126,11 @@ export class AppComponent implements OnInit {
     
     return data_suport;
   }
+  
+  Logout(){
+    this.logout.logout();
+  }
+
 
   ////////////////////////////////////////////////////////////////////////
   // END OF PAGE

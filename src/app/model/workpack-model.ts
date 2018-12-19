@@ -6,4 +6,6 @@ export class WorkpackModel {
     components: WorkpackModel[] = [];
     propertyProfiles: PropertyProfile[] = [];
     manageStakeholders: Boolean = true;
+    personPossibleRoles: String[] = [];
+    orgPossibleRoles: String[] = [];
 }

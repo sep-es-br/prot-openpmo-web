@@ -6,19 +6,20 @@
 <div class="container-form">
   <mat-accordion >
 
-    <!-- Edit/View Panel -->
-    <mat-expansion-panel 
-      class="property-panel"
-      [expanded]="viewOptions.propertiesPanelOpenState"
-      (opened)="viewOptions.propertiesPanelOpenState = true"
-      (closed)="ClosePropertiesPanel()">
-      <mat-expansion-panel-header>
-        <mat-panel-title translate>Properties</mat-panel-title>
-      </mat-expansion-panel-header>
-      <form 
-        [formGroup]="formGroupWorkpackModel" 
-        (ngSubmit)="onSubmit()"
-        class="form-container">
+    <form 
+    [formGroup]="formGroupWorkpackModel" 
+    (ngSubmit)="onSubmit()"
+    class="form-container">
+
+      <!-- Edit/View Property Panel -->
+      <mat-expansion-panel 
+        class="property-panel"
+        [expanded]="viewOptions.propertiesPanelOpenState"
+        (opened)="viewOptions.propertiesPanelOpenState = true"
+        (closed)="ClosePropertiesPanel()">
+        <mat-expansion-panel-header>
+          <mat-panel-title translate>Properties</mat-panel-title>
+        </mat-expansion-panel-header>
         <mat-form-field>
           <input matInput
             type="text"
@@ -188,7 +189,7 @@
                   <div class="profile-checkbox">
                     <mat-checkbox
                       color="primary"
-                      formControlName="required">
+                      formControlName="isRequired">
                       <span translate>Required</span>
                     </mat-checkbox>
                   </div>
@@ -222,70 +223,119 @@
                 translate></a>
           </div>
         </button>
+      </mat-expansion-panel>
+ 
+      <!-- Edit/View Stakeholders Panel -->
+      <mat-expansion-panel 
+        [disabled]="IsStakeholdersDisabled()"
+        class="property-panel"
+        [expanded]="viewOptions.stakeholdersPanelOpenState"
+        (opened)="viewOptions.stakeholdersPanelOpenState = true"
+        (closed)="CloseStakeholdersPanel()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span translate>Stakeholders</span>
+            <mat-slide-toggle
+              (click)="$event.stopPropagation()"
+              [color]="color"
+              class="toggle-stakeholder"
+              formControlName="manageStakeholders">
+            </mat-slide-toggle>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <mat-form-field 
+          class="form-field">
+          <input matInput
+            type="text"
+            placeholder={{localeConfig.personpossibleroles}}
+            formControlName="personPossibleRoles"
+            required/>
+          <mat-hint translate>Use comma to separate the values</mat-hint>
+        </mat-form-field>
+        <mat-error 
+          *ngIf="formGroupWorkpackModel.controls['personPossibleRoles'].invalid && formGroupWorkpackModel.controls['personPossibleRoles'].touched">
+          <span>"{{localeConfig.personpossibleroles}}" </span><span translate>is required</span>
+        </mat-error>
+
+        <mat-form-field 
+          class="form-field">
+          <input matInput
+            type="text"
+            placeholder={{localeConfig.orgpossibleroles}}
+            formControlName="orgPossibleRoles"
+            required/>
+          <mat-hint translate>Use comma to separate the values.</mat-hint>
+        </mat-form-field>
+        <mat-error 
+          *ngIf="formGroupWorkpackModel.controls['orgPossibleRoles'].invalid && formGroupWorkpackModel.controls['orgPossibleRoles'].touched">
+          <span>"{{localeConfig.orgpossibleroles}}" </span><span translate>is required</span>
+        </mat-error>
         
-        <!-- SAVE BUTTON -->
-        <div class="footer-button"
-            [style.bottom]="SaveButtonBottomPosition">
-          <div class="example-button-row">
-            <button class="save-button" mat-button>
-                <span translate>Save</span>
-            </button>
-          </div>
-        </div>   
+      </mat-expansion-panel>
+  
+      <!-- Workpack Models Panel -->
+      <mat-expansion-panel
+        *ngIf="viewOptions.action == 'edit'"
+        [expanded]="viewOptions.workpacksPanelOpenState"
+        (opened)="viewOptions.workpacksPanelOpenState = true"
+        (closed)="viewOptions.workpacksPanelOpenState = false">
+        
+        <!-- Header -->
+        <mat-expansion-panel-header>
+          <mat-panel-title translate>Workpack Models</mat-panel-title>
+        </mat-expansion-panel-header>
 
-      </form>
-    </mat-expansion-panel>
+          <!-- Body -->
+          <div class="container-fluid cards">
+            <div class="row">
 
-    <!-- Workpack Models Panel -->
-    <mat-expansion-panel
-      *ngIf="viewOptions.action == 'edit'"
-      [expanded]="viewOptions.workpacksPanelOpenState"
-      (opened)="viewOptions.workpacksPanelOpenState = true"
-      (closed)="viewOptions.workpacksPanelOpenState = false">
-      
-      <!-- Header -->
-      <mat-expansion-panel-header>
-        <mat-panel-title translate>Workpack Models</mat-panel-title>
-      </mat-expansion-panel-header>
+              <mat-card class="card card-style" *ngFor="let component of workpackModel.components">
+                  <div class="card-image">
+                    <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" 
+                      (click)="DeleteWorkpackModel(component.id)"
+                      routerLink="/workpackmodel/edit/{{workpackModel.id}}" translate>Delete</a>
+                    </div>
+                  </div>
+                  <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                    <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+                  </div>
+                  <mat-card-title class="title-card">
+                    <a routerLink="/workpackmodel/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
+                  </mat-card-title>
+                </mat-card>
 
-        <!-- Body -->
-        <div class="container-fluid cards">
-          <div class="row">
-
-            <mat-card class="card card-style" *ngFor="let component of workpackModel.components">
-                <div class="card-image">
-                  <mat-icon fontSet="fas" fontIcon="fa-cube"></mat-icon>
+              <mat-card class="card new-card card-style">
+                <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" 
-                    (click)="DeleteWorkpackModel(component.id)"
-                    routerLink="/workpackmodel/edit/{{workpackModel.id}}" translate>Delete</a>
+                    <a  class="dropdown-item" 
+                    routerLink="/workpackmodel/new2workpackmodel/{{workpackModel.id}}" 
+                    routerLinkActive="active" translate>New</a>
+                    <div class="dropdown-item not-a-link disabled" translate>Reuse:</div>
+                    <a *ngFor="let model of flatTree"
+                    class="dropdown-item"
+                    (click)="ReuseModel(model.id)"
+                    [innerHTML]="model.label"></a>
                   </div>
                 </div>
-                <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
-                  <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
-                </div>
-                <mat-card-title class="title-card">
-                  <a routerLink="/workpackmodel/edit/{{component.id}}" routerLinkActive="active">{{component.name}}</a>
-                </mat-card-title>
               </mat-card>
-
-            <mat-card class="card new-card card-style">
-              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
-                <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a  class="dropdown-item" 
-                  routerLink="/workpackmodel/new2workpackmodel/{{workpackModel.id}}" 
-                  routerLinkActive="active" translate>New</a>
-                  <div class="dropdown-item not-a-link disabled" translate>Reuse:</div>
-                  <a *ngFor="let model of flatTree"
-                  class="dropdown-item"
-                  (click)="ReuseModel(model.id)"
-                  [innerHTML]="model.label"></a>
-                </div>
-              </div>
-            </mat-card>
+            </div>
           </div>
+      </mat-expansion-panel>
+
+      <!-- SAVE BUTTON -->
+      <div class="footer-button"
+          [style.bottom]="SaveButtonBottomPosition">
+        <div class="example-button-row">
+          <button class="save-button" mat-button>
+              <span translate>Save</span>
+          </button>
         </div>
-    </mat-expansion-panel>
+      </div>   
+
+    </form>
   </mat-accordion>
 </div>

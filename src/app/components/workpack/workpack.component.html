@@ -19,21 +19,19 @@
         fxLayoutAlign="left"
         fxLayoutGap="10px"
         fxLayoutGap.xs="0">
-        <div class="row property-row">
-          <div class="property-card-box" >
-           
-            <!-- Name -->
-            <mat-form-field>
-              <input matInput
-                type="text"      
-                formControlName="name"
-                [required]="true"
-                placeholder={{localeConfig.name}}/>
-            </mat-form-field>
-            <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
-              <span translate>Name must be from 3 to 20 characteres long</span>
-            </mat-error>
-          </div>
+
+          <!-- Name -->
+          <mat-form-field>
+            <input matInput
+              type="text"      
+              formControlName="name"
+              [required]="true"
+              placeholder="Name"/>
+          </mat-form-field>
+          <mat-error *ngIf="formGroupWorkpack.controls['name'].invalid && formGroupWorkpack.controls['name'].touched">
+            <span translate>Name must be from 3 to 20 characteres long</span>
+          </mat-error>
+
           <div *ngFor="let property of formGroupWorkpack['controls'].properties['controls']; let i=index;"
             [class]="(property.value.profile.fullLine) ? 'full-width' : ''">
             <div *ngIf="property.value.profile.using"
@@ -47,7 +45,7 @@
                   [required]="'property.value.profile.required'"
                   type="text"      
                   formControlName="value"
-                  placeholder="{{property.value.profile.label|translate}}"/>
+                  placeholder="{{property.value.profile.label}}"/>
               </mat-form-field>
               
               <!-- Textarea type -->
@@ -58,7 +56,7 @@
                   [required]="'property.value.profile.required'"
                   rows="{{property.value.profile.rows}}"
                   formControlName="value"
-                  placeholder="{{property.value.profile.label|translate}}"></textarea>
+                  placeholder="{{property.value.profile.label}}"></textarea>
               </mat-form-field>
               
               <!-- Number type -->
@@ -69,7 +67,7 @@
                   [required]="'property.value.profile.required'"
                   type="number"      
                   formControlName="value"
-                  placeholder="{{property.value.profile.label|translate}}"/>
+                  placeholder="{{property.value.profile.label}}"/>
               </mat-form-field>
 
               <!-- Currency type -->
@@ -77,12 +75,12 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <input matInput
-                  input currencyMask [options]="localeConfig.currencyMask"
                   [required]="'property.value.profile.required'"
-                  type="text" 
+                  type="number" 
                   step="any"
                   formControlName="value"
-                  placeholder="{{property.value.profile.label|translate}}"/>
+                  [value]="ConvertToNumber(property.value.value)" 
+                  placeholder="{{property.value.profile.label}}"/>
               </mat-form-field>
 
               <!-- Date type -->
@@ -92,7 +90,7 @@
                 <input matInput 
                   [required]="'property.value.profile.required'"  
                   [matDatepicker]="picker" 
-                  placeholder="{{property.value.profile.label|translate}}"
+                  placeholder="{{property.value.profile.label}}"
                   formControlName="value">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
@@ -103,37 +101,33 @@
                 [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
                 [formGroup]="property">
                 <mat-select 
-                  placeholder="{{property.value.profile.label|translate}}"
+                  placeholder="{{property.value.profile.label}}"
                   formControlName="value"
                   [required]="'property.value.profile.required'">
                   <mat-option 
                     *ngFor="let pValue of property.value.profile.possibleValues" 
                     [value]="pValue">
-                    {{pValue | translate}}
+                    {{pValue}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
 
               <!-- Error message -->
               <mat-error *ngIf="property.invalid && property.touched">
-                <span>{{property.value.profile.label | translate}}</span><strong translate>is required</strong>
+                <span>{{property.value.profile.label}}</span><strong translate> is required</strong>
               </mat-error>
 
             </div>
           </div>
-          <div class="id-container-properties">
-            <span>ID: {{workpack.id | translate}}</span>
-          </div>      
-        </div>
 
-        <!-- SAVE BUTTON -->
-        <div class="footer-button"
-            [style.bottom]="SaveButtonBottomPosition">
-          <div class="example-button-row">
-            <button 
-              class="save-button" mat-button><span translate>Save</span></button>
-          </div>
-        </div>        
+          <!-- SAVE BUTTON -->
+          <div class="footer-button"
+              [style.bottom]="SaveButtonBottomPosition">
+            <div class="example-button-row">
+              <button 
+                class="save-button" mat-button><span translate>Save</span></button>
+            </div>
+          </div>        
 
       </form>
       <div class="id-container-properties">
@@ -144,7 +138,6 @@
 
     <!-- Stakeholders Panel -->
     <mat-expansion-panel
-      *ngIf="(viewOptions.action == 'edit')"
       [expanded]="viewOptions.stakeholdersPanelOpenState"
       (opened)="viewOptions.stakeholdersPanelOpenState = true"
       (closed)="viewOptions.stakeholdersPanelOpenState = false">
@@ -160,25 +153,30 @@
 
           <mat-card class="card card-style" *ngFor="let role of wpRoles">
               <div class="card-image">
-                <mat-icon fontSet="fas" fontIcon="fa-user"></mat-icon>
+                <mat-icon *ngIf="role.actorType == 'Person'" fontSet="fas" fontIcon="fa-user"></mat-icon>
+                <mat-icon *ngIf="role.actorType == 'Organization'" fontSet="fas" fontIcon="fa-building"></mat-icon>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a  class="dropdown-item"
-                      (click)="DeleteRole(role.id)"
-                      routerLink="/workpack/edit/{{workpack.id}}&{{workpack.model.id}}" 
-                      routerLinkActive="active" translate>Disconnect</a>
+                      (click)="RemoveRole(role.id)"
+                      routerLink="/workpack/edit/{{workpack?.id}}&{{workpack.model?.id}}" 
+                      routerLinkActive="active" translate>Remove</a>
                 </div>
               </div>
               <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
               </div>
-              <mat-card-title class="subtitle-card">
-                {{role.name}}
-              </mat-card-title>
               <mat-card-title class="title-card">
-                <!--a routerLink="/workpack/edit/{{component.id}}&{{component.model?.id}}" routerLinkActive="active"-->{{role.actor?.name}}<!--/a-->
+                <div>
+                  {{role.actor?.name}}
+                </div>
+                <div class="subtitle-card">
+                  {{role.name}}
+                </div>
               </mat-card-title>
-              <div class="card-manager">
-                <mat-icon fontSet="fa" fontIcon="fa-user-circle"></mat-icon>
+              <div class="actor-detail">
+                <div>{{role.actor?.fullName}}</div>
+                <div>{{role.actor?.address}}</div>
+                <div>{{role.actor?.phone}}</div>
               </div>
               <div class="id-container-properties">
                 <span>ID: {{role.id}}</span>
@@ -225,7 +223,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a  class="dropdown-item"
                       (click)="DeleteWorkpack(component.id)"
-                      routerLink="/workpack/edit/{{workpack.id}}&{{workpack.model.id}}" 
+                      routerLink="/workpack/edit/{{workpack.id}}&{{workpack.model?.id}}" 
                       routerLinkActive="active" translate>Delete</a>
                 </div>
               </div>
@@ -233,7 +231,7 @@
                 <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
               </div>
               <mat-card-title class="subtitle-card">
-                {{component.model.name}}
+                {{component.model?.name}}
               </mat-card-title>
               <mat-card-title class="title-card">
                 <a routerLink="/workpack/edit/{{component.id}}&{{component.model?.id}}" routerLinkActive="active">{{component.name}}</a>

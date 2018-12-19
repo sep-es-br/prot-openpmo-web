@@ -15,33 +15,32 @@
       </mat-expansion-panel-header>
       <form 
         [formGroup]="formGroupPerson"
-        (ngSubmit)="onSubmit()" 
-        class="form-container property-container"
+        (ngSubmit)="onSubmit()"
+        class="form-container property-container row"
         fxLayout
         fxLayout.xs="column"
         fxLayoutAlign="left"
         fxLayoutGap="10px"
         fxLayoutGap.xs="0"> 
         
-        <div class="row property-row">
-          
-          <!-- Full name-->
-          <div class="full-width">
-            <div class="property-card-box full-width">
-              <mat-form-field class="full-width">
-                <input matInput 
-                  type="text" 
-                  formControlName="fullName"
-                  placeholder={{localeConfig.fullName}}
-                  required/>
-              </mat-form-field>
-              <mat-error *ngIf="formGroupPerson.controls['fullName'].invalid && formGroupPerson.controls['fullName'].touched">
-                <span translate>Full name is </span> <strong translate>required</strong>
-              </mat-error>
-            </div>
+        <!-- Full name-->
+        <div class="full-width">
+          <div class="property-card-box full-width">
+            <mat-form-field class="full-width">
+              <input matInput 
+                type="text" 
+                formControlName="fullName"
+                placeholder={{localeConfig.fullName}}
+                required/>
+            </mat-form-field>
+            <mat-error *ngIf="formGroupPerson.controls['fullName'].invalid && formGroupPerson.controls['fullName'].touched">
+              <span translate>Full name is </span> <strong translate>required</strong>
+            </mat-error>
           </div>
-          
-          <!-- Display name-->
+        </div>
+        
+        <!-- Display name-->
+        <div>
           <div class="property-card-box" >
             <mat-form-field>
               <input matInput
@@ -54,8 +53,10 @@
               <span translate>Name is </span> <strong translate>required</strong>
             </mat-error>
           </div>
-
-          <!-- Phone-->
+        </div>
+        
+        <!-- Phone-->
+        <div>
           <div class="property-card-box" >
             <mat-form-field>
               <input matInput
@@ -65,18 +66,10 @@
                 mask={{localeConfig.phoneMask}}/>
             </mat-form-field>
           </div>
-
-          <!-- User name-->
-          <div class="property-card-box" >
-            <mat-form-field>
-              <input matInput
-                type="text"      
-                formControlName="userName"
-                placeholder={{localeConfig.username}}/> 
-            </mat-form-field>
-          </div>
-
-          <!-- Address -->
+        </div>
+        
+        <!-- Address -->
+        <div class="full-width">
           <div class="full-width">
             <div class="property-card-box full-width">
               <mat-form-field class="full-width">
@@ -87,9 +80,53 @@
               </mat-form-field>
             </div>
           </div>
-
         </div>
-  
+
+        <!-- User name-->
+        <div class="full-width">
+          <div class="property-card-box" >
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="userName"
+                placeholder={{localeConfig.username}}/> 
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Reset password-->
+        <div class="full-width">
+          <div class="property-card-box" >
+            <mat-checkbox formControlName="resetPassword">
+              <span translate>Reset password</span>
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <!-- New password -->
+        <div class="full-width">
+          <div class="property-card-box" *ngIf="formGroupPerson.controls['resetPassword'].value" >
+            <mat-form-field>
+              <input matInput
+                type="password"   
+                formControlName="newPassword"
+                placeholder={{localeConfig.newpassword}}/> 
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Confirm password -->
+        <div>
+          <div class="property-card-box" *ngIf="formGroupPerson.controls['resetPassword'].value" >
+            <mat-form-field>
+              <input matInput
+                type="password"   
+                formControlName="confirmNewPassword"
+                placeholder={{localeConfig.confirmnewpassword}}/> 
+            </mat-form-field>
+          </div>
+        </div>
+
         <!-- SAVE BUTTON -->
         <div class="footer-button"
             [style.bottom]="SaveButtonBottomPosition">

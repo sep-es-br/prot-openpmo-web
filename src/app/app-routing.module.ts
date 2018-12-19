@@ -19,6 +19,7 @@ import { OrgsComponent } from './components/admin/orgs/orgs.component';
 import { OrgComponent } from './components/admin/orgs/org/org.component';
 import { PersonRoleComponent } from './components/workpack/person-role/person-role.component';
 import { LoginComponent } from './components/login/login.component';
+import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
 //import { LoginComponent } from './security/login/login.component';
 
 ////////////////////////////////////////////////////////////////////////
@@ -33,10 +34,6 @@ const routes: Routes = [
     path: '',
     component: HomeComponent
   },
-  // {
-  //   path: 'login',
-  //   component: LoginComponent
-  // },
   {
     path: 'office/:action/:id',
     component: OfficeComponent,
@@ -62,6 +59,10 @@ const routes: Routes = [
   {
     path: 'workpack/:wpid/personrole/:id',
     component: PersonRoleComponent
+  },
+  {
+    path: 'workpack/:wpid/organizationrole/:id',
+    component: OrgRoleComponent
   },
   {
     path: 'officeadmin/:action/:id',

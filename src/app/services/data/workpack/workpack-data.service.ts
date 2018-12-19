@@ -8,6 +8,8 @@ import { SpinnerService } from '../../spinner/spinner.service';
 import { MatDialog } from '@angular/material';
 import { MessageDialogComponent } from 'src/app/components/message-dialog/message-dialog.component';
 import { AuthClientHttp } from 'src/app/security/auth-client-http';
+import { Util } from 'src/app/utils';
+import { ErrorMessagingService } from '../../error/error-messaging.service';
 
 export class Panel {
   action: String = '';
@@ -55,24 +57,9 @@ export class WorkpackDataService {
 
   constructor(private http: AuthClientHttp, 
               private spinnerService: SpinnerService,
-              public dialog: MatDialog) {
+              private errMessage: ErrorMessagingService,
+              private util: Util) {
   }
-
-  ///////////////////////////////////////////////////////////////////////
-  //
-  // Show an error message in a modal dialog box
-  // 
-  // Return: none
-  // 
-  ShowErrorMessagee(error){
-    this.dialog.open(MessageDialogComponent, { 
-      data: {
-        title: error.statusText,
-        message: error.message,
-        action: "OK"
-      }
-    });    
-  }  
 
 
   ////////////////////////////////////////////////////////////////////////
@@ -103,7 +90,7 @@ export class WorkpackDataService {
               catchError(
                 (err) => {
                   this.spinnerService.HideSpinner();
-                  this.ShowErrorMessagee(err);
+                  this.errMessage.ShowErrorMessage(err);
                   return err;
                 }
               )
@@ -139,7 +126,7 @@ export class WorkpackDataService {
         catchError(
           (err) => {
             this.spinnerService.HideSpinner();
-            this.ShowErrorMessagee(err);
+            this.errMessage.ShowErrorMessage(err);
             return err;
           }
         )
@@ -177,7 +164,7 @@ export class WorkpackDataService {
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(workpack), 
+      this.util.JSONStringfyOmitNull(workpack), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -191,7 +178,7 @@ export class WorkpackDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -220,7 +207,7 @@ export class WorkpackDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -252,7 +239,7 @@ export class WorkpackDataService {
               catchError(
                 (err) => {
                   this.spinnerService.HideSpinner();
-                  this.ShowErrorMessagee(err);
+                  this.errMessage.ShowErrorMessage(err);
                   return err;
                 }
               )
@@ -312,7 +299,7 @@ export class WorkpackDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -340,7 +327,7 @@ export class WorkpackDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -370,7 +357,7 @@ export class WorkpackDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -394,7 +381,7 @@ export class WorkpackDataService {
     this.spinnerService.ShowSpinner();
     return this.http.put(
       URL, 
-      JSON.stringify(workpackModel), 
+      this.util.JSONStringfyOmitNull(workpackModel), 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -409,7 +396,7 @@ export class WorkpackDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )
@@ -438,7 +425,7 @@ export class WorkpackDataService {
       catchError(
         (err) => {
           this.spinnerService.HideSpinner();
-          this.ShowErrorMessagee(err);
+          this.errMessage.ShowErrorMessage(err);
           return err;
         }
       )

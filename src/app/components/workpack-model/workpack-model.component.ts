@@ -44,6 +44,9 @@ export class WorkpackModelComponent implements OnInit {
     id: [''],
     name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20)])],
     propertyProfiles: this.fb.array([]),
+    manageStakeholders: [true],
+    personPossibleRoles: [''],
+    orgPossibleRoles: [''],
   });
 
   color = 'primary';  
@@ -123,8 +126,20 @@ export class WorkpackModelComponent implements OnInit {
                 ? this.ShowSaveButton() 
                 : this.HideSaveButton();
       })
-    );     
+    );   
 
+    this.subscriptions.push(    
+      this.formGroupWorkpackModel.controls['manageStakeholders'].valueChanges.subscribe((enabled) => {
+        if (!enabled) {
+          this.CloseStakeholdersPanel();
+        } 
+      })
+    );         
+
+  }
+
+  IsStakeholdersDisabled(): Boolean {
+    return !this.formGroupWorkpackModel.value.manageStakeholders;
   }
 
   CleanPropertyProfilesFormArrays(){
@@ -136,6 +151,10 @@ export class WorkpackModelComponent implements OnInit {
 
   LoadFormControls() {
     this.formGroupWorkpackModel.controls['name'].setValue(this.workpackModel.name);
+    this.formGroupWorkpackModel.controls['manageStakeholders'].setValue(this.workpackModel.manageStakeholders);
+    this.formGroupWorkpackModel.controls['personPossibleRoles'].setValue(this.workpackModel.personPossibleRoles);
+    this.formGroupWorkpackModel.controls['orgPossibleRoles'].setValue(this.workpackModel.orgPossibleRoles);
+
     this.CleanPropertyProfilesFormArrays();
     if (this.workpackModel.propertyProfiles !== undefined) {
       this.workpackModel.propertyProfiles
@@ -160,17 +179,27 @@ export class WorkpackModelComponent implements OnInit {
             label: [pProfile.label],
             rows: [pProfile.rows],
             fullLine: [pProfile.fullLine],
-            required: [pProfile.required],
+            isRequired: [pProfile.required]
           })
         );
       });
+
+      console.log('this.formGroupWorkpackModel', this.formGroupWorkpackModel);
 
     }
   }
 
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpackModel.name) return true;
-    if (val.propertyProfiles.length != this.workpackModel.propertyProfiles.length) return true;
+    if (val.manageStakeholders != this.workpackModel.manageStakeholders) return true;
+    if (val.personPossibleRoles.toString().split(',')
+        .forEach((role, i) => {
+          return (role != this.workpackModel.personPossibleRoles[i]) 
+        })) return true;
+    if (val.orgPossibleRoles.toString().split(',')
+        .forEach((role, i) => {
+          return (role != this.workpackModel.orgPossibleRoles[i]) 
+        })) return true;
     let changed = false;
     if (val.propertyProfiles !== undefined) {
       val.propertyProfiles.forEach((pProfile, i) => {
@@ -198,7 +227,7 @@ export class WorkpackModelComponent implements OnInit {
       (this.workpackModel.propertyProfiles[foundIndex].label != prop.label) ||
       (this.workpackModel.propertyProfiles[foundIndex].rows != prop.rows) ||
       (this.workpackModel.propertyProfiles[foundIndex].fullLine != prop.fullLine) ||
-      (this.workpackModel.propertyProfiles[foundIndex].required != prop.required)
+      (this.workpackModel.propertyProfiles[foundIndex].required != prop.isRequired)
     );
   }
 
@@ -322,6 +351,11 @@ export class WorkpackModelComponent implements OnInit {
     this.viewOptions.propertiesPanelOpenState = false;
   }
 
+
+  CloseStakeholdersPanel() {
+    this.viewOptions.stakeholdersPanelOpenState = false;
+  }
+  
   DeleteProperty(index, type) {
     let props = (this.formGroupWorkpackModel.get("propertyProfiles") as FormArray);
     let prop = props.at(index);
@@ -337,7 +371,10 @@ export class WorkpackModelComponent implements OnInit {
 
   onSubmit(){
     this.workpackModel.id = (this.workpackModel.id == 'new') ? '' : this.workpackModel.id;
-    this.workpackModel.name = this.formGroupWorkpackModel.get('name').value.trim();
+    this.workpackModel.name = this.formGroupWorkpackModel.value.name.trim();
+    this.workpackModel.manageStakeholders = this.formGroupWorkpackModel.value.manageStakeholders;
+    this.workpackModel.personPossibleRoles = this.formGroupWorkpackModel.value.personPossibleRoles.toString().split(',');
+    this.workpackModel.orgPossibleRoles = this.formGroupWorkpackModel.value.orgPossibleRoles.toString().split(',');
     while (this.workpackModel.propertyProfiles.length > 0) {
       this.workpackModel.propertyProfiles.pop();
     }
@@ -359,7 +396,7 @@ export class WorkpackModelComponent implements OnInit {
       newPropertyProfile.label = pProfile.label;
       newPropertyProfile.rows = pProfile.rows;
       newPropertyProfile.fullLine = pProfile.fullLine;
-      newPropertyProfile.required = pProfile.required;
+      newPropertyProfile.required = pProfile.isRequired;
       this.workpackModel.propertyProfiles.push(newPropertyProfile);
     });
 

@@ -4,16 +4,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { JwtModule } from '@auth0/angular-jwt';
-//import { ButtonModule } from 'primeng/button';
-//import { InputTextModule } from 'primeng/inputtext';
 
 import { AuthGuard } from './auth.guard';
-//import { LogoutService } from './logout.service';
 import { AuthService } from './auth.service';
-//import { MoneyHttp } from './money-http';
-//import { SegurancaRoutingModule } from './seguranca-routing.module';
-//import { LoginFormComponent } from './login-form/login-form.component';
+import { LogoutService } from './logout.service';
+
 import { environment } from '../../environments/environment';
+
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -42,7 +39,7 @@ export function tokenGetter() {
   ],
   providers: [
     AuthGuard,
-    //LogoutService
+    LogoutService
   ]
 })
 export class SecurityModule { }
