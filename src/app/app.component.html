@@ -12,6 +12,17 @@
             <div routerLink="" class="logo">
                 <img class="logo-top" src="../assets/images/Logo.png">
             </div>
+
+            <input  
+                matInput
+                type="text"
+                [(ngModel)]="valor"
+                (keyup)="valor = stringFilter(valor, ' ()+0123456789-/')"
+            />
+
+            <!-- MENU -->
+            <app-menu></app-menu>
+
             
             <!--BUTTON USER-->
             <button class="user" mat-icon-button [matMenuTriggerFor]="menu">
@@ -41,14 +52,16 @@
                 </button>
     
             </mat-menu>
-    
+
             <!--MENU LANGUAGE-->
             <mat-menu #languages="matMenu">
                 <button class="UserButton" 
                         (click)="switchLanguage(item)" 
                         mat-menu-item  
                         *ngFor="let item of languages_list">
-                    <!-- <i class="icon-flag-br icon-positin"></i> -->
+                    <i class="icon-flag-br icon-positin">
+                        <img class="logo-top" src={{icon_flag_locale[item]}}>
+                    </i> 
                     <span class="margin-language" translate>{{item}}</span>
                 </button>
             </mat-menu>
@@ -73,26 +86,12 @@
             </mat-menu>
            
         </div>
-
-        </mat-menu>
-
-        <!--MENU LANGUAGE-->
-        <mat-menu #languages="matMenu">
-            <button class="UserButton" 
-                    (click)="switchLanguage(item)" 
-                    mat-menu-item  
-                    *ngFor="let item of languages_list">
-                <i class="icon-flag-br icon-positin">
-                    <img class="logo-top" src={{icon_flag_locale[item]}}>
-                </i> 
-                <span class="margin-language" translate>{{item}}</span>
-            </button>
-        </mat-menu>
         
         <!--BUTTON CONFIG-->
-        <button class="settings" mat-icon-button [matMenuTriggerFor]="menusettings">
+        <!-- <button class="settings" mat-icon-button [matMenuTriggerFor]="menusettings">
             <mat-icon fontSet="fa" fontIcon="fa-cog" aria-hidden="true"></mat-icon>
-        </button>
+        </button> -->
+
         <!--PROGRESS BAR-->
         <app-progress></app-progress>
 

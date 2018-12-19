@@ -29,6 +29,7 @@
     "Label" : "Label",
     "Log Out" : "Log Out",
     "Log out" : "Log out",
+    "Login" : "Login",
     "Maximum" : "Maximum",
     "Minimum" : "Minimum",
     "My profile" : "My profile",
@@ -102,6 +103,7 @@
             "prefix": "$ "
         },
         "phoneMask" : "(000) 000 0000",
+        "pattern": "[,- -/-9]+",
 
             "===TEMPLATE_OBSERVABLE===" : "Terms present in the templates. Translation made by observable object variable.",
         "address" : "Address",
@@ -115,12 +117,14 @@
         "maximum" : "Maximum",
         "minimum" : "Minimum",
         "name" : "Name",
+        "Password" : "Password",
         "phone" : "Phone",
         "possiblevalues" : "Possible values",
         "rows" : "Rows",
         "socialname" : "Social name",
         "sector" : "Sector",
         "sortIndex" : "SortIndex",
+        "User" : "User",
         "username" : "User name"
     }
 }

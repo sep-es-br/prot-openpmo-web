@@ -9,13 +9,13 @@
       
       <div class="inner">
         <mat-form-field class="example-full-width">
-          <input matInput type="text" placeholder="User" [(ngModel)]="user">
+          <input matInput type="text" placeholder={{localeConfig.User}} [(ngModel)]="user">
         </mat-form-field>
       </div>
       
       <div class="inner">
         <mat-form-field class="example-full-width">
-          <input matInput type="password" placeholder="Password" [(ngModel)]="password">
+          <input matInput type="password" placeholder={{localeConfig.Password}} [(ngModel)]="password">
         </mat-form-field>
       </div>
       

@@ -47,6 +47,8 @@ import { SecurityModule } from './security/security.module';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './security/auth.service';
 import { AuthClientHttp } from './security/auth-client-http';
+import { MenuComponent } from './menu/menu.component';
+import { PhonePipe } from './pipes/pipe-phone';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
@@ -77,7 +79,9 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     OrgsComponent,
     OrgComponent,
     PersonRoleComponent,
-    LoginComponent
+    LoginComponent,
+    MenuComponent,
+    PhonePipe
   ],
   entryComponents: [MessageDialogComponent],
   imports: [

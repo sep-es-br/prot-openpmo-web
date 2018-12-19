@@ -29,6 +29,7 @@
     "Label" : "Rótulo",
     "Log Out" : "Sair",
     "Log out" : "Sair",
+    "Login" : "Entrar",
     "Maximum" : "Máximo",
     "Minimum" : "Mínimo",
     "My profile" : "Meu perfil",
@@ -115,12 +116,14 @@
         "maximum" : "Máximo",
         "minimum" : "Mínimo",
         "name" : "Nome",
+        "Password" : "Senha",
         "phone" : "Telefone",
         "possiblevalues" : "Valores possíveis",
         "rows" : "Linhas",
         "sector" : "Setor",
         "socialname" : "Nome social",
         "sortIndex" : "Índice de ordenação",
+        "User" : "Usuário",
         "username" : "Nome de usuário"
     }
 }
