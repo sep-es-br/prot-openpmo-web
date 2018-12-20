@@ -61,7 +61,7 @@
             <mat-form-field>
               <input matInput
                 type="text"
-                [value]="formGroupPerson.get('phone').value | stringFilter:'0123456789':true:true" 
+                [value]="formGroupPerson.get('phone').value | stringFilter:'()+-/0123456789':true:true" 
                 formControlName="phone"
                 placeholder={{localeConfig.phone}}/> {{formGroupPerson.get('phone').value}}
             </mat-form-field>
