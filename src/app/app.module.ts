@@ -131,7 +131,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
     Util,
-    ErrorMessagingService
+    ErrorMessagingService,
+    PhonePipe
   ],
   bootstrap: [AppComponent]
 })

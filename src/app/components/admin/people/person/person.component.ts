@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material';
 import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 import { LocaleService } from 'src/app/services/locale/locale-service.service';
 import { AppComponent } from 'src/app/app.component';
+import { PhonePipe } from 'src/app/pipes/pipe-phone';
 
 @Component({
   selector: 'app-person',
@@ -26,7 +27,8 @@ export class PersonComponent implements OnInit {
     private router: Router,
     private breadCrumbService: BreadcrumbService,
     private localeService: LocaleService,
-    private app: AppComponent
+    private app: AppComponent,
+    private phone_pipe: PhonePipe
   ) { }
 
   formGroupPerson = this.fb.group({
@@ -90,6 +92,11 @@ export class PersonComponent implements OnInit {
       })
     );
 
+    // this.subscriptions.push(    
+    //   this.formGroupPerson.controls['phone'].statusChanges.subscribe((status) => {
+    //     this.formGroupPerson.controls['phone'].setValue(this.phone_pipe.transform(value,' ()+-/0123456789'));
+    //   })
+    // );
 
   }
 
