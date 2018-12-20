@@ -106,10 +106,11 @@ export class AppComponent implements OnInit {
   //    value             - value entered by the user
   //
   // Return: valid characters entered
-  stringFilter( value:string = "", caracters:string = "" ) {
+  stringFilter( value:string = "", caracters:string = "", flow:boolean = true ) {
 
     let i: number = 0;
     let j: number = 0;
+    let check: boolean = false
     let data_suport: any = "";
     let char_value: any = value.split("");
     let char_caracters: any = caracters.split("");
@@ -118,10 +119,21 @@ export class AppComponent implements OnInit {
       for ( j=0; j < caracters.length; j++) {
 
         if( char_value[i] == char_caracters[j] ) {
-          data_suport = data_suport + char_value[i];
-          j = caracters.length;
+            check = true;
+            j = caracters.length;
         }
       }
+      if (flow == true){
+          if(check == true){
+            data_suport = data_suport + char_value[i];
+          }      
+        }
+        else{
+            if(check == false){
+                data_suport = data_suport + char_value[i];
+              }
+        }
+        check = false;
     }
     
     return data_suport;

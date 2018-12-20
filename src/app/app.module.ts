@@ -50,8 +50,8 @@ import { AuthClientHttp } from './security/auth-client-http';
 import { MenuComponent } from './menu/menu.component';
 import { PhonePipe } from './pipes/pipe-phone';
 import { Util } from './utils';
-import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
 import { ErrorMessagingService } from './services/error/error-messaging.service';
+import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
@@ -82,14 +82,11 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     OrgsComponent,
     OrgComponent,
     PersonRoleComponent,
-<<<<<<< HEAD
     LoginComponent,
     MenuComponent,
-    PhonePipe
-=======
+    PhonePipe,
     OrgRoleComponent,
     LoginComponent
->>>>>>> 51900f7f7cd3d21d07b3c35db52864da83c08bcd
   ],
   entryComponents: [MessageDialogComponent],
   imports: [

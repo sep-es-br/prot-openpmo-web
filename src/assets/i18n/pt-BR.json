@@ -47,6 +47,8 @@
     "No" : "Não",
     "Number" : "Número",
     "Organization data" : "Data da organização",
+    "Organizations" : "Organizações",
+    "People" : "Pessoas",
     "Personal data" : "Dados pessoais",
     "Plan Structures" : "Estrutura do Plano",
     "Planning" : "Planejamento",
@@ -96,7 +98,6 @@
         "Sorry, you can not delete an office containing nested plans." : "Desculpe, você não pode excluir um escritório contendo planos aninhados.",
         "Sorry, you can not delete this schema because it is not empty." : "Desculpe, você não pode excluir um esquema não vazio.",
         "Warning" : "Aviso",
-        "YES_NO" : "SIM_NÃO ",
 
             "===MASKS===" : "Máscaras",
         "currencyMask" : {

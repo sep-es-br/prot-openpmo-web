@@ -8,8 +8,8 @@
   <button mat-button cdkFocusInitial (click)="Clicked('CANCEL')" translate>Cancel</button>
 </mat-dialog-actions>
 <mat-dialog-actions align="center" *ngIf="data.action == 'YES_NO'">
-  <button mat-button (click)="Clicked('YES')" translate>Yes</button>
-  <button mat-button cdkFocusInitial (click)="Clicked('NO')" translate>No</button>
+  <button mat-button (click)="Clicked('YES')"><span translate>Yes</span></button>
+  <button mat-button cdkFocusInitial (click)="Clicked('NO')"><span translate>No</span></button>
 </mat-dialog-actions>
 <mat-dialog-actions align="center" *ngIf="data.action == 'OK'">
   <button mat-button (click)="Clicked('OK')">OK</button>

@@ -93,7 +93,7 @@ export class OfficeAdminComponent implements OnInit {
             data: {
               title: this.localeConfig['Attention'],
               message: this.localeConfig['Are you sure to delete'] + planStructure2delete.name + "?",
-              action: this.localeConfig['YES_NO']
+              action: this.localeConfig["YES_NO"]
             }
           })
           .afterClosed()

@@ -12,14 +12,6 @@
             <div routerLink="" class="logo">
                 <img class="logo-top" src="../assets/images/Logo.png">
             </div>
-
-            <input  
-                matInput
-                type="text"
-                [(ngModel)]="valor"
-                (keyup)="valor = stringFilter(valor, ' ()+0123456789-/')"
-            />
-
             <!-- MENU -->
             <app-menu></app-menu>
 
@@ -75,12 +67,12 @@
     
                 <button class="settingsButton" mat-menu-item>
                     <mat-icon fontSet="fas" fontIcon="fa-users" aria-hidden="true"></mat-icon>
-                    <span routerLink="/person" routerLinkActive="active">People</span>
+                    <span routerLink="/person" routerLinkActive="active" translate>People</span>
                 </button>
     
                 <button class="settingsButton" mat-menu-item>
                     <mat-icon fontSet="fa" fontIcon="fa-building" aria-hidden="true"></mat-icon>
-                    <span routerLink="/org" routerLinkActive="active">Organizations</span>
+                    <span routerLink="/org" routerLinkActive="active" translate>Organizations</span>
                 </button>
     
             </mat-menu>
