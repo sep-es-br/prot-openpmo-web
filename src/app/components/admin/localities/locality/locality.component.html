@@ -1,0 +1,148 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  <span translate>Saved successfully</span>
+</div>
+<div class="main-title" translate>{{(paramId == 'new') ? 'New locality' : locality?.name}}</div>
+<div class="panel-container">
+
+  <mat-accordion >
+    <!-- Properties Panel -->
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title translate>Properties</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form 
+        [formGroup]="formGroup"
+        (ngSubmit)="onSubmit()"
+        class="form-container property-container row"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0"> 
+        
+        <!-- Type -->
+        <div>
+          <div class="property-card-box">
+            <mat-form-field>
+              <mat-select 
+                placeholder="{{localeConfig.type}}"
+                formControlName="type"
+                [required]="true">
+                <mat-option 
+                  *ngFor="let type of localityTypes" 
+                  [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Display name-->
+        <div>
+          <div class="property-card-box" >
+            <mat-form-field>
+              <input matInput
+                type="text"      
+                formControlName="name"
+                placeholder={{localeConfig.name}}
+                required/>
+            </mat-form-field>
+            <mat-error *ngIf="formGroup.controls['name'].invalid && formGroup.controls['name'].touched">
+              <span translate>Name is </span> <strong translate>required</strong>
+            </mat-error>
+          </div>
+        </div>
+        
+        <!-- Container -->
+        <div>
+          <div class="property-card-box">
+            <mat-form-field>
+              <mat-select 
+                placeholder="{{localeConfig.container}}"
+                formControlName="container">
+                <mat-option
+                  [value]="'none'">(<span translate>none</span>)</mat-option>
+                <mat-option 
+                  *ngFor="let locality of localities" 
+                  [value]="locality.id">
+                  {{locality.name | translate}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Full name-->
+        <div class="full-width">
+          <div class="property-card-box full-width">
+            <mat-form-field class="full-width">
+              <input matInput 
+                type="text" 
+                formControlName="fullName"
+                placeholder={{localeConfig.fullName}}/>
+            </mat-form-field>
+
+          </div>
+        </div>
+        
+        <mat-card class="property-group">
+          <mat-card-header>
+            <mat-card-title class="property-group-title" translate>GPS Coordinates</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="property-container"
+            fxLayout
+            fxLayout.xs="column"
+            fxLayoutAlign="left"
+            fxLayoutGap="10px"
+            fxLayoutGap.xs="0"> 
+            <!-- Latitude -->
+            <div>
+              <div class="property-card-box" >
+                <mat-form-field>
+                  <input matInput
+                    type="number"
+                    step=.00001   
+                    formControlName="gpsLatitude"
+                    placeholder={{localeConfig.latitude}}/>
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <!-- Longitude -->
+            <div>
+              <div class="property-card-box" >
+                <mat-form-field>
+                  <input matInput
+                    type="number"
+                    step=.00001   
+                    formControlName="gpsLongitude"
+                    placeholder={{localeConfig.longitude}}/>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>        
+
+
+                <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button class="save-button" mat-button>
+                <span translate>Save</span>
+            </button>
+          </div>
+        </div>        
+      </form>
+      
+      <div class="id-container-properties">
+        <span>ID: {{locality?.id}}</span>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

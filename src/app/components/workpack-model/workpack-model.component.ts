@@ -14,6 +14,7 @@ import { PropertyProfile } from '../../model/property-profile';
 import { MessageDialogComponent, DialogData } from '../message-dialog/message-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { LocaleService } from '../../services/locale/locale-service.service';
+import { LocalityType } from 'src/app/model/locality';
 
 @Component({
   selector: 'app-workpack-model',
@@ -67,6 +68,8 @@ export class WorkpackModelComponent implements OnInit {
   propertyTypes: String[] = [];
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
+
+  private localityTypes: String[] = Object.values(LocalityType);
 
   ngOnInit() {
 
@@ -179,7 +182,8 @@ export class WorkpackModelComponent implements OnInit {
             label: [pProfile.label],
             rows: [pProfile.rows],
             fullLine: [pProfile.fullLine],
-            isRequired: [pProfile.required]
+            isRequired: [pProfile.required],
+            localityType: [pProfile.localityType]
           })
         );
       });
@@ -227,7 +231,8 @@ export class WorkpackModelComponent implements OnInit {
       (this.workpackModel.propertyProfiles[foundIndex].label != prop.label) ||
       (this.workpackModel.propertyProfiles[foundIndex].rows != prop.rows) ||
       (this.workpackModel.propertyProfiles[foundIndex].fullLine != prop.fullLine) ||
-      (this.workpackModel.propertyProfiles[foundIndex].required != prop.isRequired)
+      (this.workpackModel.propertyProfiles[foundIndex].required != prop.isRequired) || 
+      (this.workpackModel.propertyProfiles[foundIndex].localityType != prop.localityType)
     );
   }
 
@@ -290,16 +295,17 @@ export class WorkpackModelComponent implements OnInit {
       type:String;
       target: {source: String, set: String, icon: String};
     }[] = [
-      {'type':'Number',     'target':{'source': 'font',    'set': '',   'icon': '.0'}},
-      {'type':'Text',       'target':{'source': 'font',    'set': '',   'icon': 'T'}},
-      {'type':'Currency',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-dollar-sign'}},
-      {'type':'Measure',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-tachometer-alt'}},
-      {'type':'Text area',   'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-align-justify'}},
-      {'type':'Integer',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-hashtag'}},
-      {'type':'Email',      'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-at'}},
-      {'type':'Number list', 'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-sort-numeric-down'}},
-      {'type':'Date',       'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-calendar'}},
-      {'type':'Selection',  'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-list-ul'}},
+      {'type':'Number',         'target':{'source': 'font',    'set': '',   'icon': '.0'}},
+      {'type':'Text',           'target':{'source': 'font',    'set': '',   'icon': 'T'}},
+      {'type':'Currency',       'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-dollar-sign'}},
+      {'type':'Measure',        'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-tachometer-alt'}},
+      {'type':'Text area',      'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-align-justify'}},
+      {'type':'Integer',        'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-hashtag'}},
+      {'type':'Email',          'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-at'}},
+      {'type':'Number list',    'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-sort-numeric-down'}},
+      {'type':'Date',           'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-calendar'}},
+      {'type':'Selection',      'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-list-ul'}},
+      {'type':'Locality list',  'target':{'source': 'mat-icon','set': 'fas','icon': 'fa-map-marker-alt'}},
     ];
     let typeFound = logoHTMLMap.find(elem => elem.type == type);
     return (typeFound) ? typeFound.target : code4TypeNotFound;
@@ -312,6 +318,7 @@ export class WorkpackModelComponent implements OnInit {
         toDelete: [false],
         editing: [true],
         id: [''],
+        isRequired: [false],
         name: ['', Validators.required],
         type: [type],
         using: [true],
@@ -323,7 +330,8 @@ export class WorkpackModelComponent implements OnInit {
         possibleValues: [[]],
         label: [''],
         rows: [1],
-        fullLine: [false]
+        fullLine: [false],
+        localityType: [LocalityType.ANY]
       })
     );
   }
@@ -397,6 +405,7 @@ export class WorkpackModelComponent implements OnInit {
       newPropertyProfile.rows = pProfile.rows;
       newPropertyProfile.fullLine = pProfile.fullLine;
       newPropertyProfile.required = pProfile.isRequired;
+      newPropertyProfile.localityType = pProfile.localityType;
       this.workpackModel.propertyProfiles.push(newPropertyProfile);
     });
 

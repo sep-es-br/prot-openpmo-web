@@ -112,6 +112,25 @@
                 </mat-select>
               </mat-form-field>
 
+              <!-- Localities -->
+              <mat-form-field *ngIf="property.value.profile.type == 'Locality list'"
+                [class]="(property.value.profile.fullLine) ? 'full-width' : ''"
+                [formGroup]="property">
+                <mat-select 
+                  placeholder="{{property.value.profile.label}}"
+                  formControlName="localities"
+                  [compareWith]="compareWithFn"
+                  multiple
+                  [required]="'property.value.profile.required'">
+                  <mat-option 
+                    *ngFor="let locality of LocalitiesOfType(property.value.profile.localityType)" 
+                    [value]="locality">
+                    {{locality.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+
               <!-- Error message -->
               <mat-error *ngIf="property.invalid && property.touched">
                 <span>{{property.value.profile.label}}</span><strong translate> is required</strong>
@@ -173,7 +192,7 @@
                   {{role.name}}
                 </div>
               </mat-card-title>
-              <div class="actor-detail">
+              <div class="card-detail">
                 <div>{{role.actor?.fullName}}</div>
                 <div>{{role.actor?.address}}</div>
                 <div>{{role.actor?.phone}}</div>

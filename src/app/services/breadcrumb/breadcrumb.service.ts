@@ -276,6 +276,13 @@ export class BreadcrumbService {
             crumb.action = '';
             break;
           }
+          case 'locality':{
+            crumb.modelId = '';
+            modelName = 'locality';
+            crumb.label = node.name;
+            crumb.action = '';
+            break;
+          }
         }
         if (node.id == 'new') {
           crumb.id = 'new';

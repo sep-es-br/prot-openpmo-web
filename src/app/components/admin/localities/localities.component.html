@@ -1,0 +1,55 @@
+<!-- localities-list.html -->
+<div class="page-container">
+  <div class="container-fluid cards">
+    <div class="row">
+      <!-- LOCALITY CARD -->
+      <mat-card class="card card-style" *ngFor="let locality of localities">
+        <div class="card-image">
+          <mat-icon fontSet="fas" fontIcon="fa-map-marker-alt"></mat-icon>
+        </div>
+        <div class="setting-container">
+        <span class="card-setting" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+        </span>
+        </div>
+      
+
+        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+          
+          <button mat-menu-item>
+            <span (click)="DeleteLocality(locality.id)" translate>Delete</span>
+          </button>
+
+          <button mat-menu-item>
+            <span routerLink="/locality/{{locality.id}}" routerLinkActive="active" href="#" translate>Edit</span>
+          </button>
+
+        </mat-menu>
+
+        <mat-card-title class="title-card">
+          <div>
+            {{locality.name}}
+          </div>
+          <div class="subtitle-card">
+            {{locality.type}}
+          </div>
+        </mat-card-title>
+
+        <div class="card-detail">
+          <div>{{locality.fullName}}</div>
+        </div>
+        
+        <div class="id-container-card">
+          <span>ID: {{locality.id}}</span>
+        </div>
+      </mat-card>
+
+      <mat-card class="card new-card card-style" routerLink="/locality/new" routerLinkActive="active">
+        <div class="card-image-new">
+          <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
+

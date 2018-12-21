@@ -20,6 +20,10 @@ import { Property } from 'src/app/model/property';
 import { Role, ActorType } from 'src/app/model/role';
 import { RoleDataService } from 'src/app/services/data/role/role-data.service';
 import { LocaleService } from '../../services/locale/locale-service.service';
+import { LocalityType, Locality } from 'src/app/model/locality';
+import { LocalityDataService } from 'src/app/services/data/locality/locality-data.service';
+import { GeoReference } from 'src/app/model/geo-reference';
+import { GeoReferenceDataService } from 'src/app/services/data/georeference/geo-reference-data.service';
 
 @Component({
   selector: 'app-workpack',
@@ -40,7 +44,9 @@ export class WorkpackComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private roleDataService: RoleDataService,
-    private localeService: LocaleService) {}
+    private localeService: LocaleService,
+    private localityDataService: LocalityDataService,
+    private geoRefDataService: GeoReferenceDataService) {}
 
   formGroupWorkpack = this.fb.group({
     id: [''],
@@ -58,6 +64,7 @@ export class WorkpackComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
   wpRoles: Role[] = [];
+  allLocalities: Locality[] = [];
 
   actorTypes = ActorType;
   
@@ -65,6 +72,7 @@ export class WorkpackComponent implements OnInit {
     var keys = Object.keys(ActorType);
     return keys;
   }
+
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
@@ -99,6 +107,7 @@ export class WorkpackComponent implements OnInit {
             )
           );
           this.LoadFormControls();
+          console.log('formcontrol >>>', this.formGroupWorkpack);
         }
       })
     );
@@ -112,6 +121,12 @@ export class WorkpackComponent implements OnInit {
     this.subscriptions.push(
       this.officeDataService.office.subscribe(o =>{
         this.office = o;
+      })
+    );
+
+    this.subscriptions.push(
+      this.localityDataService.localities.subscribe(locals =>{
+        this.allLocalities = locals;
       })
     );
 
@@ -143,16 +158,18 @@ export class WorkpackComponent implements OnInit {
       })
       .forEach(pProfile => {
         let foundProperty = this.workpack.properties.find(p => (p.profile.id == pProfile.id));
-      (this.formGroupWorkpack.get('properties') as FormArray).push(
-        this.fb.group({
-          id: [(foundProperty !== undefined) ? foundProperty.id : ''],
-          name: [pProfile.name],
-          value: [(foundProperty !== undefined) ? foundProperty.value : '',
-                  (pProfile.required) ? Validators.required : ''],
-          profile: [pProfile]
-        })
-      );
-    });
+        (this.formGroupWorkpack.get('properties') as FormArray).push(
+          this.fb.group({
+            id: [(foundProperty !== undefined) ? foundProperty.id : ''],
+            name: [pProfile.name],
+            value: [(foundProperty !== undefined) ? foundProperty.value : '',
+                    (pProfile.required && pProfile.type != 'Locality list') ? Validators.required : ''],
+            localities: [(foundProperty !== undefined) ? foundProperty.localities : [],
+                    (pProfile.required && pProfile.type == 'Locality list') ? Validators.required : ''],
+            profile: [pProfile]
+          })
+        );
+      });
   }
 
   ConvertToNumber(val: String): Number {
@@ -170,7 +187,8 @@ export class WorkpackComponent implements OnInit {
       if (propIndex == -1) {
         changed = true;
       }
-      else if (cntrlProp.value != this.workpack.properties[propIndex].value) {
+      else if ( (cntrlProp.value != this.workpack.properties[propIndex].value) ||
+                (cntrlProp.localities != this.workpack.properties[propIndex].localities) ) {
         changed = true;;
       }
     });
@@ -211,13 +229,15 @@ export class WorkpackComponent implements OnInit {
           id: '',
           name: prop.name,
           value: prop.value,
+          localities: prop.localities,
           profile: prop.profile
         };
-        this.workpack.properties.push(property)
+        this.workpack.properties.push(property);
       }
       else {
         property.value = prop.value;
         property.name = property.profile.name;
+        property.localities = prop.localities;
       }
     });
     
@@ -265,27 +285,39 @@ export class WorkpackComponent implements OnInit {
       }
       case 'edit': {
         this.subscriptions.push(
-          this.workpackDataService.GetWorkpackById(this.crumbService.GetLast().id)
-          .subscribe(parentWP => {
-            this.subscriptions.push(
-              this.workpackDataService
-              .UpdateWorkpack(this.workpack)
-              .subscribe(
-                wp => {
-                  this.workpackModel = wp.model;
-                  this.LoadFormControls();
-                  this.ShowMessage();
-                  window.setTimeout(
-                    () => {this.HideMessage();}, 
-                    3000);
-                  this.crumbService.SetCurrentWorkpack(wp);
-                }
-              )
-            );
-          })
-        )
+          this.workpackDataService
+          .UpdateWorkpack(this.workpack)
+          .subscribe(
+            wp => {
+              this.workpackModel = wp.model;
+              this.LoadFormControls();
+              this.ShowMessage();
+              window.setTimeout(
+                () => {this.HideMessage();}, 
+                3000
+              );
+              this.crumbService.SetCurrentWorkpack(wp);
+            }
+          )
+        );
+        break;
       }
     }
+  }
+
+  MarkDeletedGeoReferences(prop: {id:String, name:String, value:Locality[], profile:PropertyProfile}) {
+    
+    // Get all saved georeferences of that profile
+    // Remove each georeference that is not in the new list
+     
+    this.workpack.geoReferences.forEach(gr => {
+      if (gr.profileId == prop.profile.id) {
+        // If that georefenence is not in the new list of location        
+        if (!((prop.value).find(loc => (loc.id == gr.locality.id)))){
+            gr.profileId = null; //mark the georeference to be deleted
+        }
+      }
+    });
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -379,7 +411,13 @@ export class WorkpackComponent implements OnInit {
     );
   }
 
+  LocalitiesOfType(type: String): Locality[] {
+    return this.allLocalities.filter(loc => ((type == LocalityType.ANY) || (loc.type == type)));
+  }
 
+  compareWithFn(item1:Locality, item2:Locality) {
+    return item1 && item2 ? item1.id === item2.id : item1 === item2;
+  }
 
   ////////////////////////////////////////////////////////////////////////
   // END OF PAGE

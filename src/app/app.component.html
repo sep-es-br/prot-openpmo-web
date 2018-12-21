@@ -60,14 +60,19 @@
     
             <mat-menu #menusettings="matMenu" [overlapTrigger]="false">
     
-                <button class="settingsButton" mat-menu-item>
+                <button class="settingsButton" mat-menu-item routerLink="/person" routerLinkActive="active">
                     <mat-icon fontSet="fas" fontIcon="fa-users" aria-hidden="true"></mat-icon>
-                    <span routerLink="/person" routerLinkActive="active">People</span>
+                    <span>People</span>
                 </button>
     
-                <button class="settingsButton" mat-menu-item>
+                <button class="settingsButton" mat-menu-item routerLink="/org" routerLinkActive="active">
                     <mat-icon fontSet="fa" fontIcon="fa-building" aria-hidden="true"></mat-icon>
-                    <span routerLink="/org" routerLinkActive="active">Organizations</span>
+                    <span>Organizations</span>
+                </button>
+    
+                <button class="settingsButton" mat-menu-item routerLink="/locality" routerLinkActive="active">
+                    <mat-icon fontSet="fa" fontIcon="fa-map-marker-alt" aria-hidden="true"></mat-icon>
+                    <span>Localities</span>
                 </button>
     
             </mat-menu>

@@ -8,7 +8,8 @@
     "Account settings" : "Account settings",
     "Active" : "Active",
     "Admin" : "Admin",
-    "Administration" : " Administration",
+    "Administration" : "Administration",
+    "any": "any",
     "Cancel" : "Cancel",
     "Cancelled" : "Cancelled",
     "Currency" : "Currency",
@@ -109,12 +110,15 @@
         "address" : "Address",
         "businessname" : "Business name",
         "confirmnewpassword": "Confirm new password",
+        "container": "Container",
         "defaultValue" : "DefaultValue",
         "displayname" : "Display name",
         "exclusionschema" : "Sorry, you can not delete this schema because it is not empty.",
         "exclusionsureschema" : "Are you sure to delete",
         "fullName" : "Full Name",
         "label" : "Label",
+        "latitude" : "Latitude",
+        "longitude" : "Longitude",
         "maximum" : "Maximum",
         "minimum" : "Minimum",
         "name" : "Name",
@@ -127,6 +131,7 @@
         "socialname" : "Social name",
         "sector" : "Sector",
         "sortIndex" : "SortIndex",
+        "type" : "Type",
         "username" : "User name"
     }
 }

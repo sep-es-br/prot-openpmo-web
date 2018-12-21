@@ -145,6 +145,22 @@
                     </mat-form-field>
                   </div>
 
+                  <!-- Locality Type -->
+                  <div *ngIf="pProfile.value.type == 'Locality list'">
+                    <mat-form-field>
+                      <mat-select 
+                        placeholder="{{localeConfig.type}}"
+                        formControlName="localityType"
+                        [required]="true">
+                        <mat-option 
+                          *ngFor="let type of localityTypes" 
+                          [value]="type">
+                          {{type}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
                   <!-- Value -->
                   <div *ngIf="pProfile.value.type != 'Currency'">
                     <mat-form-field >

@@ -27,7 +27,9 @@ export const environment = {
   personAPI: 'person/',
   personLikeResource: 'like/',
   orgAPI: 'organization/',
+  localityAPI: 'locality/',
   roleAPI: 'role/',
+  relatedLocalityAPI: 'relatedlocality',
   byScopeIdResource: 'scope/',
   byActorIdResource: 'actor/',
 };

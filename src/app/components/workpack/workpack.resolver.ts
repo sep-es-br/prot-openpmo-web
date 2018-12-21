@@ -6,13 +6,15 @@ import { WorkpackModel } from '../../model/workpack-model';
 import { Workpack } from '../../model/workpack';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { PlanDataService } from '../../services/data/plan/plan-data.service';
+import { LocalityDataService } from 'src/app/services/data/locality/locality-data.service';
 
 @Injectable()
 export class WorkpackResolver implements Resolve<ViewOptions> {
 
   constructor(private PlanDataService: PlanDataService,
               private workpackDataService: WorkpackDataService,
-              private crumbService: BreadcrumbService) {}
+              private crumbService: BreadcrumbService,
+              private localityDataService: LocalityDataService) {}
   id: String;
   modelId: String;
   viewOptions: ViewOptions = new ViewOptions();
@@ -22,6 +24,8 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
     this.viewOptions.action = route.paramMap.get('action');
     this.viewOptions.arrIds = route.paramMap.get('id').split('&');
     this.id = this.viewOptions.arrIds[0];
+
+    this.localityDataService.QueryLocalities();
 
     if (this.viewOptions.arrIds.length > 1) {
       this.modelId = this.viewOptions.arrIds[1];
@@ -45,6 +49,7 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
                     id: '',
                     name: pProfile.name,
                     value: pProfile.value,
+                    localities: [],
                     profile: pProfile
                   });
                 });
@@ -68,6 +73,7 @@ export class WorkpackResolver implements Resolve<ViewOptions> {
                     id: '',
                     name: pProfile.name,
                     value: pProfile.value,
+                    localities: [],
                     profile: pProfile
                   });
                 });

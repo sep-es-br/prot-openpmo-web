@@ -1,3 +1,5 @@
+import { LocalityType } from "./locality";
+
 export class PropertyProfile {
     id: String = null;
     type: String = '';
@@ -14,4 +16,5 @@ export class PropertyProfile {
     rows: Number = 1;
     fullLine: Boolean = false;
     toDelete: Boolean = false;
+    localityType: LocalityType = LocalityType.ANY;
 }

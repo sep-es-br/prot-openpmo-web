@@ -278,7 +278,9 @@ button, a, div {
     font-size: 14px;
     margin-top: -32px;
     float: right;
-}
+    position: absolute;
+    bottom: 5px;
+    right: 10px;}
 
 .id-container-properties{
     color: #bdbfc1;
@@ -318,4 +320,17 @@ button, a, div {
 
 .full-width {
     width: 100%;
+}
+
+.property-group {
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+.property-group-title {
+    font-size: 14px!important;
+}
+
+.card-detail{
+    font-size: 12px;
 }

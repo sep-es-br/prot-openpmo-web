@@ -50,6 +50,11 @@ import { AuthClientHttp } from './security/auth-client-http';
 import { Util } from './utils';
 import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
 import { ErrorMessagingService } from './services/error/error-messaging.service';
+import { LocalitiesComponent } from './components/admin/localities/localities.component';
+import { LocalityComponent } from './components/admin/localities/locality/locality.component';
+import { LocalityDataService } from './services/data/locality/locality-data.service';
+import { RoleDataService } from './services/data/role/role-data.service';
+import { GeoReferenceDataService } from './services/data/georeference/geo-reference-data.service';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
@@ -77,6 +82,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     MessageDialogComponent,
     PeopleComponent,
     PersonComponent,
+    LocalitiesComponent,
+    LocalityComponent,
     OrgsComponent,
     OrgComponent,
     PersonRoleComponent,
@@ -109,6 +116,9 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     OfficeDataService,
     PlanDataService,
     WorkpackDataService,
+    RoleDataService,
+    LocalityDataService,
+    GeoReferenceDataService,
     BreadcrumbService,    
     LocaleService,
     CookieService,

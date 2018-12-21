@@ -20,6 +20,8 @@ import { OrgComponent } from './components/admin/orgs/org/org.component';
 import { PersonRoleComponent } from './components/workpack/person-role/person-role.component';
 import { LoginComponent } from './components/login/login.component';
 import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
+import { LocalitiesComponent } from './components/admin/localities/localities.component';
+import { LocalityComponent } from './components/admin/localities/locality/locality.component';
 //import { LoginComponent } from './security/login/login.component';
 
 ////////////////////////////////////////////////////////////////////////
@@ -102,6 +104,14 @@ const routes: Routes = [
   {
     path: 'org/:id',
     component: OrgComponent
+  },
+  {
+    path: 'locality',
+    component: LocalitiesComponent
+  },
+  {
+    path: 'locality/:id',
+    component: LocalityComponent
   },
 ];
 
