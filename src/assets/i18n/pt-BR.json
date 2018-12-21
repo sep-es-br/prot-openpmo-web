@@ -10,6 +10,7 @@
     "Admin" : "Admin",
     "Administration" : "Administração",
     "any": "qualquer",
+    "Administrador" : " Administrador",
     "Cancel" : "Cancelar",
     "Cancelled" : "Cancelado",
     "Currency" : "Moeda",
@@ -30,6 +31,7 @@
     "Label" : "Rótulo",
     "Log Out" : "Sair",
     "Log out" : "Sair",
+    "Login" : "Entrar",
     "Maximum" : "Máximo",
     "Minimum" : "Mínimo",
     "My profile" : "Meu perfil",
@@ -47,6 +49,8 @@
     "No" : "Não",
     "Number" : "Número",
     "Organization data" : "Data da organização",
+    "Organizations" : "Organizações",
+    "People" : "Pessoas",
     "Personal data" : "Dados pessoais",
     "Plan Structures" : "Estrutura do Plano",
     "Planning" : "Planejamento",
@@ -96,7 +100,6 @@
         "Sorry, you can not delete an office containing nested plans." : "Desculpe, você não pode excluir um escritório contendo planos aninhados.",
         "Sorry, you can not delete this schema because it is not empty." : "Desculpe, você não pode excluir um esquema não vazio.",
         "Warning" : "Aviso",
-        "YES_NO" : "SIM_NÃO ",
 
             "===MASKS===" : "Máscaras",
         "currencyMask" : {
@@ -122,6 +125,7 @@
         "maximum" : "Máximo",
         "minimum" : "Mínimo",
         "name" : "Nome",
+        "Password" : "Senha",
         "newpassword": "Nova senha",
         "orgpossibleroles": "Papéis possíveis de uma organização",
         "personpossibleroles": "Papéis possíveis de uma pessoa",
@@ -132,6 +136,7 @@
         "socialname" : "Nome social",
         "sortIndex" : "Índice de ordenação",
         "type" : "Tipo",
+        "User" : "Usuário",
         "username" : "Nome de usuário"
     }
 }

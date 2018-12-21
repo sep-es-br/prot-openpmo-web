@@ -334,8 +334,8 @@ export class WorkpackComponent implements OnInit {
         if (workpack2delete.components.length > 0) {
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: this.localeConfig['Warning'],
-              message: this.localeConfig['Sorry, you can not delete a workpack that contains nested workpacks.'],
+              title: this.localeConfig["Warning"],
+              message: this.localeConfig["Sorry, you can not delete a workpack that contains nested workpacks."],
               action: "OK"
             }
           });
@@ -344,9 +344,9 @@ export class WorkpackComponent implements OnInit {
           this.subscriptions.push(
             this.dialog.open(MessageDialogComponent, { 
               data: {
-                title: this.localeConfig['Attention'],
-                message: this.localeConfig['Are you sure you want to delete'] + workpack2delete.name + "?",
-                action: this.localeConfig['YES_NO']
+                title: this.localeConfig["Attention"],
+                message: this.localeConfig["Are you sure you want to delete"] + workpack2delete.name + "?",
+                action: "YES_NO"
               }
             })
             .afterClosed()
@@ -381,14 +381,14 @@ export class WorkpackComponent implements OnInit {
       this.roleDataService
       .GetRoleById(id)
       .subscribe(role2delete => {
-        const msg = `${this.localeConfig['Are you sure to remove']} ${role2delete.actor.name} ` +
-                    `${this.localeConfig['as stakeholder of this']} ${this.workpack.model.name}?`;
+        const msg = `${this.localeConfig["Are you sure to remove"]} ${role2delete.actor.name} ` +
+                    `${this.localeConfig["as stakeholder of this"]} ${this.workpack.model.name}?`;
         this.subscriptions.push(
           this.dialog.open(MessageDialogComponent, { 
             data: {
-              title: this.localeConfig['Attention'],
+              title: this.localeConfig["Attention"],
               message:  msg,
-              action: this.localeConfig['YES_NO']
+              action: this.localeConfig["YES_NO"]
             }
           })
           .afterClosed()

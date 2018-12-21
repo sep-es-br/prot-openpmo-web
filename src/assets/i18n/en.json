@@ -10,6 +10,7 @@
     "Admin" : "Admin",
     "Administration" : "Administration",
     "any": "any",
+    "administrador" : " administrator",
     "Cancel" : "Cancel",
     "Cancelled" : "Cancelled",
     "Currency" : "Currency",
@@ -30,6 +31,7 @@
     "Label" : "Label",
     "Log Out" : "Log Out",
     "Log out" : "Log out",
+    "Login" : "Login",
     "Maximum" : "Maximum",
     "Minimum" : "Minimum",
     "My profile" : "My profile",
@@ -46,6 +48,8 @@
     "No" : "No",
     "Number" : "Number",
     "Organization data" : "Organization data",
+    "Organizations" : "Organizations",
+    "People" : "People",
     "Personal data" : "Personal data",
     "Plan Structures" : "Plan Structures",
     "Planning" : "Planning",
@@ -96,8 +100,6 @@
         "Sorry, you can not delete an office containing nested plans." : "Sorry, you can not delete an office containing nested plans.",
         "Sorry, you can not delete this schema because it is not empty." : "Sorry, you can not delete this schema because it is not empty.",
         "Warning" : "Warning",
-        "YES_NO" : "YES_NO",
-
             "===MASKS===" : "",
         "currencyMask" : {
             "decimal": ".",
@@ -122,6 +124,7 @@
         "maximum" : "Maximum",
         "minimum" : "Minimum",
         "name" : "Name",
+        "Password" : "Password",
         "newpassword": "New password",
         "orgpossibleroles": "Possible roles of an organization",
         "personpossibleroles": "Possible roles of a person",
@@ -132,6 +135,7 @@
         "sector" : "Sector",
         "sortIndex" : "SortIndex",
         "type" : "Type",
+        "User" : "User",
         "username" : "User name"
     }
 }

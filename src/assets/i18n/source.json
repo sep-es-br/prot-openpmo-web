@@ -32,6 +32,7 @@
     "Label" : "",
     "Log Out" : "",
     "Log out" : "",
+    "Login" : "",
     "Maximum" : "",
     "Minimum" : "",  
     "My profile" : "",
@@ -118,12 +119,17 @@
         "maximum" : "",
         "minimum" : "",
         "name" : "",
+        "Password" : "",
         "phone" : "",
         "possiblevalues" : "",
         "rows" : "",
         "sector" : "",
         "socialname" : "",
         "sortIndex" : "",
+        "User" : "",
         "username" : ""
+
+        
+        
     }
 }

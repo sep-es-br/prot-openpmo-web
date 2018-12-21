@@ -60,10 +60,10 @@
           <div class="property-card-box" >
             <mat-form-field>
               <input matInput
-                type="text"      
+                type="text"
+                [value]="formGroupPerson.get('phone').value | stringFilter:'()+-/0123456789':true:true" 
                 formControlName="phone"
-                placeholder={{localeConfig.phone}}
-                mask={{localeConfig.phoneMask}}/>
+                placeholder={{localeConfig.phone}}/>
             </mat-form-field>
           </div>
         </div>

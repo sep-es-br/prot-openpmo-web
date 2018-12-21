@@ -47,14 +47,16 @@ import { SecurityModule } from './security/security.module';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './security/auth.service';
 import { AuthClientHttp } from './security/auth-client-http';
+import { MenuComponent } from './menu/menu.component';
+import { PhonePipe } from './pipes/pipe-phone';
 import { Util } from './utils';
-import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
 import { ErrorMessagingService } from './services/error/error-messaging.service';
 import { LocalitiesComponent } from './components/admin/localities/localities.component';
 import { LocalityComponent } from './components/admin/localities/locality/locality.component';
 import { LocalityDataService } from './services/data/locality/locality-data.service';
 import { RoleDataService } from './services/data/role/role-data.service';
 import { GeoReferenceDataService } from './services/data/georeference/geo-reference-data.service';
+import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
@@ -87,6 +89,9 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     OrgsComponent,
     OrgComponent,
     PersonRoleComponent,
+    LoginComponent,
+    MenuComponent,
+    PhonePipe,
     OrgRoleComponent,
     LoginComponent
   ],
@@ -136,7 +141,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
     Util,
-    ErrorMessagingService
+    ErrorMessagingService,
+    PhonePipe
   ],
   bootstrap: [AppComponent]
 })

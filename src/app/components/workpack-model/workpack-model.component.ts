@@ -483,7 +483,7 @@ export class WorkpackModelComponent implements OnInit {
               data: {
                 title: this.localeConfig['Attention'], 
                 message: this.localeConfig['Are you sure you want to delete'] + workpackModel2delete.name + "?",
-                action: this.localeConfig['YES_NO']
+                action: "YES_NO"
               }
             })
             .afterClosed()
