@@ -14,7 +14,8 @@ import { PropertyProfile } from '../../model/property-profile';
 import { MessageDialogComponent, DialogData } from '../message-dialog/message-dialog.component';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { LocaleService } from '../../services/locale/locale-service.service';
-import { LocalityType } from 'src/app/model/locality';
+import { Locality } from 'src/app/model/locality';
+import { LocalityDataService } from 'src/app/services/data/locality/locality-data.service';
 
 @Component({
   selector: 'app-workpack-model',
@@ -39,7 +40,8 @@ export class WorkpackModelComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private localeService: LocaleService ) {}
+    private localeService: LocaleService,
+    private localityDataService: LocalityDataService ) {}
 
   formGroupWorkpackModel = this.fb.group({
     id: [''],
@@ -69,8 +71,8 @@ export class WorkpackModelComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
 
-  private localityTypes: String[] = Object.values(LocalityType);
-
+  allLocalities: Locality[] = [];
+  
   ngOnInit() {
 
     //Translate Service
@@ -137,7 +139,13 @@ export class WorkpackModelComponent implements OnInit {
           this.CloseStakeholdersPanel();
         } 
       })
-    );         
+    );     
+    
+    this.subscriptions.push(
+      this.localityDataService.localities.subscribe(locals =>{
+        this.allLocalities = locals;
+      })
+    );    
 
   }
 
@@ -183,7 +191,7 @@ export class WorkpackModelComponent implements OnInit {
             rows: [pProfile.rows],
             fullLine: [pProfile.fullLine],
             isRequired: [pProfile.required],
-            localityType: [pProfile.localityType]
+            possibleLocalities: [pProfile.possibleLocalities]
           })
         );
       });
@@ -232,7 +240,7 @@ export class WorkpackModelComponent implements OnInit {
       (this.workpackModel.propertyProfiles[foundIndex].rows != prop.rows) ||
       (this.workpackModel.propertyProfiles[foundIndex].fullLine != prop.fullLine) ||
       (this.workpackModel.propertyProfiles[foundIndex].required != prop.isRequired) || 
-      (this.workpackModel.propertyProfiles[foundIndex].localityType != prop.localityType)
+      (this.workpackModel.propertyProfiles[foundIndex].possibleLocalities != prop.possibleLocalities)
     );
   }
 
@@ -331,7 +339,7 @@ export class WorkpackModelComponent implements OnInit {
         label: [''],
         rows: [1],
         fullLine: [false],
-        localityType: [LocalityType.ANY]
+        possibleLocalities: [[]]
       })
     );
   }
@@ -405,7 +413,7 @@ export class WorkpackModelComponent implements OnInit {
       newPropertyProfile.rows = pProfile.rows;
       newPropertyProfile.fullLine = pProfile.fullLine;
       newPropertyProfile.required = pProfile.isRequired;
-      newPropertyProfile.localityType = pProfile.localityType;
+      newPropertyProfile.possibleLocalities = pProfile.possibleLocalities;
       this.workpackModel.propertyProfiles.push(newPropertyProfile);
     });
 
@@ -505,6 +513,10 @@ export class WorkpackModelComponent implements OnInit {
         }
       })
     );
+  }
+
+  compareWithFn(item1:Locality, item2:Locality) {
+    return item1 && item2 ? item1.id === item2.id : item1 === item2;
   }
 
   ngOnDestroy() {

@@ -129,6 +129,7 @@
         "orgpossibleroles": "Possible roles of an organization",
         "personpossibleroles": "Possible roles of a person",
         "phone" : "Phone",
+        "possiblelocalities": "Possible localities",
         "possiblevalues": "Possible values",
         "rows" : "Rows",
         "socialname" : "Social name",

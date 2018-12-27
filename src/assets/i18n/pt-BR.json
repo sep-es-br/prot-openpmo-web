@@ -130,6 +130,7 @@
         "orgpossibleroles": "Papéis possíveis de uma organização",
         "personpossibleroles": "Papéis possíveis de uma pessoa",
         "phone" : "Telefone",
+        "possiblelocalities": "Localidades possíveis",
         "possiblevalues": "Valores possíveis",
         "rows" : "Linhas",
         "sector" : "Setor",

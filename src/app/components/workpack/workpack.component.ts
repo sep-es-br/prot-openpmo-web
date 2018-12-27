@@ -24,6 +24,7 @@ import { LocalityType, Locality } from 'src/app/model/locality';
 import { LocalityDataService } from 'src/app/services/data/locality/locality-data.service';
 import { GeoReference } from 'src/app/model/geo-reference';
 import { GeoReferenceDataService } from 'src/app/services/data/georeference/geo-reference-data.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-workpack',
@@ -45,8 +46,7 @@ export class WorkpackComponent implements OnInit {
     private dialog: MatDialog,
     private roleDataService: RoleDataService,
     private localeService: LocaleService,
-    private localityDataService: LocalityDataService,
-    private geoRefDataService: GeoReferenceDataService) {}
+    private localityDataService: LocalityDataService) {}
 
   formGroupWorkpack = this.fb.group({
     id: [''],
@@ -92,12 +92,17 @@ export class WorkpackComponent implements OnInit {
     this.subscriptions.push(
       this.workpackDataService.workpackModel.subscribe(wm => {
         this.workpackModel = wm;
+        console.log('this.workpackModel', this.workpackModel);
       })
     );
     
     this.subscriptions.push(
+      
       this.workpackDataService.workpack.subscribe(wp =>{
         this.workpack = wp;
+       
+        console.log('this.workpack', this.workpack);
+
         if (this.workpack.id != '') {
           this.subscriptions.push(
             this.roleDataService.GetAllRoles().subscribe(
@@ -106,6 +111,9 @@ export class WorkpackComponent implements OnInit {
               }
             )
           );
+          
+
+
           this.LoadFormControls();
           console.log('formcontrol >>>', this.formGroupWorkpack);
         }
@@ -152,7 +160,8 @@ export class WorkpackComponent implements OnInit {
   LoadFormControls() {
     this.formGroupWorkpack.controls['name'].setValue(this.workpack.name);
     this.CleanPropertiesFormArray();
-    this.workpack.model.propertyProfiles
+    this.workpackModel.propertyProfiles
+      .filter(pProfile => (pProfile.using))
       .sort((a,b) => {
         return (a.sortIndex < b.sortIndex) ? -1 : 1;
       })
@@ -180,15 +189,14 @@ export class WorkpackComponent implements OnInit {
   //Identify changes made by the user
   UserChangedSomething(val): Boolean {
     if (val.name != this.workpack.name) return true;
-    if (val.properties.length != this.workpack.properties.length) return true;
     let changed = false;
-    val.properties.forEach((cntrlProp) => {
-      let propIndex = this.workpack.properties.findIndex(p => (p.id == cntrlProp.id));
+    val.properties.forEach((formProp) => {
+      let propIndex = this.workpack.properties.findIndex(p => (p.id == formProp.id));
       if (propIndex == -1) {
         changed = true;
       }
-      else if ( (cntrlProp.value != this.workpack.properties[propIndex].value) ||
-                (cntrlProp.localities != this.workpack.properties[propIndex].localities) ) {
+      else if ( (formProp.value != this.workpack.properties[propIndex].value) ||
+                (formProp.localities != this.workpack.properties[propIndex].localities) ) {
         changed = true;;
       }
     });
@@ -222,22 +230,22 @@ export class WorkpackComponent implements OnInit {
   onSubmit(){
     this.workpack.name = this.formGroupWorkpack.value.name.trim();
     this.workpack.model = this.workpackModel;
-    this.formGroupWorkpack.value.properties.forEach(prop => {
-      let property = this.workpack.properties.find(p => (p.profile.id == prop.profile.id));
+    this.formGroupWorkpack.value.properties.forEach(fProp => {
+      let property = this.workpack.properties.find(p => (p.profile.id == fProp.profile.id));
       if (isNullOrUndefined(property)) {
         property = {
           id: '',
-          name: prop.name,
-          value: prop.value,
-          localities: prop.localities,
-          profile: prop.profile
+          name: fProp.name,
+          value: fProp.value,
+          localities: fProp.localities,
+          profile: fProp.profile
         };
         this.workpack.properties.push(property);
       }
       else {
-        property.value = prop.value;
+        property.value = fProp.value;
         property.name = property.profile.name;
-        property.localities = prop.localities;
+        property.localities = fProp.localities;
       }
     });
     
@@ -289,13 +297,9 @@ export class WorkpackComponent implements OnInit {
           .UpdateWorkpack(this.workpack)
           .subscribe(
             wp => {
-              this.workpackModel = wp.model;
               this.LoadFormControls();
               this.ShowMessage();
-              window.setTimeout(
-                () => {this.HideMessage();}, 
-                3000
-              );
+              window.setTimeout(() => this.HideMessage(), environment.timeToHideSavedMessage);
               this.crumbService.SetCurrentWorkpack(wp);
             }
           )
@@ -303,21 +307,6 @@ export class WorkpackComponent implements OnInit {
         break;
       }
     }
-  }
-
-  MarkDeletedGeoReferences(prop: {id:String, name:String, value:Locality[], profile:PropertyProfile}) {
-    
-    // Get all saved georeferences of that profile
-    // Remove each georeference that is not in the new list
-     
-    this.workpack.geoReferences.forEach(gr => {
-      if (gr.profileId == prop.profile.id) {
-        // If that georefenence is not in the new list of location        
-        if (!((prop.value).find(loc => (loc.id == gr.locality.id)))){
-            gr.profileId = null; //mark the georeference to be deleted
-        }
-      }
-    });
   }
 
   ////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-import { LocalityType } from "./locality";
+import { LocalityType, Locality } from "./locality";
 
 export class PropertyProfile {
     id: String = null;
@@ -16,5 +16,5 @@ export class PropertyProfile {
     rows: Number = 1;
     fullLine: Boolean = false;
     toDelete: Boolean = false;
-    localityType: LocalityType = LocalityType.ANY;
+    possibleLocalities: Locality[] = [];
 }

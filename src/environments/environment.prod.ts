@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  timeToHideSavedMessage: 3000,
   tokenWhitelistedDomains: [ /localhost:8080/ ],
   tokenBlacklistedRoutes: [/\/oauth\/token/],
   databaseHost: 'http://ss07.planejamento.es.gov.br/',
@@ -16,9 +17,7 @@ export const environment = {
   listPlanStructuresFunction: 'listplanstructures/',
   workpackModelAPI: 'workpackmodel/',
   propertyAPI: 'property/',
-  textPropertyAPI: 'textproperty/',
-  numberPropertyAPI: 'numberproperty/',
-  addressPropertyAPI: 'addressproperty/',
+  propertyProfileAPI: 'propertyprofile/',
   listWorkpackModelsFunction: 'listworkpackmodels/',
   treeResource: 'tree/',
   defaultResource: 'default/',

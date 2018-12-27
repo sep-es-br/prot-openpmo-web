@@ -145,17 +145,21 @@
                     </mat-form-field>
                   </div>
 
-                  <!-- Locality Type -->
-                  <div *ngIf="pProfile.value.type == 'Locality list'">
-                    <mat-form-field>
+                  <!-- Possible Localities -->
+                  <div  *ngIf="pProfile.value.type == 'Locality list'"
+                        class="{{(pProfile.value.editing) ? 'textInput' : 'minimum-width'}}">
+                    <mat-form-field
+                      class="form-field">
                       <mat-select 
-                        placeholder="{{localeConfig.type}}"
-                        formControlName="localityType"
+                        placeholder="{{localeConfig.possiblelocalities}}"
+                        formControlName="possibleLocalities"
+                        [compareWith]="compareWithFn"
+                        multiple
                         [required]="true">
                         <mat-option 
-                          *ngFor="let type of localityTypes" 
-                          [value]="type">
-                          {{type}}
+                          *ngFor="let locality of allLocalities" 
+                          [value]="locality">
+                          {{locality.name}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>

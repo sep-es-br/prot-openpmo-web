@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  timeToHideSavedMessage: 3000,
   tokenWhitelistedDomains: [ /localhost:8080/, /localhost:4200/ ],
   tokenBlacklistedRoutes: [/\/oauth\/token/],
   databaseHost: 'http://localhost:4200/',
@@ -20,9 +21,7 @@ export const environment = {
   listPlanStructuresFunction: 'listplanstructures/',
   workpackModelAPI: 'workpackmodel/',
   propertyAPI: 'property/',
-  textPropertyAPI: 'textproperty/',
-  numberPropertyAPI: 'numberproperty/',
-  addressPropertyAPI: 'addressproperty/',
+  propertyProfileAPI: 'propertyprofile/',
   listWorkpackModelsFunction: 'listworkpackmodels/',
   treeResource: 'tree/',
   defaultResource: 'default/',

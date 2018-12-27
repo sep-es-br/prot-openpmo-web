@@ -5,13 +5,15 @@ import { ViewOptions } from '../../model/view-options';
 import { WorkpackModel } from '../../model/workpack-model';
 import { WorkpackDataService } from '../../services/data/workpack/workpack-data.service';
 import { PlanDataService } from 'src/app/services/data/plan/plan-data.service';
+import { LocalityDataService } from 'src/app/services/data/locality/locality-data.service';
 
 @Injectable()
 export class WorkpackModelResolver implements Resolve<ViewOptions> {
 
   constructor(private PlanDataService: PlanDataService,
               private workpackDataService: WorkpackDataService,
-              private crumbService: BreadcrumbService) {}
+              private crumbService: BreadcrumbService,
+              private localityDataService: LocalityDataService) {}
   id: String;
   viewOptions: ViewOptions = new ViewOptions();
 
@@ -20,6 +22,7 @@ export class WorkpackModelResolver implements Resolve<ViewOptions> {
     this.id = route.paramMap.get('id');
 
     this.workpackDataService.QueryPropertyTypes().subscribe(res => res);
+    this.localityDataService.QueryLocalities();
  
     switch (this.viewOptions.action) {
       case 'new2planstructure': {

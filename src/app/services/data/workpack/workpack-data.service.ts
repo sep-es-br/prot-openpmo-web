@@ -10,6 +10,7 @@ import { MessageDialogComponent } from 'src/app/components/message-dialog/messag
 import { AuthClientHttp } from 'src/app/security/auth-client-http';
 import { Util } from 'src/app/utils';
 import { ErrorMessagingService } from '../../error/error-messaging.service';
+import { PropertyProfile } from 'src/app/model/property-profile';
 
 export class Panel {
   action: String = '';
@@ -173,6 +174,7 @@ export class WorkpackDataService {
     ).pipe(map<Workpack, any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        this.$workpack.next(res as Workpack);
         return res;
       }),
       catchError(
@@ -320,6 +322,34 @@ export class WorkpackDataService {
     const URL = this.baseURL + this.basePathURL + pathURL;
     this.spinnerService.ShowSpinner();
     return this.http.get(URL).pipe(map<WorkpackModel, any>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        return res;
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.errMessage.ShowErrorMessage(err);
+          return err;
+        }
+      )
+    );
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run the GET http request to query a Workpack Model by id
+  //
+  // Parameters: 
+  //    id: The id of the Workpack Model to be retrieved
+  //
+  // Return: An Observable Workpack Model retrieved
+  //
+  GetPropertyProfileById(id: String): Observable<PropertyProfile> {
+    const pathURL = environment.propertyProfileAPI + id;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+    this.spinnerService.ShowSpinner();
+    return this.http.get(URL).pipe(map<PropertyProfile, any>(
       (res) => {
         this.spinnerService.HideSpinner();
         return res;

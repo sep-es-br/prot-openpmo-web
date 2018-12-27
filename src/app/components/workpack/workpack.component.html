@@ -1,3 +1,7 @@
+<div class="notification" [style.right]="MessageRightPosition">
+  <span translate>Saved successfully</span>
+</div>
+
 <div class="main-title">{{viewOptions.title}}</div>
 <div class="container-form">
   <mat-accordion >
@@ -34,7 +38,7 @@
 
           <div *ngFor="let property of formGroupWorkpack['controls'].properties['controls']; let i=index;"
             [class]="(property.value.profile.fullLine) ? 'full-width' : ''">
-            <div *ngIf="property.value.profile.using"
+            <div *ngIf="property.value.profile.using == true"
               [class]="(property.value.profile.fullLine) ? 'property-card-box full-width' : 'property-card-box'" >
               
               <!-- Text type -->
@@ -123,7 +127,7 @@
                   multiple
                   [required]="'property.value.profile.required'">
                   <mat-option 
-                    *ngFor="let locality of LocalitiesOfType(property.value.profile.localityType)" 
+                    *ngFor="let locality of property.value.profile.possibleLocalities" 
                     [value]="locality">
                     {{locality.name}}
                   </mat-option>
