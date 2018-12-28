@@ -1,5 +1,6 @@
 import { Pipe } from "@angular/core";
 
+let key:boolean = true;
 
 @Pipe({
     name: 'stringFilter'
@@ -14,7 +15,7 @@ import { Pipe } from "@angular/core";
 //
 // Return: valid characters entered
 export class StringFilter {
-    public key= true
+    
 
     transform ( value:string = "", caracters:string = "", flow:boolean = true, oscillation:boolean = false ) {
 
@@ -22,7 +23,7 @@ export class StringFilter {
         let j: number = 0;
         let check: boolean = false
         let check_osc: boolean = false
-        let data_suport:any = "";
+        let data_suport: any = "";
         let char_value: any = value.split("");
         let char_caracters: any = caracters.split("");
     
@@ -53,13 +54,13 @@ export class StringFilter {
         }
 
         if (( oscillation ) && ( check_osc )) {
-            if ( this.key ) {
+            if ( key ) {
                 data_suport = data_suport + " "
-                this.key = false
+                key = false
             }
             else {
                 data_suport = data_suport + "  "
-                this.key = true 
+                key = true 
             }
         }
         return data_suport;

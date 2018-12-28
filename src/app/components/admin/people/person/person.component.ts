@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material';
 import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 import { LocaleService } from 'src/app/services/locale/locale-service.service';
 import { AppComponent } from 'src/app/app.component';
-import { StringFilter } from 'src/app/pipes/pipe-phone';
+import { StringFilter } from 'src/app/pipes/string-filter';
 
 @Component({
   selector: 'app-person',
