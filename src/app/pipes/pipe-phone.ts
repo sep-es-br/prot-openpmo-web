@@ -4,7 +4,7 @@ import { Pipe } from "@angular/core";
 @Pipe({
     name: 'stringFilter'
 })
-export class PhonePipe {
+export class StringFilter {
     public key= true
 
     transform ( value:string = "", caracters:string = "", flow:boolean = true, oscillation:boolean = false ) {
@@ -49,11 +49,10 @@ export class PhonePipe {
                 this.key = false
             }
             else {
+                data_suport = data_suport + "  "
                 this.key = true 
             }
         }
-            
-        console.log('data_suport', data_suport);
         return data_suport;
     }
 }

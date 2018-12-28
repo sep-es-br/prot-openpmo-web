@@ -377,7 +377,7 @@ export class WorkpackComponent implements OnInit {
             data: {
               title: this.localeConfig["Attention"],
               message:  msg,
-              action: this.localeConfig["YES_NO"]
+              action: "YES_NO"
             }
           })
           .afterClosed()

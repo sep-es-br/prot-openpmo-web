@@ -48,7 +48,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './security/auth.service';
 import { AuthClientHttp } from './security/auth-client-http';
 import { MenuComponent } from './menu/menu.component';
-import { PhonePipe } from './pipes/pipe-phone';
+import { StringFilter } from './pipes/pipe-phone';
 import { Util } from './utils';
 import { ErrorMessagingService } from './services/error/error-messaging.service';
 import { LocalitiesComponent } from './components/admin/localities/localities.component';
@@ -91,9 +91,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     PersonRoleComponent,
     LoginComponent,
     MenuComponent,
-    PhonePipe,
-    OrgRoleComponent,
-    LoginComponent
+    StringFilter,
+    OrgRoleComponent
   ],
   entryComponents: [MessageDialogComponent],
   imports: [
@@ -142,7 +141,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
     Util,
     ErrorMessagingService,
-    PhonePipe
+    StringFilter
   ],
   bootstrap: [AppComponent]
 })

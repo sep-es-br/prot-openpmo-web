@@ -1,7 +1,7 @@
-<h1 mat-dialog-title>{{data.title}}</h1>
+<h1 mat-dialog-title>{{data.title | translate}}</h1>
 <mat-dialog-content>
-  <p style="text-align: center;">{{data.message}}</p>
-  <p style="text-align: center;">{{data.description}}</p>
+  <p style="text-align: center;">{{data.message | translate}}</p>
+  <p style="text-align: center;">{{data.description | translate}}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="center" *ngIf="data.action == 'OK_CANCEL'">
   <button mat-button (click)="Clicked('OK')">OK</button>

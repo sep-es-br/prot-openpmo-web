@@ -9,7 +9,7 @@ import { MatDialog } from '@angular/material';
 import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.service';
 import { LocaleService } from 'src/app/services/locale/locale-service.service';
 import { AppComponent } from 'src/app/app.component';
-import { PhonePipe } from 'src/app/pipes/pipe-phone';
+import { StringFilter } from 'src/app/pipes/pipe-phone';
 
 @Component({
   selector: 'app-person',
@@ -28,7 +28,7 @@ export class PersonComponent implements OnInit {
     private breadCrumbService: BreadcrumbService,
     private localeService: LocaleService,
     private app: AppComponent,
-    private phone_pipe: PhonePipe
+    private string_filter: StringFilter
   ) { }
 
   formGroupPerson = this.fb.group({
@@ -49,6 +49,7 @@ export class PersonComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
   propertiesPanelOpenState: Boolean = true;
+  teste_phone:any="";
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE
@@ -93,11 +94,17 @@ export class PersonComponent implements OnInit {
     );
 
     // this.subscriptions.push(    
-    //   this.formGroupPerson.controls['phone'].statusChanges.subscribe((status) => {
+    //   this.formGroupPerson.controls['phone'].statusChanges.subscribe((value) => {
     //     this.formGroupPerson.controls['phone'].setValue(this.phone_pipe.transform(value,' ()+-/0123456789'));
     //   })
     // );
 
+  }
+  
+  teste(){
+    this.teste_phone = this.formGroupPerson.controls['phone']
+    this.teste_phone = this.teste_phone as string
+    return this.string_filter.transform(this.teste_phone,' ()+-/0123456789');
   }
 
   PasswordIsOK(): Boolean {
@@ -112,6 +119,7 @@ export class PersonComponent implements OnInit {
       return (this.formGroupPerson.value.newPassword != '' &&
               this.formGroupPerson.value.newPassword == this.formGroupPerson.value.confirmNewPassword)
     }
+    
   }
 
   //Load property form
