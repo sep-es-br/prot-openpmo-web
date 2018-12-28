@@ -4,6 +4,15 @@ import { Pipe } from "@angular/core";
 @Pipe({
     name: 'stringFilter'
 })
+
+////////////////////////////////////////////////////////////////////////
+// STRING FILTERING
+// 
+// Input parameters:
+//    caracters:string  - string formed by valid characters
+//    value             - value entered by the user
+//
+// Return: valid characters entered
 export class StringFilter {
     public key= true
 
