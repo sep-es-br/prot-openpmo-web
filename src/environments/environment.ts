@@ -5,8 +5,9 @@
 export const environment = {
   production: false,
   timeToHideSavedMessage: 3000,
-  tokenWhitelistedDomains: [ /localhost:8080/, /localhost:4200/ ],
-  tokenBlacklistedRoutes: [/\/oauth\/token/],
+  tokenWhitelistedDomain1: 'localhost:8080',
+  tokenWhitelistedDomain2: 'localhost:4200',
+  tokenBlacklistedRoutes: '\/oauth\/token',
   databaseHost: 'http://localhost:4200/',
   baseAPIPath: 'api/',
   oauthAPI: 'oauth/',

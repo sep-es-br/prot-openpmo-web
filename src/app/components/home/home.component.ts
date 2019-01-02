@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   private breadcrumbTrail: Breadcrumb[] = [];
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(
     private router: Router,

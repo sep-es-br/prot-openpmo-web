@@ -16,7 +16,7 @@ import { LocaleService } from 'src/app/services/locale/locale-service.service';
 })
 export class LocalityComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
   
   constructor(
     private localityDataService: LocalityDataService,
@@ -43,7 +43,7 @@ export class LocalityComponent implements OnInit {
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
   propertiesPanelOpenState: Boolean = true;
-  private localityTypes: String[] = Object.values(LocalityType);
+  localityTypes: String[] = Object.values(LocalityType);
 
   ////////////////////////////////////////////////////////////////////////
   // TOP OF THE PAGE

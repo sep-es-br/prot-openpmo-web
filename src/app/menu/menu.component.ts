@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 })
 export class MenuComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(private localeService: LocaleService ) { }
 

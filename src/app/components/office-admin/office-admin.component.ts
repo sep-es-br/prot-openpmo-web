@@ -17,7 +17,7 @@ import { LocaleService } from 'src/app/services/locale/locale-service.service';
 })
 export class OfficeAdminComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(
     private route: ActivatedRoute,

@@ -1,0 +1,16 @@
+{
+        "===CONFIG_MENU_LANGUAGE===" : "Type the language name in the array 'languages' ​​and the name of the file in the object 'id_locale'.",
+
+    "languages":["English", "Portuguese BR"],
+    
+    "key_locale" : {
+        "English" : "en",
+        "Portuguese BR" : "pt-BR"
+    },
+
+        "===ICON_FLAG===" : "Optional. Inform icon name like this: '../assets/images/<icon name>'.png. The icons are located in the folder: src/assets/images.",
+    "icon_flag_locale" : {
+        "English" : "",
+        "Portuguese BR" : ""
+    }
+}

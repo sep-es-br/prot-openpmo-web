@@ -27,8 +27,6 @@ export class AppComponent implements OnInit {
   icon_flag_locale: object;
   valor: string = "";
 
-  //localeTrigger: Object = new Object();
-
   jwt: any;
   jwtPayload: any;
   loadLogin: Boolean = false;

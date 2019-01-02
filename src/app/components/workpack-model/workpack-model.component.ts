@@ -29,7 +29,7 @@ import { LocalityDataService } from 'src/app/services/data/locality/locality-dat
 
 export class WorkpackModelComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(
     private route: ActivatedRoute,

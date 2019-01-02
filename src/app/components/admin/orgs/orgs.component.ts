@@ -14,7 +14,7 @@ import { LocaleService } from 'src/app/services/locale/locale-service.service';
 })
 export class OrgsComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(
     private breadCrumbService: BreadcrumbService,

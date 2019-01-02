@@ -19,7 +19,7 @@ import { LocaleService } from '../../services/locale/locale-service.service';
 })
 export class PlanStructureComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(
     private route: ActivatedRoute,

@@ -17,7 +17,7 @@ import { LocaleService } from '../../services/locale/locale-service.service';
 })
 export class OfficeComponent implements OnInit {
 
-  localeConfig: Object = new Object();
+  localeConfig: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +58,7 @@ export class OfficeComponent implements OnInit {
         }
       )
     );
-    //currencyMask: Object = new Object();
+    //currencyMask: any;
     // this.subscriptions.push(
     //   this.localeService.currencyMask.subscribe(
     //     (mask) => {
