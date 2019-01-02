@@ -22,9 +22,13 @@ export class RoleDataService {
   }  
 
 
-  // Observable property for the selected office
+  // Observable property for the selected role
   private $role = new BehaviorSubject<Role>(new Role);
   role = this.$role.asObservable();
+
+  // Observable property for the list of roles
+  private $roles = new BehaviorSubject<Role[]>([]);
+  roles = this.$roles.asObservable();
 
   private baseURL = environment.databaseHost;
   
@@ -60,6 +64,35 @@ export class RoleDataService {
 
   ////////////////////////////////////////////////////////////////////////
   //
+  // Run a GET http request to get all Roles
+  //
+  // Parameters: none
+  //
+  // Return: Observable to the roles found
+  //
+  QueryAllRoles(): Observable<Role[]> {
+    const pathURL = environment.roleAPI;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+
+    this.spinnerService.ShowSpinner();
+    return this.http.get(URL).pipe(map<Role[], any>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        this.$roles.next(res as Role[]);
+        return res;
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.errMessage.ShowErrorMessage(err);
+          return err;
+        }
+      )
+    );
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
   // Run a GET http request to get all Roles related to a scope
   //
   // Parameters: 
@@ -67,9 +100,9 @@ export class RoleDataService {
   //
   // Return: Observable to the roles found
   //
-  GetAllRolesByScopeId(): Observable<Role[]> {
+  GetAllRolesByScopeId(id: String): Observable<Role[]> {
     const pathURL = environment.roleAPI + environment.byScopeIdResource;
-    const URL = this.baseURL + this.basePathURL + pathURL;
+    const URL = this.baseURL + this.basePathURL + pathURL + id;
 
     this.spinnerService.ShowSpinner();
     return this.http.get(URL).pipe(map<Role[], any>(
@@ -84,6 +117,32 @@ export class RoleDataService {
           return err;
         }
       )
+    );
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a GET http request to get all Roles related to a scope
+  //
+  // Parameters: 
+  //    id: The id of the scope
+  //
+  // Return: none
+  //
+  QueryAllRolesByScopeId(id: String){
+    const pathURL = environment.roleAPI + environment.byScopeIdResource;
+    const URL = this.baseURL + this.basePathURL + pathURL + id;
+
+    this.spinnerService.ShowSpinner();
+    return this.http.get(URL).subscribe(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        this.$roles.next(res as Role[]);
+      },
+      (err) => {
+        this.spinnerService.HideSpinner();
+        this.errMessage.ShowErrorMessage(err);
+      }
     );
   }
 
@@ -105,6 +164,36 @@ export class RoleDataService {
     return this.http.get(URL).pipe(map<Role[], any>(
       (res) => {
         this.spinnerService.HideSpinner();
+        return res;
+      }),
+      catchError(
+        (err) => {
+          this.spinnerService.HideSpinner();
+          this.errMessage.ShowErrorMessage(err);
+          return err;
+        }
+      )
+    );
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  //
+  // Run a GET http request to get all Roles related to an actor
+  //
+  // Parameters: 
+  //    id: The id of the actor
+  //
+  // Return: Observable to the roles found
+  //
+  QueryAllRolesByActorId(): Observable<Role[]> {
+    const pathURL = environment.roleAPI + environment.byActorIdResource;
+    const URL = this.baseURL + this.basePathURL + pathURL;
+
+    this.spinnerService.ShowSpinner();
+    return this.http.get(URL).pipe(map<Role[], any>(
+      (res) => {
+        this.spinnerService.HideSpinner();
+        this.$roles.next(res as Role[]);
         return res;
       }),
       catchError(

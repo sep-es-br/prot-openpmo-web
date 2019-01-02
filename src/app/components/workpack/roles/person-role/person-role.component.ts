@@ -7,18 +7,18 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.servic
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { RoleCategory, ActorType, Role, ScopeType } from 'src/app/model/role';
-import { Org } from 'src/app/model/org';
+import { Person } from 'src/app/model/person';
 import { RoleDataService } from 'src/app/services/data/role/role-data.service';
-import { OrgDataService } from 'src/app/services/data/org/org-data.service';
+import { PersonDataService } from 'src/app/services/data/person/person-data.service';
 import { Actor } from 'src/app/model/actor';
 import { Scope } from 'src/app/model/scope';
 
 @Component({
-  selector: 'app-org-role',
-  templateUrl: './org-role.component.html',
-  styleUrls: ['./org-role.component.css']
+  selector: 'app-person-role',
+  templateUrl: './person-role.component.html',
+  styleUrls: ['./person-role.component.css']
 })
-export class OrgRoleComponent implements OnInit {
+export class PersonRoleComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
@@ -28,15 +28,15 @@ export class OrgRoleComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private roleDataService: RoleDataService,
-    private orgDataService: OrgDataService) { }
+    private personDataService: PersonDataService) { }
 
   subscriptions: Subscription[] = [];
 
   workpack: Workpack = new Workpack();
   role: Role = new Role();
 
-  orgsSearched: Org[] = [];
-  selectedOrg: Org = new Org();
+  peopleSearched: Person[] = [];
+  selectedPerson: Person = new Person();
 
   propertiesPanelOpenState = true;
 
@@ -69,16 +69,16 @@ export class OrgRoleComponent implements OnInit {
 
     if (this.roleId = 'new'){
       this.title = "New Stakeholder";
-      this.role.actor = new Org();
+      this.role.actor = new Person();
     }
     else {
       this.subscriptions.push(
         this.roleDataService.role.subscribe(role =>{
           this.role = role;
           this.subscriptions.push(
-            this.orgDataService.GetOrgById(this.role.id).subscribe(
+            this.personDataService.GetPersonById(this.role.id).subscribe(
               res => {
-                this.selectedOrg = res;
+                this.selectedPerson = res;
                 this.LoadFormControls();
               }
             )
@@ -91,14 +91,14 @@ export class OrgRoleComponent implements OnInit {
       this.workpackDataService.workpack.subscribe(wp =>{
         this.workpack = wp;
         this.role.scope = this.workpack;
-        this.possibleRoles = wp.model.orgPossibleRoles;
+        this.possibleRoles = wp.model.personPossibleRoles;
         console.log('wo',wp);
       })
     );
 
     this.subscriptions.push(
-      this.orgDataService.orgs.subscribe(orgs =>{
-        this.orgsSearched = orgs;
+      this.personDataService.people.subscribe(people =>{
+        this.peopleSearched = people;
       })
     );
 
@@ -106,11 +106,11 @@ export class OrgRoleComponent implements OnInit {
     this.subscriptions.push(    
       this.formGroup.controls['actorName'].statusChanges.subscribe((status) => {
         if (status == 'VALID') {
-          this.SearchOrg(this.formGroup.value.actorName);
+          this.SearchPerson(this.formGroup.value.actorName);
         }
         else {
-          this.orgsSearched = [];
-          this.CleanOrgControl();
+          this.peopleSearched = [];
+          this.CleanPersonControl();
         }
       })
     );
@@ -129,10 +129,11 @@ export class OrgRoleComponent implements OnInit {
   //Load role form conroles
   LoadFormControls() {
     this.formGroup.controls['name'].setValue(this.role.name);
-    this.formGroup.controls['actorId'].setValue(this.selectedOrg.id);
-    this.formGroup.controls['actorFullName'].setValue(this.selectedOrg.fullName);
-    this.formGroup.controls['actorPhone'].setValue(this.selectedOrg.phone);
-    this.formGroup.controls['actorAddress'].setValue(this.selectedOrg.address);
+    this.formGroup.controls['actorId'].setValue(this.selectedPerson.id);
+    this.formGroup.controls['actorFullName'].setValue(this.selectedPerson.fullName);
+    this.formGroup.controls['actorPhone'].setValue(this.selectedPerson.phone);
+    this.formGroup.controls['actorAddress'].setValue(this.selectedPerson.address);
+    this.formGroup.controls['actorEmail'].setValue(this.selectedPerson.email);
   }
 
 
@@ -161,19 +162,20 @@ export class OrgRoleComponent implements OnInit {
     this.MessageRightPosition = "-180px";
   }
 
-  SearchOrg(name: string) {
-    this.orgDataService.QueryOrgsByName(name);
+  SearchPerson(name: string) {
+    this.personDataService.QueryPeopleByName(name);
   }
 
-  UpdateOrgControl(orgFound: Org) {
-    this.selectedOrg = orgFound;
-    this.formGroup.controls['actorId'].setValue(orgFound.id);
-    this.formGroup.controls['actorFullName'].setValue(orgFound.fullName);
-    this.formGroup.controls['actorPhone'].setValue(orgFound.phone);
-    this.formGroup.controls['actorAddress'].setValue(orgFound.address);
+  UpdatePersonControl(personFound: Person) {
+    this.selectedPerson = personFound;
+    this.formGroup.controls['actorId'].setValue(personFound.id);
+    this.formGroup.controls['actorFullName'].setValue(personFound.fullName);
+    this.formGroup.controls['actorPhone'].setValue(personFound.phone);
+    this.formGroup.controls['actorAddress'].setValue(personFound.address);
+    this.formGroup.controls['actorEmail'].setValue(personFound.email);
   }
 
-  CleanOrgControl() {
+  CleanPersonControl() {
     this.formGroup.controls['actorId'].setValue('');
     this.formGroup.controls['actorFullName'].setValue('');
     this.formGroup.controls['actorPhone'].setValue('');
@@ -189,10 +191,10 @@ export class OrgRoleComponent implements OnInit {
   //
   onSubmit(){
     this.role.name = this.formGroup.value.name.trim();
-    this.role.actorType = ActorType.organization;
-    this.role.category = RoleCategory.business;
-    this.role.scopeType = ScopeType.workpack;
-    let actor: Actor = this.selectedOrg as Actor; // new Actor();
+    this.role.actorType = ActorType.PERSON;
+    this.role.category = RoleCategory.BUSINESS;
+    this.role.scopeType = ScopeType.WORKPACK;
+    let actor: Actor = this.selectedPerson as Actor; // new Actor();
     this.role.actor = actor;
     let scope: Scope = this.workpack as Scope; // new Scope();
     this.role.scope = scope;

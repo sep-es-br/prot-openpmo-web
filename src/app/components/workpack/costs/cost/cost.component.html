@@ -1,0 +1,75 @@
+<div class="main-title">New cost</div>
+<div class="container-form">
+  <mat-accordion >
+
+    <!-- Edit/View Panel -->
+    <mat-expansion-panel 
+      [expanded]="propertiesPanelOpenState"
+      (opened)="propertiesPanelOpenState = true"
+      (closed)="propertiesPanelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title translate>Properties</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="formGroup"
+        class="form-container property-container row"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="left"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0">
+
+        <!-- Cost name -->
+        <mat-form-field>
+          <input matInput
+            type="text"      
+            formControlName="name"
+            placeholder="Cost"/>
+        </mat-form-field>            
+
+        <!-- Cost description -->
+        <mat-form-field class="full-width">
+          <textarea matInput
+            rows="2"
+            formControlName="fullName"
+            placeholder="Description">
+          </textarea>
+        </mat-form-field>            
+
+        <!-- Search field -->
+        <mat-form-field class="example-full-width">
+          <input 
+            type="text" 
+            placeholder="Funder"
+            aria-label="Number" 
+            formControlName="funderName"
+            matInput [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption 
+            #auto="matAutocomplete">
+            <mat-option 
+              *ngFor="let funderFound of fundersSearched" 
+              [value]="funderFound.name"
+              (onSelectionChange)="UpdateFunderControl(funderFound)">
+              {{funderFound.fullName}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>            
+        
+
+        <!-- SAVE BUTTON -->
+        <div class="footer-button"
+            [style.bottom]="SaveButtonBottomPosition">
+          <div class="example-button-row">
+            <button 
+              class="save-button" mat-button><span translate>Save</span></button>
+          </div>
+        </div>        
+
+      </form>
+      <div class="id-container-properties">
+        <span>ID: {{cost.id}}</span>
+      </div>         
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

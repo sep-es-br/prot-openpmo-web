@@ -10,6 +10,7 @@ import { BreadcrumbService } from 'src/app/services/breadcrumb/breadcrumb.servic
 import { LocaleService } from 'src/app/services/locale/locale-service.service';
 import { AppComponent } from 'src/app/app.component';
 import { PhonePipe } from 'src/app/pipes/pipe-phone';
+import { ActorType } from 'src/app/model/role';
 
 @Component({
   selector: 'app-person',

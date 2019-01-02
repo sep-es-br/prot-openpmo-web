@@ -42,7 +42,7 @@ import { PeopleComponent } from './components/admin/people/people.component';
 import { PersonComponent } from './components/admin/people/person/person.component';
 import { OrgComponent } from './components/admin/orgs/org/org.component';
 import { OrgsComponent } from './components/admin/orgs/orgs.component';
-import { PersonRoleComponent } from './components/workpack/person-role/person-role.component';
+import { PersonRoleComponent } from './components/workpack/roles/person-role/person-role.component';
 import { SecurityModule } from './security/security.module';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './security/auth.service';
@@ -54,9 +54,13 @@ import { ErrorMessagingService } from './services/error/error-messaging.service'
 import { LocalitiesComponent } from './components/admin/localities/localities.component';
 import { LocalityComponent } from './components/admin/localities/locality/locality.component';
 import { LocalityDataService } from './services/data/locality/locality-data.service';
-import { RoleDataService } from './services/data/role/role-data.service';
+import { CostDataService } from './services/data/cost/cost-data.service';
 import { GeoReferenceDataService } from './services/data/georeference/geo-reference-data.service';
-import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
+import { OrgRoleComponent } from './components/workpack/roles/org-role/org-role.component';
+import { RolesComponent } from './components/workpack/roles/roles.component';
+import { RoleDataService } from './services/data/role/role-data.service';
+import { CostsComponent } from './components/workpack/costs/costs.component';
+import { CostComponent } from './components/workpack/costs/cost/cost.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "right",
@@ -88,12 +92,15 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     LocalityComponent,
     OrgsComponent,
     OrgComponent,
+    RolesComponent,
     PersonRoleComponent,
     LoginComponent,
     MenuComponent,
     PhonePipe,
     OrgRoleComponent,
-    LoginComponent
+    LoginComponent,
+    CostsComponent,
+    CostComponent
   ],
   entryComponents: [MessageDialogComponent],
   imports: [
@@ -122,6 +129,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     PlanDataService,
     WorkpackDataService,
     RoleDataService,
+    CostDataService,
     LocalityDataService,
     GeoReferenceDataService,
     BreadcrumbService,    

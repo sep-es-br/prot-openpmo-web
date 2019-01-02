@@ -5,7 +5,7 @@ export class Org extends Actor{
 }
 
 enum OrgSector {
-    public = "Public",
-    private = "Private",
-    third = "Third"
+    PUBLIC = "Public",
+    PRIVATE = "Private",
+    THIRD = "Third"
 }

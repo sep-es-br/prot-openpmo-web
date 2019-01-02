@@ -27,14 +27,17 @@ export const environment = {
   defaultResource: 'default/',
   modelResource: 'model/',
   propertyTypesResource: 'listpropertytypes/',
+  actorAPI: 'actor/',
   personAPI: 'person/',
   likeResource: 'like/',
   orgAPI: 'organization/',
   localityAPI: 'locality/',
   roleAPI: 'role/',
+  costAPI: 'cost/',
   geoReferenceAPI: 'georeference',
   byScopeIdResource: 'scope/',
   byActorIdResource: 'actor/',
+  byWorkpackIdResource: 'workpack/'
 };
 
 /*

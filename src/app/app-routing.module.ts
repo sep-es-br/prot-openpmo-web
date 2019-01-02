@@ -17,11 +17,13 @@ import { PeopleComponent } from './components/admin/people/people.component';
 import { PersonComponent } from './components/admin/people/person/person.component';
 import { OrgsComponent } from './components/admin/orgs/orgs.component';
 import { OrgComponent } from './components/admin/orgs/org/org.component';
-import { PersonRoleComponent } from './components/workpack/person-role/person-role.component';
+import { PersonRoleComponent } from './components/workpack/roles/person-role/person-role.component';
 import { LoginComponent } from './components/login/login.component';
-import { OrgRoleComponent } from './components/workpack/org-role/org-role.component';
+import { OrgRoleComponent } from './components/workpack/roles/org-role/org-role.component';
 import { LocalitiesComponent } from './components/admin/localities/localities.component';
 import { LocalityComponent } from './components/admin/localities/locality/locality.component';
+import { CostComponent } from './components/workpack/costs/cost/cost.component';
+
 //import { LoginComponent } from './security/login/login.component';
 
 ////////////////////////////////////////////////////////////////////////
@@ -65,6 +67,11 @@ const routes: Routes = [
   {
     path: 'workpack/:wpid/organizationrole/:id',
     component: OrgRoleComponent
+  },
+  {
+    path: 'workpack/:wpid/cost/:id',
+    component: CostComponent,
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange'
   },
   {
     path: 'officeadmin/:action/:id',

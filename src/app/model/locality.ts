@@ -10,15 +10,15 @@ export class Locality {
 }
 
 export enum LocalityType {
-    "ANY" = "Any",
-    "COUNTRY" = "Country",
-    "REGION" = "Region",
-    "STATE" = "State",
-    "COUNTY" = "County",
-    "CITY" = "City",
-    "DISTRICT" = "District",
-    "NEIGHBORHOOD" = "Neighborhood",
-    "SITE" = "Site",
-    "PROVINCE" = "Province",
-    "ZONE" = "Zone"
+    ANY = "Any",
+    COUNTRY = "Country",
+    REGION = "Region",
+    STATE = "State",
+    COUNTY = "County",
+    CITY = "City",
+    DISTRICT = "District",
+    NEIGHBORHOOD = "Neighborhood",
+    SITE = "Site",
+    PROVINCE = "Province",
+    ZONE = "Zone"
 }

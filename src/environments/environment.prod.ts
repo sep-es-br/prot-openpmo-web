@@ -23,6 +23,7 @@ export const environment = {
   defaultResource: 'default/',
   modelResource: 'model/',
   propertyTypesResource: 'listpropertytypes/',
+  actorAPI: 'actor/',
   personAPI: 'person/',
   personLikeResource: 'like/',
   orgAPI: 'organization/',
@@ -31,4 +32,5 @@ export const environment = {
   relatedLocalityAPI: 'relatedlocality',
   byScopeIdResource: 'scope/',
   byActorIdResource: 'actor/',
+  byWorkpackIdResource: 'workpack/'
 };

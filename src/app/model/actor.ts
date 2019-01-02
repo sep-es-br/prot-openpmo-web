@@ -1,4 +1,4 @@
-import { Role } from "./role";
+import { Role, ActorType } from "./role";
 
 export class Actor {
     id: String = null;

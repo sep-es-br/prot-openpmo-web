@@ -1,0 +1,62 @@
+    <!-- Stakeholders Panel -->
+    <mat-expansion-panel
+      [expanded]="viewOptions.costsPanelOpenState"
+      (opened)="viewOptions.costsPanelOpenState = true"
+      (closed)="viewOptions.costsPanelOpenState = false">
+      
+      <!-- Header -->
+      <mat-expansion-panel-header>
+        <mat-panel-title translate>Costs</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Body -->
+      <div class="container-fluid cards">
+        
+        <div class="row">
+          <mat-card class="card card-style" 
+                    *ngFor="let cost of wpCosts">
+              <div class="card-image">
+                <mat-icon fontSet="fas" fontIcon="fa-dollar-sign"></mat-icon>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a  class="dropdown-item"
+                      routerLink="/workpack/{{workpack?.id}}/cost/{{cost.id}}" 
+                      routerLinkActive="active" translate>Edit</a>
+                  <a  class="dropdown-item"
+                      (click)="RemoveCost(cost.id)"
+                      routerLink="/workpack/edit/{{workpack?.id}}&{{workpack.model?.id}}" 
+                      routerLinkActive="active" translate>Remove</a>
+                </div>
+              </div>
+              <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
+                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
+              </div>
+              <mat-card-title class="title-card">
+                <div>
+                  <a routerLink="/workpack/{{workpack?.id}}/cost/{{cost.id}}" 
+                  routerLinkActive="active">{{cost.name}}</a>
+                </div>
+                <div class="subtitle-card">
+                  <span>Funder: </span><span>{{cost.funder.Name}}</span>
+                </div>
+              </mat-card-title>
+              <div class="card-detail">
+                <div>{{cost.actor?.fullName}}</div>
+              </div>
+              <div class="id-container-properties">
+                <span>ID: {{cost.id}}</span>
+              </div>                    
+          </mat-card>
+
+          <mat-card 
+            class="card new-card card-style"
+            routerLink="/workpack/{{workpack.id}}/cost/new" 
+            routerLinkActive="active">
+              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
+                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
+              </div>
+          </mat-card>
+        </div>
+
+      </div>
+  
+    </mat-expansion-panel>

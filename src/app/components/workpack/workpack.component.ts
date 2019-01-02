@@ -22,9 +22,8 @@ import { RoleDataService } from 'src/app/services/data/role/role-data.service';
 import { LocaleService } from '../../services/locale/locale-service.service';
 import { LocalityType, Locality } from 'src/app/model/locality';
 import { LocalityDataService } from 'src/app/services/data/locality/locality-data.service';
-import { GeoReference } from 'src/app/model/geo-reference';
-import { GeoReferenceDataService } from 'src/app/services/data/georeference/geo-reference-data.service';
 import { environment } from 'src/environments/environment.prod';
+
 
 @Component({
   selector: 'app-workpack',
@@ -44,7 +43,6 @@ export class WorkpackComponent implements OnInit {
     private crumbService: BreadcrumbService,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private roleDataService: RoleDataService,
     private localeService: LocaleService,
     private localityDataService: LocalityDataService) {}
 
@@ -63,7 +61,6 @@ export class WorkpackComponent implements OnInit {
   viewOptions: ViewOptions = new ViewOptions();
   SaveButtonBottomPosition: String;
   MessageRightPosition: String;
-  wpRoles: Role[] = [];
   allLocalities: Locality[] = [];
 
   actorTypes = ActorType;
@@ -92,7 +89,6 @@ export class WorkpackComponent implements OnInit {
     this.subscriptions.push(
       this.workpackDataService.workpackModel.subscribe(wm => {
         this.workpackModel = wm;
-        console.log('this.workpackModel', this.workpackModel);
       })
     );
     
@@ -100,23 +96,9 @@ export class WorkpackComponent implements OnInit {
       
       this.workpackDataService.workpack.subscribe(wp =>{
         this.workpack = wp;
-       
-        console.log('this.workpack', this.workpack);
-
         if (this.workpack.id != '') {
-          this.subscriptions.push(
-            this.roleDataService.GetAllRoles().subscribe(
-              res => {
-                this.wpRoles = res.filter((role)=>(role.scope.id == this.workpack.id));
-              }
-            )
-          );
-          
-
-
           this.LoadFormControls();
-          console.log('formcontrol >>>', this.formGroupWorkpack);
-        }
+        }       
       })
     );
 
@@ -145,6 +127,8 @@ export class WorkpackComponent implements OnInit {
                 : this.HideSaveButton();
       })
     );
+
+  
     
   }
 
@@ -355,47 +339,6 @@ export class WorkpackComponent implements OnInit {
             })
           );
         }
-      })
-    );
-  }
-
-  ////////////////////////////////////////////////////////////////////////
-  //EXCLUSION MODULE - Role
-  //
-  //Identification Parameter: role id
-  //
-  RemoveRole(id: string) {
-    this.subscriptions
-    .push(
-      this.roleDataService
-      .GetRoleById(id)
-      .subscribe(role2delete => {
-        const msg = `${this.localeConfig["Are you sure to remove"]} ${role2delete.actor.name} ` +
-                    `${this.localeConfig["as stakeholder of this"]} ${this.workpack.model.name}?`;
-        this.subscriptions.push(
-          this.dialog.open(MessageDialogComponent, { 
-            data: {
-              title: this.localeConfig["Attention"],
-              message:  msg,
-              action: this.localeConfig["YES_NO"]
-            }
-          })
-          .afterClosed()
-          .subscribe(res => {
-            if (res == "YES") {
-              this.subscriptions.push(
-                this.roleDataService.RemoveRole(id).subscribe(
-                  () => {
-                    this.subscriptions
-                    .push(
-                      this.workpackDataService.QueryWorkpackById(this.workpack.id)
-                      .subscribe(wp => wp));
-                  }
-                )                      
-              );
-            }
-          })
-        );
       })
     );
   }

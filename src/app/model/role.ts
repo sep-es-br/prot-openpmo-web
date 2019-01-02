@@ -12,17 +12,17 @@ export class Role {
 }
 
 export enum RoleCategory {
-    system = "System",
-    business = "Business"
+    SYSTEM = "System",
+    BUSINESS = "Business"
 };
 
 export enum ScopeType {
-    office = "Office",
-    plan = "Plan",
-    workpack = "Workpack"
+    OFFICE = "Office",
+    PLAN = "Plan",
+    WORKPACK = "Workpack"
 };
 
 export enum ActorType {
-    person = "Person",
-    organization = "Organization"
+    PERSON = "Person",
+    ORGANIZATION = "Organization"
 };

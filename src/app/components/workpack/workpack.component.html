@@ -159,71 +159,6 @@
 
     </mat-expansion-panel>
 
-    <!-- Stakeholders Panel -->
-    <mat-expansion-panel
-      [expanded]="viewOptions.stakeholdersPanelOpenState"
-      (opened)="viewOptions.stakeholdersPanelOpenState = true"
-      (closed)="viewOptions.stakeholdersPanelOpenState = false">
-      
-      <!-- Header -->
-      <mat-expansion-panel-header>
-        <mat-panel-title translate>Stakeholders</mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <!-- Body -->
-      <div class="container-fluid cards">
-        <div class="row">
-
-          <mat-card class="card card-style" *ngFor="let role of wpRoles">
-              <div class="card-image">
-                <mat-icon *ngIf="role.actorType == 'Person'" fontSet="fas" fontIcon="fa-user"></mat-icon>
-                <mat-icon *ngIf="role.actorType == 'Organization'" fontSet="fas" fontIcon="fa-building"></mat-icon>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a  class="dropdown-item"
-                      (click)="RemoveRole(role.id)"
-                      routerLink="/workpack/edit/{{workpack?.id}}&{{workpack.model?.id}}" 
-                      routerLinkActive="active" translate>Remove</a>
-                </div>
-              </div>
-              <div class="card-setting" id="dropdownMenuButton" data-toggle="dropdown">
-                <mat-icon fontSet="fa" fontIcon="fa-bars"></mat-icon>
-              </div>
-              <mat-card-title class="title-card">
-                <div>
-                  {{role.actor?.name}}
-                </div>
-                <div class="subtitle-card">
-                  {{role.name}}
-                </div>
-              </mat-card-title>
-              <div class="card-detail">
-                <div>{{role.actor?.fullName}}</div>
-                <div>{{role.actor?.address}}</div>
-                <div>{{role.actor?.phone}}</div>
-              </div>
-              <div class="id-container-properties">
-                <span>ID: {{role.id}}</span>
-              </div>                    
-            </mat-card>
-
-          <mat-card class="card new-card card-style">
-              <div class="card-image-new dropleft" id="dropdownMenuButton" data-toggle="dropdown">
-                  <mat-icon fontSet="fa" fontIcon="fa-plus"></mat-icon>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a *ngFor="let key of ActorTypeKeys()" 
-                        class="dropdown-item"
-                        routerLink="/workpack/{{workpack.id}}/{{key}}role/new" 
-                        routerLinkActive="active">{{actorTypes[key]}}</a>
-                  </div>
-              </div>
-            </mat-card>
-          </div>
-      </div>
-  
-    </mat-expansion-panel>
-
-
-
     <!-- Workpacks Panel -->
     <mat-expansion-panel
       *ngIf="(viewOptions.action == 'edit') && (workpackModel.components.length > 0)"
@@ -282,6 +217,18 @@
       </div>
   
     </mat-expansion-panel>
+
+    <!-- New Stakeholders Panel-->
+    <app-roles 
+      *ngIf="((workpack.id != null) && workpack.model.manageStakeholders)"
+      [workpack]="workpack" 
+      [viewOptions]="viewOptions" ></app-roles>
+
+    <!-- New Stakeholders Panel-->
+    <app-costs 
+      *ngIf="((workpack.id != null))"
+      [workpack]="workpack"
+      [viewOptions]="viewOptions"></app-costs>
 
   </mat-accordion>
     

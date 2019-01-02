@@ -5,4 +5,5 @@ export class ViewOptions {
     propertiesPanelOpenState: Boolean;
     workpacksPanelOpenState: Boolean;
     stakeholdersPanelOpenState: Boolean;
+    costsPanelOpenState: Boolean;
 }

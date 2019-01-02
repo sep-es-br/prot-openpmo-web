@@ -67,8 +67,8 @@ export class PeopleComponent implements OnInit {
           this.dialog.open(MessageDialogComponent, { 
             data: {
               title: this.localeConfig['Attention'],
-              message: this.localeConfig['Are you sure to remove'] + person2delete.name + "?",
-              action: this.localeConfig['YES_NO']
+              message: this.localeConfig['Are you sure to remove'] + ' ' + person2delete.name + "?",
+              action: 'YES_NO'
             }
           })
           .afterClosed()
