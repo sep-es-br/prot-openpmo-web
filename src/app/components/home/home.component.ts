@@ -118,7 +118,7 @@ export class HomeComponent implements OnInit {
           data: {
             title: this.localeConfig['Attention'],
             message: this.localeConfig['Are you sure to delete'] + officeToDelete.name + "?",
-            action: this.localeConfig['YES_NO'] 
+            action: 'YES_NO'
           }
         })
         .afterClosed()

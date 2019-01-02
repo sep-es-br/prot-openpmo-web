@@ -175,7 +175,7 @@ export class OfficeComponent implements OnInit {
             data: {
               title: this.localeConfig["Attention"],
               message: this.localeConfig["Are you sure to delete"] + Plan2delete.name + "?",
-              action: this.localeConfig["YES_NO"]
+              action: "YES_NO"
             }
           })
           .afterClosed()

@@ -1,11 +1,21 @@
 import { Pipe } from "@angular/core";
 
+let key:boolean = true;
 
 @Pipe({
     name: 'stringFilter'
 })
-export class PhonePipe {
-    public key= true
+
+////////////////////////////////////////////////////////////////////////
+// STRING FILTERING
+// 
+// Input parameters:
+//    caracters:string  - string formed by valid characters
+//    value             - value entered by the user
+//
+// Return: valid characters entered
+export class StringFilter {
+    
 
     transform ( value:string = "", caracters:string = "", flow:boolean = true, oscillation:boolean = false ) {
 
@@ -13,7 +23,7 @@ export class PhonePipe {
         let j: number = 0;
         let check: boolean = false
         let check_osc: boolean = false
-        let data_suport:any = "";
+        let data_suport: any = "";
         let char_value: any = value.split("");
         let char_caracters: any = caracters.split("");
     
@@ -44,16 +54,15 @@ export class PhonePipe {
         }
 
         if (( oscillation ) && ( check_osc )) {
-            if ( this.key ) {
+            if ( key ) {
                 data_suport = data_suport + " "
-                this.key = false
+                key = false
             }
             else {
-                this.key = true 
+                data_suport = data_suport + "  "
+                key = true 
             }
         }
-            
-        console.log('data_suport', data_suport);
         return data_suport;
     }
 }
